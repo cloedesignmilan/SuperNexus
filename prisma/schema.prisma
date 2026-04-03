@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(uuid())
+  telegram_id     String?  @unique
+  role            String   @default("user") // admin, user
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model GenerationJob {
+  id                  String      @id @default(uuid())
+  original_image_url  String
+  status              String      @default("in lavorazione") // in lavorazione, completato, errore
+  target_template_id  String?
+  results_count       Int         @default(10)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  images              JobImage[]
+  logs                ErrorLog[]
+}
+
+model JobImage {
+  id                  String         @id @default(uuid())
+  job_id              String
+  job                 GenerationJob  @relation(fields: [job_id], references: [id], onDelete: Cascade)
+  image_url           String
+  scene_type          String?
+  createdAt           DateTime       @default(now())
+}
+
+model PromptTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  base_prompt String   @db.Text
+  rules       String   @db.Text
+  num_images  Int      @default(10)
+  scenes      String   @db.Text // JSON string list of scenes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ErrorLog {
+  id          String         @id @default(uuid())
+  job_id      String?
+  job         GenerationJob? @relation(fields: [job_id], references: [id], onDelete: SetNull)
+  message     String         @db.Text
+  createdAt   DateTime       @default(now())
+}
+
+model Setting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

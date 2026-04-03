@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  /* Colori Boutique Neutri */
+  --color-bg-main: #FAF9F6; /* Off-white molto caldo */
+  --color-bg-sidebar: #ffffff;
+  --color-bg-card: #ffffff;
+  
+  --color-text-main: #2C2C2C; /* Antracite scuro, più elegante del nero */
+  --color-text-muted: #757575;
+  --color-text-accent: #9A8A78; /* Un taupe dorato/Beige per accenti */
+  
+  --color-border: #E8E6E1;
+  --color-border-hover: #D0CCC3;
+
+  --color-status-working: #D4A373;
+  --color-status-done: #7D8F69;
+  --color-status-error: #B15E5E;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ADMIN LAYOUT */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--color-bg-sidebar);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+}
+
+.admin-logo h1 {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-main);
+  margin-bottom: 0.2rem;
+}
+
+.admin-logo p {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-accent);
+  margin-bottom: 3rem;
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.nav-item {
+  text-decoration: none;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.nav-item:hover {
+  background-color: var(--color-bg-main);
+  color: var(--color-text-main);
+}
+
+.admin-main {
+  flex: 1;
+  padding: 3rem 4rem;
+  background-color: var(--color-bg-main);
+  overflow-y: auto;
+}
+
+/* CARDS & UTILS */
+.page-title {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.page-subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 3rem;
+  font-size: 1rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.stats-card {
+  background: var(--color-bg-card);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stats-card h3 {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stats-card p {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  color: var(--color-text-main);
+}
+
+/* DATA TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-bg-card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.data-table th, .data-table td {
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table th {
+  background: #FCFBFA;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-working { background: #fdf5ef; color: var(--color-status-working); }
+.status-completato { background: #f4f7f2; color: var(--color-status-done); }
+.status-errore { background: #fdf0f0; color: var(--color-status-error); }
