@@ -96,7 +96,6 @@ export async function POST(req: NextRequest) {
             if (base64Image) {
                 // In uno scenario reale, ora faresti upload su Supabase Storage e otterresti la URL pubblica.
                 // In locale, lo passiamo direttamente in base64 via buffer
-                const uploadUrl = `data:image/jpeg;base64,${base64Image}`;
                 
                 await prisma.jobImage.create({
                     data: { job_id: jobId, image_url: "uploaded_storage_link", scene_type: scene }
@@ -134,8 +133,9 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, count: generatedUrls.length });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Worker Background Errore:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const msg = error instanceof Error ? error.message : "Internal Error";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

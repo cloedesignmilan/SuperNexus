@@ -1,5 +1,4 @@
 import { prisma } from "@/lib/prisma";
-import Link from "next/link";
 
 export const revalidate = 0;
 
@@ -13,7 +12,7 @@ export default async function GenerazioniPage() {
   return (
     <>
       <h2 className="page-title">Generazioni Attive</h2>
-      <p className="page-subtitle">Storico dei Job ricevuti via Telegram. Segui l'avanzamento qui.</p>
+      <p className="page-subtitle">Storico dei Job ricevuti via Telegram. Segui l&apos;avanzamento qui.</p>
 
       {jobs.length === 0 ? (
         <div className="stats-card">

@@ -4,7 +4,6 @@ export const revalidate = 0; // Force dynamic fetching for the dashboard
 
 export default async function DashboardPage() {
   // Querying statistics from the DB
-  const totalGenerations = await prisma.generationJob.count();
   const completedGenerations = await prisma.generationJob.count({ where: { status: "completato" } });
   const errorGenerations = await prisma.generationJob.count({ where: { status: "errore" } });
   const inProgressGenerations = await prisma.generationJob.count({ where: { status: "in lavorazione" } });
