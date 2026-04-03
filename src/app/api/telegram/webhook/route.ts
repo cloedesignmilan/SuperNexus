@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Telegraf } from "telegraf";
-// import { prisma } from "@/lib/prisma"; // Lo useremo non appena il DB sarà pronto
-
-// Inizializza il bot con il token
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
 export async function POST(req: NextRequest) {
+  // Inizializza il bot con il token (spostato qui per Vercel build)
+  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
+
   try {
     const update = await req.json();
 

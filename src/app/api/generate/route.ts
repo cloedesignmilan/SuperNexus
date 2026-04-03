@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
-
 export async function POST(req: NextRequest) {
+  const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
+  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
+
   try {
     const { jobId, fileUrl, chatId } = await req.json();
 
