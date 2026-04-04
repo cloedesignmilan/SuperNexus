@@ -5,31 +5,37 @@ import styles from "./page.module.css";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-    // 1. Dati Prisma
+    const COST_PER_IMAGE_ESTIMATE = 0.03; // Costo medio stima Imagen3 / Gemini Flash
+
+    // 1. Dati Prisma (Includendo i Jobs per ogni cliente per calcolarne i costi diretti)
     const stores = await prisma.store.findMany({
         include: {
             _count: {
-                select: { jobs: true, templates: true, users: true }
+                select: { templates: true, users: true }
+            },
+            jobs: {
+                select: { status: true, results_count: true }
             }
         },
         orderBy: { createdAt: 'desc' }
     });
 
-    const jobs = await prisma.generationJob.findMany({
-        select: {
-            id: true,
-            results_count: true,
-            status: true,
-            store_id: true
-        }
+    // 2. Calcoli Finanziari Totali (Iterando sui clienti)
+    const storesData = stores.map((store: any) => {
+        const storeImages = store.jobs.reduce((sum: number, job: any) => sum + (job.status === "completato" ? job.results_count : 0), 0);
+        const total_cost = storeImages * COST_PER_IMAGE_ESTIMATE;
+        const net_profit = store.monthly_fee - total_cost;
+
+        return {
+            ...store,
+            total_cost,
+            net_profit,
+            total_images: storeImages
+        };
     });
 
-    // 2. Calcoli Finanziari
-    const totalImages = jobs.reduce((acc, job) => acc + (job.status === "completato" ? job.results_count : 0), 0);
-    const COST_PER_IMAGE_ESTIMATE = 0.03; // Costo medio stima Imagen3 / Gemini Flash
-    const totalApiCost = totalImages * COST_PER_IMAGE_ESTIMATE;
-
-    const mrr = stores.reduce((acc, store) => acc + (store.is_active ? store.monthly_fee : 0), 0);
+    let totalApiCost = storesData.reduce((acc, store) => acc + store.total_cost, 0);
+    const mrr = storesData.reduce((acc, store) => acc + (store.is_active ? store.monthly_fee : 0), 0);
     const netProfit = mrr - totalApiCost;
 
     return (
@@ -69,18 +75,19 @@ export default async function AdminDashboard() {
                                 <th>Stato</th>
                                 <th>Nominativo / Brand</th>
                                 <th>Bot Token</th>
-                                <th>Fee Mensile</th>
-                                <th>Lookbook Generati</th>
-                                <th>Dipendenti Attivi</th>
+                                <th>Fee Mensile (Ricavo)</th>
+                                <th>Costi Consumati (API)</th>
+                                <th>Utile Netto (Guadagno)</th>
+                                <th>Immagini Generate</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {stores.length === 0 && (
+                            {storesData.length === 0 && (
                                 <tr>
-                                    <td colSpan={6} style={{textAlign: 'center'}}>Nessun cliente registrato a sistema.</td>
+                                    <td colSpan={7} style={{textAlign: 'center'}}>Nessun cliente registrato a sistema.</td>
                                 </tr>
                             )}
-                            {stores.map(store => (
+                            {storesData.map((store: any) => (
                                 <tr key={store.id}>
                                     <td>
                                         <div className={styles.statusWrapper}>
@@ -92,11 +99,16 @@ export default async function AdminDashboard() {
                                     </td>
                                     <td className={styles.storeName}>{store.name}</td>
                                     <td className={styles.tokenId}>
-                                        {store.telegram_bot_token ? `${store.telegram_bot_token.slice(0,18)}...` : 'Nessun Bot Assegnato'}
+                                        {store.telegram_bot_token ? `${store.telegram_bot_token.slice(0,18)}...` : 'Test Interno'}
                                     </td>
-                                    <td>€{store.monthly_fee.toFixed(2)}</td>
-                                    <td>{store._count.jobs} sessioni</td>
-                                    <td>{store._count.users} user</td>
+                                    <td><span style={{color: '#fff', fontWeight: 600}}>€{store.monthly_fee.toFixed(2)}</span></td>
+                                    <td><span style={{color: '#ff5470'}}>€{store.total_cost.toFixed(2)}</span></td>
+                                    <td>
+                                        <span style={{color: store.net_profit >= 0 ? '#03dac6' : '#ff5470', fontWeight: 'bold'}}>
+                                            €{store.net_profit.toFixed(2)}
+                                        </span>
+                                    </td>
+                                    <td>{store.total_images} foto / {store.jobs.length} lookbook</td>
                                 </tr>
                             ))}
                         </tbody>
