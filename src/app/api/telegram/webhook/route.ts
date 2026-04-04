@@ -35,9 +35,8 @@ export async function POST(req: NextRequest) {
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
 
-      // Creazione job in DB. Assumiamo che prisma sia instanziato nel webhook o fatto nel background.
-      // Esemplificativo! Chiamiamo l'endpoint generativo interno e NON lo "awaitiamo", così Telegram riceve "{ok:true}" subito.
-      const appUrl = process.env.APP_BASE_URL || "http://localhost:3000";
+      // Chiamiamo l'endpoint generativo interno usando l'host dinamico
+      const appUrl = req.nextUrl.origin;
       
       const backgroundJobData = {
           fileUrl,
