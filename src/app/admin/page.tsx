@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Link from 'next/link';
 import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
@@ -35,7 +36,9 @@ export default async function AdminDashboard() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1 className={styles.title}>SUPERNEXUS</h1>
-                <button className={styles.primaryBtn}>+ Registra Cliente</button>
+                <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center'}}>
+                    + Registra Cliente
+                </Link>
             </header>
 
             <section className={styles.kpiGrid}>
