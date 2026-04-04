@@ -198,3 +198,17 @@ body {
 .status-working { background: rgba(187, 134, 252, 0.1); color: var(--color-status-working); border: 1px solid var(--color-status-working); }
 .status-completato { background: rgba(3, 218, 198, 0.1); color: var(--color-status-done); border: 1px solid var(--color-status-done); }
 .status-errore { background: rgba(255, 84, 112, 0.1); color: var(--color-status-error); border: 1px solid var(--color-status-error); }
+
+@media print {
+  .admin-sidebar { display: none !important; }
+  .print-hide { display: none !important; }
+  .print-only { display: block !important; }
+  .admin-main { background: #fff !important; color: #000 !important; padding: 0 !important; }
+  .admin-container { background: #fff !important; }
+  .print-card { background: #fff !important; border: none !important; margin-bottom: 40px !important; }
+  .data-table { border: 1px solid #ccc !important; background: #fff !important; box-shadow: none !important; }
+  .data-table th { background: #eee !important; color: #000 !important; border-bottom: 2px solid #000; }
+  .data-table td { border-bottom: 1px solid #ddd !important; color: #000 !important; }
+  h1, h2, h3, p, span, td, th { color: #000 !important; text-shadow: none !important; }
+  .print-totals { background: transparent !important; border: 1px solid #000 !important; }
+}
