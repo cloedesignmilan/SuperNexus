@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Camera, Zap, Smartphone, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -23,105 +23,142 @@ export default function LandingPage() {
             Dal manichino allo shooting editoriale. <br />
             <span>In 30 secondi.</span>
           </h1>
-          <p className="hero-subtitle">
-            Il primo assistente IA su Telegram progettato per Boutique e Negozianti. 
-            Invia la foto di un capo piatto o su gruccia, e ricevi istantaneamente spettacolari scatti 
-            editoriali fotorealistici pronti per distruggere i record di conversione sui tuoi Social.
+          <p className="hero-subtitle" style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: '#e0e0e0' }}>
+            Spesso non hai le foto ufficiali dei fornitori, oppure non puoi usarle liberamente. <br />
+            Trasforma qualsiasi foto scattata in negozio in immagini professionali, fotorealistiche e pronte a vendere. 
+          </p>
+          <p style={{ fontSize: '1.05rem', color: '#a0a0a0', marginBottom: '3rem', fontWeight: '500' }}>
+            Il primo assistente IA su Telegram pensato per Negozianti e Commercianti. <br />
+            <span style={{ color: '#03dac6', marginTop: '10px', display: 'inline-block' }}>👉 Scatta. Invia. Pubblica. Vendi.</span>
           </p>
           <a href="#pricing" className="btn-primary">
-            Sblocca la Magia
+            Inizia a convertire da oggi
           </a>
         </div>
       </section>
 
+      {/* SUB-HOOK */}
+      <section style={{ textAlign: 'center', padding: '0 5% 4rem' }}>
+        <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1rem' }}>Basta foto sul letto. <span style={{ color: '#ff5470' }}>Basta manichini.</span></h2>
+        <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
+      </section>
+
       {/* BEFORE / AFTER VISUALS */}
       <section className="comparison-section">
-        <h2 className="section-title" style={{ fontSize: '2.2rem', marginBottom: '2rem' }}>La fine delle foto sul letto.</h2>
         <div className="comparison-grid">
           {/* PRIMA */}
           <div className="comparison-card">
-            <span className="comparison-label">PRIMA: Il tuo scatto</span>
+            <span className="comparison-label">📸 PRIMA: Foto veloce in negozio (gruccia, manichino o piatto)</span>
             <img 
               src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=1200" 
-              alt="Maglietta piatta" 
+              alt="Prima" 
             />
           </div>
           {/* DOPO */}
           <div className="comparison-card">
-            <span className="comparison-label label-after">DOPO: Intelligenza Artificiale</span>
+            <span className="comparison-label label-after">🤖 DOPO: Immagini editoriali con modelli reali, pronte per social ed ecommerce</span>
             <img 
               src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=1200" 
-              alt="Modella che indossa abito" 
+              alt="Dopo" 
             />
           </div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section className="pricing-section" style={{ paddingBottom: '2rem' }}>
-        <h2 className="section-title">Zero attrito. Massimo Risultato.</h2>
+      {/* VALUE PROPOSITION */}
+      <section className="pricing-section" style={{ paddingBottom: '2rem', textAlign: 'center' }}>
+        <h2 className="section-title" style={{ marginBottom: '1rem' }}>Zero attrito. Massimo risultato.</h2>
+        <p style={{ fontSize: '1.3rem', color: '#a0a0a0', marginBottom: '4rem' }}>Tutto quello che ti serve... è Telegram.</p>
+        
         <div className="card-grid" style={{ gap: '2rem' }}>
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)' }}>
+          
+          {/* BLOCCO TELEGRAM */}
+          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
             <Smartphone size={32} color="#03dac6" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '0.8rem' }}>Usa solo Telegram</h3>
-            <p style={{ fontSize: '1rem', color: '#a0a0a0', fontWeight: '400' }}>Nessun software difficile o noiosi login. Fai una foto in negozio e inviala al nostro comodissimo Bot Telegram.</p>
+            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Usa solo Telegram</h3>
+            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
+              <li>Nessun software.</li>
+              <li>Nessun login complicato.</li>
+              <li>Nessuna perdita di tempo.</li>
+            </ul>
+            <p style={{ color: '#03dac6', fontWeight: '600' }}>👉 Scatti → invii → ricevi immagini perfette</p>
           </div>
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)' }}>
+
+          {/* TECNOLOGIA RISCRITTA */}
+          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
             <Sparkles size={32} color="#bb86fc" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '0.8rem' }}>Clone Matematico 1:1</h3>
-            <p style={{ fontSize: '1rem', color: '#a0a0a0', fontWeight: '400' }}>Rispettiamo l'integrità del tuo capo a livello di texture e taglio preservandone ogni minima cucitura originale.</p>
+            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Fedeltà assoluta 1:1</h3>
+            <p style={{ color: '#a0a0a0', marginBottom: '0.8rem' }}>Il tuo capo viene ricreato con precisione estrema:</p>
+            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
+              <li>✓ tessuti realistici</li>
+              <li>✓ colori identici</li>
+              <li>✓ taglio perfetto</li>
+              <li>✓ dettagli intatti</li>
+            </ul>
+            <p style={{ color: '#bb86fc', fontWeight: '600' }}>👉 Nessuna modifica. Solo valorizzazione.</p>
           </div>
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <Zap size={32} color="#03dac6" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '0.8rem' }}>Abbattimento dei Costi</h3>
-            <p style={{ fontSize: '1rem', color: '#a0a0a0', fontWeight: '400' }}>Sostituisci migliaia di euro in fotografi, modelle e location fisiche. Genera set mozzafiato con un click.</p>
+
+          {/* RISPARMIO DIRETTO */}
+          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
+            <Zap size={32} color="#ff5470" style={{ marginBottom: '1.5rem' }} />
+            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Stop ai costi inutili</h3>
+            <p style={{ color: '#a0a0a0', marginBottom: '0.8rem' }}>Dimentica:</p>
+            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
+              <li>❌ fotografi</li>
+              <li>❌ modelle</li>
+              <li>❌ location</li>
+              <li>❌ shooting costosi</li>
+            </ul>
+            <p style={{ color: '#ff5470', fontWeight: '600' }}>👉 Ottieni risultati migliori... in pochi secondi</p>
           </div>
+
+          {/* BENEFICIO FORTE */}
+          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
+            <TrendingUp size={32} color="#03dac6" style={{ marginBottom: '1.5rem' }} />
+            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Più immagini = più vendite</h3>
+            <p style={{ color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>Più contenuti pubblichi, più vendi.</p>
+            <ul style={{ listStyle: 'none', color: '#03dac6', marginBottom: '0', lineHeight: '1.8', fontWeight: '500' }}>
+              <li>👉 Senza aumentare il lavoro</li>
+              <li>👉 Senza aumentare i costi</li>
+            </ul>
+          </div>
+
         </div>
       </section>
 
       {/* PRICING */}
       <section id="pricing" className="pricing-section">
-        <h2 className="section-title">Inizia a Convertire Oggi</h2>
-        <div className="pricing-grid">
+        <h2 className="section-title" style={{ marginBottom: '1rem' }}>Inizia a convertire da oggi</h2>
+        <div className="pricing-grid" style={{ justifyContent: 'center', maxWidth: '800px', margin: '3rem auto 0' }}>
           
           {/* Starter */}
           <div className="pricing-card">
-            <h3 className="pricing-name">Starter</h3>
+            <h3 className="pricing-name">STARTER</h3>
+            <p style={{ color: '#a0a0a0', marginBottom: '1rem', fontStyle: 'italic' }}>Perfetto per iniziare</p>
             <div className="pricing-price">€29<span>/mese</span></div>
             <ul className="pricing-features">
-              <li><CheckCircle2 size={18} /> 50 Generazioni Mensili</li>
-              <li><CheckCircle2 size={18} /> Bot Telegram Base</li>
-              <li><CheckCircle2 size={18} /> Qualità Standard</li>
-              <li style={{ color: '#555' }}><CheckCircle2 size={18} color="#555" /> <s>Modelle Personalizzate</s></li>
+              <li><CheckCircle2 size={18} color="#03dac6" /> 50 generazioni / mese</li>
+              <li><CheckCircle2 size={18} color="#03dac6" /> Accesso Bot Telegram</li>
+              <li><CheckCircle2 size={18} color="#03dac6" /> Qualità standard</li>
+              <li><CheckCircle2 size={18} color="#03dac6" /> Setup immediato</li>
             </ul>
-            <a href="#" className="btn-secondary">Scegli Starter</a>
+            <a href="#" className="btn-secondary">Inizia ora</a>
           </div>
 
           {/* Boutique */}
-          <div className="pricing-card popular">
-            <span className="pricing-popular-badge">Il più Votato</span>
-            <h3 className="pricing-name">Boutique</h3>
+          <div className="pricing-card popular" style={{ transform: 'scale(1.08)' }}>
+            <span className="pricing-popular-badge">Più scelto</span>
+            <h3 className="pricing-name">BOUTIQUE</h3>
+            <p style={{ color: '#cba4fd', marginBottom: '1rem', fontStyle: 'italic' }}>Per chi vuole vendere davvero</p>
             <div className="pricing-price">€79<span>/mese</span></div>
             <ul className="pricing-features">
-              <li><CheckCircle2 size={18} /> 300 Generazioni Mensili</li>
-              <li><CheckCircle2 size={18} /> Accesso Telegram Prioritario</li>
-              <li><CheckCircle2 size={18} /> Fedeltà 1:1 UltraHD (Nano Pro)</li>
-              <li><CheckCircle2 size={18} /> Tutte le categorie Fashion esterne</li>
+              <li><CheckCircle2 size={18} color="#bb86fc" /> 300 generazioni / mese</li>
+              <li><CheckCircle2 size={18} color="#bb86fc" /> Accesso prioritario Telegram</li>
+              <li><CheckCircle2 size={18} color="#bb86fc" /> Fedeltà 1:1 UltraHD (Nano Pro)</li>
+              <li><CheckCircle2 size={18} color="#bb86fc" /> Tutte le categorie fashion</li>
+              <li><CheckCircle2 size={18} color="#bb86fc" /> Risultati premium</li>
             </ul>
             <a href="#" className="btn-secondary">Attiva Boutique</a>
-          </div>
-
-          {/* Enterprise */}
-          <div className="pricing-card">
-            <h3 className="pricing-name">Enterprise</h3>
-            <div className="pricing-price">€199<span>/mese</span></div>
-            <ul className="pricing-features">
-              <li><CheckCircle2 size={18} /> Generazioni Illimitate</li>
-              <li><CheckCircle2 size={18} /> Modelli Fisici Esclusivi</li>
-              <li><CheckCircle2 size={18} /> Rimozione Automatica Filigrane</li>
-              <li><CheckCircle2 size={18} /> Setup e Assistenza Dedicata</li>
-            </ul>
-            <a href="#" className="btn-secondary">Contattaci</a>
           </div>
 
         </div>
