@@ -115,9 +115,9 @@ export default async function AdminDashboard() {
                                         <Link href={`/admin/cliente/${store.id}`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
                                             <Settings size={14} /> Gestisci
                                         </Link>
-                                        <button style={{display: 'flex', alignItems: 'center', gap: '5px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
+                                        <Link href={`/admin/cliente/${store.id}/report`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
                                             <FileText size={14} /> Fatture
-                                        </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
