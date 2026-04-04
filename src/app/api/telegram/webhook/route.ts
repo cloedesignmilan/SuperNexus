@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Telegraf } from "telegraf";
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   // Inizializza il bot con il token (spostato qui per Vercel build)
@@ -44,7 +45,7 @@ export async function POST(req: NextRequest) {
           jobId: "temp_" + Date.now() // Nel MVP farà affidamento al modulo generate per il DB, ma meglio crearlo qui
       };
 
-      fetch(`${appUrl}/api/generate`, {
+      await fetch(`${appUrl}/api/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(backgroundJobData),
