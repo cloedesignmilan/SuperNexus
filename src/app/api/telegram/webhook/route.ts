@@ -56,9 +56,9 @@ export async function POST(req: NextRequest) {
 
       if (!user) {
          // L'utente non si è mai fatto riconoscere. Ha inserito la password corretta in questo messaggio?
-         const secretWord = process.env.BOT_PASSWORD || "Emilio2025"; // Fallback di sicurezza se la env non e settata
+         const secretWord = currentStore.password;
          
-         if (update.message?.text === secretWord) {
+         if (secretWord && update.message?.text === secretWord) {
              // Inserisce nel DB e sblocca per sempre, associandolo al negozio corrispondente a questo BOT!
              await prisma.user.create({
                  data: { telegram_id: userStr, role: "user", store_id: currentStore.id }
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
              // Sbagliato o nessuna password inserita
              await bot.telegram.sendMessage(
                 chatId,
-                "⛔️ <b>Accesso Riservato</b>\nNon sei autorizzato a generare immagini.\n\nPer abilitare questo dispositivo in modo permanente, <b>invia la password segreta di Emilio</b> rispondendo a questo messaggio.",
+                `⛔️ <b>Sicurezza SuperNexus</b>\nNon sei ancora stato autorizzato a generare immagini per la boutique <b>${currentStore.name}</b>.\n\nPer abilitare questo dispositivo in modo permanente, <b>invia la Password del Portale</b> di questo negozio rispondendo a questo messaggio.`,
                 { parse_mode: "HTML" }
              );
              return NextResponse.json({ ok: true });
