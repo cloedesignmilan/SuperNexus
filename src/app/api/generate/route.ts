@@ -112,7 +112,9 @@ export async function POST(req: NextRequest) {
         .map(r => r.value);
 
     if (generatedUrls.length === 0) {
-        throw new Error("Nessuna immagine generata con successo da Google AI Studio");
+        // Estrai il motivo del primo errore da allSettled
+        const firstError = results.find((r): r is PromiseRejectedResult => r.status === 'rejected')?.reason;
+        throw new Error(`Google AI fallito: ${firstError?.message || 'Sconosciuto'}`);
     }
 
     // FASE 4: Segna completato
