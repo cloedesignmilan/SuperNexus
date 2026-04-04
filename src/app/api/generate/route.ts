@@ -82,39 +82,34 @@ export async function POST(req: NextRequest) {
         }
     });
 
-    // FASE 3: Generazione di 10 immagini tramite Imagen 3 
-    // Data limitazione sulle chiamate concorrenti, iteriamo in blocchi.
-    const generatedUrls: string[] = [];
+    // FASE 3: Generazione tramite Imagen 3 
+    // Esecuzione PARALLELA per aggirare il limite dei 10 secondi di Vercel Hobby
+    const targetScenes = scenes.slice(0, 2); // MVP limitato a 2 per ora per non far crashare Vercel Free o Gemini Rate Limit
     
-    // Per un MVP senza esaurire i tassi di limite, itereremo o useremo Promise.allSettled. In Vercel max duration 60s, ma locale è no-limit
-    for (const scene of scenes.slice(0, 10)) {
-        try {
+    const results = await Promise.allSettled(
+        targetScenes.map(async (scene: string) => {
             const finalPrompt = `Hyper-realistic fashion photography, 8k resolution. A real person wearing EXACTLY this garment: ${garmentDetails.description}. The person is in the following setting: ${scene}. Scene mood: ${template?.base_prompt || 'elegant'}. STRICT RULE: ${template?.rules || 'Do not alter the dress.'}. No text, no logos, no watermarks. Natural professional salon lighting.`;
             
             const generated = await ai.models.generateImages({
                 model: 'imagen-3.0-generate-001',
                 prompt: finalPrompt,
-                config: {
-                    numberOfImages: 1,
-                    outputMimeType: "image/jpeg"
-                }
+                config: { numberOfImages: 1, outputMimeType: "image/jpeg" }
             });
 
             const base64Image = generated.generatedImages?.[0]?.image?.imageBytes;
             if (base64Image) {
-                // In uno scenario reale, ora faresti upload su Supabase Storage e otterresti la URL pubblica.
-                // In locale, lo passiamo direttamente in base64 via buffer
-                
                 await prisma.jobImage.create({
                     data: { job_id: jobId, image_url: "uploaded_storage_link", scene_type: scene }
                 });
-                
-                generatedUrls.push(base64Image); // Tieni i Bytes reali per Telegram
+                return base64Image;
             }
-         } catch(err) {
-            console.error("Errore Imagen 3:", err);
-         }
-    }
+            throw new Error("No image generated");
+        })
+    );
+
+    const generatedUrls = results
+        .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
+        .map(r => r.value);
 
     if (generatedUrls.length === 0) {
         throw new Error("Nessuna immagine generata con successo da Google AI Studio");
@@ -141,9 +136,23 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, count: generatedUrls.length });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Worker Background Errore:", error);
-    const msg = error instanceof Error ? error.message : "Internal Error";
+    
+    // Intercetta e registra il fallimento, salvando sul database!
+    try {
+        const { jobId } = await req.clone().json().catch(() => ({ jobId: null }));
+        if (jobId) {
+             await prisma.generationJob.update({
+                  where: { id: jobId },
+                  data: { status: "errore" }
+             });
+        }
+    } catch (e) {
+        // Ignora altri errori finali
+    }
+    
+    const msg = error?.message || "Internal Error";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
