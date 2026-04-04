@@ -11,11 +11,26 @@ export async function POST(req: NextRequest) {
   try {
     const update = await req.json();
 
+    // Controllo ID Chat (Whitelist di Sicurezza)
+    const chatId = update.message?.chat?.id;
+    
+    if (chatId) {
+      const authorizedUsers = process.env.AUTHORIZED_TELEGRAM_USERS;
+      if (authorizedUsers && !authorizedUsers.includes(chatId.toString())) {
+        await bot.telegram.sendMessage(
+          chatId,
+          `⛔️ <b>Accesso Negato</b>\nNon sei autorizzato a generare immagini per i Magazzini Emilio.\n\n<i>(Se sei l'Amministratore, aggiungi il numero <code>${chatId}</code> alle chiavi Vercel sotto il nome <b>AUTHORIZED_TELEGRAM_USERS</b>)</i>.`,
+          { parse_mode: "HTML" }
+        );
+        return NextResponse.json({ ok: true });
+      }
+    }
+
     // Gestione semplice del comando /start
     if (update.message?.text === "/start") {
       await bot.telegram.sendMessage(
         update.message.chat.id,
-        "👋 Ciao! Sono l'assistente AI di MAGAZZINI EMILIO.\n\nInvia la foto di un abito e io genererò 10 immagini ambientate professionali (Davanti allo specchio, matrimonio, serata...).",
+        "👋 Ciao! Sono l'assistente AI di MAGAZZINI EMILIO.\n\nInvia la foto di un abito e io genererò immagini ambientate e professionali per il catalogo.",
         { parse_mode: "HTML" }
       );
       return NextResponse.json({ ok: true });
@@ -23,8 +38,7 @@ export async function POST(req: NextRequest) {
 
     // Gestione del caricamento immagine
     if (update.message?.photo) {
-      const chatId = update.message.chat.id;
-      
+      // Manda risposta immediata per evitare timeout di Telegram
       // Manda risposta immediata per evitare timeout di Telegram
       await bot.telegram.sendMessage(
         chatId,
