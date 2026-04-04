@@ -42,6 +42,8 @@ model GenerationJob {
   results_count       Int         @default(10)
   store_id            String?
   store               Store?      @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  telegram_chat_id    String?
+  metadata            Json?
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   images              JobImage[]
