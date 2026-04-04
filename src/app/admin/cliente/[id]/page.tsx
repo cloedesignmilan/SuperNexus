@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from 'next/link';
 import { updateStoreAction, deleteStoreAction } from './actions';
 import styles from '../../page.module.css';
-import { Store as StoreIcon, Bot, Euro, Power, Trash2, ArrowLeft } from 'lucide-react';
+import { Store as StoreIcon, Bot, Euro, Power, Trash2, ArrowLeft, Paintbrush } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 export default async function ClientePage({ params }: { params: Promise<{ id: string }> }) {
@@ -11,6 +11,8 @@ export default async function ClientePage({ params }: { params: Promise<{ id: st
     const storeObj = await prisma.store.findUnique({
         where: { id: resolvedParams.id }
     });
+    
+    const templates = await prisma.promptTemplate.findMany();
 
     if (!storeObj) return notFound();
 
@@ -67,6 +69,19 @@ export default async function ClientePage({ params }: { params: Promise<{ id: st
                             <option value="false">🔴 Sospeso (Blocca Accesso)</option>
                         </select>
                     </div>
+                </div>
+
+                <div style={{marginBottom: '35px'}}>
+                    <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#03dac6', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
+                        <Paintbrush size={16} /> Stile Fotografico AI (Default)
+                    </label>
+                    <select name="default_template_id" defaultValue={storeObj.default_template_id || ""}
+                            style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}}>
+                        <option value="">-- Seleziona uno stile fotografico (Default Globale) --</option>
+                        {templates.map(t => (
+                            <option key={t.id} value={t.id}>{t.name} ({t.category})</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div style={{display: 'flex', gap: '15px'}}>

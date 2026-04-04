@@ -59,11 +59,20 @@ export async function POST(req: NextRequest) {
        });
     }
 
-    // FASE 2: Carica un Template a caso dal DB se non passato 
-    // (Nel bot reale l'utente potrebbe sceglierlo, qui simuliamo default "Abiti donna eleganti")
-    const template = await prisma.promptTemplate.findFirst({
-        where: { name: { contains: "Abiti donna" } }
+    // FASE 2: Carica il Template personalizzato per questo Store!
+    const storeObj = await prisma.store.findUnique({
+        where: { id: storeId },
+        include: { default_template: true }
     });
+
+    let template = storeObj?.default_template;
+
+    if (!template) {
+        // Fallback se il negozio non ha ancora uno stile default configurato
+        template = await prisma.promptTemplate.findFirst({
+            where: { name: { contains: "Abiti donna" } }
+        });
+    }
 
     const scenes = template ? JSON.parse(template.scenes) : [
         "Davanti allo specchio (prova abito)", "Commessa che sistema l’abito", "Evento elegante serale",

@@ -19,6 +19,8 @@ model Store {
   users               User[]
   jobs                GenerationJob[]
   templates           PromptTemplate[]
+  default_template_id String?
+  default_template    PromptTemplate? @relation("StoreDefaultTemplate", fields: [default_template_id], references: [id])
 }
 
 model User {
@@ -64,6 +66,7 @@ model PromptTemplate {
   scenes      String   @db.Text // JSON string list of scenes
   store_id    String?
   store       Store?   @relation(fields: [store_id], references: [id], onDelete: Cascade)
+  defaultForStores Store[] @relation("StoreDefaultTemplate")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
