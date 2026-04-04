@@ -196,12 +196,25 @@ ABSOLUTE RULE 4: No unrealistic anatomy. No exaggerated fashion poses. No fake o
   } catch (error: any) {
     console.error("Worker Background Errore:", error);
     try {
-        const { jobId } = await req.clone().json().catch(() => ({ jobId: null }));
+        const { jobId, chatId, storeId } = await req.clone().json().catch(() => ({ jobId: null, chatId: null, storeId: null }));
         if (jobId) {
-             await prisma.generationJob.update({
+             await (prisma as any).generationJob.update({
                   where: { id: jobId },
                   data: { status: "errore" }
              });
+        }
+        
+        if (chatId) {
+             let botToken = process.env.TELEGRAM_BOT_TOKEN;
+             if (storeId) {
+                 const st = await (prisma as any).store.findUnique({ where: { id: storeId } });
+                 if (st?.telegram_bot_token) botToken = st.telegram_bot_token;
+             }
+             if (botToken) {
+                 const { Telegraf } = require('telegraf');
+                 const errorBot = new Telegraf(botToken);
+                 await errorBot.telegram.sendMessage(chatId, `❌ **Errore generazione IA:**\n\n\`${error?.message || "Errore sconosciuto"}\`\n\nTornerò operativo a breve!`, { parse_mode: 'Markdown' }).catch(()=>{});
+             }
         }
     } catch (e) {}
     
