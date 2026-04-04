@@ -89,7 +89,8 @@ export async function POST(req: NextRequest) {
 
                 bot.telegram.sendMessage(chatId, `✨ **Inizio Servizio Fotografico (${generationCount} foto)!**\nL'IA sta dipingendo il tuo abito nelle scene selezionate...`);
 
-                fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/generate`, {
+                const baseUrl = req.nextUrl.origin;
+                fetch(`${baseUrl}/api/generate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
