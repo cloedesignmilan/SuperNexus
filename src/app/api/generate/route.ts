@@ -88,22 +88,50 @@ export async function POST(req: NextRequest) {
     
     const results = await Promise.allSettled(
         targetScenes.map(async (scene: string) => {
-            const finalPrompt = `Hyper-realistic fashion photography, 8k resolution. A real person wearing EXACTLY this garment: ${garmentDetails.description}. The person is in the following setting: ${scene}. Scene mood: ${template?.base_prompt || 'elegant'}. STRICT RULE: ${template?.rules || 'Do not alter the dress.'}. No text, no logos, no watermarks. Natural professional salon lighting.`;
+            const finalPrompt = `Generate a hyper-realistic photograph of a 25-45 year old European female model with natural beauty and soft makeup, wearing EXACTLY the outfit shown in the reference image. 
+The outfit is a: ${garmentDetails.description}. 
+The outfit must be reproduced identically. 
+Remove any tags, labels, hangers. 
+Scene: ${scene}. 
+Mood: ${template?.base_prompt || 'elegant'}. STRICT RULE: ${template?.rules || 'Do not alter the dress.'}. 
+Professional photography, natural lighting, 50mm/85mm lens, authentic, elegant. No logos, no text, no runway style.`;
             
-            const generated = await ai.models.generateImages({
-                model: 'imagen-3.0-generate-001',
-                prompt: finalPrompt,
-                config: { numberOfImages: 1, outputMimeType: "image/jpeg" }
+            const generated = await ai.models.generateContent({
+                model: 'gemini-3.1-flash-image-preview',
+                contents: [
+                    {
+                        inlineData: {
+                           data: imageBuffer.toString("base64"),
+                           mimeType: "image/jpeg"
+                        }
+                    },
+                    finalPrompt
+                ],
+                config: {
+                    // @ts-ignore - Estensioni non tracciate ufficialmente nei type strict
+                    imageConfig: {
+                        aspectRatio: "3:4",
+                        imageSize: "1K"
+                    }
+                }
             });
 
-            const base64Image = generated.generatedImages?.[0]?.image?.imageBytes;
+            let base64Image = null;
+            if (generated.candidates?.[0]?.content?.parts) {
+                 for (const part of generated.candidates[0].content.parts) {
+                     if (part.inlineData) {
+                         base64Image = part.inlineData.data;
+                     }
+                 }
+            }
+
             if (base64Image) {
                 await prisma.jobImage.create({
                     data: { job_id: jobId, image_url: "uploaded_storage_link", scene_type: scene }
                 });
                 return base64Image;
             }
-            throw new Error("No image generated");
+            throw new Error("No image inlineData in candidates");
         })
     );
 
