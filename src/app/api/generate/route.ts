@@ -104,10 +104,10 @@ ${isMale
 GARMENT DESCRIPTION: ${garmentDetails.description}. 
 ${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}.
 
-ABSOLUTE RULE 1 [CRITICAL]: THE CLOTHING ITEM PROVIDED IN THE IMAGE IS IMMUTABLE. You MUST reproduce the EXACT SAME shape, the EXACT SAME fabric material, the EXACT SAME color palette, and the EXACT SAME details (buttons, collars, seams) without adding or removing anything. It must be an identical clone.
+ABSOLUTE RULE 1 [CRITICAL]: THE CLOTHING ITEM PROVIDED IN THE IMAGE IS THE ONLY GROUND TRUTH. You MUST analyze mathematically the exact structure, texture, length, fabric material, color, and shape of the reference clothing. You MUST reproduce an identical 1:1 clone (Virtual Try-On) without adding or altering any seams, cuts, or patterns. 
 ABSOLUTE RULE 2 [CRITICAL]: DO NOT generate any text, words, store logos, price tags, store tags, watermarks, or plastic strings. Any visible tags on the original garment must be magically erased without altering the fabric behind it.
 ABSOLUTE RULE 3: No unrealistic anatomy. No exaggerated fashion poses. No mannequin parts. 
-ABSOLUTE RULE 4: Integrate the true original outfit naturally on a real human being.`;
+ABSOLUTE RULE 4: Integrate the exactly cloned reference outfit naturally on a real human being.`;
             
             const generated = await ai.models.generateContent({
                 model: 'gemini-3-pro-image-preview',
