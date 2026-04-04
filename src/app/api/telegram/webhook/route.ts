@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
 
     const bot = new Telegraf(botToken);
     const update = await req.json();
+    console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
 
     // 1) GESTIONE PULSANTI CLICKATI (CALLBACK QUERY)
     if (update.callback_query) {
@@ -273,11 +274,13 @@ export async function POST(req: NextRequest) {
           Markup.inlineKeyboard(fallbackButtons, { columns: 1 })
       );
 
-    } else if (update.message?.text === "/start") {
+    } else if (update.message?.text?.startsWith("/start")) {
+        console.log("==> Rilevato comando START per la chat: ", chatId);
         await bot.telegram.sendMessage(
           chatId,
           "👋 Ciao! Sono l'assistente AI avanzato. Invia la foto di un abito e ti guiderò prima della generazione!"
         );
+        console.log("==> Messaggio mandato con successo");
     }
 
     return NextResponse.json({ ok: true });
