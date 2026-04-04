@@ -7,10 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Store {
+  id                  String   @id @default(uuid())
+  name                String
+  slug                String   @unique
+  telegram_bot_token  String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  users               User[]
+  jobs                GenerationJob[]
+  templates           PromptTemplate[]
+}
+
 model User {
   id              String   @id @default(uuid())
   telegram_id     String?  @unique
-  role            String   @default("user") // admin, user
+  role            String   @default("user") // admin, user, store_manager
+  store_id        String?
+  store           Store?   @relation(fields: [store_id], references: [id], onDelete: SetNull)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -21,6 +35,8 @@ model GenerationJob {
   status              String      @default("in lavorazione") // in lavorazione, completato, errore
   target_template_id  String?
   results_count       Int         @default(10)
+  store_id            String?
+  store               Store?      @relation(fields: [store_id], references: [id], onDelete: Cascade)
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   images              JobImage[]
@@ -44,6 +60,8 @@ model PromptTemplate {
   rules       String   @db.Text
   num_images  Int      @default(10)
   scenes      String   @db.Text // JSON string list of scenes
+  store_id    String?
+  store       Store?   @relation(fields: [store_id], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

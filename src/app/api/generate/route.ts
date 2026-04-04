@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
   try {
-    const { jobId, fileUrl, chatId } = await req.json();
+    const { jobId, fileUrl, chatId, storeId } = await req.json();
 
     if (!jobId || !fileUrl) {
       return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
@@ -78,7 +78,8 @@ export async function POST(req: NextRequest) {
             original_image_url: fileUrl,
             status: "in lavorazione", 
             target_template_id: template?.id,
-            results_count: 10
+            results_count: 10,
+            store_id: storeId
         }
     });
 

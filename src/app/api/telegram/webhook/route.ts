@@ -6,10 +6,26 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
-  // Inizializza il bot con il token (spostato qui per Vercel build)
-  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
-
   try {
+    const storeSlug = req.nextUrl.searchParams.get('storeSlug');
+    let botToken = process.env.TELEGRAM_BOT_TOKEN as string;
+    let currentStore = null;
+
+    if (storeSlug) {
+      currentStore = await prisma.store.findUnique({ where: { slug: storeSlug } });
+      if (currentStore && currentStore.telegram_bot_token) {
+        botToken = currentStore.telegram_bot_token;
+      }
+    } else {
+       // Retrocompatibilità
+       currentStore = await prisma.store.findUnique({ where: { slug: 'magazzini-emilio' } });
+    }
+
+    if (!currentStore) {
+      return NextResponse.json({ error: "Negozio non riconosciuto" }, { status: 404 });
+    }
+
+    const bot = new Telegraf(botToken);
     const update = await req.json();
 
     // Controllo ID Chat (Whitelist Dinamica via Database)
@@ -28,14 +44,14 @@ export async function POST(req: NextRequest) {
          const secretWord = process.env.BOT_PASSWORD || "Emilio2025"; // Fallback di sicurezza se la env non e settata
          
          if (update.message?.text === secretWord) {
-             // Inserisce nel DB e sblocca per sempre!
+             // Inserisce nel DB e sblocca per sempre, associandolo al negozio corrispondente a questo BOT!
              await prisma.user.create({
-                 data: { telegram_id: userStr, role: "user" }
+                 data: { telegram_id: userStr, role: "user", store_id: currentStore.id }
              });
              
              await bot.telegram.sendMessage(
                 chatId,
-                "✅ <b>Accesso Sbloccato con Successo!</b>\n\nBenvenuto nel sistema. Da questo momento in poi sei stato registrato e non dovrai più inserire alcuna password.\nInvia la prima foto del capo che desideri scattare!",
+                `✅ <b>Accesso Sbloccato con Successo!</b>\n\nBenvenuto nell'assistente AI dedicato a <b>${currentStore.name}</b>.\nInvia la prima foto del capo che desideri scattare!`,
                 { parse_mode: "HTML" }
              );
              return NextResponse.json({ ok: true });
@@ -44,6 +60,16 @@ export async function POST(req: NextRequest) {
              await bot.telegram.sendMessage(
                 chatId,
                 "⛔️ <b>Accesso Riservato</b>\nNon sei autorizzato a generare immagini.\n\nPer abilitare questo dispositivo in modo permanente, <b>invia la password segreta di Emilio</b> rispondendo a questo messaggio.",
+                { parse_mode: "HTML" }
+             );
+             return NextResponse.json({ ok: true });
+         }
+      } else {
+         // Controllo Extra SaaS: Verifica che l'utente stia messaggiando col BOT del SUO negozio e non di un altro in licenza
+         if (user.store_id !== currentStore.id) {
+             await bot.telegram.sendMessage(
+                chatId,
+                `⚠️ <b>Errore di Licenza</b>\nIl tuo utente appartiene a un altro Negozio. Non puoi usare il Bot privato di ${currentStore.name}.`,
                 { parse_mode: "HTML" }
              );
              return NextResponse.json({ ok: true });
@@ -81,7 +107,8 @@ export async function POST(req: NextRequest) {
       const backgroundJobData = {
           fileUrl,
           chatId,
-          jobId: "temp_" + Date.now() // Nel MVP farà affidamento al modulo generate per il DB, ma meglio crearlo qui
+          storeId: currentStore.id, // SAAS: Passiamo al job il proprietario del file!
+          jobId: "temp_" + Date.now() 
       };
 
       await fetch(`${appUrl}/api/generate`, {
