@@ -50,7 +50,7 @@ export default function LandingPage() {
           <div className="comparison-card">
             <span className="comparison-label">📸 PRIMA: Un banale capo su manichino in magazzino</span>
             <img 
-              src="/prima_manichino.png" 
+              src="/prima_nuovo.png" 
               alt="Prima" 
             />
           </div>
@@ -58,7 +58,7 @@ export default function LandingPage() {
           <div className="comparison-card">
             <span className="comparison-label label-after">🤖 DOPO: Scatto editoriale Premium generato istantaneamente</span>
             <img 
-              src="/dopo_modella.png" 
+              src="/dopo_nuovo.png" 
               alt="Dopo" 
             />
           </div>
@@ -84,7 +84,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="z-visual">
-            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800" alt="Telegram App" />
+            <img src="/telegram_mockup.png" alt="Telegram App UI SuperNexus" />
           </div>
         </div>
 
@@ -102,7 +102,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="z-visual">
-            <img src="/dopo_modella.png" alt="Fedeltà" />
+            <img src="/dopo_nuovo.png" alt="Fedeltà" />
           </div>
         </div>
 
