@@ -110,7 +110,7 @@ ABSOLUTE RULE 3: Do not add any text, watermarks, or logos to the image.
 ABSOLUTE RULE 4: No unrealistic anatomy. No exaggerated fashion poses. No fake or overly perfect model look.`;
             
             const generated = await ai.models.generateContent({
-                model: 'gemini-3.1-flash-image-preview',
+                model: 'gemini-3-pro-image-preview',
                 contents: [
                     {
                         inlineData: {
