@@ -43,66 +43,96 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS (4 ESEMPI) */}
+      {/* BEFORE / AFTER VISUALS (REAL UPLOADS) */}
       <section className="comparison-section">
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
           
-          {/* ESEMPIO 1: Abito da Sera */}
+          {/* ESEMPIO 1 */}
           <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito da Sera / Cerimonia</h3>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 1</h3>
             <div className="comparison-grid">
               <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Magazzino o retrobottega</span>
-                <img src="/prima_1.png" alt="Prima - Abito blu" />
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/1-a.jpeg" alt="Prima" />
               </div>
               <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Shooting al Gala Event</span>
-                <img src="/dopo_1.png" alt="Dopo - Abito blu" />
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/1-b.jpeg" alt="Dopo" />
               </div>
             </div>
           </div>
 
-          {/* ESEMPIO 2: Abito da Sposa */}
+          {/* ESEMPIO 2 */}
           <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito da Sposa</h3>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 2</h3>
             <div className="comparison-grid">
               <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Manichino in plastica, luce artificiale</span>
-                <img src="/prima_2.png" alt="Prima - Sposa" />
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/2-a.jpeg" alt="Prima" />
               </div>
               <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Reportage di nozze nella Cattedrale</span>
-                <img src="/dopo_2.png" alt="Dopo - Sposa" />
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/2-b.jpeg" alt="Dopo" />
               </div>
             </div>
           </div>
 
-          {/* ESEMPIO 3: Compleanno 18 Anni */}
+          {/* ESEMPIO 3 */}
           <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito Festa 18 Anni / Disco</h3>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 3</h3>
             <div className="comparison-grid">
               <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Abito abbandonato a terra</span>
-                <img src="/prima_3.png" alt="Prima - Festa" />
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/3-a.jpeg" alt="Prima" />
               </div>
               <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Editoriale Vogue Party in Discoteca</span>
-                <img src="/dopo_3.png" alt="Dopo - Festa" />
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/3-b.jpeg" alt="Dopo" />
               </div>
             </div>
           </div>
 
-          {/* ESEMPIO 4: Completo Uomo */}
+          {/* ESEMPIO 4 */}
           <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Completo Uomo Sartoriale</h3>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 4</h3>
             <div className="comparison-grid">
               <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Abito gettato su sedia pieghevole</span>
-                <img src="/prima_4.png" alt="Prima - Uomo" />
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/4-a.jpeg" alt="Prima" />
               </div>
               <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modello Professionista a Londra</span>
-                <img src="/dopo_4.png" alt="Dopo - Uomo" />
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/4-b.jpeg" alt="Dopo" />
+              </div>
+            </div>
+          </div>
+
+          {/* ESEMPIO 5 */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 5</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/5-a.jpeg" alt="Prima" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/5-b.jpeg" alt="Dopo" />
+              </div>
+            </div>
+          </div>
+
+          {/* ESEMPIO 6 */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 6</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
+                <img src="/6-a.jpeg" alt="Prima" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
+                <img src="/6-b.jpeg" alt="Dopo" />
               </div>
             </div>
           </div>
