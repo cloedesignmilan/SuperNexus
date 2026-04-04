@@ -5,14 +5,16 @@ import styles from '../../page.module.css';
 import { Store as StoreIcon, Bot, Euro, Power, Trash2, ArrowLeft, Paintbrush, Key } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+export const dynamic = "force-dynamic";
+
 export default async function ClientePage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = await params;
     
-    const storeObj = await prisma.store.findUnique({
+    const storeObj = await (prisma as any).store.findUnique({
         where: { id: resolvedParams.id }
     });
     
-    const templates = await prisma.promptTemplate.findMany();
+    const templates = await (prisma as any).promptTemplate.findMany();
 
     if (!storeObj) return notFound();
 
@@ -86,7 +88,7 @@ export default async function ClientePage({ params }: { params: Promise<{ id: st
                     <select name="default_template_id" defaultValue={storeObj.default_template_id || ""}
                             style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}}>
                         <option value="">-- Seleziona uno stile fotografico (Default Globale) --</option>
-                        {templates.map(t => (
+                        {templates.map((t: any) => (
                             <option key={t.id} value={t.id}>{t.name} ({t.category})</option>
                         ))}
                     </select>

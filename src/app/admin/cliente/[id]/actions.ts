@@ -15,7 +15,7 @@ export async function updateStoreAction(storeId: string, formData: FormData) {
     
     const is_active = is_active_str === 'true';
 
-    await prisma.store.update({
+    await (prisma as any).store.update({
         where: { id: storeId },
         data: {
             name,
@@ -33,7 +33,7 @@ export async function updateStoreAction(storeId: string, formData: FormData) {
 export async function deleteStoreAction(storeId: string) {
     // Rimuove permanentemente uno Store (Prisma eseguirà il cascade dei Jobs/Users se configurato, o fallirà. Assumiamo che ci sia cascade Delete impostato o che la cancellazione pulisca in base a relations)
     // Per sicurezza, verifichiamo prima se ha job, in una app reale faremmo pulizia manuale
-    await prisma.store.delete({
+    await (prisma as any).store.delete({
         where: { id: storeId }
     });
 
