@@ -8,8 +8,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboard() {
     const COST_PER_IMAGE_ESTIMATE = 0.03; // Costo medio stima Imagen3 / Gemini Flash
 
-    // 1. Dati Prisma (Includendo i Jobs per ogni cliente per calcolarne i costi diretti)
-    const stores = await prisma.store.findMany({
+    // 1. Dati Prisma
+    const stores = await (prisma as any).store.findMany({
         include: {
             _count: {
                 select: { templates: true, users: true }
@@ -35,8 +35,8 @@ export default async function AdminDashboard() {
         };
     });
 
-    let totalApiCost = storesData.reduce((acc, store) => acc + store.total_cost, 0);
-    const mrr = storesData.reduce((acc, store) => acc + (store.is_active ? store.monthly_fee : 0), 0);
+    let totalApiCost = storesData.reduce((acc: number, store: any) => acc + store.total_cost, 0);
+    const mrr = storesData.reduce((acc: number, store: any) => acc + (store.is_active ? store.monthly_fee : 0), 0);
     const netProfit = mrr - totalApiCost;
 
     return (

@@ -38,10 +38,10 @@ export async function POST(req: NextRequest) {
     let currentStore = null;
 
     if (storeSlug) {
-      currentStore = await prisma.store.findUnique({ where: { slug: storeSlug } });
+        currentStore = await (prisma as any).store.findUnique({ where: { slug: storeSlug } });
       if (currentStore?.telegram_bot_token) botToken = currentStore.telegram_bot_token;
     } else {
-       currentStore = await prisma.store.findUnique({ where: { slug: 'magazzini-emilio' } });
+       currentStore = await (prisma as any).store.findUnique({ where: { slug: 'magazzini-emilio' } });
     }
 
     if (!currentStore || !currentStore.is_active) return NextResponse.json({ ok: true });
