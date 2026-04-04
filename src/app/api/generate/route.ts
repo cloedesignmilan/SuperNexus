@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
     - "fit" (es. slim, oversize),
     - "details" (bottoni, scollo, ecc.),
     - "description" (una singola frase estremamente ricca che possa essere usata come prompt di generazione per riprodurre fedelmente il capo senza alterarlo in Imagen 3),
-    - "unclear" (booleano, true se non si capisce se il sotto è gonna o pantalone).`;
+    - "unclear" (booleano, true se non si capisce se il sotto è gonna o pantalone),
+    - "predicted_category" (Scegli UNA SOLA EXACT stringa tra queste: "Sposa e Sposo", "Eleganza Adulti (Gala)", "Festa 18 Anni (Teen)", "Sportivo (Fitness)", "Kids & Ragazzi", "Streetwear Urbano", oppure "Eleganza Adulti (Gala)" se incerto).`;
 
     const visionResult = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -68,10 +69,18 @@ export async function POST(req: NextRequest) {
     let template = storeObj?.default_template;
 
     if (!template) {
-        // Fallback se il negozio non ha ancora uno stile default configurato
+        // AI AUTO-ROUTING FALLBACK
+        const predicted = garmentDetails.predicted_category || "Eleganza Adulti (Gala)";
+        console.log(`[AI Routing] Negozio ${storeObj?.name} senza template. Gemini assegna il caso alla categoria: ${predicted}`);
+        
         template = await prisma.promptTemplate.findFirst({
-            where: { name: { contains: "Abiti donna" } }
+            where: { name: predicted }
         });
+        
+        // Se non trova corrispondenza nel database, default di sicurezza
+        if (!template) {
+             template = await prisma.promptTemplate.findFirst();
+        }
     }
 
     const scenes = template ? JSON.parse(template.scenes) : [
