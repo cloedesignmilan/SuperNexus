@@ -42,22 +42,28 @@ body {
 .admin-container {
   display: flex;
   min-height: 100vh;
+  background-color: #050505;
 }
 
 .admin-sidebar {
   width: 260px;
-  background-color: var(--color-bg-sidebar);
-  border-right: 1px solid var(--color-border);
+  background-color: rgba(10, 10, 10, 0.8);
+  border-right: 1px solid rgba(255, 255, 255, 0.08); /* Dark glass line */
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
 .admin-logo h1 {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 1.4rem;
-  letter-spacing: 0.05em;
-  color: var(--color-text-main);
+  letter-spacing: -0.05em;
+  font-weight: 800;
+  background: linear-gradient(90deg, #bb86fc 0%, #03dac6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 0.2rem;
 }
 
@@ -78,7 +84,7 @@ body {
 .nav-item {
   text-decoration: none;
   font-size: 0.95rem;
-  color: var(--color-text-muted);
+  color: #a0a0a0;
   padding: 0.8rem 1rem;
   border-radius: 6px;
   transition: all 0.2s ease;
@@ -86,15 +92,18 @@ body {
 }
 
 .nav-item:hover {
-  background-color: var(--color-bg-main);
-  color: var(--color-text-main);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .admin-main {
   flex: 1;
-  padding: 3rem 4rem;
-  background-color: var(--color-bg-main);
+  background-color: #050505;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(66, 12, 172, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(12, 172, 142, 0.15) 0%, transparent 50%);
   overflow-y: auto;
+  position: relative;
 }
 
 /* CARDS & UTILS */

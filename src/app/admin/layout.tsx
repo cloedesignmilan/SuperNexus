@@ -8,8 +8,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       {/* Sidebar Laterale in stile elegante e neutro */}
       <aside className="admin-sidebar">
         <div className="admin-logo">
-          <h1>MAGAZZINI EMILIO</h1>
-          <p>Boutique AI System</p>
+          <h1>SUPERNEXUS</h1>
+          <p>SaaS Protocol Layer</p>
         </div>
         <nav className="admin-nav">
           <Link href="/admin/dashboard" className="nav-item">Dashboard</Link>

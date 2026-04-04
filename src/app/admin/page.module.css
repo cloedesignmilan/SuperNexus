@@ -1,9 +1,5 @@
 .container {
   min-height: 100vh;
-  background-color: #050505;
-  background-image: 
-    radial-gradient(circle at 15% 50%, rgba(66, 12, 172, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 85% 30%, rgba(12, 172, 142, 0.15) 0%, transparent 50%);
   color: #ffffff;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   padding: 40px;
