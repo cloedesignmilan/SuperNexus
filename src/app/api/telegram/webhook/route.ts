@@ -25,6 +25,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Negozio non riconosciuto" }, { status: 404 });
     }
 
+    if (!currentStore.is_active) {
+       console.log(`[SaaS Blocker] Tentativo accesso a store sospeso: ${currentStore.name}`);
+       const bot = new Telegraf(botToken);
+       const update = await req.json();
+       const chatId = update.message?.chat?.id;
+       if (chatId) {
+           await bot.telegram.sendMessage(
+              chatId,
+              `🛑 <b>Abbonamento Sospeso</b>\n\nAttenzione: La licenza per l'Intelligenza Artificiale della Boutique <b>${currentStore.name}</b> risulta attualmente sospesa o scaduta.\nContattare l'amministratore del sistema.`,
+              { parse_mode: "HTML" }
+           );
+       }
+       return NextResponse.json({ ok: true });
+    }
+
     const bot = new Telegraf(botToken);
     const update = await req.json();
 

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from 'next/link';
+import { Settings, FileText, PlusCircle } from 'lucide-react';
 import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
@@ -42,8 +43,8 @@ export default async function AdminDashboard() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1 className={styles.title}>SUPERNEXUS</h1>
-                <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center'}}>
-                    + Registra Cliente
+                <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                    <PlusCircle size={18} /> Registra Cliente
                 </Link>
             </header>
 
@@ -111,11 +112,11 @@ export default async function AdminDashboard() {
                                     </td>
                                     <td>{store.total_images} foto / {store.jobs.length} lookbook</td>
                                     <td style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                                        <button style={{background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
-                                            Gestisci
-                                        </button>
-                                        <button style={{background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
-                                            Fatture
+                                        <Link href={`/admin/cliente/${store.id}`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
+                                            <Settings size={14} /> Gestisci
+                                        </Link>
+                                        <button style={{display: 'flex', alignItems: 'center', gap: '5px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
+                                            <FileText size={14} /> Fatture
                                         </button>
                                     </td>
                                 </tr>

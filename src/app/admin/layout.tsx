@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import Link from "next/link";
+import { LayoutDashboard, Images, Settings2, Command } from "lucide-react";
 import { ReactNode } from "react";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -12,10 +13,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <p>SaaS Protocol Layer</p>
         </div>
         <nav className="admin-nav">
-          <Link href="/admin" className="nav-item">📊 Dashboard Finanziaria</Link>
-          <Link href="/admin/generazioni" className="nav-item">🖼️ Operazioni Globali AI</Link>
-          <Link href="/admin/template" className="nav-item">🧠 Prompt di Sistema</Link>
-          <Link href="/admin/impostazioni" className="nav-item">⚙️ Settings Piattaforma</Link>
+          <Link href="/admin" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <LayoutDashboard size={18} /> Dashboard Finanziaria
+          </Link>
+          <Link href="/admin/generazioni" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <Images size={18} /> Operazioni AI
+          </Link>
+          <Link href="/admin/template" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <Command size={18} /> Prompt di Sistema
+          </Link>
+          <Link href="/admin/impostazioni" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <Settings2 size={18} /> Settings Piattaforma
+          </Link>
         </nav>
       </aside>
 
