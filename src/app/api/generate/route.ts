@@ -71,10 +71,15 @@ export async function POST(req: NextRequest) {
         "Passeggiata in città elegante", "Camerino lussuoso", "Uscita dal negozio"
     ];
 
-    // Aggiorniamo lo status
-    await prisma.generationJob.update({
-        where: { id: jobId },
-        data: { status: "in lavorazione", target_template_id: template?.id }
+    // Creiamo lo status nel DB
+    await prisma.generationJob.create({
+        data: { 
+            id: jobId, 
+            original_image_url: fileUrl,
+            status: "in lavorazione", 
+            target_template_id: template?.id,
+            results_count: 10
+        }
     });
 
     // FASE 3: Generazione di 10 immagini tramite Imagen 3 
