@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
+import { uploadImageToSupabase } from "@/lib/supabaseStorage";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -144,10 +145,14 @@ Professional photography, natural lighting, 50mm/85mm lens, authentic, elegant. 
             }
 
             if (base64Image) {
+                const uniqueFilename = `garment_gen_${jobId}_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
+                const publicUrl = await uploadImageToSupabase(base64Image, uniqueFilename);
+                const finalUrl = publicUrl || "uploaded_storage_link"; // fallback di sicurezza in caso di errore
+
                 await prisma.jobImage.create({
-                    data: { job_id: jobId, image_url: "uploaded_storage_link", scene_type: scene }
+                    data: { job_id: jobId, image_url: finalUrl, scene_type: scene }
                 });
-                return base64Image;
+                return finalUrl; // Ritorniamo l'URL pubblico, o base64 solo se vogliamo come prima, ma restituiamo l'URL!
             }
             throw new Error("No image inlineData in candidates");
         })
@@ -189,12 +194,20 @@ Professional photography, natural lighting, 50mm/85mm lens, authentic, elegant. 
        const finalBotToken = storeObj?.telegram_bot_token || process.env.TELEGRAM_BOT_TOKEN as string;
        const bot = new Telegraf(finalBotToken);
        
-       const mediaGroup = generatedUrls.map((imgStr) => ({
-           type: 'photo' as const,
-           media: { source: Buffer.from(imgStr, 'base64') }
-       }));
+       const mediaGroup = generatedUrls.map((urlStr) => {
+           // Se fallisce e ci ritorna Base64, gestiamolo (Anche se ora ci ritorna l'URL)
+           // Telegram supporta inviare tramite URL diretto
+           if (urlStr.startsWith("http")) {
+               return { type: 'photo' as const, media: urlStr };
+           }
+           // Fallback in caso di mancato url
+           return {
+               type: 'photo' as const,
+               media: { source: Buffer.from(urlStr, 'base64') }
+           };
+       });
        
-       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\nHo estratto le seguenti info dal capo:\n- Modello: ${garmentDetails.type}\n- Colore: ${garmentDetails.color}\n\nEcco le scene generate per te:`, { parse_mode: 'Markdown' });
+       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\nHo estratto le seguenti info dal capo:\n- Modello: ${garmentDetails.type}\n- Colore: ${garmentDetails.color}\n\nEcco le scene generate per te (le troverai anche nel tuo Portale Supabase in alta definizione):`, { parse_mode: 'Markdown' });
        // Send the 10 scenes
        if (mediaGroup.length > 0) {
            await bot.telegram.sendMediaGroup(chatId, mediaGroup);

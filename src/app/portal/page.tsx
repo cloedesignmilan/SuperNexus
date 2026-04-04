@@ -108,9 +108,9 @@ export default async function PortalDashboard() {
                                 {/* Overlay e Scarica */}
                                 <div style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
                                     <span style={{fontSize: '0.8rem', color: '#fff', maxWidth: '70%'}}>{img.scene_type}</span>
-                                    <a href={img.image_url !== 'uploaded_storage_link' ? img.image_url : '#'} download
+                                    <a href={img.image_url !== 'uploaded_storage_link' ? `/api/download?url=${encodeURIComponent(img.image_url)}` : '#'} 
                                        style={{background: 'rgba(255,255,255,0.2)', padding: '8px 12px', borderRadius: '6px', color: '#fff', textDecoration: 'none', display: 'flex', gap: '5px', alignItems: 'center', backdropFilter: 'blur(5px)'}}>
-                                        <Download size={14} /> HQ
+                                        <Download size={14} /> Download
                                     </a>
                                 </div>
                             </div>
