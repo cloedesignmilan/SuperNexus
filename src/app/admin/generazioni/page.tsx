@@ -39,8 +39,8 @@ export default async function GenerazioniPage() {
           const totalImages = store.jobs.reduce((acc, job) => acc + (job.status === "completato" ? job.results_count : 0), 0);
           
           return (
-              <div key={store.id} className="print-card" style={{background: 'rgba(10,10,10,0.6)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px', padding: '2rem', marginBottom: '3rem', pageBreakInside: 'avoid'}}>
-                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem'}}>
+              <details key={store.id} className="print-card store-accordion" style={{background: 'rgba(10,10,10,0.6)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px', padding: '1.5rem 2rem', marginBottom: '1.5rem', pageBreakInside: 'avoid'}}>
+                  <summary style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', listStyle: 'none', outline: 'none'}}>
                       <h3 style={{fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', color: '#fff'}}>
                           <Box size={24} color="#bb86fc" className="print-icon" /> {store.name}
                       </h3>
@@ -48,9 +48,10 @@ export default async function GenerazioniPage() {
                           <span style={{fontSize: '0.8rem', color: '#a0a0a0', textTransform: 'uppercase', letterSpacing: '1px'}}>Immagini Fatturabili</span><br/>
                           <span style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#03dac6'}}>{totalImages}</span>
                       </div>
-                  </div>
+                  </summary>
                   
-                  <table className="data-table">
+                  <div style={{marginTop: '2rem'}}>
+                    <table className="data-table">
                   <thead>
                     <tr>
                       <th>ID Identificativo</th>
@@ -78,7 +79,8 @@ export default async function GenerazioniPage() {
                     ))}
                   </tbody>
                 </table>
-              </div>
+               </div>
+              </details>
           )
       })}
     </>
