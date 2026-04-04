@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from 'next/link';
 import { updateStoreAction, deleteStoreAction } from './actions';
 import styles from '../../page.module.css';
-import { Store as StoreIcon, Bot, Euro, Power, Trash2, ArrowLeft, Paintbrush } from 'lucide-react';
+import { Store as StoreIcon, Bot, Euro, Power, Trash2, ArrowLeft, Paintbrush, Key } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 export default async function ClientePage({ params }: { params: Promise<{ id: string }> }) {
@@ -48,6 +48,14 @@ export default async function ClientePage({ params }: { params: Promise<{ id: st
                     </label>
                     <input name="telegram_bot_token" type="text" defaultValue={storeObj.telegram_bot_token || ''}
                            style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#bb86fc', fontFamily: 'monospace', fontSize: '1rem'}} />
+                </div>
+
+                <div style={{marginBottom: '25px'}}>
+                    <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#03dac6', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
+                        <Key size={16} /> Password Portale (Login Cliente)
+                    </label>
+                    <input name="password" type="text" defaultValue={storeObj.password || ''} placeholder="Es. Magazzini123"
+                           style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
                 </div>
 
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '35px'}}>

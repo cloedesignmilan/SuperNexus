@@ -170,7 +170,22 @@ Professional photography, natural lighting, 50mm/85mm lens, authentic, elegant. 
         data: { status: "completato" }
     });
 
-    // FASE 5: Inoltra le immagini su Telegram all'utente (al massimo pacchetti di 10 mediaGroup)
+    // FASE 5: Auto-Pulizia Server (Limite a 50 Job)
+    const storeJobs = await prisma.generationJob.findMany({
+        where: { store_id: storeId },
+        orderBy: { createdAt: 'desc' },
+        select: { id: true }
+    });
+
+    if (storeJobs.length > 50) {
+        const jobsToDelete = storeJobs.slice(50).map(j => j.id);
+        await prisma.generationJob.deleteMany({
+            where: { id: { in: jobsToDelete } }
+        });
+        console.log(`[Auto-Cleanup] Eliminati ${jobsToDelete.length} vecchi task per mantenere il limite a 50.`);
+    }
+
+    // FASE 6: Inoltra le immagini su Telegram all'utente (al massimo pacchetti di 10 mediaGroup)
     if (chatId) {
        const mediaGroup = generatedUrls.map((imgStr) => ({
            type: 'photo' as const,

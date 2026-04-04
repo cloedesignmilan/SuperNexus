@@ -20,6 +20,7 @@ model Store {
   jobs                GenerationJob[]
   templates           PromptTemplate[]
   default_template_id String?
+  password            String?
   default_template    PromptTemplate? @relation("StoreDefaultTemplate", fields: [default_template_id], references: [id])
 }
 

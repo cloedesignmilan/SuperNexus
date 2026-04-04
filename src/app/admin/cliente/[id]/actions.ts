@@ -10,6 +10,8 @@ export async function updateStoreAction(storeId: string, formData: FormData) {
     const is_active_str = formData.get('is_active') as string;
     let default_template_id: string | null = formData.get('default_template_id') as string;
     if (default_template_id === "") default_template_id = null;
+    let password: string | null = formData.get('password') as string;
+    if (password === "") password = null;
     
     const is_active = is_active_str === 'true';
 
@@ -20,7 +22,8 @@ export async function updateStoreAction(storeId: string, formData: FormData) {
             telegram_bot_token,
             monthly_fee,
             is_active,
-            default_template_id
+            default_template_id,
+            password
         }
     });
 
