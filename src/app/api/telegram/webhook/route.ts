@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
 
                 bot.telegram.sendMessage(chatId, `✨ **Inizio Servizio Fotografico (${generationCount} foto)!**\nL'IA sta dipingendo il tuo abito nelle scene selezionate...`);
 
-                const baseUrl = req.nextUrl.origin;
+                const baseUrl = `https://x-super-nexus.vercel.app`;
                 fetch(`${baseUrl}/api/generate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -159,6 +159,7 @@ export async function POST(req: NextRequest) {
                     })
                 }).catch(e => console.error(e));
 
+                await new Promise(r => setTimeout(r, 800)); // Safety buffer per Edge Vercel
                 return NextResponse.json({ ok: true });
             }
 
