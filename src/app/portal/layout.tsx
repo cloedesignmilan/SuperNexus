@@ -10,7 +10,7 @@ export default async function PortalLayout({ children }: { children: React.React
     const session = cookieStore.get('store_session');
 
     if (!session?.value) {
-        redirect('/portal/login');
+        return <>{children}</>; // Mostra la schermata di login senza sidebar
     }
 
     const store = await prisma.store.findUnique({
@@ -18,7 +18,7 @@ export default async function PortalLayout({ children }: { children: React.React
     });
 
     if (!store) {
-        redirect('/portal/login');
+        return <>{children}</>;
     }
 
     return (
