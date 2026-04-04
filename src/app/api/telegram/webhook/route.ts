@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Telegraf } from "telegraf";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   // Inizializza il bot con il token (spostato qui per Vercel build)
   const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);

@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
   const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
