@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
         const chatId = cbq.message?.chat?.id;
 
         if (dataStr) {
+            await bot.telegram.answerCbQuery(cbq.id).catch(() => {});
             const parts = dataStr.split('|');
             const action = parts[0];
             const jobId = parts[1];
@@ -77,6 +78,11 @@ export async function POST(req: NextRequest) {
             } else if (action === 'gen') {
                 meta.confirmedGender = value;
             } else if (action === 'run') {
+                // Previene doppi click
+                if (job.status === "processing") {
+                    return NextResponse.json({ ok: true });
+                }
+                
                 // Avvia generazione!
                 const generationCount = parseInt(value || "3");
                 
