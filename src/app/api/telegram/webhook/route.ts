@@ -103,16 +103,24 @@ export async function POST(req: NextRequest) {
     }
 
     // Gestione del caricamento immagine
-    if (update.message?.photo) {
-      // Manda risposta immediata per evitare timeout di Telegram
+    const incomingPhoto = update.message?.photo;
+    const incomingDoc = update.message?.document;
+    
+    if (incomingPhoto || incomingDoc) {
       // Manda risposta immediata per evitare timeout di Telegram
       await bot.telegram.sendMessage(
         chatId,
-        "✅ Immagine ricevuta. Sto creando 10 versioni per MAGAZZINI EMILIO...\n\n<i>Questa operazione potrebbe richiedere 1 o 2 minuti.</i>",
+        "✅ Immagine ricevuta. Sto creando 10 versioni...\n\n<i>Questa operazione richiede fino a 60 secondi, attendi...</i>",
         { parse_mode: "HTML" }
       );
 
-      const fileId = update.message.photo[update.message.photo.length - 1].file_id;
+      let fileId;
+      if (incomingPhoto) {
+          fileId = incomingPhoto[incomingPhoto.length - 1].file_id;
+      } else {
+          fileId = incomingDoc.file_id;
+      }
+      
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
 
@@ -126,7 +134,8 @@ export async function POST(req: NextRequest) {
           jobId: "temp_" + Date.now() 
       };
 
-      await fetch(`${appUrl}/api/generate`, {
+      // Non mettiamo awati altrimenti blocchiamo il polling per tutto il tempo della generazione
+      fetch(`${appUrl}/api/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(backgroundJobData),

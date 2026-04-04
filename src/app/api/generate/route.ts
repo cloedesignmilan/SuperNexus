@@ -8,7 +8,6 @@ export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-  const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
   try {
     const { jobId, fileUrl, chatId, storeId } = await req.json();
@@ -187,6 +186,9 @@ Professional photography, natural lighting, 50mm/85mm lens, authentic, elegant. 
 
     // FASE 6: Inoltra le immagini su Telegram all'utente (al massimo pacchetti di 10 mediaGroup)
     if (chatId) {
+       const finalBotToken = storeObj?.telegram_bot_token || process.env.TELEGRAM_BOT_TOKEN as string;
+       const bot = new Telegraf(finalBotToken);
+       
        const mediaGroup = generatedUrls.map((imgStr) => ({
            type: 'photo' as const,
            media: { source: Buffer.from(imgStr, 'base64') }
