@@ -50,6 +50,54 @@ export async function POST(req: NextRequest) {
     const update = await req.json();
     console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
 
+    const globalChatIdNum = update?.message?.chat?.id || update?.callback_query?.message?.chat?.id;
+    const globalChatId = globalChatIdNum ? globalChatIdNum.toString() : null;
+
+    // --- AUTENTICAZIONE E BLOCCO PASSWORD ---
+    if (globalChatId && currentStore.password) {
+        let isAuthorized = false;
+        
+        // 1. Controlliamo se è registrato tra gli User
+        const existingUser = await (prisma as any).user.findUnique({
+            where: { telegram_id: globalChatId }
+        });
+
+        if (existingUser) {
+            isAuthorized = true;
+        } else {
+            // 2. Controllo Amnistia (ha lavori nel database?)
+            const legacyJob = await (prisma as any).generationJob.findFirst({
+                where: { telegram_chat_id: globalChatId, store_id: currentStore.id }
+            });
+
+            if (legacyJob) {
+                // Amnistia: convertilo subito in User autorizzato
+                await (prisma as any).user.create({
+                    data: { telegram_id: globalChatId, store_id: currentStore.id, role: "user", credits: 10 }
+                });
+                isAuthorized = true;
+            }
+        }
+
+        // Se non è autorizzato, forziamo il check della password
+        if (!isAuthorized) {
+            const incomingText = update?.message?.text?.trim() || "";
+            if (incomingText === currentStore.password) {
+                // Sblocco concesso
+                await (prisma as any).user.create({
+                    data: { telegram_id: globalChatId, store_id: currentStore.id, role: "user", credits: 10 }
+                });
+                await bot.telegram.sendMessage(globalChatId, `✅ **Accesso Sbloccato!**\n\nBenvenuto nei servizi di ${currentStore.name}. Sentiti libero di inviare la foto di un abito.`);
+                return NextResponse.json({ ok: true });
+            } else {
+                // Rifiuto
+                await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato**\n\nInserisci la password segreta per accedere ai servizi di ${currentStore.name}.`);
+                return NextResponse.json({ ok: true });
+            }
+        }
+    }
+    // --- FINE AUTENTICAZIONE ---
+
     // 1) GESTIONE PULSANTI CLICKATI (CALLBACK QUERY)
     if (update.callback_query) {
         const cbq = update.callback_query;
