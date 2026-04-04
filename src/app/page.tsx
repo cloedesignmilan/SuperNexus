@@ -38,30 +38,75 @@ export default function LandingPage() {
       </section>
 
       {/* SUB-HOOK */}
-      <section style={{ textAlign: 'center', padding: '0 5% 4rem' }}>
+      <section style={{ textAlign: 'center', padding: '0 5% 2rem' }}>
         <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '1rem' }}>Basta foto sul letto. <span style={{ color: '#ff5470' }}>Basta manichini.</span></h2>
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS */}
+      {/* BEFORE / AFTER VISUALS (4 ESEMPI) */}
       <section className="comparison-section">
-        <div className="comparison-grid">
-          {/* PRIMA */}
-          <div className="comparison-card">
-            <span className="comparison-label">📸 PRIMA: Un banale capo su manichino in magazzino</span>
-            <img 
-              src="/prima_nuovo.png" 
-              alt="Prima" 
-            />
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
+          
+          {/* ESEMPIO 1: Abito da Sera */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito da Sera / Cerimonia</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Magazzino o retrobottega</span>
+                <img src="/prima_1.png" alt="Prima - Abito blu" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Shooting al Gala Event</span>
+                <img src="/dopo_1.png" alt="Dopo - Abito blu" />
+              </div>
+            </div>
           </div>
-          {/* DOPO */}
-          <div className="comparison-card">
-            <span className="comparison-label label-after">🤖 DOPO: Scatto editoriale Premium generato istantaneamente</span>
-            <img 
-              src="/dopo_nuovo.png" 
-              alt="Dopo" 
-            />
+
+          {/* ESEMPIO 2: Abito da Sposa */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito da Sposa</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Manichino in plastica, luce artificiale</span>
+                <img src="/prima_2.png" alt="Prima - Sposa" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Reportage di nozze nella Cattedrale</span>
+                <img src="/dopo_2.png" alt="Dopo - Sposa" />
+              </div>
+            </div>
           </div>
+
+          {/* ESEMPIO 3: Compleanno 18 Anni */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Abito Festa 18 Anni / Disco</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Abito abbandonato a terra</span>
+                <img src="/prima_3.png" alt="Prima - Festa" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Editoriale Vogue Party in Discoteca</span>
+                <img src="/dopo_3.png" alt="Dopo - Festa" />
+              </div>
+            </div>
+          </div>
+
+          {/* ESEMPIO 4: Completo Uomo */}
+          <div>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Completo Uomo Sartoriale</h3>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <span className="comparison-label">📸 PRIMA: Abito gettato su sedia pieghevole</span>
+                <img src="/prima_4.png" alt="Prima - Uomo" />
+              </div>
+              <div className="comparison-card">
+                <span className="comparison-label label-after">🤖 DOPO: Modello Professionista a Londra</span>
+                <img src="/dopo_4.png" alt="Dopo - Uomo" />
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -83,8 +128,8 @@ export default function LandingPage() {
               <li><CheckCircle2 color="#03dac6" size={20} /> Ricevi le foto finite dopo 30 secondi</li>
             </ul>
           </div>
-          <div className="z-visual">
-            <img src="/telegram_mockup.png" alt="Telegram App UI SuperNexus" />
+          <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none' }}>
+            <img src="/telegram_iphone.png" alt="Telegram App UI SuperNexus su iPhone" style={{ maxHeight: '700px', objectFit: 'contain' }} />
           </div>
         </div>
 
