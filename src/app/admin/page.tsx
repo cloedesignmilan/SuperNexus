@@ -79,6 +79,7 @@ export default async function AdminDashboard() {
                                 <th>Costi Consumati (API)</th>
                                 <th>Utile Netto (Guadagno)</th>
                                 <th>Immagini Generate</th>
+                                <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,6 +110,14 @@ export default async function AdminDashboard() {
                                         </span>
                                     </td>
                                     <td>{store.total_images} foto / {store.jobs.length} lookbook</td>
+                                    <td style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
+                                        <button style={{background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
+                                            Gestisci
+                                        </button>
+                                        <button style={{background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
+                                            Fatture
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

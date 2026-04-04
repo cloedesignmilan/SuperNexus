@@ -12,10 +12,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <p>SaaS Protocol Layer</p>
         </div>
         <nav className="admin-nav">
-          <Link href="/admin/dashboard" className="nav-item">Dashboard</Link>
-          <Link href="/admin/generazioni" className="nav-item">Generazioni</Link>
-          <Link href="/admin/template" className="nav-item">Template Prompt</Link>
-          <Link href="/admin/impostazioni" className="nav-item">Impostazioni</Link>
+          <Link href="/admin" className="nav-item">📊 Dashboard Finanziaria</Link>
+          <Link href="/admin/generazioni" className="nav-item">🖼️ Operazioni Globali AI</Link>
+          <Link href="/admin/template" className="nav-item">🧠 Prompt di Sistema</Link>
+          <Link href="/admin/impostazioni" className="nav-item">⚙️ Settings Piattaforma</Link>
         </nav>
       </aside>
 
