@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Telegraf } from "telegraf";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -11,18 +12,42 @@ export async function POST(req: NextRequest) {
   try {
     const update = await req.json();
 
-    // Controllo ID Chat (Whitelist di Sicurezza)
+    // Controllo ID Chat (Whitelist Dinamica via Database)
     const chatId = update.message?.chat?.id;
     
     if (chatId) {
-      const authorizedUsers = process.env.AUTHORIZED_TELEGRAM_USERS;
-      if (authorizedUsers && !authorizedUsers.includes(chatId.toString())) {
-        await bot.telegram.sendMessage(
-          chatId,
-          `⛔️ <b>Accesso Negato</b>\nNon sei autorizzato a generare immagini per i Magazzini Emilio.\n\n<i>(Se sei l'Amministratore, aggiungi il numero <code>${chatId}</code> alle chiavi Vercel sotto il nome <b>AUTHORIZED_TELEGRAM_USERS</b>)</i>.`,
-          { parse_mode: "HTML" }
-        );
-        return NextResponse.json({ ok: true });
+      const userStr = chatId.toString();
+      
+      // Controllo sul db se l'utente è autorizzato
+      const user = await prisma.user.findUnique({
+          where: { telegram_id: userStr }
+      });
+
+      if (!user) {
+         // L'utente non si è mai fatto riconoscere. Ha inserito la password corretta in questo messaggio?
+         const secretWord = process.env.BOT_PASSWORD || "Emilio2025"; // Fallback di sicurezza se la env non e settata
+         
+         if (update.message?.text === secretWord) {
+             // Inserisce nel DB e sblocca per sempre!
+             await prisma.user.create({
+                 data: { telegram_id: userStr, role: "user" }
+             });
+             
+             await bot.telegram.sendMessage(
+                chatId,
+                "✅ <b>Accesso Sbloccato con Successo!</b>\n\nBenvenuto nel sistema. Da questo momento in poi sei stato registrato e non dovrai più inserire alcuna password.\nInvia la prima foto del capo che desideri scattare!",
+                { parse_mode: "HTML" }
+             );
+             return NextResponse.json({ ok: true });
+         } else {
+             // Sbagliato o nessuna password inserita
+             await bot.telegram.sendMessage(
+                chatId,
+                "⛔️ <b>Accesso Riservato</b>\nNon sei autorizzato a generare immagini.\n\nPer abilitare questo dispositivo in modo permanente, <b>invia la password segreta di Emilio</b> rispondendo a questo messaggio.",
+                { parse_mode: "HTML" }
+             );
+             return NextResponse.json({ ok: true });
+         }
       }
     }
 
