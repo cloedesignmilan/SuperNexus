@@ -48,81 +48,80 @@ export default function LandingPage() {
         <div className="comparison-grid">
           {/* PRIMA */}
           <div className="comparison-card">
-            <span className="comparison-label">📸 PRIMA: Foto veloce in negozio (gruccia, manichino o piatto)</span>
+            <span className="comparison-label">📸 PRIMA: Un banale capo su manichino in magazzino</span>
             <img 
-              src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&q=80&w=1200" 
+              src="/prima_manichino.png" 
               alt="Prima" 
             />
           </div>
           {/* DOPO */}
           <div className="comparison-card">
-            <span className="comparison-label label-after">🤖 DOPO: Immagini editoriali con modelli reali, pronte per social ed ecommerce</span>
+            <span className="comparison-label label-after">🤖 DOPO: Scatto editoriale Premium generato istantaneamente</span>
             <img 
-              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=1200" 
+              src="/dopo_modella.png" 
               alt="Dopo" 
             />
           </div>
         </div>
       </section>
 
-      {/* VALUE PROPOSITION */}
-      <section className="pricing-section" style={{ paddingBottom: '2rem', textAlign: 'center' }}>
-        <h2 className="section-title" style={{ marginBottom: '1rem' }}>Zero attrito. Massimo risultato.</h2>
-        <p style={{ fontSize: '1.3rem', color: '#a0a0a0', marginBottom: '4rem' }}>Tutto quello che ti serve... è Telegram.</p>
+      {/* VALUE PROPOSITION (Z-PATTERN) */}
+      <section className="value-prop-section">
+        <h2 className="section-title">Zero attrito. Massimo risultato.</h2>
+        <p style={{ fontSize: '1.3rem', color: '#a0a0a0', marginBottom: '6rem', textAlign: 'center' }}>Tutto quello che ti serve... è Telegram.</p>
         
-        <div className="card-grid" style={{ gap: '2rem' }}>
-          
-          {/* BLOCCO TELEGRAM */}
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
-            <Smartphone size={32} color="#03dac6" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Usa solo Telegram</h3>
-            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
-              <li>Nessun software.</li>
-              <li>Nessun login complicato.</li>
-              <li>Nessuna perdita di tempo.</li>
-            </ul>
-            <p style={{ color: '#03dac6', fontWeight: '600' }}>👉 Scatti → invii → ricevi immagini perfette</p>
-          </div>
-
-          {/* TECNOLOGIA RISCRITTA */}
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
-            <Sparkles size={32} color="#bb86fc" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Fedeltà assoluta 1:1</h3>
-            <p style={{ color: '#a0a0a0', marginBottom: '0.8rem' }}>Il tuo capo viene ricreato con precisione estrema:</p>
-            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
-              <li>✓ tessuti realistici</li>
-              <li>✓ colori identici</li>
-              <li>✓ taglio perfetto</li>
-              <li>✓ dettagli intatti</li>
-            </ul>
-            <p style={{ color: '#bb86fc', fontWeight: '600' }}>👉 Nessuna modifica. Solo valorizzazione.</p>
-          </div>
-
-          {/* RISPARMIO DIRETTO */}
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
-            <Zap size={32} color="#ff5470" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Stop ai costi inutili</h3>
-            <p style={{ color: '#a0a0a0', marginBottom: '0.8rem' }}>Dimentica:</p>
-            <ul style={{ listStyle: 'none', color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>
-              <li>❌ fotografi</li>
-              <li>❌ modelle</li>
-              <li>❌ location</li>
-              <li>❌ shooting costosi</li>
-            </ul>
-            <p style={{ color: '#ff5470', fontWeight: '600' }}>👉 Ottieni risultati migliori... in pochi secondi</p>
-          </div>
-
-          {/* BENEFICIO FORTE */}
-          <div className="stats-card" style={{ background: 'rgba(255,255,255,0.02)', textAlign: 'left' }}>
-            <TrendingUp size={32} color="#03dac6" style={{ marginBottom: '1.5rem' }} />
-            <h3 style={{ color: '#fff', fontSize: '1.4rem', marginBottom: '1rem', fontWeight: '700' }}>Più immagini = più vendite</h3>
-            <p style={{ color: '#a0a0a0', marginBottom: '1.5rem', lineHeight: '1.8' }}>Più contenuti pubblichi, più vendi.</p>
-            <ul style={{ listStyle: 'none', color: '#03dac6', marginBottom: '0', lineHeight: '1.8', fontWeight: '500' }}>
-              <li>👉 Senza aumentare il lavoro</li>
-              <li>👉 Senza aumentare i costi</li>
+        {/* ROW 1 */}
+        <div className="z-pattern-row">
+          <div className="z-content">
+            <div className="z-icon"><Smartphone size={32} color="#03dac6" /></div>
+            <h3 style={{ color: '#fff', fontSize: '2.2rem', marginBottom: '1rem', fontWeight: '800' }}>Usa solo Telegram</h3>
+            <p className="z-problem">Il problema: App complesse, software web lenti da imparare.</p>
+            <p className="z-solution">La nostra IA risiede interamente in un Bot Telegram a te dedicato. Nessun login, nessuna interfaccia aliena.</p>
+            <ul className="z-benefit-list">
+              <li><CheckCircle2 color="#03dac6" size={20} /> Scatti col cellulare o scegli dalla galleria</li>
+              <li><CheckCircle2 color="#03dac6" size={20} /> Invii al bot come in una chat normale</li>
+              <li><CheckCircle2 color="#03dac6" size={20} /> Ricevi le foto finite dopo 30 secondi</li>
             </ul>
           </div>
+          <div className="z-visual">
+            <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=800" alt="Telegram App" />
+          </div>
+        </div>
 
+        {/* ROW 2 */}
+        <div className="z-pattern-row">
+          <div className="z-content">
+            <div className="z-icon violet"><Sparkles size={32} color="#bb86fc" /></div>
+            <h3 style={{ color: '#fff', fontSize: '2.2rem', marginBottom: '1rem', fontWeight: '800' }}>Fedeltà Assoluta 1:1</h3>
+            <p className="z-problem" style={{ color: '#ff5470' }}>Il problema: Alterazione dei dettagli, bottoni o trame inventate.</p>
+            <p className="z-solution">Grazie al protocollo Nano Banana Pro™ ricreiamo i tuoi vestiti con precisione certosina in uno spaziotempo fotorealistico.</p>
+            <ul className="z-benefit-list">
+              <li><CheckCircle2 color="#bb86fc" size={20} /> Texture e tessuti realistici</li>
+              <li><CheckCircle2 color="#bb86fc" size={20} /> Nessuna modifica: colore e taglio sono intatti</li>
+              <li><CheckCircle2 color="#bb86fc" size={20} /> Rimozione magica dei cartellini del prezzo</li>
+            </ul>
+          </div>
+          <div className="z-visual">
+            <img src="/dopo_modella.png" alt="Fedeltà" />
+          </div>
+        </div>
+
+        {/* ROW 3 */}
+        <div className="z-pattern-row">
+          <div className="z-content">
+            <div className="z-icon red"><TrendingUp size={32} color="#ff5470" /></div>
+            <h3 style={{ color: '#fff', fontSize: '2.2rem', marginBottom: '1rem', fontWeight: '800' }}>Stop ai Costi Inutili</h3>
+            <p className="z-problem" style={{ color: '#ff5470' }}>Il problema: Budget folli per modelle, location, e logistica resi insostenibili per le uscite social giornaliere.</p>
+            <p className="z-solution" style={{ fontSize: '1.2rem', fontWeight: '600', color: '#ff5470' }}>Più immagini pubblichi, più vendi. Senza aumentare i costi.</p>
+            <ul className="z-benefit-list">
+              <li>❌ Basta Fotografi Freelance</li>
+              <li>❌ Basta Costi Orari Modelle</li>
+              <li>❌ Basta Studio Fotografico o Luce Flash costosa</li>
+            </ul>
+          </div>
+          <div className="z-visual" style={{ background: 'linear-gradient(145deg, #2a0b11, #0a0a0a)', border: '1px solid rgba(255,84,112,0.2)' }}>
+            <div style={{ textAlign: 'center', color: '#ff5470', fontSize: '1.5rem', fontWeight: '700' }}>Risparmio Massimo:<br />100% Budget Shooting</div>
+          </div>
         </div>
       </section>
 

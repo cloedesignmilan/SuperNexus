@@ -473,3 +473,69 @@ body {
   .pricing-card.popular { transform: none; }
 }
 
+
+.z-pattern-row {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto 6rem;
+}
+
+.z-pattern-row:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.z-content {
+  flex: 1;
+  text-align: left;
+}
+
+.z-visual {
+  flex: 1;
+  background: linear-gradient(145deg, rgba(20,20,20,0.8), rgba(5,5,5,0.9));
+  border-radius: 30px;
+  padding: 3rem;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.z-visual img {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.z-icon {
+  width: 70px;
+  height: 70px;
+  background: rgba(3,218,198,0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(3,218,198,0.3);
+}
+
+.z-icon.violet {
+  background: rgba(187,134,252,0.1);
+  border-color: rgba(187,134,252,0.3);
+}
+
+.z-icon.red {
+  background: rgba(255,84,112,0.1);
+  border-color: rgba(255,84,112,0.3);
+}
+
+@media (max-width: 900px) {
+  .z-pattern-row {
+    flex-direction: column !important;
+    gap: 2rem;
+  }
+}
+
