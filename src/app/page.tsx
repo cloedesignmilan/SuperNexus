@@ -154,7 +154,7 @@ export default function LandingPage() {
             </div>
 
             <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-              <div style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '1.2rem', textShadow: '0 0 10px rgba(3,218,198,0.5)' }}>2. Scarica in HD dal Cloud</div>
+              <div style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '1.2rem', textShadow: '0 0 10px rgba(3,218,198,0.5)', textAlign: 'center' }}>2. Scarica per sempre<br/>dalla tua Galleria Telegram</div>
               <GalleryMockup />
             </div>
           </div>
