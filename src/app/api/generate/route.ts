@@ -123,12 +123,19 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
         "Slight close-up portrait, focusing on the upper chest and face"
     ];
 
-    if (categoryObj.name.toLowerCase().includes('scarpe') || categoryObj.name.toLowerCase().includes('calzature')) {
+    const isShoesCategory = categoryObj.name.toLowerCase().includes('scarpe') || categoryObj.name.toLowerCase().includes('calzature');
+
+    let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, tags, or watermarks.";
+    let negativeBrandRule = "No brand logos, no text in the image.";
+
+    if (isShoesCategory) {
         cameraAngles = [
             "Low angle full body shot, incredibly sharp focus on the shoes", 
             "Macro close-up shot focused specifically on the footwear and ankles, stylish pose with neutral clothing", 
             "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
         ];
+        brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND TAGS on the shoes. Do not invent new logos, do not blur them.";
+        negativeBrandRule = "Do not blur original logos. Do not invent fake text.";
     }
 
     let ageBracket = "20-35";
@@ -161,10 +168,10 @@ CLOTHING COLOR & PATTERN: ${garmentDetails.color}
 CLOTHING DESCRIPTION: ${garmentDetails.description}
 
 ABSOLUTE HARD RULE: The structure, seams, laces, soles, heels, and materials of the shoe MUST NOT BE ALTERED. It is the ONLY ground truth.
-ABSOLUTE HARD RULE: DO NOT generate any text, brand logos, tags, or watermarks.
+${brandRule}
 
 [NEGATIVE RULES]
-No humans, no feet, no legs. No brand logos, no text in the image. No distortions of the shoe shape.`;
+No humans, no feet, no legs. No distortions of the shoe shape. ${negativeBrandRule}`;
             } else {
                 finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
@@ -185,10 +192,11 @@ ${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : '
 
 ABSOLUTE HARD RULE 1 (ACCESSORY LOCK): IF the reference image contains a specific tie (cravatta) or bow tie (papillon), you MUST render it with the EXACT same pattern, color, and knot. If the reference is a long tie, DO NOT generate a bow tie. If it's a bow tie, DO NOT generate a long tie!
 ABSOLUTE HARD RULE 2 (GARMENT LOCK): The structure, seams, lapels, buttons, and fit of the garment MUST NOT BE ALTERED. It is the ONLY ground truth.
-ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, tags, or watermarks.
+${brandRule}
 
 [NEGATIVE RULES]
-${negativeRulesText}`;
+${negativeRulesText}
+${negativeBrandRule}`;
             }
             
             const generated = await ai.models.generateContent({
