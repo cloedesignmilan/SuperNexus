@@ -149,7 +149,7 @@ export default function LandingPage() {
               <li><CheckCircle2 size={20} color="#0085FF" /> Accesso Bot Telegram</li>
               <li><CheckCircle2 size={20} color="#0085FF" /> Setup veloce</li>
             </ul>
-            <a href="#" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</a>
+            <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</Link>
           </div>
 
           {/* Boutique */}
@@ -163,7 +163,7 @@ export default function LandingPage() {
               <li><CheckCircle2 size={20} color="#FFFFFF" /> Priorità Bot GPU Ultra</li>
               <li><CheckCircle2 size={20} color="#FFFFFF" /> Tutte le nicchie sbloccate</li>
             </ul>
-            <a href="#" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800' }}>Attiva Boutique</a>
+            <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800' }}>Attiva Boutique</Link>
           </div>
 
         </div>
