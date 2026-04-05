@@ -67,6 +67,7 @@ export default function LandingPage() {
                     <img src={`/${num}-a.jpeg`} alt={`Scatto fotocamera ${num}`} className="camera-image" />
                     <div className="camera-grid-overlay"></div>
                     <div className="camera-focus-box"></div>
+                    <div className="camera-flash"></div>
                     <div className="camera-ui-bottom">
                       <div className="camera-ui-modes">
                         <span>VIDEO</span>
@@ -100,7 +101,7 @@ export default function LandingPage() {
                       {isInsta ? (
                         <>
                           <div className="social-actions">
-                            <Heart size={24} className="social-action-icon" />
+                            <Heart size={24} className="social-action-icon heart-icon" />
                             <MessageCircle size={24} className="social-action-icon" />
                             <Send size={24} className="social-action-icon" />
                           </div>
