@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
     const analysisPrompt = `Sei un sarto e stilista. Il capo in foto appartiene a una specifica categoria selezionata dall'utente. ${contextStr}
-Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (una lunghissima descrizione maniacale e minuziosa che possa spiegare a un'altra intelligenza artificiale come ridisegnare questo capo identico al 100%, cucitura per cucitura, inclusi colletti, fit, lunghezza, tessuto, maniche). Niente altro che il JSON.`;
+Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (una lunghissima descrizione maniacale e minuziosa che possa spiegare a un'altra intelligenza artificiale come ridisegnare questo capo identico al 100%, cucitura per cucitura. CRUCIALE: se vedi una cravatta, papillon, fazzoletto da taschino o cintura, analizzane ESATTAMENTE trama, pattern, materiale, larghezza e colore e includili nella descrizione in modo dettagliatissimo). Niente altro che il JSON.`;
 
     const visionResult = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
