@@ -80,11 +80,11 @@ export default async function AdminDashboard() {
                             <tr>
                                 <th>Stato</th>
                                 <th>Nominativo / Brand</th>
-                                <th>Bot Token</th>
-                                <th>Fee Mensile (Ricavo)</th>
-                                <th>Costi Consumati (API)</th>
-                                <th>Utile Netto (Guadagno)</th>
-                                <th>Immagini Generate</th>
+                                <th>Piano & Password</th>
+                                <th>Fee Mensile</th>
+                                <th>Capacità Mese</th>
+                                <th>Status Crediti (Rimasti)</th>
+                                <th>Foto Create (Tot)</th>
                                 <th>Azioni</th>
                             </tr>
                         </thead>
@@ -105,17 +105,25 @@ export default async function AdminDashboard() {
                                         </div>
                                     </td>
                                     <td className={styles.storeName}>{store.name}</td>
-                                    <td className={styles.tokenId}>
-                                        {store.telegram_bot_token ? `${store.telegram_bot_token.slice(0,18)}...` : 'Test Interno'}
+                                    <td>
+                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                            <span style={{color: '#bb86fc', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase'}}>{store.plan_name || 'Starter'}</span>
+                                            <span style={{fontFamily: 'monospace', color: '#fff', fontSize: '0.9rem'}}>🔑 {store.password || 'Manca PWD'}</span>
+                                        </div>
                                     </td>
                                     <td><span style={{color: '#fff', fontWeight: 600}}>€{store.monthly_fee.toFixed(2)}</span></td>
-                                    <td><span style={{color: '#ff5470'}}>€{store.total_cost.toFixed(2)}</span></td>
                                     <td>
-                                        <span style={{color: store.net_profit >= 0 ? '#03dac6' : '#ff5470', fontWeight: 'bold'}}>
-                                            €{store.net_profit.toFixed(2)}
+                                        <div style={{display: 'flex', flexDirection: 'column'}}>
+                                            <span style={{fontSize: '0.9rem'}}>{store.generation_limit} mrc</span>
+                                            {store.supplementary_credits > 0 && <span style={{fontSize: '0.75rem', color: '#03dac6'}}>+ {store.supplementary_credits} extra</span>}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span style={{color: store.subscription_credits > 15 ? '#03dac6' : '#ff5470', fontWeight: 'bold', fontSize: '1rem'}}>
+                                            {store.subscription_credits + store.supplementary_credits} Disp.
                                         </span>
                                     </td>
-                                    <td>{store.total_images} foto / {store.jobs.length} lookbook</td>
+                                    <td>{store.total_images} foto / {store.jobs.length} bk</td>
                                     <td style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
                                         <Link href={`/admin/cliente/${store.id}`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
                                             <Settings size={14} /> Gestisci

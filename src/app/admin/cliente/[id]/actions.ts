@@ -5,7 +5,16 @@ import { redirect } from 'next/navigation';
 
 export async function updateStoreAction(storeId: string, formData: FormData) {
     const name = formData.get('name') as string;
-    const telegram_bot_token = formData.get('telegram_bot_token') as string;
+    const plan_name = formData.get('plan_name') as string || 'Starter';
+    const generation_limit = parseInt(formData.get('generation_limit') as string) || 0;
+    const supplementary_credits = parseInt(formData.get('supplementary_credits') as string) || 0;
+    
+    // Potremmo ricaricare manualmente o reimpostare a mano la subscription, 
+    // solitamente subscription_credits viene scalata o resettata autonomamente.
+    // Ma diamo al CRM il cruscotto se si spunta 'Force Reset' o simile, ma lo lasciamo in pace per ora se no è complesso
+    const subscription_credits = parseInt(formData.get('subscription_credits') as string);
+    const hasSubCreditsOverride = !isNaN(subscription_credits);
+
     const monthly_fee = parseFloat(formData.get('monthly_fee') as string) || 0;
     const is_active_str = formData.get('is_active') as string;
     let default_template_id: string | null = formData.get('default_template_id') as string;
@@ -15,16 +24,24 @@ export async function updateStoreAction(storeId: string, formData: FormData) {
     
     const is_active = is_active_str === 'true';
 
-    await (prisma as any).store.update({
-        where: { id: storeId },
-        data: {
+    const updateData: any = {
             name,
-            telegram_bot_token,
+            plan_name,
+            generation_limit,
+            supplementary_credits,
             monthly_fee,
             is_active,
             default_template_id,
             password
-        }
+    };
+
+    if (hasSubCreditsOverride) {
+        updateData.subscription_credits = subscription_credits;
+    }
+
+    await (prisma as any).store.update({
+        where: { id: storeId },
+        data: updateData
     });
 
     redirect('/admin');

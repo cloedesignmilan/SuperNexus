@@ -44,20 +44,39 @@ export default async function ClientePage({ params }: { params: Promise<{ id: st
                            style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
                 </div>
 
-                <div style={{marginBottom: '25px'}}>
-                    <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#03dac6', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
-                        <Bot size={16} /> Telegram Bot Token
-                    </label>
-                    <input name="telegram_bot_token" type="text" defaultValue={storeObj.telegram_bot_token || ''}
-                           style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#bb86fc', fontFamily: 'monospace', fontSize: '1rem'}} />
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '25px'}}>
+                    <div>
+                        <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#03dac6', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
+                            <Key size={16} /> Password Portale (Multi-Tenant)
+                        </label>
+                        <input name="password" type="text" defaultValue={storeObj.password || ''} placeholder="Es. Magazzini123"
+                               style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
+                    </div>
+                    <div>
+                        <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#bb86fc', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
+                            <StoreIcon size={16} /> Piano Abbonamento
+                        </label>
+                        <input name="plan_name" type="text" defaultValue={storeObj.plan_name || 'Starter'} placeholder="Es. Starter, Pro, Enterprise" required
+                               style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(187, 134, 252, 0.4)', background: 'rgba(187, 134, 252, 0.05)', color: '#fff', fontSize: '1.1rem'}} />
+                    </div>
                 </div>
 
-                <div style={{marginBottom: '25px'}}>
-                    <label style={{display: 'flex', alignItems: 'center', gap: '8px', color: '#03dac6', fontWeight: 600, marginBottom: '8px', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px'}}>
-                        <Key size={16} /> Password Portale (Login Cliente)
-                    </label>
-                    <input name="password" type="text" defaultValue={storeObj.password || ''} placeholder="Es. Magazzini123"
-                           style={{width: '100%', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
+                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '15px', marginBottom: '25px'}}>
+                    <div style={{background: 'rgba(255,255,255,0.03)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)'}}>
+                        <label style={{display: 'block', color: '#a0a0a0', fontSize: '0.85rem', marginBottom: '8px'}}>Limite Generazioni Mensili</label>
+                        <input name="generation_limit" type="number" defaultValue={storeObj.generation_limit} required
+                               style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: '#fff', fontSize: '1.2rem', fontWeight: 'bold'}} />
+                    </div>
+                    <div style={{background: 'rgba(255,255,255,0.03)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)'}}>
+                        <label style={{display: 'block', color: '#a0a0a0', fontSize: '0.85rem', marginBottom: '8px'}}>Rimanenza Mese Attuale (Sub)</label>
+                        <input name="subscription_credits" type="number" defaultValue={storeObj.subscription_credits} required
+                               style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: '#fff', fontSize: '1.2rem', fontWeight: 'bold'}} />
+                    </div>
+                    <div style={{background: 'rgba(3, 218, 198, 0.05)', padding: '15px', borderRadius: '8px', border: '1px solid rgba(3, 218, 198, 0.2)'}}>
+                        <label style={{display: 'block', color: '#03dac6', fontSize: '0.85rem', marginBottom: '8px'}}>Ricariche Extra (Infinite)</label>
+                        <input name="supplementary_credits" type="number" defaultValue={storeObj.supplementary_credits} required
+                               style={{width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid rgba(3, 218, 198, 0.4)', background: 'transparent', color: '#03dac6', fontSize: '1.2rem', fontWeight: 'bold'}} />
+                    </div>
                 </div>
 
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '35px'}}>
