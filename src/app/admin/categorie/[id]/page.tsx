@@ -6,14 +6,12 @@ export default async function EditCategoryPage(props: { params: Promise<{ id: st
     let categoryData = null;
 
     if (params.id !== 'nuova') {
-        const cat = await (prisma as any).promptTemplate.findUnique({
-            where: { id: params.id }
+        const cat = await prisma.category.findUnique({
+            where: { id: params.id },
+            include: { prompt_master: true, scenes: { orderBy: { sort_order: 'asc' } } }
         });
         if (cat) {
-            categoryData = {
-                ...cat,
-                scenes: JSON.parse(cat.scenes || "[]")
-            };
+            categoryData = cat;
         }
     }
 

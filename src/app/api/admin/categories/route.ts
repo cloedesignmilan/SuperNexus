@@ -5,9 +5,12 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
     try {
-        const categories = await prisma.promptTemplate.findMany({
-            include: { store: true },
-            orderBy: { createdAt: 'desc' }
+        const categories = await prisma.category.findMany({
+            include: { 
+                prompt_master: true, 
+                _count: { select: { scenes: true } }
+            },
+            orderBy: { sort_order: 'asc' }
         });
         return NextResponse.json(categories);
     } catch (e: any) {
@@ -19,20 +22,31 @@ export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
         
-        let scenesString = '[]';
-        try {
-           scenesString = typeof data.scenes === 'string' ? data.scenes : JSON.stringify(data.scenes || []);
-        } catch(e) {}
+        const promptMasterPayload = data.prompt_master || { title: data.name + ' Master', prompt_text: "Modella base", negative_rules: "" };
+        const scenesPayload = data.scenes || []; 
 
-        const created = await prisma.promptTemplate.create({
+        const created = await prisma.category.create({
             data: {
                 name: data.name,
-                category: data.category || data.name,
-                base_prompt: data.base_prompt || "N/A",
-                rules: data.rules || "N/A",
-                num_images: data.num_images ? parseInt(data.num_images) : 10,
-                scenes: scenesString,
-                store_id: data.store_id || null
+                description: data.description || '',
+                age_range: data.age_range || "20-35",
+                is_active: data.is_active ?? true,
+                sort_order: data.sort_order ?? 0,
+                prompt_master: {
+                    create: {
+                        title: promptMasterPayload.title,
+                        prompt_text: promptMasterPayload.prompt_text,
+                        negative_rules: promptMasterPayload.negative_rules
+                    }
+                },
+                scenes: {
+                    create: scenesPayload.map((s: any, idx: number) => ({
+                        title: s.title || `Scena ${idx}`,
+                        scene_text: s.scene_text,
+                        sort_order: idx,
+                        is_active: true
+                    }))
+                }
             }
         });
         return NextResponse.json({ success: true, data: created });

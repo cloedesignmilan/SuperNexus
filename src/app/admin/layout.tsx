@@ -19,8 +19,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Link href="/admin/generazioni" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
             <Images size={18} /> Operazioni AI
           </Link>
-          <Link href="/admin/template" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-            <Command size={18} /> Prompt di Sistema
+          <Link href="/admin/categorie" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <Command size={18} /> Gestione Prompts
           </Link>
           <Link href="/admin/impostazioni" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
             <Settings2 size={18} /> Settings Piattaforma

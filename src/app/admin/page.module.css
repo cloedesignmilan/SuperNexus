@@ -159,3 +159,19 @@
   background-color: #ff5470;
   color: #ff5470;
 }
+
+.secondaryBtn {
+  background: transparent;
+  color: #bb86fc;
+  border: 1px solid #bb86fc;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondaryBtn:hover {
+  background: rgba(187, 134, 252, 0.1);
+}

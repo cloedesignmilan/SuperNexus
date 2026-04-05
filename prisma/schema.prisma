@@ -89,3 +89,42 @@ model Setting {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// --- NEW MODULAR PROMPT ARCHITECTURE ---
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  age_range   String?
+  is_active   Boolean  @default(true)
+  sort_order  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  prompt_master PromptMaster?
+  scenes        Scene[]
+}
+
+model PromptMaster {
+  id             String   @id @default(uuid())
+  category_id    String   @unique
+  category       Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  title          String
+  prompt_text    String   @db.Text
+  negative_rules String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Scene {
+  id          String   @id @default(uuid())
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  title       String
+  scene_text  String   @db.Text
+  is_active   Boolean  @default(true)
+  sort_order  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

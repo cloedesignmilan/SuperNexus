@@ -7,9 +7,11 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminCategoriesDashboard() {
     // 1. Fetch Dati Prisma
-    const templates = await (prisma as any).promptTemplate.findMany({
-        include: { store: true },
-        orderBy: { createdAt: 'desc' }
+    const categories = await prisma.category.findMany({
+        include: { 
+            _count: { select: { scenes: true } }
+        },
+        orderBy: { sort_order: 'asc' }
     });
 
     return (
@@ -17,7 +19,7 @@ export default async function AdminCategoriesDashboard() {
             <header className={styles.header}>
                 <div>
                     <h1 className={styles.title}>SUPERNEXUS</h1>
-                    <p style={{color: '#888', marginTop: '5px'}}>Gestione Categorie & Prompts Telegram</p>
+                    <p style={{color: '#888', marginTop: '5px'}}>Gestione Categorie & Architettura Prompt</p>
                 </div>
                 <div style={{display: 'flex', gap: '15px'}}>
                     <Link href="/admin" className={styles.secondaryBtn} style={{textDecoration: 'none'}}>
@@ -35,47 +37,41 @@ export default async function AdminCategoriesDashboard() {
                     <table className={styles.clientTable}>
                         <thead>
                             <tr>
+                                <th>Ordine</th>
                                 <th>Nome Categoria</th>
-                                <th>Visibilità (Negozio)</th>
-                                <th>Numero Prompts / Scene</th>
-                                <th>Immagini per Job</th>
+                                <th>Stato</th>
+                                <th>Scene / Blocchi</th>
                                 <th>Azioni</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {templates.length === 0 && (
+                            {categories.length === 0 && (
                                 <tr>
                                     <td colSpan={5} style={{textAlign: 'center', padding: '30px'}}>Nessuna Categoria trovata. Telegram non ha opzioni!</td>
                                 </tr>
                             )}
-                            {templates.map((tpl: any) => {
-                                let scenesCount = 0;
-                                try {
-                                    scenesCount = JSON.parse(tpl.scenes).length;
-                                } catch(e) {}
-
-                                return (
-                                <tr key={tpl.id}>
-                                    <td style={{fontWeight: 'bold'}}>{tpl.name}</td>
+                            {categories.map((cat: any) => (
+                                <tr key={cat.id}>
+                                    <td style={{color: '#888'}}>{cat.sort_order}</td>
+                                    <td style={{fontWeight: 'bold'}}>{cat.name}</td>
                                     <td>
                                         <div className={styles.statusWrapper}>
-                                            <div className={`${styles.statusDot} ${!tpl.store_id ? styles.statusActive : styles.statusSuspended}`}></div>
+                                            <div className={`${styles.statusDot} ${cat.is_active ? styles.statusActive : styles.statusSuspended}`}></div>
                                             <span style={{fontSize: '0.85rem', color: '#888'}}>
-                                                {!tpl.store_id ? 'GLOBALE (Tutti)' : `Solo: ${tpl.store?.name}`}
+                                                {cat.is_active ? 'ATTIVO' : 'DISABILITATO'}
                                             </span>
                                         </div>
                                     </td>
-                                    <td style={{color: '#03dac6'}}>{scenesCount} scene caricate</td>
-                                    <td>{tpl.num_images || 10}</td>
+                                    <td style={{color: '#03dac6'}}>{cat._count?.scenes || 0} scene caricate</td>
                                     <td>
                                         <div style={{display: 'flex', gap: '10px'}}>
-                                            <Link href={`/admin/categorie/${tpl.id}`} style={{color: '#bb86fc', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px'}}>
-                                                <FileEdit size={16} /> Modifica
+                                            <Link href={`/admin/categorie/${cat.id}`} style={{color: '#bb86fc', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px'}}>
+                                                <FileEdit size={16} /> Modifica Master & Scene
                                             </Link>
                                         </div>
                                     </td>
                                 </tr>
-                            )})}
+                            ))}
                         </tbody>
                     </table>
                 </div>

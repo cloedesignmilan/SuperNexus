@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
                     data: { status: "processing", metadata: meta }
                 });
 
-                bot.telegram.sendMessage(chatId, `✨ **Inizio Servizio Fotografico (${generationCount} foto)!**\nL'IA sta dipingendo il tuo abito nelle scene selezionate...`);
+                bot.telegram.sendMessage(chatId, `✨ **Inizio Servizio Fotografico!**\nApplicazione Modulo Master...\nGenerazione ${meta.confirmedScene === 'random' ? 'con Scene Casuali' : 'con Scena Selezionata'} in corso...`);
 
                 const baseUrl = `https://x-super-nexus.vercel.app`;
                 fetch(`${baseUrl}/api/generate`, {
@@ -134,6 +134,7 @@ export async function POST(req: NextRequest) {
                         confirmedCategory: meta.confirmedCategory,
                         confirmedBottom: meta.confirmedBottom,
                         confirmedGender: safeGender,
+                        confirmedScene: meta.confirmedScene,
                         imgCount: generationCount
                     })
                 }).catch(e => console.error(e));
@@ -150,14 +151,15 @@ export async function POST(req: NextRequest) {
 
             // Determina la prossima domanda
             if (!meta.confirmedCategory) {
-                // Recupera Categorie Dinamiche da DB
-                const templates = await prisma.promptTemplate.findMany({
-                   where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+                // Recupera Categorie Dinamiche da DB (la nuova Tabella)
+                const categories = await prisma.category.findMany({
+                   where: { is_active: true },
+                   orderBy: { sort_order: 'asc' }
                 });
                 
                 const catButtons = [];
-                for (let i = 0; i < templates.length; i++) {
-                    catButtons.push(Markup.button.callback(templates[i].name, `cat|${jobId}|${templates[i].name}`));
+                for (let i = 0; i < categories.length; i++) {
+                    catButtons.push(Markup.button.callback(categories[i].name, `cat|${jobId}|${categories[i].id}`));
                 }
 
                 await bot.telegram.sendMessage(
@@ -185,17 +187,31 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
                     ], { columns: 2 })
                 );
+            } else if (!meta.confirmedScene) {
+                // CHIEDI SCENA
+                const scenes = await prisma.scene.findMany({
+                    where: { category_id: meta.confirmedCategory, is_active: true },
+                    orderBy: { sort_order: 'asc' }
+                });
+                
+                const sceneBtns = scenes.map(s => Markup.button.callback(s.title, `sce|${jobId}|${s.id}`));
+                sceneBtns.unshift(Markup.button.callback("🎲 Scena Casuale (Consigliato)", `sce|${jobId}|random`));
+                
+                await bot.telegram.sendMessage(
+                    chatId,
+                    `🌟 La categoria è pronta!\nSeleziona una composizione ambientale oppure affidati all'ispirazione casuale dell'IA:`,
+                    Markup.inlineKeyboard(sceneBtns, { columns: 1 })
+                );
             } else {
                // Tutto pronto! Tasto per lanciare.
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                await bot.telegram.sendMessage(
                     chatId,
-                    `✅ **Tutto Confermato:**\n- Categoria: ${meta.confirmedCategory}\n- Genere: ${finalGEnd}\n- Taglio Inferiore: ${meta.confirmedBottom || 'Non richiesto'}\n\nScegli quante immagini desideri generare:`,
+                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nScena: ${meta.confirmedScene === 'random' ? 'Casuale' : 'Manuale'}\n\nScegli quante proposte desideri generare:`,
                     Markup.inlineKeyboard([
-                        Markup.button.callback("📸 GENERA 3 IMMAGINI", `run|${jobId}|3`),
-                        Markup.button.callback("📸 GENERA 5 IMMAGINI", `run|${jobId}|5`),
-                        Markup.button.callback("📸 GENERA 10 IMMAGINI", `run|${jobId}|10`)
-                    ], { columns: 1 })
+                        Markup.button.callback("📸 3 IMMAGINI", `run|${jobId}|3`),
+                        Markup.button.callback("📸 5 IMMAGINI", `run|${jobId}|5`)
+                    ], { columns: 2 })
                 );
             }
         }
@@ -226,10 +242,10 @@ export async function POST(req: NextRequest) {
       }
 
       // Costruiamo le Categorie Dinamiche per Gemini
-      const templatesSchemaList = await prisma.promptTemplate.findMany({
-          where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+      const templatesSchemaList = await prisma.category.findMany({
+          where: { is_active: true }
       });
-      const validCategoriesStr = templatesSchemaList.map((t: any) => `'${t.name}'`).join(", ");
+      const validCategoriesStr = templatesSchemaList.map((t: any) => `'${t.id}'`).join(", ");
 
       const analysisPrompt = `Sei un esperto di moda. Analizza la foto del vestito in allegato e restituisci SOLO UN JSON CON QUESTE ESATTE CHIAVI: "predicted_category" (Scegli rigorosamente solo una tra ${validCategoriesStr}), "is_women_dress" (booleano true/false. Se vedi una classica giacca, abito intero da uomo, camicia da uomo o pantaloni sartoriali maschili DEVI mettere FALSE e MAI true), "needs_gender_clarification" (booleano. DEVI mettere false se è una giacca da completo o un tipico taglio da uomo. Metti true SOLO in rari casi come felpe totalmente anonime o t-shirt unisex), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, no markdown.`;
       
@@ -283,22 +299,28 @@ export async function POST(req: NextRequest) {
       });
 
       // Partiamo chiedendo la categoria se l'IA ha un "guess" o partiamo da zero
-      const fallbacksFromDB = await prisma.promptTemplate.findMany({
-          where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+      const fallbacksFromDB = await prisma.category.findMany({
+          where: { is_active: true },
+          orderBy: { sort_order: 'asc' }
       });
 
       const fallbackButtons = [];
       if (aiResult.predicted_category) {
-          fallbackButtons.push(Markup.button.callback(`✅ Conferma (${aiResult.predicted_category})`, `cat|${jobId}|${aiResult.predicted_category}`));
+          const guess = fallbacksFromDB.find(c => c.id === aiResult.predicted_category);
+          if(guess) {
+              fallbackButtons.push(Markup.button.callback(`✅ Conferma (${guess.name})`, `cat|${jobId}|${guess.id}`));
+          }
       }
       
       for (let i = 0; i < fallbacksFromDB.length; i++) {
-          fallbackButtons.push(Markup.button.callback(fallbacksFromDB[i].name, `cat|${jobId}|${fallbacksFromDB[i].name}`));
+          fallbackButtons.push(Markup.button.callback(fallbacksFromDB[i].name, `cat|${jobId}|${fallbacksFromDB[i].id}`));
       }
+
+      const predictedName = aiResult.predicted_category ? fallbacksFromDB.find(c => c.id === aiResult.predicted_category)?.name : 'Sconosciuto';
 
       await bot.telegram.sendMessage(
           chatId,
-          `🤖 **Analisi Rapida Completata!**\n\nPenso si tratti di: **${aiResult.predicted_category || 'Sconosciuto'}**.\nConfermi o modifichi? 👇`,
+          `🤖 **Analisi Rapida Completata!**\n\nPenso si tratti di: **${predictedName || 'Sconosciuto'}**.\nConfermi o modifichi? 👇`,
           Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
       );
 

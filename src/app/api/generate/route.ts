@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
   try {
-    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, imgCount } = await req.json();
+    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, imgCount } = await req.json();
 
     if (!jobId || !fileUrl) {
       return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
-    const analysisPrompt = `Sei un sarto e stilista. Il capo in foto appartiene alla categoria "${confirmedCategory}". ${contextStr}
+    const analysisPrompt = `Sei un sarto e stilista. Il capo in foto appartiene a una specifica categoria selezionata dall'utente. ${contextStr}
 Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (una lunghissima descrizione maniacale e minuziosa che possa spiegare a un'altra intelligenza artificiale come ridisegnare questo capo identico al 100%, cucitura per cucitura, inclusi colletti, fit, lunghezza, tessuto, maniche). Niente altro che il JSON.`;
 
     const visionResult = await ai.models.generateContent({
@@ -44,25 +44,51 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
         garmentDetails = { description: "elegant high quality outfit", type: "outfit", color: "original" };
     }
 
-    // FASE 2: Carica il Template Selezionato
+    // FASE 2: Carica Prompt Master e Scene (Nuova Architettura Modulare)
     const storeObj = await (prisma as any).store.findUnique({ where: { id: storeId } });
 
-    let template = await prisma.promptTemplate.findFirst({
-         where: { name: confirmedCategory }
+    const categoryObj = await prisma.category.findUnique({
+         where: { id: confirmedCategory },
+         include: { prompt_master: true }
     });
         
-    if (!template) {
-         console.error(`[CRITICO] Categoria non trovata nel DB: ${confirmedCategory}`);
-         throw new Error(`Categoria '${confirmedCategory}' non trovata nel Database. Assicurati di non usare vecchi menu a tendina su Telegram.`);
+    if (!categoryObj || !categoryObj.prompt_master) {
+         console.error(`[CRITICO] Categoria Master non trovata nel DB: ${confirmedCategory}`);
+         throw new Error(`Architettura Prompt Master mancante per l'ID: ${confirmedCategory}`);
     }
 
-    const scenes = template?.scenes ? JSON.parse(template.scenes) : ["Walking in the city"];
+    const masterPromptText = categoryObj.prompt_master.prompt_text || 'Modella fotorealistica e professionale.';
+    const negativeRulesText = categoryObj.prompt_master.negative_rules || 'No modifiche al capo, no tagli';
 
-    // FASE 3: Generazione tramite Imagen 3 
-    // Meschio e limito in base alla scelta (default 3)
+    let targetScenes: any[] = [];
     const count = imgCount ? parseInt(imgCount) : 3;
-    const shuffledScenes = scenes.sort(() => Math.random() - 0.5);
-    const targetScenes = shuffledScenes.slice(0, count);
+
+    if (confirmedScene && confirmedScene !== 'random') {
+        const specificScene = await prisma.scene.findUnique({
+             where: { id: confirmedScene }
+        });
+        if (specificScene) {
+            // Se scelgo foto singola scena, magari clono l'array per le 3 angolature
+            targetScenes = Array(count).fill(specificScene.scene_text);
+        }
+    }
+
+    if (targetScenes.length === 0) {
+        // Fallback Random Scena
+        const allScenes = await prisma.scene.findMany({
+             where: { category_id: confirmedCategory, is_active: true }
+        });
+        if (allScenes.length === 0) {
+            allScenes.push({ scene_text: "Walking in the city", title: "Default" } as any);
+        }
+        
+        const shuffledScenes = allScenes.sort(() => Math.random() - 0.5);
+        targetScenes = shuffledScenes.slice(0, count).map(s => s.scene_text);
+        // Se chiedono 3 generate ma ci sono solo 2 scene, ripetiamo
+        while (targetScenes.length < count) {
+             targetScenes.push(targetScenes[targetScenes.length - 1]);
+        }
+    }
     
     // PERSONA LOCK GENERATOR (Coerenza facciale del Batch)
     const isMale = confirmedGender === 'uomo' || confirmedGender === 'Uomo';
@@ -86,28 +112,33 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     else if (confirmedCategory === 'Rivista') ageBracket = "20-35";
 
     const results = await Promise.allSettled(
-        targetScenes.map(async (scene: string, index: number) => {
+        targetScenes.map(async (sceneText: string, index: number) => {
             const currentAngle = cameraAngles[index % cameraAngles.length];
 
-            const finalPrompt = `${scene}
+            const finalPrompt = `[MASTER DIRECTIVES]
+${masterPromptText}
 
-SUBJECT AGE REQUIREMENT:
+[SCENE ENVIRONMENT/ACTION]
+${sceneText}
+
+[SUBJECT AND AGE REQUIREMENT]
 The subject MUST clearly look to be between ${ageBracket} years old.
 
-CAMERA ANGLE AND PERSPECTIVE:
+[CAMERA ANGLE AND PERSPECTIVE]
 ${currentAngle}. Vary the camera perspective naturally, feeling authentic and not staged.
 
-GARMENT CAPTURE INSTRUCTIONS:
+[GARMENT CAPTURE INSTRUCTIONS]
 ${isMale 
    ? 'The subject in the image is MALE. HE is wearing EXACTLY the outfit shown in the attached image context. CRITICAL RULE: The male model MUST be wearing a suitable base layer (like a fitted t-shirt or dress shirt) underneath his outerwear. ABSOLUTELY NO BARE-CHESTED LOOKS.' 
    : 'The subject in the image is FEMALE. SHE is wearing EXACTLY the outfit shown in the attached image context.'} 
 GARMENT DESCRIPTION: ${garmentDetails.description}. 
 ${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}.
 
-ABSOLUTE RULE 1 [CRITICAL]: THE CLOTHING ITEM PROVIDED IN THE IMAGE IS THE ONLY GROUND TRUTH. You MUST analyze mathematically the exact structure, texture, length, fabric material, color, and shape of the reference clothing. You MUST reproduce an identical 1:1 clone (Virtual Try-On) without adding or altering any seams, cuts, or patterns. 
-ABSOLUTE RULE 2 [CRITICAL]: DO NOT generate any text, words, store logos, price tags, store tags, watermarks, or plastic strings. Any visible tags on the original garment must be magically erased without altering the fabric behind it.
-ABSOLUTE RULE 3: No unrealistic anatomy. No exaggerated fashion poses. No mannequin parts. 
-ABSOLUTE RULE 4: Integrate the exactly cloned reference outfit naturally on a real human being.`;
+[CRITICAL GENERATION CONSTRAINTS]
+ABSOLUTE RULE 1: THE CLOTHING ITEM PROVIDED IN THE IMAGE IS THE ONLY GROUND TRUTH. You MUST analyze mathematically the exact structure, texture, length, fabric material, color, and shape of the reference clothing. You MUST reproduce an identical 1:1 clone (Virtual Try-On) without adding or altering any seams, cuts, or patterns. 
+ABSOLUTE RULE 2: DO NOT generate any text, words, store logos, price tags, store tags, watermarks, or plastic strings. Any visible tags on the original garment must be magically erased without altering the fabric behind it.
+ABSOLUTE RULE 3: Integrate the exactly cloned reference outfit naturally on a real human being.
+NEGATIVE RULES: ${negativeRulesText}`;
             
             const generated = await ai.models.generateContent({
                 model: 'gemini-3-pro-image-preview',
@@ -144,7 +175,7 @@ ABSOLUTE RULE 4: Integrate the exactly cloned reference outfit naturally on a re
                 const finalUrl = publicUrl || "uploaded_storage_link";
 
                 await prisma.jobImage.create({
-                    data: { job_id: jobId, image_url: finalUrl, scene_type: scene }
+                    data: { job_id: jobId, image_url: finalUrl, scene_type: sceneText.substring(0, 50) }
                 });
                 return finalUrl; 
             }
