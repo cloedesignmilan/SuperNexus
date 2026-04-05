@@ -95,11 +95,19 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     
     console.log(`[Persona Lock UGC] Campagna: ${confirmedCategory} | Bottom: ${confirmedBottom} | Genere: ${isMale ? 'UOMO' : 'DONNA'}`);
 
-    const cameraAngles = [
+    let cameraAngles = [
         "Full body shot, head to toe completely visible", 
         "Mid shot, framed from the waist up", 
         "Slight close-up portrait, focusing on the upper chest and face"
     ];
+
+    if (categoryObj.name.toLowerCase().includes('scarpe') || categoryObj.name.toLowerCase().includes('calzature')) {
+        cameraAngles = [
+            "Low angle full body shot, incredibly sharp focus on the shoes", 
+            "Macro close-up shot focused specifically on the footwear and ankles, stylish pose with neutral clothing", 
+            "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
+        ];
+    }
 
     let ageBracket = "20-35";
     if (confirmedCategory === 'Sposi') ageBracket = "25-35";
