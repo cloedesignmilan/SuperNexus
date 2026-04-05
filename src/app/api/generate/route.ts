@@ -296,7 +296,7 @@ ${negativeBrandRule}`;
 
     // FASE 6: Inoltra le immagini su Telegram
     if (chatId) {
-       const finalBotToken = storeObj?.telegram_bot_token || process.env.TELEGRAM_BOT_TOKEN as string;
+       const finalBotToken = process.env.TELEGRAM_BOT_TOKEN as string;
        const bot = new Telegraf(finalBotToken);
        
        const mediaGroup = generatedUrls.map((urlStr) => {
