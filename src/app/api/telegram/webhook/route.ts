@@ -104,6 +104,9 @@ export async function POST(req: NextRequest) {
                 meta.confirmedBottom = value;
             } else if (action === 'gen') {
                 meta.confirmedGender = value;
+            } else if (action === 'targ') {
+                meta.confirmedShoeTarget = value;
+                meta.confirmedGender = value;
             } else if (action === 'env') {
                 if (value === 'studio' && meta.confirmedCategory) {
                     const catForEnv = await prisma.category.findUnique({ where: { id: meta.confirmedCategory } });
@@ -192,6 +195,14 @@ export async function POST(req: NextRequest) {
                 data: { metadata: meta }
             });
 
+            // Verifica se è categoria scarpe
+            let isShoesFeature = meta.isShoesCategory;
+            if (isShoesFeature === undefined && meta.confirmedCategory) {
+                const catCheck = await prisma.category.findUnique({ where: { id: meta.confirmedCategory } });
+                isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
+                meta.isShoesCategory = isShoesFeature;
+            }
+
             // Determina la prossima domanda
             if (!meta.confirmedCategory) {
                 // Recupera Categorie Dinamiche da DB (la nuova Tabella)
@@ -220,8 +231,8 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Pantalone", `bot|${jobId}|pantalone`)
                     ], { columns: 2 })
                 );
-            } else if (meta.needsGenderClarification && !meta.confirmedGender) {
-                // Chiedi Genere Uomo/Donna
+            } else if (meta.needsGenderClarification && !meta.confirmedGender && !meta.isShoesCategory) {
+                // Chiedi Genere Uomo/Donna (Salto automatico per scarpe)
                 await bot.telegram.sendMessage(
                     chatId,
                     `🎯 Hai scelto **${meta.confirmedCategory}**.\n\nTuttavia, vorrei esserne certo per applicare il giusto modello: **Il capo in foto è per Uomo o per Donna?**`,
@@ -244,6 +255,15 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("🌍 Ambientata", `env|${jobId}|ambientata`),
                         Markup.button.callback("📸 In Studio", `env|${jobId}|studio`)
                     ], { columns: 2 })
+                );
+            } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
+                await bot.telegram.sendMessage(
+                    chatId,
+                    `👟 **Target Demografico:**\n\nPer creare un set coerente e utilizzare il giusto modello del piede, specifica a chi sono destinate queste scarpe:`,
+                    Markup.inlineKeyboard([
+                        [Markup.button.callback("👨 Uomo", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna", `targ|${jobId}|donna`)],
+                        [Markup.button.callback("👦 Bambino", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina", `targ|${jobId}|bambina`)]
+                    ])
                 );
             } else {
                // Tutto pronto! Tasto per lanciare.
@@ -296,6 +316,15 @@ export async function POST(req: NextRequest) {
                             Markup.button.callback("🌍 Ambientata", `env|${pendingJob.id}|ambientata`),
                             Markup.button.callback("📸 In Studio", `env|${pendingJob.id}|studio`)
                         ], { columns: 2 })
+                    );
+                } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
+                    await bot.telegram.sendMessage(
+                        chatId,
+                        `👟 **Target Demografico:**\n\nPer creare un set coerente, specifica a chi sono destinate queste scarpe:`,
+                        Markup.inlineKeyboard([
+                            [Markup.button.callback("👨 Uomo", `targ|${pendingJob.id}|uomo`), Markup.button.callback("👩 Donna", `targ|${pendingJob.id}|donna`)],
+                            [Markup.button.callback("👦 Bambino", `targ|${pendingJob.id}|bambino`), Markup.button.callback("👧 Bambina", `targ|${pendingJob.id}|bambina`)]
+                        ])
                     );
                 } else {
                    const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
