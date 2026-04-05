@@ -217,7 +217,7 @@ NEGATIVE RULES: ${negativeRulesText}`;
            return { type: 'photo' as const, media: { source: Buffer.from(urlStr, 'base64') } };
        });
        
-       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\n- Categoria: ${confirmedCategory}\n- Taglio: ${confirmedBottom || 'Dato non richiesto'}\n- Regole Antitag Applicate!\n\nLe trovi anche sul Portale WEB come al solito. Ecco le scene esclusive generate per te:`, { parse_mode: 'Markdown' });
+       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\n- Categoria: ${categoryObj.name}\n- Taglio: ${confirmedBottom || 'Dato non richiesto'}\n- Regole Antitag Applicate!\n\nLe immagini sono disponibili anche su Media nel tuo Telegram. Ecco le scene esclusive generate per te:`, { parse_mode: 'Markdown' });
        if (mediaGroup.length > 0) {
            await bot.telegram.sendMediaGroup(chatId, mediaGroup);
        }
