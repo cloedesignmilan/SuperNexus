@@ -25,6 +25,24 @@ export async function POST(req: NextRequest) {
 
     if (!currentStore || !currentStore.is_active) return NextResponse.json({ ok: true });
 
+    // --- BILLING / ON-THE-FLY RESET ---
+    const now = new Date();
+    const nextCycle = new Date(currentStore.billing_cycle_start);
+    nextCycle.setMonth(nextCycle.getMonth() + 1);
+
+    if (now >= nextCycle) {
+        // Reset mensile e sposta la data ad oggi
+        currentStore = await (prisma as any).store.update({
+             where: { id: currentStore.id },
+             data: {
+                 subscription_credits: currentStore.generation_limit,
+                 billing_cycle_start: now
+             }
+        });
+    }
+    const totalAvail = currentStore.subscription_credits + currentStore.supplementary_credits;
+
+
     const bot = new Telegraf(botToken);
     const update = await req.json();
     console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
@@ -109,7 +127,7 @@ export async function POST(req: NextRequest) {
                 meta.confirmedGender = value;
             } else if (action === 'env') {
                 if (value === 'studio' && meta.confirmedCategory) {
-                    const catForEnv = await prisma.category.findUnique({ where: { id: meta.confirmedCategory } });
+                    const catForEnv = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
                     const isShoes = catForEnv?.name.toLowerCase().includes('scarpe') || catForEnv?.name.toLowerCase().includes('calzature');
                     
                     if (isShoes) {
@@ -153,10 +171,15 @@ export async function POST(req: NextRequest) {
                 if (job.status === "processing") {
                     return NextResponse.json({ ok: true });
                 }
-                
                 // Avvia generazione!
                 const generationCount = parseInt(value || "3");
                 
+                // --- QUOTA CHECK PRE-GENERAZIONE ---
+                if (totalAvail < generationCount) {
+                     await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${generationCount} immagini, ma il tuo piano ha solo ${totalAvail} crediti residui.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per ricaricare subito o attendi il rinnovo.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+                     return NextResponse.json({ ok: true });
+                }
+
                 const safeGender = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                 meta.confirmedGender = safeGender; // salva in DB per sicurezza!
                 await (prisma.generationJob as any).update({
@@ -198,7 +221,7 @@ export async function POST(req: NextRequest) {
             // Verifica se è categoria scarpe
             let isShoesFeature = meta.isShoesCategory;
             if (isShoesFeature === undefined && meta.confirmedCategory) {
-                const catCheck = await prisma.category.findUnique({ where: { id: meta.confirmedCategory } });
+                const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
                 isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
                 meta.isShoesCategory = isShoesFeature;
             }
@@ -206,7 +229,7 @@ export async function POST(req: NextRequest) {
             // Determina la prossima domanda
             if (!meta.confirmedCategory) {
                 // Recupera Categorie Dinamiche da DB (la nuova Tabella)
-                const categories = await prisma.category.findMany({
+                const categories = await (prisma as any).category.findMany({
                    where: { is_active: true },
                    orderBy: { sort_order: 'asc' }
                 });
@@ -344,6 +367,12 @@ export async function POST(req: NextRequest) {
     }
 
     if (incomingPhoto || incomingDoc) {
+      // --- QUOTA CHECK ANTI INVASIONE STRUTTURALE ---
+      if (totalAvail <= 0) {
+           await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Mensili Esauriti**\n\nHai esaurito tutto il tuo credito per questo mese. Nessun abito verrà processato.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per continuare a vendere senza limiti.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+           return NextResponse.json({ ok: true });
+      }
+
       let fileId = incomingPhoto ? incomingPhoto[incomingPhoto.length - 1].file_id : incomingDoc.file_id;
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
@@ -361,7 +390,7 @@ export async function POST(req: NextRequest) {
       }
 
       // Costruiamo le Categorie Dinamiche per Gemini
-      const templatesSchemaList = await prisma.category.findMany({
+      const templatesSchemaList = await (prisma as any).category.findMany({
           where: { is_active: true }
       });
       const validCategoriesStr = templatesSchemaList.map((t: any) => `ID: "${t.id}" (Nome: ${t.name})`).join(" | ");
@@ -428,7 +457,7 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
       });
 
       // Partiamo chiedendo la categoria se l'IA ha un "guess" o partiamo da zero
-      const fallbacksFromDB = await prisma.category.findMany({
+      const fallbacksFromDB = await (prisma as any).category.findMany({
           where: { is_active: true },
           orderBy: { sort_order: 'asc' }
       });
@@ -436,7 +465,7 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
       const fallbackButtons = [];
       if (aiResult.predicted_category) {
           const predictedStr = aiResult.predicted_category;
-          const guess = fallbacksFromDB.find(c => 
+          const guess = fallbacksFromDB.find((c: any) => 
              c.id === predictedStr || 
              c.name.toLowerCase().includes(predictedStr.toLowerCase())
           );
@@ -449,7 +478,7 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
           fallbackButtons.push(Markup.button.callback(fallbacksFromDB[i].name, `cat|${jobId}|${fallbacksFromDB[i].id}`));
       }
 
-      const predictedName = aiResult.predicted_category ? fallbacksFromDB.find(c => c.id === aiResult.predicted_category)?.name : 'Sconosciuto';
+      const predictedName = aiResult.predicted_category ? fallbacksFromDB.find((c: any) => c.id === aiResult.predicted_category)?.name : 'Sconosciuto';
 
       await bot.telegram.sendMessage(
           chatId,

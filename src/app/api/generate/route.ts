@@ -47,7 +47,7 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     // FASE 2: Carica Prompt Master e Scene (Nuova Architettura Modulare)
     const storeObj = await (prisma as any).store.findUnique({ where: { id: storeId } });
 
-    const categoryObj = await prisma.category.findUnique({
+    const categoryObj = await (prisma as any).category.findUnique({
          where: { id: confirmedCategory },
          include: { prompt_master: true }
     });
@@ -64,7 +64,7 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     const count = imgCount ? parseInt(imgCount) : 3;
 
     if (confirmedScene && confirmedScene !== 'random') {
-        const specificScene = await prisma.scene.findUnique({
+        const specificScene = await (prisma as any).scene.findUnique({
              where: { id: confirmedScene }
         });
         if (specificScene) {
@@ -96,7 +96,7 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
              }
         } else {
             // Fallback Random Scena da DB (Ambientata)
-            const allScenes = await prisma.scene.findMany({
+            const allScenes = await (prisma as any).scene.findMany({
                  where: { category_id: confirmedCategory, is_active: true }
             });
             if (allScenes.length === 0) {
@@ -251,8 +251,31 @@ ${negativeBrandRule}`;
         .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
         .map(r => r.value);
 
-    // FASE 4: Segna completato
-    await prisma.generationJob.update({
+    // FASE 4: Segna completato e SCALA CREDITI
+    let toDeduct = generatedUrls.length;
+    let newSub = storeObj.subscription_credits;
+    let newSupp = storeObj.supplementary_credits;
+
+    if (toDeduct <= newSub) {
+        newSub -= toDeduct;
+    } else {
+        const remainingToDeduct = toDeduct - newSub;
+        newSub = 0;
+        newSupp -= remainingToDeduct;
+    }
+
+    // Previeni db negativi in casi strani
+    if (newSupp < 0) newSupp = 0;
+
+    await (prisma as any).store.update({
+        where: { id: storeId },
+        data: {
+             subscription_credits: newSub,
+             supplementary_credits: newSupp
+        }
+    });
+
+    await (prisma as any).generationJob.update({
         where: { id: jobId },
         data: { status: "completato" }
     });
@@ -281,7 +304,15 @@ ${negativeBrandRule}`;
            return { type: 'photo' as const, media: { source: Buffer.from(urlStr, 'base64') } };
        });
        
-       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\n- Categoria: ${categoryObj.name}\n- Taglio: ${confirmedBottom || 'Dato non richiesto'}\n- Regole Antitag Applicate!\n\nLe immagini sono disponibili anche su Media nel tuo Telegram. Ecco le scene esclusive generate per te:`, { parse_mode: 'Markdown' });
+       const totalRimasti = newSub + newSupp;
+       let warningStr = ``;
+       if (totalRimasti <= 15 && totalRimasti > 0) {
+           warningStr = `\n\n⚠️ **ATTENZIONE**: Ti restano solo ${totalRimasti} generazioni. [Acquista Pacchetto](https://supernexus.ai/ricarica) per ricaricare subito.`;
+       } else if (totalRimasti === 0) {
+           warningStr = `\n\n⚠️ **Crediti Esauriti**: Hai raggiunto zero generazioni. Affrettati a [ricaricare il pacchetto](https://supernexus.ai/ricarica) per continuare a vendere!`;
+       }
+
+       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\n- Categoria: ${(categoryObj as any).name}\n- Taglieria: ${confirmedBottom || 'Dato non richiesto'}\n- Crediti Rimanenti: **${totalRimasti}**${warningStr}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } } as any);
        if (mediaGroup.length > 0) {
            await bot.telegram.sendMediaGroup(chatId, mediaGroup);
        }

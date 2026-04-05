@@ -22,6 +22,13 @@ model Store {
   default_template_id String?
   password            String?
   default_template    PromptTemplate? @relation("StoreDefaultTemplate", fields: [default_template_id], references: [id])
+  
+  // -- BILLING & GENERATION LIMITS --
+  plan_name              String   @default("STARTER") // e.g. "STARTER", "BOUTIQUE", "ENTERPRISE"
+  generation_limit       Int      @default(50)         // Number of images allowed per month
+  subscription_credits   Int      @default(50)         // Current cycle remaining credits
+  supplementary_credits  Int      @default(0)          // Extra purchased credits that rollover
+  billing_cycle_start    DateTime @default(now())      // Auto-reset anchor date
 }
 
 model User {
