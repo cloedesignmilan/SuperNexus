@@ -4,18 +4,10 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 function generateSecurePassword(storeName: string): string {
-    // Generiamo una password del tipo: Armani-9482
-    // Rimuoviamo gli spazi e teniamo le prime 6 lettere in UpperCamelCase
-    const cleanName = storeName.replace(/[^a-zA-Z]/g, '').slice(0, 6);
-    const capitalizedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1).toLowerCase();
+    // Genera un PIN univoco a 6 o 7 cifre (più rassicurante e rapido per l'utente, e sicuro matematicamente).
+    const pin = Math.floor(100000 + Math.random() * 900000); // Ritorna un numero tra 100000 e 999999
     
-    // Genera 4 numeri casuali
-    const randomNums = Math.floor(1000 + Math.random() * 9000);
-    
-    // Se il nome era vuoto o strano, mettiamo Store di default
-    const prefix = capitalizedName || "Boutique";
-    
-    return `${prefix}-${randomNums}`;
+    return pin.toString();
 }
 
 export async function processRegistration(formData: FormData) {

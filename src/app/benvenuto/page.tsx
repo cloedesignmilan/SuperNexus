@@ -36,7 +36,7 @@ export default async function BenvenutoPage({ searchParams }: { searchParams: Pr
                     </p>
 
                     <div style={{background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '30px', marginBottom: '30px'}}>
-                        <h3 style={{fontSize: '1rem', color: '#888', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '15px'}}>La TUA PASSWORD Personale</h3>
+                        <h3 style={{fontSize: '1rem', color: '#888', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '15px'}}>Il TUO PIN DI ACCESSO SEGRETO</h3>
                         
                         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px'}}>
                             <div style={{fontFamily: 'monospace', fontSize: '2.5rem', fontWeight: 'bold', color: '#03dac6', letterSpacing: '3px'}}>
