@@ -178,7 +178,10 @@ export async function POST(req: NextRequest) {
 
                 bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso!**\n*(Sto preparando l'allestimento fotografico...)*`);
 
-                const baseUrl = `https://x-super-nexus.vercel.app`;
+                const protocol = req.headers.get("x-forwarded-proto") || "https";
+                const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+                const baseUrl = host ? `${protocol}://${host}` : `https://x-super-nexus.vercel.app`;
+                
                 fetch(`${baseUrl}/api/generate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
