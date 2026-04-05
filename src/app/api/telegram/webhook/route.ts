@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
                     data: { status: "processing", metadata: meta }
                 });
 
-                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso! Prepara i pop-corn 🍿, sto cucinando l'outfit perfetto per te...**\n*(Sceglierò una scena diversa per ogni scatto!)*`);
+                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso!**\n*(Sceglierò una scena diversa per ogni scatto!)*`);
 
                 const baseUrl = `https://x-super-nexus.vercel.app`;
                 fetch(`${baseUrl}/api/generate`, {
