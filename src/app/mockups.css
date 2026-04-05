@@ -26,6 +26,13 @@
   transform: rotateY(15deg) translateZ(0);
 }
 
+.camera-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
 .social-mockup {
   background: #fff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
