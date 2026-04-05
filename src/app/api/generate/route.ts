@@ -304,18 +304,23 @@ ${negativeBrandRule}`;
            return { type: 'photo' as const, media: { source: Buffer.from(urlStr, 'base64') } };
        });
        
-       const totalRimasti = newSub + newSupp;
-       let warningStr = ``;
-       if (totalRimasti <= 15 && totalRimasti > 0) {
-           warningStr = `\n\n⚠️ **ATTENZIONE**: Ti restano solo ${totalRimasti} generazioni. [Acquista Pacchetto](https://supernexus.ai/ricarica) per ricaricare subito.`;
-       } else if (totalRimasti === 0) {
-           warningStr = `\n\n⚠️ **Crediti Esauriti**: Hai raggiunto zero generazioni. Affrettati a [ricaricare il pacchetto](https://supernexus.ai/ricarica) per continuare a vendere!`;
-       }
-
-       await bot.telegram.sendMessage(chatId, `🎉 **PROCESSO COMPLETATO!**\n\n- Categoria: ${(categoryObj as any).name}\n- Taglieria: ${confirmedBottom || 'Dato non richiesto'}\n- Crediti Rimanenti: **${totalRimasti}**${warningStr}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } } as any);
-       if (mediaGroup.length > 0) {
-           await bot.telegram.sendMediaGroup(chatId, mediaGroup);
-       }
+        const totalRimasti = newSub + newSupp;
+        let warningStrHTML = ``;
+        if (totalRimasti <= 15 && totalRimasti > 0) {
+            warningStrHTML = `\n\n⚠️ <b>ATTENZIONE</b>: Ti restano solo ${totalRimasti} generazioni. <a href="https://supernexus.ai/ricarica">Acquista Pacchetto</a> per ricaricare subito.`;
+        } else if (totalRimasti === 0) {
+            warningStrHTML = `\n\n⚠️ <b>Crediti Esauriti</b>: Hai raggiunto zero generazioni. Affrettati a <a href="https://supernexus.ai/ricarica">ricaricare il pacchetto</a> per continuare a vendere!`;
+        }
+ 
+        try {
+            await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${(categoryObj as any).name}\n- Taglieria: ${confirmedBottom || 'Dato non richiesto'}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
+            if (mediaGroup.length > 0) {
+                await bot.telegram.sendMediaGroup(chatId, mediaGroup);
+            }
+        } catch (botErr) {
+            console.error("Errore fatale invio Telegram:", botErr);
+            await bot.telegram.sendMessage(chatId, "⚠️ Ops... L'intelligenza Artificiale ha creato le immagini ma i file erano troppo pesanti per essere processati su Telegram! Riprova con un numero minore.").catch(()=>null);
+        }
     }
 
     return NextResponse.json({ success: true, count: generatedUrls.length });
