@@ -40,9 +40,14 @@ export async function processRegistration(formData: FormData) {
     // Crea un nuovo cliente nel Database
     const password = generateSecurePassword(storeName);
 
+    // Genera slug univoco basato su nome e numeri random per evitare conflitti Prisma
+    const baseSlug = storeName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const finalSlug = baseSlug + '-' + Math.floor(100 + Math.random() * 900);
+
     const newStore = await (prisma as any).store.create({
         data: {
             name: storeName,
+            slug: finalSlug,
             password: password,
             plan_name: planName.toUpperCase(),
             monthly_fee: monthlyFee,
