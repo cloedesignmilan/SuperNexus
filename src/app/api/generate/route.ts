@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
-import { uploadImageToSupabase } from "@/lib/supabaseStorage";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
@@ -234,14 +233,8 @@ ${negativeBrandRule}`;
             }
 
             if (base64Image) {
-                const uniqueFilename = `garment_gen_${jobId}_${Date.now()}_${Math.random().toString(36).substring(7)}.jpg`;
-                const publicUrl = await uploadImageToSupabase(base64Image, uniqueFilename);
-                const finalUrl = publicUrl || "uploaded_storage_link";
-
-                await prisma.jobImage.create({
-                    data: { job_id: jobId, image_url: finalUrl, scene_type: sceneText.substring(0, 50) }
-                });
-                return finalUrl; 
+                // Passaggio diretto dell'immagine in Base64 senza salvataggio persistente su Storage/Database!
+                return base64Image; 
             }
             throw new Error("No image inlineData in candidates");
         })
