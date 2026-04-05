@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
     const analysisPrompt = `Sei un sarto e stilista. Il capo in foto appartiene a una specifica categoria selezionata dall'utente. ${contextStr}
-Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (una lunghissima descrizione maniacale e minuziosa che possa spiegare a un'altra intelligenza artificiale come ridisegnare questo capo identico al 100%, cucitura per cucitura. CRUCIALE: se vedi una cravatta, papillon, fazzoletto da taschino o cintura, analizzane ESATTAMENTE trama, pattern, materiale, larghezza e colore e includili nella descrizione in modo dettagliatissimo). Niente altro che il JSON.`;
+Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (UNA DESCRIZIONE MANIACALE, PRECISA E ASSOLUTA. Devi descrivere forma, taglio esatto, proporzioni, materiali, cuciture, lacci, suole, colletti, bottoni, tasche e ogni singolo micro-dettaglio. Questa descrizione sarà usata come UNICA SORGENTE DI VERITÀ per clonare l'oggetto identico al 100%. Se alteri o ometti qualcosa, il risultato fallirà. Sii letalmente preciso nel preservare la fedeltà all'originale). Niente altro che il JSON.`;
 
     const visionResult = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -172,7 +172,7 @@ CRITICAL RULE: THIS IS STRICTLY STILL-LIFE PRODUCT PHOTOGRAPHY. DO NOT GENERATE 
 CLOTHING COLOR & PATTERN: ${garmentDetails.color}
 CLOTHING DESCRIPTION: ${garmentDetails.description}
 
-ABSOLUTE HARD RULE: The structure, seams, laces, soles, heels, and materials of the shoe MUST NOT BE ALTERED. It is the ONLY ground truth.
+ABSOLUTE HARD RULE 1 (PRODUCT SHAPE & CUT LOCK): The structure, shape, cut, proportions, color, seams, laces, soles, heels, and materials of the shoe MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL. The original image is the ONLY absolute ground truth for the product.
 ${brandRule}
 
 [NEGATIVE RULES]
@@ -196,7 +196,7 @@ CLOTHING DESCRIPTION: ${garmentDetails.description}
 ${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}
 
 ABSOLUTE HARD RULE 1 (ACCESSORY LOCK): IF the reference image contains a specific tie (cravatta) or bow tie (papillon), you MUST render it with the EXACT same pattern, color, and knot. If the reference is a long tie, DO NOT generate a bow tie. If it's a bow tie, DO NOT generate a long tie!
-ABSOLUTE HARD RULE 2 (GARMENT LOCK): The structure, seams, lapels, buttons, and fit of the garment MUST NOT BE ALTERED. It is the ONLY ground truth.
+ABSOLUTE HARD RULE 2 (GARMENT SHAPE & CUT LOCK): The structure, cut, shape, proportions, color, seams, lapels, buttons, and fit of the original garment MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL. The original image is the ONLY absolute ground truth for the product.
 ${brandRule}
 
 [NEGATIVE RULES]
