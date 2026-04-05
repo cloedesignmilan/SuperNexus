@@ -105,6 +105,44 @@ export async function POST(req: NextRequest) {
             } else if (action === 'gen') {
                 meta.confirmedGender = value;
             } else if (action === 'env') {
+                if (value === 'studio' && meta.confirmedCategory) {
+                    const catForEnv = await prisma.category.findUnique({ where: { id: meta.confirmedCategory } });
+                    const isShoes = catForEnv?.name.toLowerCase().includes('scarpe') || catForEnv?.name.toLowerCase().includes('calzature');
+                    
+                    if (isShoes) {
+                        meta.confirmedEnvironment = 'studio_calzature';
+                        
+                        // Previeni doppi click
+                        if (job.status === "processing") return NextResponse.json({ ok: true });
+                        await (prisma.generationJob as any).update({
+                            where: { id: jobId },
+                            data: { status: "processing", metadata: meta }
+                        });
+                        
+                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 4 angolazioni professionali su sfondo bianco...)*`);
+
+                        const baseUrl = `https://x-super-nexus.vercel.app`;
+                        fetch(`${baseUrl}/api/generate`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                jobId: jobId,
+                                fileUrl: meta.fileUrl,
+                                chatId: chatId,
+                                storeId: currentStore.id,
+                                confirmedCategory: meta.confirmedCategory,
+                                confirmedBottom: null,
+                                confirmedGender: 'Uomo', // ignora genere
+                                confirmedScene: null,
+                                confirmedEnvironment: 'studio_calzature',
+                                imgCount: 4
+                            })
+                        }).catch(e => console.error(e));
+
+                        await new Promise(r => setTimeout(r, 800));
+                        return NextResponse.json({ ok: true });
+                    }
+                }
                 meta.confirmedEnvironment = value;
             } else if (action === 'run') {
                 // Previene doppi click

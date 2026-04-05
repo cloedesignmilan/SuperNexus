@@ -74,7 +74,16 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     }
 
     if (targetScenes.length === 0) {
-        if (confirmedEnvironment === 'studio') {
+        if (confirmedEnvironment === 'studio_calzature') {
+             // 4 Specific angles for strictly product shoes
+             targetScenes = [
+                 "Still life product photography, pair of shoes, angled 3/4 front view, pure white floor and background",
+                 "Still life product photography, pair of shoes, straight top-down flat lay view, pure white background",
+                 "Still life product photography, pair of shoes, back heel view showing the rear details, pure white background",
+                 "Still life product photography, single shoe, side profile view, pure white background"
+             ];
+             // imgCount è forzato a 4 dal webhook
+        } else if (confirmedEnvironment === 'studio') {
             // Hardcode di scene neutre professionali per lo studio
              const studioScenes = [
                  "Pure bright white cyclorama studio background, professional high-end fashion lighting.",
@@ -136,7 +145,28 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
         targetScenes.map(async (sceneText: string, index: number) => {
             const currentAngle = cameraAngles[index % cameraAngles.length];
 
-            const finalPrompt = `[MASTER DIRECTIVES]
+            let finalPrompt = "";
+            
+            if (confirmedEnvironment === 'studio_calzature') {
+                finalPrompt = `[MASTER DIRECTIVES]
+${masterPromptText}
+
+[SUBJECT AND SCENE]
+${sceneText}
+
+[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
+YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM FOR STILL LIFE PRODUCT PHOTOGRAPHY. You must IDENTICALLY CLONE the footwear item from the attached reference image.
+CRITICAL RULE: THIS IS STRICTLY STILL-LIFE PRODUCT PHOTOGRAPHY. DO NOT GENERATE ANY HUMANS, ANY LEGS, ANY FEET, OR ANY MANNEQUINS. GENERATE ONLY THE SHOES THEMSELVES ON A PURE WHITE STUDIO BACKGROUND.
+CLOTHING COLOR & PATTERN: ${garmentDetails.color}
+CLOTHING DESCRIPTION: ${garmentDetails.description}
+
+ABSOLUTE HARD RULE: The structure, seams, laces, soles, heels, and materials of the shoe MUST NOT BE ALTERED. It is the ONLY ground truth.
+ABSOLUTE HARD RULE: DO NOT generate any text, brand logos, tags, or watermarks.
+
+[NEGATIVE RULES]
+No humans, no feet, no legs. No brand logos, no text in the image. No distortions of the shoe shape.`;
+            } else {
+                finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
 
 [SUBJECT AND SCENE]
@@ -159,6 +189,7 @@ ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, tags, or watermarks
 
 [NEGATIVE RULES]
 ${negativeRulesText}`;
+            }
             
             const generated = await ai.models.generateContent({
                 model: 'gemini-3-pro-image-preview',
