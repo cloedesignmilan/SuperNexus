@@ -46,90 +46,93 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS (CAMERA & SOCIAL MOCKUPS) */}
-      <section className="comparison-section">
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
-          
-          {[1,2,3,4,5,6].map((num) => {
-            const isInsta = num % 2 !== 0; // Alterniamo Instagram/Facebook
-            const socialClass = isInsta ? "social-mockup social-mockup-dark" : "social-mockup facebook-style";
-            const boutiqueName = isInsta ? "Boutique Pura" : "Elegance Concept Store";
+      {/* BEFORE / AFTER VISUALS (CAMERA & SOCIAL MOCKUPS - MARQUEE CAROUSEL) */}
+      <section className="comparison-section" style={{ overflow: 'hidden' }}>
+        <div className="marquee-wrapper">
+          <div className="marquee-track">
+            
+            {/* Duplichiamo l'array due volte per l'effetto di loop infinito senza salti */}
+            {[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6].map((num, idx) => {
+              const isInsta = num % 2 !== 0; // Alterniamo Instagram/Facebook
+              const socialClass = isInsta ? "social-mockup social-mockup-dark" : "social-mockup facebook-style";
+              const boutiqueName = isInsta ? "Boutique Pura" : "Elegance Concept Store";
 
-            return (
-              <div key={num} className="transformation-block">
-                <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: '#03dac6', textAlign: 'center' }}>
-                  ✧ Workflow Negozio {num}
-                </h3>
-                <div className="spectacular-grid">
-                  
-                  {/* PRIMA: FOTOCAMERA */}
-                  <div className="camera-mockup">
-                    <img src={`/${num}-a.jpeg`} alt={`Scatto fotocamera ${num}`} className="camera-image" />
-                    <div className="camera-grid-overlay"></div>
-                    <div className="camera-focus-box"></div>
-                    <div className="camera-flash"></div>
-                    <div className="camera-ui-bottom">
-                      <div className="camera-ui-modes">
-                        <span>VIDEO</span>
-                        <span className="active">FOTO</span>
-                        <span>RITRATTO</span>
+              return (
+                <div key={idx} className="transformation-block" style={{ flexShrink: 0 }}>
+                  <h3 style={{ fontSize: '1.6rem', marginBottom: '2rem', color: '#03dac6', textAlign: 'center' }}>
+                    ✧ Negozio {num}
+                  </h3>
+                  <div className="spectacular-grid">
+                    
+                    {/* PRIMA: FOTOCAMERA */}
+                    <div className="camera-mockup">
+                      <img src={`/${num}-a.jpeg`} alt={`Scatto fotocamera ${num}`} className="camera-image" />
+                      <div className="camera-grid-overlay"></div>
+                      <div className="camera-focus-box"></div>
+                      <div className="camera-flash"></div>
+                      <div className="camera-ui-bottom">
+                        <div className="camera-ui-modes">
+                          <span>VIDEO</span>
+                          <span className="active">FOTO</span>
+                          <span>RITRATTO</span>
+                        </div>
+                        <div className="camera-shutter-button"></div>
                       </div>
-                      <div className="camera-shutter-button"></div>
                     </div>
-                  </div>
 
-                  {/* ARROW */}
-                  <div className="spectacular-arrow-container">
-                    <div className="neon-arrow">
-                      <ArrowRight size={48} color="#bb86fc" />
+                    {/* ARROW */}
+                    <div className="spectacular-arrow-container">
+                      <div className="neon-arrow">
+                        <ArrowRight size={48} color="#bb86fc" />
+                      </div>
+                      <div className="arrow-text">30 SECONDI</div>
+                      <div style={{ fontSize: '0.75rem', color: '#a0a0a0', textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', marginTop: '4px', letterSpacing: '0.5px' }}>
+                        Genera 3, 5 o 10 foto
+                      </div>
                     </div>
-                    <div className="arrow-text">30 SECONDI</div>
-                    <div style={{ fontSize: '0.75rem', color: '#a0a0a0', textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', marginTop: '4px', letterSpacing: '0.5px' }}>
-                      Genera 3, 5 o 10 foto
-                    </div>
-                  </div>
 
-                  {/* DOPO: SOCIAL MEDIA */}
-                  <div className={socialClass}>
-                    <div className="social-header">
-                      <div className="social-avatar">{isInsta ? "BP" : "EC"}</div>
-                      <div className="social-username">{boutiqueName} {isInsta ? "" : <span style={{color: '#888', fontWeight: 'normal', fontSize: '0.8rem'}}>ha aggiornato il catalogo.</span>}</div>
+                    {/* DOPO: SOCIAL MEDIA */}
+                    <div className={socialClass}>
+                      <div className="social-header">
+                        <div className="social-avatar">{isInsta ? "BP" : "EC"}</div>
+                        <div className="social-username">{boutiqueName} {isInsta ? "" : <span style={{color: '#888', fontWeight: 'normal', fontSize: '0.8rem'}}>ha aggiornato il catalogo.</span>}</div>
+                      </div>
+                      
+                      <div className="social-image-container">
+                        <img src={`/${num}-b.jpeg`} alt={`Post Social ${num}`} className="social-image" />
+                      </div>
+
+                      <div className="social-footer">
+                        {isInsta ? (
+                          <>
+                            <div className="social-actions">
+                              <Heart size={24} className="social-action-icon heart-icon" />
+                              <MessageCircle size={24} className="social-action-icon" />
+                              <Send size={24} className="social-action-icon" />
+                            </div>
+                            <div className="social-likes">Piace a 412 persone</div>
+                            <div className="social-caption">
+                              <span>{boutiqueName}</span> Nuova collezione in store! ✨
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="social-actions" style={{ marginBottom: '8px' }}>
+                              <div className="social-action-item" style={{color: '#1877F2'}}><ThumbsUp size={20} /> Mi piace</div>
+                              <div className="social-action-item"><MessageSquare size={20} /> Commenta</div>
+                              <div className="social-action-item"><Send size={20} /> Condividi</div>
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
                     
-                    <div className="social-image-container">
-                      <img src={`/${num}-b.jpeg`} alt={`Post Social ${num}`} className="social-image" />
-                    </div>
-
-                    <div className="social-footer">
-                      {isInsta ? (
-                        <>
-                          <div className="social-actions">
-                            <Heart size={24} className="social-action-icon heart-icon" />
-                            <MessageCircle size={24} className="social-action-icon" />
-                            <Send size={24} className="social-action-icon" />
-                          </div>
-                          <div className="social-likes">Piace a 412 persone</div>
-                          <div className="social-caption">
-                            <span>{boutiqueName}</span> Nuova collezione in store! ✨
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="social-actions" style={{ marginBottom: '8px' }}>
-                            <div className="social-action-item" style={{color: '#1877F2'}}><ThumbsUp size={20} /> Mi piace</div>
-                            <div className="social-action-item"><MessageSquare size={20} /> Commenta</div>
-                            <div className="social-action-item"><Send size={20} /> Condividi</div>
-                          </div>
-                        </>
-                      )}
-                    </div>
                   </div>
-                  
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
+          </div>
         </div>
       </section>
 
