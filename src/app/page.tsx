@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp } from 'lucide-react';
-import ImageComparisonSlider from '@/components/ImageComparisonSlider';
+import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp, ArrowRight } from 'lucide-react';
+
 
 export default function LandingPage() {
   return (
@@ -44,45 +44,40 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS (REAL UPLOADS CON SLIDER) */}
+      {/* BEFORE / AFTER VISUALS (REAL UPLOADS CON EFFETTO) */}
       <section className="comparison-section">
-        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
           
-          <ImageComparisonSlider 
-            title="Trasformazione 1"
-            beforeImage="/1-a.jpeg"
-            afterImage="/1-b.jpeg"
-          />
+          {[1,2,3,4,5,6].map((num) => (
+            <div key={num} className="transformation-block">
+              <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: '#03dac6', textAlign: 'center' }}>
+                ✧ Caso di Successo {num}
+              </h3>
+              <div className="spectacular-grid">
+                
+                {/* PRIMA */}
+                <div className="spectacular-card spectacular-before">
+                  <div className="spectacular-label-top">📸 PRIMA (Negozio)</div>
+                  <img src={`/${num}-a.jpeg`} alt={`Prima ${num}`} className="spectacular-img" />
+                </div>
 
-          <ImageComparisonSlider 
-            title="Trasformazione 2"
-            beforeImage="/2-a.jpeg"
-            afterImage="/2-b.jpeg"
-          />
+                {/* ARROW */}
+                <div className="spectacular-arrow-container">
+                  <div className="neon-arrow">
+                    <ArrowRight size={48} color="#bb86fc" />
+                  </div>
+                  <div className="arrow-text">30 SECONDI</div>
+                </div>
 
-          <ImageComparisonSlider 
-            title="Trasformazione 3"
-            beforeImage="/3-a.jpeg"
-            afterImage="/3-b.jpeg"
-          />
-
-          <ImageComparisonSlider 
-            title="Trasformazione 4"
-            beforeImage="/4-a.jpeg"
-            afterImage="/4-b.jpeg"
-          />
-
-          <ImageComparisonSlider 
-            title="Trasformazione 5"
-            beforeImage="/5-a.jpeg"
-            afterImage="/5-b.jpeg"
-          />
-
-          <ImageComparisonSlider 
-            title="Trasformazione 6"
-            beforeImage="/6-a.jpeg"
-            afterImage="/6-b.jpeg"
-          />
+                {/* DOPO */}
+                <div className="spectacular-card spectacular-after">
+                  <div className="spectacular-label-top label-after-color">🤖 DOPO (Shooting IA)</div>
+                  <img src={`/${num}-b.jpeg`} alt={`Dopo ${num}`} className="spectacular-img" />
+                </div>
+                
+              </div>
+            </div>
+          ))}
 
         </div>
       </section>
