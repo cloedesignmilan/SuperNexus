@@ -88,15 +88,27 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  animation: autoScroll 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: scrollSequence 28s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes autoScroll {
-  0%, 15% { transform: translateY(0); }
-  35% { transform: translateY(-100px); }
-  55% { transform: translateY(-250px); }
-  75% { transform: translateY(-400px); }
-  90%, 100% { transform: translateY(-550px); }
+@keyframes scrollSequence {
+  0% { transform: translateY(0); }
+  5% { transform: translateY(0); }      /* Aspetta invio Uomo */
+  10% { transform: translateY(-80px); }    /* Analisi Uomo */
+  20% { transform: translateY(-280px); }   /* Menu Bottoni Uomo */
+  25% { transform: translateY(-380px); }   /* Scelta Generate Uomo */
+  35% { transform: translateY(-650px); }   /* Risultato Fine Uomo */
+  
+  40% { transform: translateY(-680px); }   /* Aspetta invio Donna */
+  45% { transform: translateY(-780px); }   /* Invio Donna */
+  50% { transform: translateY(-880px); }   /* Analisi Donna */
+  60% { transform: translateY(-1100px); }  /* Menu Bottoni Donna */
+  65% { transform: translateY(-1200px); }  /* Scelta Generate Donna */
+  75% { transform: translateY(-1500px); }  /* Risultato Fine Donna */
+
+  85% { transform: translateY(-1500px); }  /* Pausa finale ammirazione */
+
+  95%, 100% { transform: translateY(0); }  /* Torna su rapido ma fluido */
 }
 
 .msg-row {
