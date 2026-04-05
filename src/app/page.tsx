@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp, ArrowRight } from 'lucide-react';
+import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 
 
 export default function LandingPage() {
@@ -100,8 +101,8 @@ export default function LandingPage() {
               <li><CheckCircle2 color="#03dac6" size={20} /> Ricevi le foto finite dopo 30 secondi</li>
             </ul>
           </div>
-          <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none' }}>
-            <img src="/telegram_iphone.png" alt="Telegram App UI SuperNexus su iPhone" style={{ maxHeight: '700px', objectFit: 'contain' }} />
+          <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none', display: 'flex', justifyContent: 'center' }}>
+            <AnimatedTelegramMockup />
           </div>
         </div>
 
