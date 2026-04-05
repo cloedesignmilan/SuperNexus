@@ -370,7 +370,7 @@ export async function POST(req: NextRequest) {
 Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. Restituisci ESATTAMENTE solo la stringa alfanumerica dell'ID, senza aggiungere "ID:" o il nome.
 Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una giacca o abito da uomo devi mettere FALSE), "needs_gender_clarification" (booleano. DEVI mettere false se il taglio maschile è evidente. Metti true per felpe neutre, t-shirt unisex o calzature dove non si capisce se è uomo/donna), "needs_bottom_clarification" (booleano true/false), "needs_brand_clarification" (booleano. DEVI mettere true SE E SOLO SE vedi un logo evidente, targa metallica o un testo sui lacci/tomaia/capo di cui non sei perfettamente certo), "predicted_bottom" (stringa). Solo parentesi graffe, nessuna formattazione markdown.`;
       
-      let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false, needs_brand_clarification: false };
+      let aiResult: any = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false, needs_brand_clarification: false };
       
       try {
           const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
