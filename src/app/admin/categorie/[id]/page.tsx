@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import CategoryEditor from "./CategoryEditor";
 
-export default async function EditCategoryPage({ params }: { params: { id: string } }) {
+export default async function EditCategoryPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     let categoryData = null;
 
     if (params.id !== 'nuova') {
