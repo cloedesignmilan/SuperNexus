@@ -479,9 +479,15 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
         console.log("==> Rilevato comando START per la chat: ", chatId);
         await bot.telegram.sendMessage(
           chatId,
-          "👋 Ciao! Sono l'assistente AI avanzato. Invia la foto di un abito e ti guiderò prima della generazione!"
+          "👋 Bentornato su SuperNexus! Sono l'assistente AI avanzato. Invia la foto di un abito e ti guiderò prima della generazione!"
         );
         console.log("==> Messaggio mandato con successo");
+    } else if (incomingText) {
+        // Se scrive ciao o parole a caso ed è già loggato
+        await bot.telegram.sendMessage(
+          chatId,
+          "👋 Ciao! Ricordati che sono un AI focalizzata sulle immagini.\nInvia la foto di un capo d'abbigliamento per iniziare l'analisi."
+        );
     }
 
     return NextResponse.json({ ok: true });
