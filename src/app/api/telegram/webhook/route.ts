@@ -282,9 +282,11 @@ export async function POST(req: NextRequest) {
       const templatesSchemaList = await prisma.category.findMany({
           where: { is_active: true }
       });
-      const validCategoriesStr = templatesSchemaList.map((t: any) => `'${t.id}'`).join(", ");
+      const validCategoriesStr = templatesSchemaList.map((t: any) => `ID: "${t.id}" (Nome: ${t.name})`).join(" | ");
 
-      const analysisPrompt = `Sei un esperto di moda. Analizza la foto del vestito in allegato e restituisci SOLO UN JSON CON QUESTE ESATTE CHIAVI: "predicted_category" (Scegli rigorosamente solo una tra ${validCategoriesStr}), "is_women_dress" (booleano true/false. Se vedi una classica giacca, abito intero da uomo, camicia da uomo o pantaloni sartoriali maschili DEVI mettere FALSE e MAI true), "needs_gender_clarification" (booleano. DEVI mettere false se è una giacca da completo o un tipico taglio da uomo. Metti true SOLO in rari casi come felpe totalmente anonime o t-shirt unisex), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, no markdown.`;
+      const analysisPrompt = `Sei un esperto. Analizza la foto in allegato (potrebbe esserci un abito o delle scarpe) e restituisci SOLO UN JSON. Questo JSON deve contenere l'esatta chiave: "predicted_category". 
+Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. 
+Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una giacca o abito da uomo devi mettere FALSE), "needs_gender_clarification" (booleano. DEVI mettere false se il taglio maschile è evidente. Metti true per felpe neutre, t-shirt unisex o calzature dove non si capisce se è uomo/donna), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, nessuna formattazione markdown.`;
       
       let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false };
       
