@@ -429,9 +429,10 @@ Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una gi
 
       const fallbackButtons = [];
       if (aiResult.predicted_category) {
+          const predictedStr = aiResult.predicted_category;
           const guess = fallbacksFromDB.find(c => 
-             c.id === aiResult.predicted_category || 
-             c.name.toLowerCase().includes(aiResult.predicted_category.toLowerCase())
+             c.id === predictedStr || 
+             c.name.toLowerCase().includes(predictedStr.toLowerCase())
           );
           if(guess) {
               fallbackButtons.push(Markup.button.callback(`✅ Conferma (${guess.name})`, `cat|${jobId}|${guess.id}`));
