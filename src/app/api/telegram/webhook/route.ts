@@ -8,28 +8,7 @@ export const maxDuration = 60;
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
-const schema: Schema = {
-    type: Type.OBJECT,
-    properties: {
-        predicted_category: {
-            type: Type.STRING,
-            description: "DEVI USARE SEMPRE E SOLO UNO DI QUESTI VALORI ESATTI: 'Cerimonia e festa', 'Sposi', 'Festa 18°', 'Sport', 'Bambini', 'Streetwear', 'Business & tempo libero', 'Rivista'."
-        },
-        is_women_dress: {
-            type: Type.BOOLEAN,
-            description: "True se è abbigliamento femminile"
-        },
-        needs_bottom_clarification: {
-            type: Type.BOOLEAN,
-            description: "True se è sfuocato/improbabile capire se è una gonna o pantalone, False se si capisce benissimo o se è solo un capo superiore o un abito intero."
-        },
-        predicted_bottom: {
-            type: Type.STRING,
-            description: "Se charo, 'gonna', 'pantalone', o 'intero/non-applicabile'"
-        }
-    },
-    required: ["predicted_category", "is_women_dress", "needs_bottom_clarification", "predicted_bottom"]
-};
+// Spostato Schema internamente per renderlo dinamico al runtime
 
 export async function POST(req: NextRequest) {
   try {
@@ -171,20 +150,15 @@ export async function POST(req: NextRequest) {
 
             // Determina la prossima domanda
             if (!meta.confirmedCategory) {
+                // Recupera Categorie Dinamiche da DB
+                const templates = await prisma.promptTemplate.findMany({
+                   where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+                });
+                
                 const catButtons = [];
-                if (meta.isWoman === false) {
-                    catButtons.push(Markup.button.callback("Eleganza (Uomo)", `cat|${jobId}|Business & tempo libero`));
-                } else {
-                    catButtons.push(Markup.button.callback("Cerimonia (Donna)", `cat|${jobId}|Cerimonia e festa`));
+                for (let i = 0; i < templates.length; i++) {
+                    catButtons.push(Markup.button.callback(templates[i].name, `cat|${jobId}|${templates[i].name}`));
                 }
-                catButtons.push(
-                    Markup.button.callback("Sposi", `cat|${jobId}|Sposi`),
-                    Markup.button.callback("Rivista", `cat|${jobId}|Rivista`),
-                    Markup.button.callback("Festa 18 Anni", `cat|${jobId}|Festa 18°`),
-                    Markup.button.callback("Casual / Streetwear", `cat|${jobId}|Streetwear`),
-                    Markup.button.callback("Sportivo", `cat|${jobId}|Sport`),
-                    Markup.button.callback("Bambini", `cat|${jobId}|Bambini`)
-                );
 
                 await bot.telegram.sendMessage(
                     chatId,
@@ -251,8 +225,13 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ ok: true });
       }
 
-      // Analisi Rapida via Gemini (NATIVA)
-      const analysisPrompt = `Sei un esperto di moda. Analizza la foto del vestito in allegato e restituisci SOLO UN JSON CON QUESTE ESATTE CHIAVI: "predicted_category" (Scegli una tra 'Cerimonia e festa', 'Sposi', 'Festa 18°', 'Sport', 'Bambini', 'Streetwear', 'Business & tempo libero'), "is_women_dress" (booleano true/false. Se vedi una classica giacca, abito intero da uomo, camicia da uomo o pantaloni sartoriali maschili DEVI mettere FALSE e MAI true), "needs_gender_clarification" (booleano. DEVI mettere false se è una giacca da completo o un tipico taglio da uomo. Metti true SOLO in rari casi come felpe totalmente anonime o t-shirt unisex), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, no markdown.`;
+      // Costruiamo le Categorie Dinamiche per Gemini
+      const templatesSchemaList = await prisma.promptTemplate.findMany({
+          where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+      });
+      const validCategoriesStr = templatesSchemaList.map((t: any) => `'${t.name}'`).join(", ");
+
+      const analysisPrompt = `Sei un esperto di moda. Analizza la foto del vestito in allegato e restituisci SOLO UN JSON CON QUESTE ESATTE CHIAVI: "predicted_category" (Scegli rigorosamente solo una tra ${validCategoriesStr}), "is_women_dress" (booleano true/false. Se vedi una classica giacca, abito intero da uomo, camicia da uomo o pantaloni sartoriali maschili DEVI mettere FALSE e MAI true), "needs_gender_clarification" (booleano. DEVI mettere false se è una giacca da completo o un tipico taglio da uomo. Metti true SOLO in rari casi come felpe totalmente anonime o t-shirt unisex), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, no markdown.`;
       
       let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false };
       
@@ -304,30 +283,23 @@ export async function POST(req: NextRequest) {
       });
 
       // Partiamo chiedendo la categoria se l'IA ha un "guess" o partiamo da zero
+      const fallbacksFromDB = await prisma.promptTemplate.findMany({
+          where: { OR: [ {store_id: currentStore.id}, {store_id: null} ] }
+      });
+
       const fallbackButtons = [];
       if (aiResult.predicted_category) {
-          fallbackButtons.push(Markup.button.callback(`Conferma (${aiResult.predicted_category})`, `cat|${jobId}|${aiResult.predicted_category}`));
+          fallbackButtons.push(Markup.button.callback(`✅ Conferma (${aiResult.predicted_category})`, `cat|${jobId}|${aiResult.predicted_category}`));
       }
       
-      if (aiResult.is_women_dress === false) {
-          fallbackButtons.push(Markup.button.callback("Eleganza (Uomo)", `cat|${jobId}|Business & tempo libero`));
-      } else {
-          fallbackButtons.push(Markup.button.callback("Cerimonia (Donna)", `cat|${jobId}|Cerimonia e festa`));
+      for (let i = 0; i < fallbacksFromDB.length; i++) {
+          fallbackButtons.push(Markup.button.callback(fallbacksFromDB[i].name, `cat|${jobId}|${fallbacksFromDB[i].name}`));
       }
-      
-      fallbackButtons.push(
-          Markup.button.callback("Sposi", `cat|${jobId}|Sposi`),
-          Markup.button.callback("Rivista", `cat|${jobId}|Rivista`),
-          Markup.button.callback("Festa 18 Anni", `cat|${jobId}|Festa 18°`),
-          Markup.button.callback("Streetwear / Casual", `cat|${jobId}|Streetwear`),
-          Markup.button.callback("Sportivo", `cat|${jobId}|Sport`),
-          Markup.button.callback("Bambini / Ragazzi", `cat|${jobId}|Bambini`)
-      );
 
       await bot.telegram.sendMessage(
           chatId,
-          `🤖 **Analisi Rapida Completata!**\n\nPenso si tratti di: **${aiResult.predicted_category || 'Sconosciuto'}**.\nConfermi questa categoria o preferisci forzarne un'altra manualmente?`,
-          Markup.inlineKeyboard(fallbackButtons, { columns: 1 })
+          `🤖 **Analisi Rapida Completata!**\n\nPenso si tratti di: **${aiResult.predicted_category || 'Sconosciuto'}**.\nConfermi o modifichi? 👇`,
+          Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
       );
 
     } else if (update.message?.text?.startsWith("/start")) {

@@ -43,9 +43,14 @@ export default async function AdminDashboard() {
         <div className={styles.container}>
             <header className={styles.header}>
                 <h1 className={styles.title}>SUPERNEXUS</h1>
-                <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                    <PlusCircle size={18} /> Registra Cliente
-                </Link>
+                <div style={{display: 'flex', gap: '15px'}}>
+                    <Link href="/admin/categorie" className={styles.secondaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <FileText size={18} /> Gestione Prompts
+                    </Link>
+                    <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <PlusCircle size={18} /> Registra Cliente
+                    </Link>
+                </div>
             </header>
 
             <section className={styles.kpiGrid}>
