@@ -45,8 +45,10 @@ export default function AnimatedTelegramMockup() {
             <div className="avatar-bot">🤖</div>
             <div className="msg-bubble">
               <p>Analisi Rapida Completata!<br/>Categoria: <strong>Completo Uomo / Business</strong><br/><br/>Vuoi procedere con la trasformazione?</p>
-              <div className="bot-buttons">
-                <button>✨ Genera Editoriale</button>
+              <div className="bot-buttons multi-buttons">
+                <button>📸 Genera 3 Immagini</button>
+                <button>📸 Genera 5 Immagini</button>
+                <button>📸 Genera 10 Immagini</button>
               </div>
               <div className="msg-time">10:31</div>
             </div>
@@ -55,7 +57,7 @@ export default function AnimatedTelegramMockup() {
           {/* Messaggio 4: Utente sceglie genera */}
           <div className="msg-row msg-user fade-in" style={{ animationDelay: '5.5s' }}>
             <div className="msg-bubble text-only">
-              ✨ Genera Editoriale
+              📸 Genera 3 Immagini
               <div className="msg-time">10:31 ✓✓</div>
             </div>
           </div>
@@ -64,7 +66,7 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '6s' }}>
             <div className="avatar-bot">🤖</div>
             <div className="msg-bubble">
-              <p>Inizio Servizio Fotografico...<br/><em>L'IA sta dipingendo il tuo abito nelle scene Premium</em></p>
+              <p>Inizio Servizio Fotografico (3 foto)!<br/><em>L'IA sta dipingendo il tuo abito nelle scene Premium</em></p>
               <div className="msg-time">10:31</div>
             </div>
           </div>
@@ -73,7 +75,7 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '9s' }}>
             <div className="avatar-bot">✨</div>
             <div className="msg-bubble highlight-bubble">
-              <p><strong>PROCESSO COMPLETATO! 🎉</strong><br/>Ecco la tua immagine per Instagram:</p>
+              <p><strong>PROCESSO COMPLETATO! 🎉</strong><br/>Ecco le scene esclusive generate per te:</p>
               <img src="/4-b.jpeg" alt="Risultato editoriale" className="msg-photo-result" />
               <div className="msg-time">10:32</div>
             </div>
@@ -94,7 +96,7 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '13.5s' }}>
             <div className="avatar-bot">🤖</div>
             <div className="msg-bubble">
-              <p><strong>Occhio dell'IA in corso...</strong><br/>Sto analizzando il capo ⏳</p>
+              <p><strong>Occhio dell'IA in corso...</strong><br/>Sto guardando l'immagine ⏳</p>
               <div className="msg-time">10:33</div>
             </div>
           </div>
@@ -103,9 +105,11 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '15s' }}>
             <div className="avatar-bot">🤖</div>
             <div className="msg-bubble">
-              <p>Analisi Rapida Completata!<br/>Categoria: <strong>Abito da Sera / Cerimonia Donna</strong><br/><br/>Vuoi procedere con la trasformazione?</p>
-              <div className="bot-buttons">
-                <button>✨ Genera Editoriale</button>
+              <p>Analisi Rapida Completata!<br/>Penso si tratti di: <strong>Cerimonia e festa</strong>.<br/><br/>Tutto Confermato. Scegli quante immagini desideri generare:</p>
+              <div className="bot-buttons multi-buttons">
+                <button>📸 Genera 3 Immagini</button>
+                <button>📸 Genera 5 Immagini</button>
+                <button>📸 Genera 10 Immagini</button>
               </div>
               <div className="msg-time">10:33</div>
             </div>
@@ -114,7 +118,7 @@ export default function AnimatedTelegramMockup() {
           {/* Messaggio 10: Utente sceglie genera 2 */}
           <div className="msg-row msg-user fade-in" style={{ animationDelay: '16.5s' }}>
             <div className="msg-bubble text-only">
-              ✨ Genera Editoriale
+              📸 Genera 5 Immagini
               <div className="msg-time">10:34 ✓✓</div>
             </div>
           </div>
@@ -123,7 +127,7 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '17s' }}>
             <div className="avatar-bot">🤖</div>
             <div className="msg-bubble">
-              <p>Preparo le luci del set...<br/><em>L'IA sta dipingendo l'abito sul modello perfetto</em></p>
+              <p>Inizio Servizio Fotografico (5 foto)!<br/><em>L'IA sta dipingendo l'abito sul modello perfetto</em></p>
               <div className="msg-time">10:34</div>
             </div>
           </div>
@@ -132,8 +136,9 @@ export default function AnimatedTelegramMockup() {
           <div className="msg-row msg-bot fade-in" style={{ animationDelay: '20s' }}>
             <div className="avatar-bot">✨</div>
             <div className="msg-bubble highlight-bubble">
-              <p><strong>MAGIA COMPLETATA! 🎉</strong><br/>Ecco la tua foto pronta per vendere:</p>
-              <img src="/1-b.jpeg" alt="Risultato editoriale donna" className="msg-photo-result" />
+              <p><strong>PROCESSO COMPLETATO! 🎉</strong><br/>Ecco le scene esclusive generate per te:</p>
+              {/* L'utente voleva vedere bene la foto da donna, l'ho messa in grande */}
+              <img src="/1-b.jpeg" alt="Risultato editoriale donna" className="msg-photo-result" style={{ width: '220px' }} />
               <div className="msg-time">10:35</div>
             </div>
           </div>

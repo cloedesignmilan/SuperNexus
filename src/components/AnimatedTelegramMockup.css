@@ -95,18 +95,18 @@
   0% { transform: translateY(0); }
   5% { transform: translateY(0); }      /* Aspetta invio Uomo */
   10% { transform: translateY(-80px); }    /* Analisi Uomo */
-  20% { transform: translateY(-280px); }   /* Menu Bottoni Uomo */
-  25% { transform: translateY(-380px); }   /* Scelta Generate Uomo */
-  35% { transform: translateY(-650px); }   /* Risultato Fine Uomo */
+  20% { transform: translateY(-330px); }   /* Menu Bottoni Uomo */
+  25% { transform: translateY(-400px); }   /* Scelta Generate Uomo */
+  35% { transform: translateY(-700px); }   /* Risultato Fine Uomo */
   
-  40% { transform: translateY(-680px); }   /* Aspetta invio Donna */
-  45% { transform: translateY(-780px); }   /* Invio Donna */
-  50% { transform: translateY(-880px); }   /* Analisi Donna */
-  60% { transform: translateY(-1100px); }  /* Menu Bottoni Donna */
-  65% { transform: translateY(-1200px); }  /* Scelta Generate Donna */
-  75% { transform: translateY(-1500px); }  /* Risultato Fine Donna */
+  40% { transform: translateY(-720px); }   /* Aspetta invio Donna */
+  45% { transform: translateY(-840px); }   /* Invio Donna */
+  50% { transform: translateY(-940px); }   /* Analisi Donna */
+  60% { transform: translateY(-1200px); }  /* Menu Bottoni Donna */
+  65% { transform: translateY(-1300px); }  /* Scelta Generate Donna */
+  75% { transform: translateY(-1650px); }  /* Risultato Fine Donna (foto grande) */
 
-  85% { transform: translateY(-1500px); }  /* Pausa finale ammirazione */
+  85% { transform: translateY(-1650px); }  /* Pausa finale ammirazione */
 
   95%, 100% { transform: translateY(0); }  /* Torna su rapido ma fluido */
 }
