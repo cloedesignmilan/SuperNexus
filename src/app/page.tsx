@@ -214,7 +214,7 @@ export default function LandingPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
           
           {/* Card Sposi */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} className="cat-card">
              <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Sposo & Cerimonia 🥂</h3>
              <div style={{ marginBottom: '1rem' }}>
                 <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
@@ -227,7 +227,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card Streetwear */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} className="cat-card">
              <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Teenager & Street 🛹</h3>
              <div style={{ marginBottom: '1rem' }}>
                 <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
@@ -240,7 +240,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card Kids */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} className="cat-card">
              <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Kids & Bambini 🎈</h3>
              <div style={{ marginBottom: '1rem' }}>
                 <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
@@ -253,7 +253,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card Calzature */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} className="cat-card">
              <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Calzature & Scarpe 👟</h3>
              <div style={{ marginBottom: '1rem' }}>
                 <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
@@ -266,7 +266,7 @@ export default function LandingPage() {
           </div>
 
           {/* Card Executive */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} className="cat-card">
              <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Business & Corporate 💼</h3>
              <div style={{ marginBottom: '1rem' }}>
                 <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
