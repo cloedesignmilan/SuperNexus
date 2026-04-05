@@ -627,3 +627,5 @@ body {
 
 .telephones-container { display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: center; width: 100%; }
 @media (min-width: 900px) { .telephones-container { flex-direction: row; gap: 80px; } }
+
+@import './mockups.css';

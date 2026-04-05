@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp, ArrowRight } from 'lucide-react';
+import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp, ArrowRight, Heart, MessageCircle, Send, ThumbsUp, MessageSquare } from 'lucide-react';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import GalleryMockup from '@/components/GalleryMockup';
 
@@ -46,40 +46,85 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS (REAL UPLOADS CON EFFETTO) */}
+      {/* BEFORE / AFTER VISUALS (CAMERA & SOCIAL MOCKUPS) */}
       <section className="comparison-section">
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
           
-          {[1,2,3,4,5,6].map((num) => (
-            <div key={num} className="transformation-block">
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: '#03dac6', textAlign: 'center' }}>
-                ✧ Caso di Successo {num}
-              </h3>
-              <div className="spectacular-grid">
-                
-                {/* PRIMA */}
-                <div className="spectacular-card spectacular-before">
-                  <div className="spectacular-label-top">📸 PRIMA (Negozio)</div>
-                  <img src={`/${num}-a.jpeg`} alt={`Prima ${num}`} className="spectacular-img" />
-                </div>
+          {[1,2,3,4,5,6].map((num) => {
+            const isInsta = num % 2 !== 0; // Alterniamo Instagram/Facebook
+            const socialClass = isInsta ? "social-mockup social-mockup-dark" : "social-mockup facebook-style";
+            const boutiqueName = isInsta ? "Boutique Pura" : "Elegance Concept Store";
 
-                {/* ARROW */}
-                <div className="spectacular-arrow-container">
-                  <div className="neon-arrow">
-                    <ArrowRight size={48} color="#bb86fc" />
+            return (
+              <div key={num} className="transformation-block">
+                <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', color: '#03dac6', textAlign: 'center' }}>
+                  ✧ Workflow Negozio {num}
+                </h3>
+                <div className="spectacular-grid">
+                  
+                  {/* PRIMA: FOTOCAMERA */}
+                  <div className="camera-mockup">
+                    <img src={`/${num}-a.jpeg`} alt={`Scatto fotocamera ${num}`} className="camera-image" />
+                    <div className="camera-grid-overlay"></div>
+                    <div className="camera-focus-box"></div>
+                    <div className="camera-ui-bottom">
+                      <div className="camera-ui-modes">
+                        <span>VIDEO</span>
+                        <span className="active">FOTO</span>
+                        <span>RITRATTO</span>
+                      </div>
+                      <div className="camera-shutter-button"></div>
+                    </div>
                   </div>
-                  <div className="arrow-text">30 SECONDI</div>
-                </div>
 
-                {/* DOPO */}
-                <div className="spectacular-card spectacular-after">
-                  <div className="spectacular-label-top label-after-color">🤖 DOPO (Shooting IA)</div>
-                  <img src={`/${num}-b.jpeg`} alt={`Dopo ${num}`} className="spectacular-img" />
+                  {/* ARROW */}
+                  <div className="spectacular-arrow-container">
+                    <div className="neon-arrow">
+                      <ArrowRight size={48} color="#bb86fc" />
+                    </div>
+                    <div className="arrow-text">30 SECONDI</div>
+                  </div>
+
+                  {/* DOPO: SOCIAL MEDIA */}
+                  <div className={socialClass}>
+                    <div className="social-header">
+                      <div className="social-avatar">{isInsta ? "BP" : "EC"}</div>
+                      <div className="social-username">{boutiqueName} {isInsta ? "" : <span style={{color: '#888', fontWeight: 'normal', fontSize: '0.8rem'}}>ha aggiornato il catalogo.</span>}</div>
+                    </div>
+                    
+                    <div className="social-image-container">
+                      <img src={`/${num}-b.jpeg`} alt={`Post Social ${num}`} className="social-image" />
+                    </div>
+
+                    <div className="social-footer">
+                      {isInsta ? (
+                        <>
+                          <div className="social-actions">
+                            <Heart size={24} className="social-action-icon" />
+                            <MessageCircle size={24} className="social-action-icon" />
+                            <Send size={24} className="social-action-icon" />
+                          </div>
+                          <div className="social-likes">Piace a 412 persone</div>
+                          <div className="social-caption">
+                            <span>{boutiqueName}</span> Nuova collezione in store! ✨
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="social-actions" style={{ marginBottom: '8px' }}>
+                            <div className="social-action-item" style={{color: '#1877F2'}}><ThumbsUp size={20} /> Mi piace</div>
+                            <div className="social-action-item"><MessageSquare size={20} /> Commenta</div>
+                            <div className="social-action-item"><Send size={20} /> Condividi</div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
                 </div>
-                
               </div>
-            </div>
-          ))}
+            );
+          })}
 
         </div>
       </section>
@@ -93,13 +138,13 @@ export default function LandingPage() {
         <div className="z-pattern-row">
           <div className="z-content">
             <div className="z-icon"><Smartphone size={32} color="#03dac6" /></div>
-            <h3 style={{ color: '#fff', fontSize: '2.2rem', marginBottom: '1rem', fontWeight: '800' }}>Usa solo Telegram</h3>
-            <p className="z-problem">Il problema: App complesse, software web lenti da imparare.</p>
-            <p className="z-solution">La nostra IA risiede interamente in un Bot Telegram a te dedicato. Nessun login, nessuna interfaccia aliena.</p>
+            <h3 style={{ color: '#fff', fontSize: '2.2rem', marginBottom: '1rem', fontWeight: '800' }}>Usa solo lo Smartphone e Instagram</h3>
+            <p className="z-problem">Il problema: Servono computer potenti, macchine fotografiche, e software complessi.</p>
+            <p className="z-solution">Abbiamo eliminato qualsiasi strato tecnico. Non serve attrezzatura. Scatti col cellulare, invii l'immagine al bot Telegram ovunque tu sia, e la pubblichi direttamente su Instagram e Facebook.</p>
             <ul className="z-benefit-list">
-              <li><CheckCircle2 color="#03dac6" size={20} /> Scatti col cellulare o scegli dalla galleria</li>
-              <li><CheckCircle2 color="#03dac6" size={20} /> Invii al bot come in una chat normale</li>
-              <li><CheckCircle2 color="#03dac6" size={20} /> Ricevi le foto finite dopo 30 secondi</li>
+              <li><CheckCircle2 color="#03dac6" size={20} /> Zero computer: dal telefono al social in 1 min.</li>
+              <li><CheckCircle2 color="#03dac6" size={20} /> Nessuna app lenta o sito web pesante da imparare</li>
+              <li><CheckCircle2 color="#03dac6" size={20} /> Risultati fotorealistici elaborati nel Cloud</li>
             </ul>
           </div>
           <div className="telephones-container">

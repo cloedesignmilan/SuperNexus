@@ -1,0 +1,178 @@
+/* =========================================================================
+   MOCKUP FOTOCAMERA (Prima)
+   ========================================================================= */
+.camera-mockup {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-height: 500px;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.camera-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+/* Griglia 3x3 della fotocamera */
+.camera-grid-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(to right, transparent 33.2%, rgba(255,255,255,0.4) 33.3%, rgba(255,255,255,0.4) 33.4%, transparent 33.5%, transparent 66.5%, rgba(255,255,255,0.4) 66.6%, rgba(255,255,255,0.4) 66.7%, transparent 66.8%),
+    linear-gradient(to bottom, transparent 33.2%, rgba(255,255,255,0.4) 33.3%, rgba(255,255,255,0.4) 33.4%, transparent 33.5%, transparent 66.5%, rgba(255,255,255,0.4) 66.6%, rgba(255,255,255,0.4) 66.7%, transparent 66.8%);
+}
+
+/* Quadrato di Auto-Focus */
+.camera-focus-box {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgba(255,215,0,0.8);
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.camera-focus-box::after {
+  content: "☀️";
+  position: absolute;
+  right: -25px;
+  font-size: 14px;
+}
+
+/* UI Bottoni Fotocamera */
+.camera-ui-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 90px;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.camera-ui-modes {
+  font-size: 0.6rem;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+.camera-ui-modes .active { color: #f2d024; }
+.camera-shutter-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fff;
+  border: 4px solid #aaa;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* =========================================================================
+   MOCKUP SOCIAL MEDIA (Dopo)
+   ========================================================================= */
+.social-mockup {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.social-mockup-dark {
+  background: #000;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+/* Header (Nome Profilo) */
+.social-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+}
+.social-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #bb86fc, #03dac6);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; color: #121212; font-size: 14px;
+}
+.social-username {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #262626;
+}
+.social-mockup-dark .social-username { color: #f5f5f5; }
+
+/* Contenitore Immagine */
+.social-image-container {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: #121212;
+}
+.social-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Footer (Icone e Testi) */
+.social-footer {
+  padding: 12px 16px;
+}
+.social-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.social-action-icon {
+  color: #262626;
+}
+.social-mockup-dark .social-action-icon { color: #f5f5f5; }
+
+/* Speciale Stile FB */
+.facebook-style .social-actions {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  justify-content: space-around;
+  color: #65676B;
+}
+.facebook-style .social-username { color: #050505; }
+.facebook-style .social-action-item {
+  display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 0.85rem;
+}
+
+.social-likes {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: #262626;
+}
+.social-mockup-dark .social-likes { color: #f5f5f5; }
+
+.social-caption {
+  font-size: 0.85rem;
+  color: #262626;
+  line-height: 1.4;
+}
+.social-mockup-dark .social-caption { color: #f5f5f5; }
+
+.social-caption span { font-weight: 600; margin-right: 5px; }
