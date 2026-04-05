@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
   try {
-    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, imgCount } = await req.json();
+    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, imgCount } = await req.json();
 
     if (!jobId || !fileUrl) {
       return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
@@ -74,19 +74,32 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     }
 
     if (targetScenes.length === 0) {
-        // Fallback Random Scena
-        const allScenes = await prisma.scene.findMany({
-             where: { category_id: confirmedCategory, is_active: true }
-        });
-        if (allScenes.length === 0) {
-            allScenes.push({ scene_text: "Walking in the city", title: "Default" } as any);
-        }
-        
-        const shuffledScenes = allScenes.sort(() => Math.random() - 0.5);
-        targetScenes = shuffledScenes.slice(0, count).map(s => s.scene_text);
-        // Se chiedono 3 generate ma ci sono solo 2 scene, ripetiamo
-        while (targetScenes.length < count) {
-             targetScenes.push(targetScenes[targetScenes.length - 1]);
+        if (confirmedEnvironment === 'studio') {
+            // Hardcode di scene neutre professionali per lo studio
+             const studioScenes = [
+                 "Pure bright white cyclorama studio background, professional high-end fashion lighting.",
+                 "Soft minimalist light-grey seamless paper background, editorial studio flash.",
+                 "Elegant charcoal dark-grey studio background with dramatic chiaroscuro cinematic lighting."
+             ];
+             targetScenes = [];
+             for(let i=0; i<count; i++) {
+                 targetScenes.push(studioScenes[i % studioScenes.length]);
+             }
+        } else {
+            // Fallback Random Scena da DB (Ambientata)
+            const allScenes = await prisma.scene.findMany({
+                 where: { category_id: confirmedCategory, is_active: true }
+            });
+            if (allScenes.length === 0) {
+                allScenes.push({ scene_text: "Walking in the city", title: "Default" } as any);
+            }
+            
+            const shuffledScenes = allScenes.sort(() => Math.random() - 0.5);
+            targetScenes = shuffledScenes.slice(0, count).map(s => s.scene_text);
+            // Se chiedono 3 generate ma ci sono solo 2 scene, ripetiamo
+            while (targetScenes.length < count) {
+                 targetScenes.push(targetScenes[targetScenes.length - 1]);
+            }
         }
     }
     

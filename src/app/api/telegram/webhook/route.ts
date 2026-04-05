@@ -104,6 +104,8 @@ export async function POST(req: NextRequest) {
                 meta.confirmedBottom = value;
             } else if (action === 'gen') {
                 meta.confirmedGender = value;
+            } else if (action === 'env') {
+                meta.confirmedEnvironment = value;
             } else if (action === 'run') {
                 // Previene doppi click
                 if (job.status === "processing") {
@@ -120,7 +122,7 @@ export async function POST(req: NextRequest) {
                     data: { status: "processing", metadata: meta }
                 });
 
-                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso!**\n*(Sceglierò una scena diversa per ogni scatto!)*`);
+                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso!**\n*(Sto preparando l'allestimento fotografico...)*`);
 
                 const baseUrl = `https://x-super-nexus.vercel.app`;
                 fetch(`${baseUrl}/api/generate`, {
@@ -135,6 +137,7 @@ export async function POST(req: NextRequest) {
                         confirmedBottom: meta.confirmedBottom,
                         confirmedGender: safeGender,
                         confirmedScene: meta.confirmedScene,
+                        confirmedEnvironment: meta.confirmedEnvironment || 'ambientata',
                         imgCount: generationCount
                     })
                 }).catch(e => console.error(e));
@@ -187,12 +190,22 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
                     ], { columns: 2 })
                 );
+            } else if (!meta.confirmedEnvironment) {
+                // Chiedi Ambientata o Studio
+                await bot.telegram.sendMessage(
+                    chatId,
+                    `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
+                    Markup.inlineKeyboard([
+                        Markup.button.callback("🌍 Ambientata", `env|${jobId}|ambientata`),
+                        Markup.button.callback("📸 In Studio", `env|${jobId}|studio`)
+                    ], { columns: 2 })
+                );
             } else {
                // Tutto pronto! Tasto per lanciare.
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                await bot.telegram.sendMessage(
                     chatId,
-                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\n\nScegli quante proposte desideri generare:`,
+                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
                     Markup.inlineKeyboard([
                         Markup.button.callback("📸 3", `run|${jobId}|3`),
                         Markup.button.callback("📸 5", `run|${jobId}|5`),
