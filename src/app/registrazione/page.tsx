@@ -30,10 +30,10 @@ export default function RegistrazionePage() {
                     
                     <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '40px'}}>
                         {/* STARTER */}
-                        <label style={{cursor: 'pointer'}}>
+                        <label style={{cursor: 'pointer', display: 'block'}}>
                             <input type="radio" name="planName" value="starter" className="peer" style={{display: 'none'}} defaultChecked />
-                            <div style={{border: '2px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '20px', background: 'rgba(0,0,0,0.3)', transition: 'all 0.2s'}} 
-                                 className="peer-checked:border-[#03dac6] peer-checked:bg-[rgba(3,218,198,0.05)] radio-card">
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s'}} 
+                                 className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                     <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#03dac6" /> Starter 150</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>€29<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
@@ -47,10 +47,10 @@ export default function RegistrazionePage() {
                         </label>
 
                         {/* PRO */}
-                        <label style={{cursor: 'pointer'}}>
+                        <label style={{cursor: 'pointer', display: 'block'}}>
                             <input type="radio" name="planName" value="pro" className="peer" style={{display: 'none'}} />
-                            <div style={{border: '2px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '20px', background: 'rgba(0,0,0,0.3)', transition: 'all 0.2s', position: 'relative'}}
-                                 className="peer-checked:border-[#bb86fc] peer-checked:bg-[rgba(187,134,252,0.05)] radio-card">
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative'}}
+                                 className="radio-card pro-card">
                                 <span style={{position: 'absolute', top: '-12px', right: '20px', background: '#bb86fc', color: '#000', fontSize: '0.7rem', fontWeight: 'bold', padding: '4px 8px', borderRadius: '10px', textTransform: 'uppercase'}}>Più Popolare</span>
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                     <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#bb86fc" /> Pro 500</h4>
@@ -78,9 +78,9 @@ export default function RegistrazionePage() {
             </div>
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `
-                .peer:checked + .radio-card { border-color: inherit; }
-                input[value="starter"]:checked + .radio-card { border-color: #03dac6; background: rgba(3,218,198,0.05); }
-                input[value="pro"]:checked + .radio-card { border-color: #bb86fc; background: rgba(187,134,252,0.05); }
+                .radio-card { border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
+                input[value="starter"]:checked + .radio-card { border-color: #03dac6 !important; background: rgba(3,218,198,0.05) !important; }
+                input[value="pro"]:checked + .radio-card { border-color: #bb86fc !important; background: rgba(187,134,252,0.05) !important; }
             `}} />
         </div>
     );
