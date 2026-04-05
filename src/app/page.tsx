@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp } from 'lucide-react';
+import ImageComparisonSlider from '@/components/ImageComparisonSlider';
 
 export default function LandingPage() {
   return (
@@ -43,99 +44,45 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.3rem', color: '#bb86fc' }}>Da oggi ogni capo diventa uno shooting da rivista.</p>
       </section>
 
-      {/* BEFORE / AFTER VISUALS (REAL UPLOADS) */}
+      {/* BEFORE / AFTER VISUALS (REAL UPLOADS CON SLIDER) */}
       <section className="comparison-section">
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '6rem' }}>
           
-          {/* ESEMPIO 1 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 1</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/1-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/1-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 1"
+            beforeImage="/1-a.jpeg"
+            afterImage="/1-b.jpeg"
+          />
 
-          {/* ESEMPIO 2 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 2</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/2-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/2-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 2"
+            beforeImage="/2-a.jpeg"
+            afterImage="/2-b.jpeg"
+          />
 
-          {/* ESEMPIO 3 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 3</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/3-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/3-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 3"
+            beforeImage="/3-a.jpeg"
+            afterImage="/3-b.jpeg"
+          />
 
-          {/* ESEMPIO 4 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 4</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/4-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/4-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 4"
+            beforeImage="/4-a.jpeg"
+            afterImage="/4-b.jpeg"
+          />
 
-          {/* ESEMPIO 5 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 5</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/5-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/5-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 5"
+            beforeImage="/5-a.jpeg"
+            afterImage="/5-b.jpeg"
+          />
 
-          {/* ESEMPIO 6 */}
-          <div>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '1.5rem', color: '#03dac6', textAlign: 'center' }}>✧ Trasformazione 6</h3>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <span className="comparison-label">📸 PRIMA: Negozio / Magazzino</span>
-                <img src="/6-a.jpeg" alt="Prima" />
-              </div>
-              <div className="comparison-card">
-                <span className="comparison-label label-after">🤖 DOPO: Modella Professionista</span>
-                <img src="/6-b.jpeg" alt="Dopo" />
-              </div>
-            </div>
-          </div>
+          <ImageComparisonSlider 
+            title="Trasformazione 6"
+            beforeImage="/6-a.jpeg"
+            afterImage="/6-b.jpeg"
+          />
 
         </div>
       </section>
