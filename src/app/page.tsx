@@ -84,6 +84,9 @@ export default function LandingPage() {
                       <ArrowRight size={48} color="#bb86fc" />
                     </div>
                     <div className="arrow-text">30 SECONDI</div>
+                    <div style={{ fontSize: '0.75rem', color: '#a0a0a0', textAlign: 'center', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', marginTop: '4px', letterSpacing: '0.5px' }}>
+                      Genera 3, 5 o 10 foto
+                    </div>
                   </div>
 
                   {/* DOPO: SOCIAL MEDIA */}
