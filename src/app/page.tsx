@@ -204,6 +204,83 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* CATEGORY SHOWCASE (NICCHIE) */}
+      <section className="categories-showcase" style={{ padding: '6rem 5%', background: '#020202', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <h2 className="section-title" style={{ marginBottom: '1rem' }}>Pronto per la tua Nicchia</h2>
+        <p style={{ fontSize: '1.2rem', color: '#a0a0a0', marginBottom: '4rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 4rem' }}>
+          Non importa cosa vendi. Il nostro motore capisce il capo e adatta lo stile fotografico e l'ambiente al tuo target di riferimento.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+          
+          {/* Card Sposi */}
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+             <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Sposo & Cerimonia 🥂</h3>
+             <div style={{ marginBottom: '1rem' }}>
+                <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
+                <p style={{ color: '#a0a0a0', fontSize: '0.95rem', marginTop: '0.3rem' }}>Vendere abiti da sposo mostrandoli appesi a grucce tristi o su manichini freddi svaluta il pregio del prodotto.</p>
+             </div>
+             <div>
+                <span style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>LA SOLUZIONE</span>
+                <p style={{ color: '#e0e0e0', fontSize: '1.05rem', marginTop: '0.3rem', fontWeight: '500' }}>I capi rinascono addosso a modelli fotorealistici tra ville di lusso, altari e giardini da sogno.</p>
+             </div>
+          </div>
+
+          {/* Card Streetwear */}
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+             <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Teenager & Street 🛹</h3>
+             <div style={{ marginBottom: '1rem' }}>
+                <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
+                <p style={{ color: '#a0a0a0', fontSize: '0.95rem', marginTop: '0.3rem' }}>Felpe destrutturate e pantaloni larghi sembrano stracci fuori forma se fotografati piatti sul tavolo.</p>
+             </div>
+             <div>
+                <span style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>LA SOLUZIONE</span>
+                <p style={{ color: '#e0e0e0', fontSize: '1.05rem', marginTop: '0.3rem', fontWeight: '500' }}>Pura "attitude" urban. Generazioni in skatepark, metropolitane e spensierato lifestyle cittadino.</p>
+             </div>
+          </div>
+
+          {/* Card Kids */}
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+             <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Kids & Bambini 🎈</h3>
+             <div style={{ marginBottom: '1rem' }}>
+                <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
+                <p style={{ color: '#a0a0a0', fontSize: '0.95rem', marginTop: '0.3rem' }}>Assumere modelli bimbi costa caro ed implica costanti rotture burocratiche per la privacy genitoriale.</p>
+             </div>
+             <div>
+                <span style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>LA SOLUZIONE</span>
+                <p style={{ color: '#e0e0e0', fontSize: '1.05rem', marginTop: '0.3rem', fontWeight: '500' }}>Bimbi artificiali fotorealistici e giocosi. Aggiri del tutto i contratti e le liberatorie per l'immagine.</p>
+             </div>
+          </div>
+
+          {/* Card Calzature */}
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+             <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Calzature & Scarpe 👟</h3>
+             <div style={{ marginBottom: '1rem' }}>
+                <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
+                <p style={{ color: '#a0a0a0', fontSize: '0.95rem', marginTop: '0.3rem' }}>L'IA standard per e-commerce è incapace: inquadra sempre a mezzo busto tagliando costantemente i piedi.</p>
+             </div>
+             <div>
+                <span style={{ color: '#bb86fc', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>LA SOLUZIONE NANO-PRO</span>
+                <p style={{ color: '#e0e0e0', fontSize: '1.05rem', marginTop: '0.3rem', fontWeight: '500' }}>Motore "Still-Life" integrato. Sfondo bianco da studio su 4 inquadrature specifiche (Top, Dietro, Lato) attivate con un tap.</p>
+             </div>
+          </div>
+
+          {/* Card Executive */}
+          <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '20px', padding: '2.5rem', transition: 'all 0.3s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+             <h3 style={{ fontSize: '1.5rem', color: '#fff', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem' }}>Business & Corporate 💼</h3>
+             <div style={{ marginBottom: '1rem' }}>
+                <span style={{ color: '#ff5470', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>IL PROBLEMA</span>
+                <p style={{ color: '#a0a0a0', fontSize: '0.95rem', marginTop: '0.3rem' }}>Il target executive altospendente scappa quando vede presentazioni amatoriali e di basso taglio.</p>
+             </div>
+             <div>
+                <span style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px' }}>LA SOLUZIONE</span>
+                <p style={{ color: '#e0e0e0', fontSize: '1.05rem', marginTop: '0.3rem', fontWeight: '500' }}>Look da copertina da rivista economica. I modelli posano in lounge aeroportuali, uffici top e skyline moderni.</p>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* PRICING */}
       <section id="pricing" className="pricing-section">
         <h2 className="section-title" style={{ marginBottom: '1rem' }}>Inizia a convertire da oggi</h2>
