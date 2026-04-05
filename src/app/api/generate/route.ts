@@ -118,27 +118,26 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
             const finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
 
-[SCENE ENVIRONMENT/ACTION]
+[SUBJECT AND SCENE]
 ${sceneText}
-
-[SUBJECT AND AGE REQUIREMENT]
 The subject MUST clearly look to be between ${ageBracket} years old.
+CAMERA ANGLE: ${currentAngle}.
 
-[CAMERA ANGLE AND PERSPECTIVE]
-${currentAngle}. Vary the camera perspective naturally, feeling authentic and not staged.
-
-[GARMENT CAPTURE INSTRUCTIONS]
+[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
 ${isMale 
-   ? 'The subject in the image is MALE. HE is wearing EXACTLY the outfit shown in the attached image context. CRITICAL RULE: The male model MUST be wearing a suitable base layer (like a fitted t-shirt or dress shirt) underneath his outerwear. ABSOLUTELY NO BARE-CHESTED LOOKS.' 
-   : 'The subject in the image is FEMALE. SHE is wearing EXACTLY the outfit shown in the attached image context.'} 
-GARMENT DESCRIPTION: ${garmentDetails.description}. 
-${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}.
+   ? 'The subject is MALE. CRITICAL RULE: He MUST be wearing a suitable base layer (like a dress shirt) underneath his outerwear. NO BARE-CHESTED.' 
+   : 'The subject is FEMALE.'}
+YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM. You must IDENTICALLY CLONE the clothing item from the attached reference image onto the human model.
+CLOTHING COLOR & PATTERN: ${garmentDetails.color}
+CLOTHING DESCRIPTION: ${garmentDetails.description}
+${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}
 
-[CRITICAL GENERATION CONSTRAINTS]
-ABSOLUTE RULE 1: THE CLOTHING ITEM PROVIDED IN THE IMAGE IS THE ONLY GROUND TRUTH. You MUST analyze mathematically the exact structure, texture, length, fabric material, color, and shape of the reference clothing. You MUST reproduce an identical 1:1 clone (Virtual Try-On) without adding or altering any seams, cuts, or patterns. 
-ABSOLUTE RULE 2: DO NOT generate any text, words, store logos, price tags, store tags, watermarks, or plastic strings. Any visible tags on the original garment must be magically erased without altering the fabric behind it.
-ABSOLUTE RULE 3: Integrate the exactly cloned reference outfit naturally on a real human being.
-NEGATIVE RULES: ${negativeRulesText}`;
+ABSOLUTE HARD RULE 1 (ACCESSORY LOCK): IF the reference image contains a specific tie (cravatta) or bow tie (papillon), you MUST render it with the EXACT same pattern, color, and knot. If the reference is a long tie, DO NOT generate a bow tie. If it's a bow tie, DO NOT generate a long tie!
+ABSOLUTE HARD RULE 2 (GARMENT LOCK): The structure, seams, lapels, buttons, and fit of the garment MUST NOT BE ALTERED. It is the ONLY ground truth.
+ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, tags, or watermarks.
+
+[NEGATIVE RULES]
+${negativeRulesText}`;
             
             const generated = await ai.models.generateContent({
                 model: 'gemini-3-pro-image-preview',
