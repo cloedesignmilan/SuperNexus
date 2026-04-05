@@ -241,7 +241,7 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
                     ], { columns: 2 })
                 );
-            } else if (meta.needsBrandClarification && !meta.confirmedBrand) {
+            } else if (meta.needsBrandClarification && !meta.confirmedBrand && meta.isShoesCategory) {
                 await bot.telegram.sendMessage(
                     chatId,
                     "👟 **Dettaglio Custom Rilevato!**\n\nHo notato una scritta, un logo o una targhetta su questo capo e non voglio allucinare parole a caso!\n\n👉 **Per favore, scrivimi qui in chat il testo testuale esatto da stamparci sopra.** (Es. GAËLLE, Guess, ecc.)\n\n*Scrivi il testo nel box qui sotto ed invia.*"
@@ -298,7 +298,7 @@ export async function POST(req: NextRequest) {
 
         if (pendingJob && pendingJob.metadata) {
             let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
-            if (meta.needsBrandClarification && meta.confirmedCategory && !meta.confirmedBrand) {
+            if (meta.needsBrandClarification && meta.confirmedCategory && !meta.confirmedBrand && meta.isShoesCategory) {
                 meta.confirmedBrand = incomingText;
                 await (prisma.generationJob as any).update({
                     where: { id: pendingJob.id },
