@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
   try {
-    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, imgCount } = await req.json();
+    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = await req.json();
 
     if (!jobId || !fileUrl) {
       return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
@@ -134,8 +134,13 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
             "Macro close-up shot focused specifically on the footwear and ankles, stylish pose with neutral clothing", 
             "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
         ];
-        brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND TAGS on the shoes. Do not invent new logos, do not blur them.";
-        negativeBrandRule = "Do not blur original logos. Do not invent fake text.";
+        if (confirmedBrand) {
+             brandRule = `ABSOLUTE HARD RULE 3: IL CLIENTE HA ESPLICITAMENTE CONFERMATO CHE IL TESTO/LOGO SULLA SCARPA È: "${confirmedBrand}". DEVI INTAGLIARE O STAMPARE ESATTAMENTE LA PAROLA "${confirmedBrand}" SULLA TARGHETTA O SCARPA E RISPETTARE STRICTLY LE CUCITURE ORIGINALI. È ASSOLUTAMENTE VIETATO GENERARE TESTI INVENTATI O LASCIARE IL LOGO ILLEGGIBILE.`;
+             negativeBrandRule = `Do not invent fake text. You must write ONLY "${confirmedBrand}". Do not add extra seams.`;
+        } else {
+             brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND TAGS on the shoes. Do not invent new logos, do not blur them.";
+             negativeBrandRule = "Do not blur original logos. Do not invent fake text.";
+        }
     }
 
     let ageBracket = "20-35";

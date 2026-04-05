@@ -135,6 +135,7 @@ export async function POST(req: NextRequest) {
                                 confirmedGender: 'Uomo', // ignora genere
                                 confirmedScene: null,
                                 confirmedEnvironment: 'studio_calzature',
+                                confirmedBrand: meta.confirmedBrand,
                                 imgCount: 4
                             })
                         }).catch(e => console.error(e));
@@ -176,6 +177,7 @@ export async function POST(req: NextRequest) {
                         confirmedGender: safeGender,
                         confirmedScene: meta.confirmedScene,
                         confirmedEnvironment: meta.confirmedEnvironment || 'ambientata',
+                        confirmedBrand: meta.confirmedBrand,
                         imgCount: generationCount
                     })
                 }).catch(e => console.error(e));
@@ -228,6 +230,11 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
                     ], { columns: 2 })
                 );
+            } else if (meta.needsBrandClarification && !meta.confirmedBrand) {
+                await bot.telegram.sendMessage(
+                    chatId,
+                    "👟 **Dettaglio Custom Rilevato!**\n\nHo notato una scritta, un logo o una targhetta su questo capo e non voglio allucinare parole a caso!\n\n👉 **Per favore, scrivimi qui in chat il testo testuale esatto da stamparci sopra.** (Es. GAËLLE, Guess, ecc.)\n\n*Scrivi il testo nel box qui sotto ed invia.*"
+                );
             } else if (!meta.confirmedEnvironment) {
                 // Chiedi Ambientata o Studio
                 await bot.telegram.sendMessage(
@@ -256,10 +263,56 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true });
     }
 
-    // 2) GESTIONE IMMAGINE (Primo caricamento)
+    // 2) GESTIONE IMMAGINE E TESTO LIBERO
+    const incomingText = update.message?.text?.trim() || "";
     const incomingPhoto = update.message?.photo;
     const incomingDoc = update.message?.document;
     const chatId = update.message?.chat?.id;
+
+    if (incomingText && !incomingText.startsWith("/") && !incomingPhoto && !incomingDoc) {
+        // Controlla se c'è un job in sospeso che aspetta il brand
+        const pendingJob = await (prisma.generationJob as any).findFirst({
+            where: { telegram_chat_id: globalChatId, status: "awaiting_input" },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        if (pendingJob && pendingJob.metadata) {
+            let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
+            if (meta.needsBrandClarification && meta.confirmedCategory && !meta.confirmedBrand) {
+                meta.confirmedBrand = incomingText;
+                await (prisma.generationJob as any).update({
+                    where: { id: pendingJob.id },
+                    data: { metadata: meta }
+                });
+                
+                await bot.telegram.sendMessage(chatId, `✅ Salvato! Il brand/testo sarà scolpito come: **${incomingText}**`);
+                
+                // Passa alla prossima domanda
+                if (!meta.confirmedEnvironment) {
+                    await bot.telegram.sendMessage(
+                        chatId,
+                        `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
+                        Markup.inlineKeyboard([
+                            Markup.button.callback("🌍 Ambientata", `env|${pendingJob.id}|ambientata`),
+                            Markup.button.callback("📸 In Studio", `env|${pendingJob.id}|studio`)
+                        ], { columns: 2 })
+                    );
+                } else {
+                   const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
+                   await bot.telegram.sendMessage(
+                        chatId,
+                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
+                        Markup.inlineKeyboard([
+                            Markup.button.callback("📸 3", `run|${pendingJob.id}|3`),
+                            Markup.button.callback("📸 5", `run|${pendingJob.id}|5`),
+                            Markup.button.callback("📸 10", `run|${pendingJob.id}|10`)
+                        ], { columns: 3 })
+                    );
+                }
+                return NextResponse.json({ ok: true });
+            }
+        }
+    }
 
     if (incomingPhoto || incomingDoc) {
       let fileId = incomingPhoto ? incomingPhoto[incomingPhoto.length - 1].file_id : incomingDoc.file_id;
@@ -286,9 +339,9 @@ export async function POST(req: NextRequest) {
 
       const analysisPrompt = `Sei un esperto. Analizza la foto in allegato (potrebbe esserci un abito o delle scarpe) e restituisci SOLO UN JSON. Questo JSON deve contenere l'esatta chiave: "predicted_category". 
 Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. 
-Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una giacca o abito da uomo devi mettere FALSE), "needs_gender_clarification" (booleano. DEVI mettere false se il taglio maschile è evidente. Metti true per felpe neutre, t-shirt unisex o calzature dove non si capisce se è uomo/donna), "needs_bottom_clarification" (booleano true/false), "predicted_bottom" (stringa). Solo parentesi graffe, nessuna formattazione markdown.`;
+Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una giacca o abito da uomo devi mettere FALSE), "needs_gender_clarification" (booleano. DEVI mettere false se il taglio maschile è evidente. Metti true per felpe neutre, t-shirt unisex o calzature dove non si capisce se è uomo/donna), "needs_bottom_clarification" (booleano true/false), "needs_brand_clarification" (booleano. DEVI mettere true SE E SOLO SE vedi un logo evidente, targa metallica o un testo sui lacci/tomaia/capo di cui non sei perfettamente certo), "predicted_bottom" (stringa). Solo parentesi graffe, nessuna formattazione markdown.`;
       
-      let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false };
+      let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false, needs_brand_clarification: false };
       
       try {
           const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
@@ -321,9 +374,11 @@ Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una gi
           isWoman: aiResult.is_women_dress,
           needsGenderClarification: aiResult.needs_gender_clarification,
           needsBottomClarification: aiResult.needs_bottom_clarification,
+          needsBrandClarification: aiResult.needs_brand_clarification,
           confirmedCategory: null,
           confirmedBottom: null,
-          confirmedGender: null
+          confirmedGender: null,
+          confirmedBrand: null
       };
 
       await (prisma.generationJob as any).create({
