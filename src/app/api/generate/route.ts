@@ -104,7 +104,7 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
             }
             
             const shuffledScenes = allScenes.sort(() => Math.random() - 0.5);
-            targetScenes = shuffledScenes.slice(0, count).map(s => s.scene_text);
+            targetScenes = shuffledScenes.slice(0, count).map((s: any) => s.scene_text);
             // Se chiedono 3 generate ma ci sono solo 2 scene, ripetiamo
             while (targetScenes.length < count) {
                  targetScenes.push(targetScenes[targetScenes.length - 1]);
