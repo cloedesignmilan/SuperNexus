@@ -338,7 +338,7 @@ export async function POST(req: NextRequest) {
       const validCategoriesStr = templatesSchemaList.map((t: any) => `ID: "${t.id}" (Nome: ${t.name})`).join(" | ");
 
       const analysisPrompt = `Sei un esperto. Analizza la foto in allegato (potrebbe esserci un abito o delle scarpe) e restituisci SOLO UN JSON. Questo JSON deve contenere l'esatta chiave: "predicted_category". 
-Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. 
+Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. Restituisci ESATTAMENTE solo la stringa alfanumerica dell'ID, senza aggiungere "ID:" o il nome.
 Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una giacca o abito da uomo devi mettere FALSE), "needs_gender_clarification" (booleano. DEVI mettere false se il taglio maschile è evidente. Metti true per felpe neutre, t-shirt unisex o calzature dove non si capisce se è uomo/donna), "needs_bottom_clarification" (booleano true/false), "needs_brand_clarification" (booleano. DEVI mettere true SE E SOLO SE vedi un logo evidente, targa metallica o un testo sui lacci/tomaia/capo di cui non sei perfettamente certo), "predicted_bottom" (stringa). Solo parentesi graffe, nessuna formattazione markdown.`;
       
       let aiResult = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false, needs_brand_clarification: false };
@@ -400,7 +400,10 @@ Altre chiavi obbligatorie: "is_women_dress" (booleano true/false. Se vedi una gi
 
       const fallbackButtons = [];
       if (aiResult.predicted_category) {
-          const guess = fallbacksFromDB.find(c => c.id === aiResult.predicted_category);
+          const guess = fallbacksFromDB.find(c => 
+             c.id === aiResult.predicted_category || 
+             c.name.toLowerCase().includes(aiResult.predicted_category.toLowerCase())
+          );
           if(guess) {
               fallbackButtons.push(Markup.button.callback(`✅ Conferma (${guess.name})`, `cat|${jobId}|${guess.id}`));
           }
