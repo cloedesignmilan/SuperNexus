@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
                     data: { status: "processing", metadata: meta }
                 });
 
-                bot.telegram.sendMessage(chatId, `✨ **Inizio Servizio Fotografico!**\nApplicazione Modulo Master...\nGenerazione ${meta.confirmedScene === 'random' ? 'con Scene Casuali' : 'con Scena Selezionata'} in corso...`);
+                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso! Prepara i pop-corn 🍿, sto cucinando l'outfit perfetto per te...**\n*(Sceglierò una scena diversa per ogni scatto!)*`);
 
                 const baseUrl = `https://x-super-nexus.vercel.app`;
                 fetch(`${baseUrl}/api/generate`, {
@@ -187,31 +187,17 @@ export async function POST(req: NextRequest) {
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
                     ], { columns: 2 })
                 );
-            } else if (!meta.confirmedScene) {
-                // CHIEDI SCENA
-                const scenes = await prisma.scene.findMany({
-                    where: { category_id: meta.confirmedCategory, is_active: true },
-                    orderBy: { sort_order: 'asc' }
-                });
-                
-                const sceneBtns = scenes.map(s => Markup.button.callback(s.title, `sce|${jobId}|${s.id}`));
-                sceneBtns.unshift(Markup.button.callback("🎲 Scena Casuale (Consigliato)", `sce|${jobId}|random`));
-                
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `🌟 La categoria è pronta!\nSeleziona una composizione ambientale oppure affidati all'ispirazione casuale dell'IA:`,
-                    Markup.inlineKeyboard(sceneBtns, { columns: 1 })
-                );
             } else {
                // Tutto pronto! Tasto per lanciare.
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                await bot.telegram.sendMessage(
                     chatId,
-                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nScena: ${meta.confirmedScene === 'random' ? 'Casuale' : 'Manuale'}\n\nScegli quante proposte desideri generare:`,
+                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\n\nScegli quante proposte desideri generare:`,
                     Markup.inlineKeyboard([
-                        Markup.button.callback("📸 3 IMMAGINI", `run|${jobId}|3`),
-                        Markup.button.callback("📸 5 IMMAGINI", `run|${jobId}|5`)
-                    ], { columns: 2 })
+                        Markup.button.callback("📸 3", `run|${jobId}|3`),
+                        Markup.button.callback("📸 5", `run|${jobId}|5`),
+                        Markup.button.callback("📸 10", `run|${jobId}|10`)
+                    ], { columns: 3 })
                 );
             }
         }
@@ -229,7 +215,7 @@ export async function POST(req: NextRequest) {
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
 
-      await bot.telegram.sendMessage(chatId, "⏳ *Occhio dell'IA in corso...* Sto guardando l'immagine...", { parse_mode: 'Markdown' });
+      await bot.telegram.sendMessage(chatId, "⏳ *AI sta analizzando la tua immagine...*", { parse_mode: 'Markdown' });
 
       // Scarichiamo per Gemini Rapido
       let imgBuffer;
