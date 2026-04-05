@@ -624,3 +624,6 @@ body {
   font-size: 0.9rem;
   text-shadow: 0 0 10px rgba(187,134,252,0.4);
 }
+
+.telephones-container { display: flex; flex-direction: column; gap: 40px; align-items: center; justify-content: center; width: 100%; }
+@media (min-width: 900px) { .telephones-container { flex-direction: row; gap: 80px; } }

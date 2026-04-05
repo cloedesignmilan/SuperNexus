@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, Sparkles, CheckCircle2, TrendingUp, ArrowRight } from 'lucide-react';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
+import GalleryMockup from '@/components/GalleryMockup';
 
 
 export default function LandingPage() {
@@ -101,8 +102,16 @@ export default function LandingPage() {
               <li><CheckCircle2 color="#03dac6" size={20} /> Ricevi le foto finite dopo 30 secondi</li>
             </ul>
           </div>
-          <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none', display: 'flex', justifyContent: 'center' }}>
-            <AnimatedTelegramMockup />
+          <div className="telephones-container">
+            <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+              <div style={{ color: '#bb86fc', fontWeight: 'bold', fontSize: '1.2rem', textShadow: '0 0 10px rgba(187,134,252,0.5)' }}>1. Usa Telegram</div>
+              <AnimatedTelegramMockup />
+            </div>
+
+            <div className="z-visual" style={{ background: 'transparent', padding: '0', border: 'none', boxShadow: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+              <div style={{ color: '#03dac6', fontWeight: 'bold', fontSize: '1.2rem', textShadow: '0 0 10px rgba(3,218,198,0.5)' }}>2. Scarica in HD dal Cloud</div>
+              <GalleryMockup />
+            </div>
           </div>
         </div>
 
