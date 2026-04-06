@@ -4,6 +4,7 @@ import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2 } from 'lucide-react'
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
+import ShowcaseTabs from '@/components/ShowcaseTabs';
 
 export default function LandingPage() {
   return (
@@ -47,95 +48,7 @@ export default function LandingPage() {
         <p style={{ fontSize: '1.2rem', color: '#aaa', marginBottom: '4rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 4rem' }}>
           Dalla scatola al web in 30 secondi. Guarda come le foto scattate velocemente nei nostri negozi affiliati si trasformano in immagini perfette per le Campagne Facebook, i Post Instagram e il catalogo del Sito.
         </p>
-
-        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', maxWidth: '1200px', margin: '0 auto', paddingBottom: '20vh' }}>
-          
-          {/* BUSINESS UOMO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
-            <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#0085FF' }}>Abbigliamento Business</h3>
-               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano il fit.</p>
-            </div>
-            <div className="collage-container" style={{ direction: 'ltr' }}>
-               <div className="collage-pack">
-                  <PhoneMockup imgSrc="/showcase/business/prima.jpg" label="SCATTO DAL NEGOZIO" className="collage-phone" />
-                  <div className="collage-social-group">
-                     <SocialPostMockup imgSrc="/showcase/business/dopo1.jpg" accountName="tailor_milano" likes="8.423" label="PER INSTAGRAM" className="collage-social-top" />
-                     <SocialPostMockup imgSrc="/showcase/business/dopo2.jpg" accountName="tailor_milano" likes="5.190" label="SITO E-COMMERCE" className="collage-social-bottom" />
-                  </div>
-               </div>
-            </div>
-          </div>
-
-          {/* SNEAKERS & CALZATURE STUDIO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '1.5fr minmax(300px, 1fr)', gap: '4rem', alignItems: 'center', direction: 'rtl' }}>
-             <div className="collage-container" style={{ direction: 'ltr' }}>
-               <div className="collage-pack">
-                  <PhoneMockup imgSrc="/showcase/scarpe/prima.png" label="PIASTRELLA VETRINA" className="collage-phone" />
-                  <div className="collage-social-group">
-                     <SocialPostMockup imgSrc="/showcase/scarpe/dopo1.jpg" accountName="sneakers_hub" likes="12.044" label="STILL LIFE SHOP" className="collage-social-top" />
-                     <SocialPostMockup imgSrc="/showcase/scarpe/dopo2.jpg" accountName="sneakers_hub" likes="9.812" label="CATALOGO" className="collage-social-bottom" />
-                  </div>
-               </div>
-             </div>
-            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
-               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature: Still Life Assoluto</h3>
-               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Punta il telefono. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). L'eliminazione totale di cartellini e tavoli per l'E-Commerce perfetto.</p>
-            </div>
-          </div>
-
-          {/* WEDDING & SPOSA */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
-            <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
-               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
-            </div>
-            <div className="collage-container" style={{ direction: 'ltr' }}>
-               <div className="collage-pack">
-                  <PhoneMockup imgSrc="/showcase/sposa/prima.jpg" label="MAGAZZINO ATELIER" className="collage-phone" />
-                  <div className="collage-social-group">
-                     <SocialPostMockup imgSrc="/showcase/sposa/dopo1.jpg" accountName="luxury_bridal" likes="24k" label="LOOKBOOK 1" className="collage-social-top" />
-                     <SocialPostMockup imgSrc="/showcase/sposa/dopo2.jpg" accountName="luxury_bridal" likes="18k" label="LOOKBOOK 2" className="collage-social-bottom" />
-                  </div>
-               </div>
-            </div>
-          </div>
-
-          {/* FESTA E CASUAL */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '1.5fr minmax(300px, 1fr)', gap: '4rem', alignItems: 'center', direction: 'rtl' }}>
-             <div className="collage-container" style={{ direction: 'ltr' }}>
-               <div className="collage-pack">
-                  <PhoneMockup imgSrc="/showcase/festa/prima.jpg" label="APPESO IN NEGOZIO" className="collage-phone" />
-                  <div className="collage-social-group">
-                     <SocialPostMockup imgSrc="/showcase/festa/dopo1.jpg" accountName="party_milano" likes="4.321" label="IG STORY" className="collage-social-top" />
-                     <SocialPostMockup imgSrc="/showcase/festa/dopo2.jpg" accountName="party_milano" likes="6.890" label="SOCIAL ADS" className="collage-social-bottom" />
-                  </div>
-               </div>
-             </div>
-            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
-               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Abiti da Sera</h3>
-               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Mostra l'attrazione ipnotica dei tuoi capi serali con sfondi di locali lussuosi e luci vibranti notturne. Le Instagram Stories schizzeranno al vertice.</p>
-            </div>
-          </div>
-
-          {/* STREETWEAR RAGAZZO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
-            <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#4caf50' }}>Streetwear & Urban</h3>
-               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Magliette stirate a terra? Trasformale in scatti hype nei quartieri metropolitani, skatepark e graffit-wall per attirare subito la GenZ.</p>
-            </div>
-            <div className="collage-container" style={{ direction: 'ltr' }}>
-               <div className="collage-pack">
-                  <PhoneMockup imgSrc="/showcase/ragazzo/prima.jpg" label="SCATTO SUL TAVOLO" className="collage-phone" />
-                  <div className="collage-social-group">
-                     <SocialPostMockup imgSrc="/showcase/ragazzo/dopo1.jpg" accountName="hype_street" likes="15k" label="REEL COVER" className="collage-social-top" />
-                     <SocialPostMockup imgSrc="/showcase/ragazzo/dopo2.jpg" accountName="hype_street" likes="12k" label="DROP ANNUNCIO" className="collage-social-bottom" />
-                  </div>
-               </div>
-            </div>
-          </div>
-
-        </div>
+        <ShowcaseTabs />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}
