@@ -477,8 +477,25 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
           }
       }
       
-      for (let i = 0; i < fallbacksFromDB.length; i++) {
-          fallbackButtons.push(Markup.button.callback(fallbacksFromDB[i].name, `cat|${jobId}|${fallbacksFromDB[i].id}`));
+      let filteredCategories = fallbacksFromDB;
+      if (aiResult.needs_gender_clarification === false) {
+          filteredCategories = fallbacksFromDB.filter((c: any) => {
+              const catName = c.name.toLowerCase();
+              if (aiResult.is_women_dress) {
+                   // Rimuovi esplicitamente categorie puramente maschili
+                   if (catName === 'sposo' || catName.includes('uomo')) return false;
+              } else {
+                   // Rimuovi esplicitamente categorie puramente femminili
+                   if (catName === 'sposa' || catName.includes('donna') || catName.includes('damigelle')) return false;
+              }
+              return true;
+          });
+      }
+
+      for (let i = 0; i < filteredCategories.length; i++) {
+          // Preveniamo che il bottone di guess (già pushato sopra) crei un duplicato inutile se non vogliamo
+          // Ma per tenere l'ordine originale, facciamo il push garantito
+          fallbackButtons.push(Markup.button.callback(filteredCategories[i].name, `cat|${jobId}|${filteredCategories[i].id}`));
       }
 
       const predictedName = aiResult.predicted_category ? fallbacksFromDB.find((c: any) => c.id === aiResult.predicted_category)?.name : 'Sconosciuto';
