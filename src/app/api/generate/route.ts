@@ -75,12 +75,26 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
     if (targetScenes.length === 0) {
         if (confirmedEnvironment === 'studio_calzature') {
              // 4 Specific angles for strictly product shoes
-             targetScenes = [
-                 "Still life product photography, pair of shoes, angled 3/4 front view, pure white floor and background",
-                 "Still life product photography, pair of shoes, straight top-down flat lay view, pure white background",
-                 "Still life product photography, pair of shoes, back heel view showing the rear details, pure white background",
-                 "Still life product photography, single shoe, side profile view, pure white background"
-             ];
+             const adminCustomPrompts = categoryObj.prompt_master.studio_prompts;
+             if (adminCustomPrompts && adminCustomPrompts.trim() !== '') {
+                 const lines = adminCustomPrompts.split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
+                 if (lines.length > 0) {
+                     targetScenes = lines.slice(0, count);
+                     // Riempie in caso l'admin ne abbia scritte di meno
+                     while (targetScenes.length < count) {
+                         targetScenes.push(targetScenes[targetScenes.length - 1]);
+                     }
+                 }
+             }
+
+             if (targetScenes.length === 0) {
+                 targetScenes = [
+                     "Still life product photography, pair of shoes, angled 3/4 front view, pure white floor and background",
+                     "Still life product photography, pair of shoes, straight top-down flat lay view, pure white background",
+                     "Still life product photography, pair of shoes, back heel view showing the rear details, pure white background",
+                     "Still life product photography, single shoe, side profile view, pure white background"
+                 ];
+             }
              // imgCount è forzato a 4 dal webhook
         } else if (confirmedEnvironment === 'studio') {
             // Hardcode di scene neutre professionali per lo studio

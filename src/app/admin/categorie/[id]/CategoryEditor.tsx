@@ -13,6 +13,7 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
 
     const [masterPromptText, setMasterPromptText] = useState(initialData?.prompt_master?.prompt_text || "");
     const [negativeRules, setNegativeRules] = useState(initialData?.prompt_master?.negative_rules || "");
+    const [studioPromptsText, setStudioPromptsText] = useState(initialData?.prompt_master?.studio_prompts || "");
 
     const [scenes, setScenes] = useState<any[]>(initialData?.scenes || [ {title: "Scena 1", scene_text: ""} ]);
     const [saving, setSaving] = useState(false);
@@ -85,7 +86,8 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
                     prompt_master: {
                         title: `${name} Master`,
                         prompt_text: masterPromptText,
-                        negative_rules: negativeRules
+                        negative_rules: negativeRules,
+                        studio_prompts: studioPromptsText
                     },
                     scenes: scenes.filter(s => s.scene_text.trim() !== '')
                 })
@@ -153,6 +155,14 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
                     value={negativeRules} onChange={e => setNegativeRules(e.target.value)}
                     style={{...inputStyle, minHeight: '80px', border: '1px solid #ff5470'}}
                     placeholder="No unrealistic anatomy, no cuts in the fabric..."
+                />
+
+                <label style={{...labelStyle, color: '#ffb300', marginTop: '10px'}}>Prompt Modalità Studio Speciale (Opzionale: 1 riga = 1 foto)</label>
+                <p style={{fontSize: '0.85rem', color: '#bbb', marginBottom: '10px', marginTop: '-5px'}}>Se compilato, per categorie come Calzature sovrascrive le pose fisse in modalità "In Studio". Scrivi una posa per riga.</p>
+                <textarea 
+                    value={studioPromptsText} onChange={e => setStudioPromptsText(e.target.value)}
+                    style={{...inputStyle, minHeight: '100px', border: '1px solid #ffb300'}}
+                    placeholder="Es:&#10;Still life product photography, front view, pure white floor&#10;Still life product photography, side view..."
                 />
             </div>
 

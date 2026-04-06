@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     try {
         const data = await req.json();
         
-        const promptMasterPayload = data.prompt_master || { title: data.name + ' Master', prompt_text: "Modella base", negative_rules: "" };
+        const promptMasterPayload = data.prompt_master || { title: data.name + ' Master', prompt_text: "Modella base", negative_rules: "", studio_prompts: "" };
         const scenesPayload = data.scenes || []; 
 
         const created = await prisma.category.create({
@@ -36,7 +36,8 @@ export async function POST(req: NextRequest) {
                     create: {
                         title: promptMasterPayload.title,
                         prompt_text: promptMasterPayload.prompt_text,
-                        negative_rules: promptMasterPayload.negative_rules
+                        negative_rules: promptMasterPayload.negative_rules,
+                        studio_prompts: promptMasterPayload.studio_prompts
                     }
                 },
                 scenes: {

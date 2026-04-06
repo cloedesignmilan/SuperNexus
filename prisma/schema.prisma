@@ -120,6 +120,7 @@ model PromptMaster {
   title          String
   prompt_text    String   @db.Text
   negative_rules String?  @db.Text
+  studio_prompts String?  @db.Text
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
