@@ -571,3 +571,20 @@ body {
   width: 100%; 
 }
 @media (min-width: 900px) { .telephones-container { flex-direction: row; gap: 80px; } }
+
+/* NEW SHOWCASE RESPONSIVE */
+.showcase-row {
+  margin-bottom: 4rem;
+}
+@media (max-width: 900px) {
+  .showcase-row {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .showcase-images {
+    flex-direction: column !important;
+  }
+  .showcase-images > div {
+    min-height: 250px;
+  }
+}

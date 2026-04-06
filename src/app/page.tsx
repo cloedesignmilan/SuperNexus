@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Camera, Zap, Smartphone, Sparkles, TrendingUp, CheckCircle2 } from 'lucide-react';
+import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2 } from 'lucide-react';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
-import GalleryMockup from '@/components/GalleryMockup';
 
 export default function LandingPage() {
   return (
@@ -10,7 +9,6 @@ export default function LandingPage() {
       {/* HEADER */}
       <header className="landing-header">
         <div className="landing-logo">
-          <Sparkles size={24} color="#0085FF" />
           SuperNexus <span>AI</span>
         </div>
         <nav>
@@ -24,118 +22,154 @@ export default function LandingPage() {
       <section className="hero-section">
         <div className="hero-content">
           <h1 className="hero-title">
-            Dal manichino allo shooting.<br />
-            <span>In 30 secondi.</span>
+            Meno Grucce Tristi.<br />
+            <span>Più Vendite Online.</span>
           </h1>
           <p className="hero-subtitle">
-            Il primo assistente IA su Telegram che trasforma fotocopie sbiadite e grucce tristi in editoriali di moda iperrealistici. Scatta, invia e pubblica.
+            Il software AI indispensabile per Boutique e Negozi di abbigliamento. Scatta una foto col telefono al capo in magazzino e ottieni subito uno shooting iper-realistico perfetto per Facebook, Instagram e il tuo Sito E-Commerce.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <a href="#pricing" className="btn-primary">
-              Inizia a Vendere
+            <a href="#showcase" className="btn-primary">
+              Guarda i Risultati
             </a>
-            <a href="#features" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF' }}>
-              Scopri Come
+            <a href="#pricing" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF' }}>
+              Scopri i Piani
             </a>
           </div>
         </div>
       </section>
 
-      {/* BENTO GRID FEATURES */}
-      <section id="features" className="bento-section">
-        <h2 className="section-title">Zero attrito.<br />Massimo risultato.</h2>
+      {/* SHOWCASE DA ZERO */}
+      <section id="showcase" className="bento-section" style={{ padding: '4rem 5%', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
+        <h2 className="section-title" style={{ color: '#fff' }}>Indispensabile per il tuo Negozio.</h2>
+        <p style={{ fontSize: '1.2rem', color: '#aaa', marginBottom: '4rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 4rem' }}>
+          Dalla scatola al web in 30 secondi. Guarda come le foto scattate velocemente nei nostri negozi affiliati si trasformano in immagini perfette per le Campagne Facebook, i Post Instagram e il catalogo del Sito.
+        </p>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', maxWidth: '1200px', margin: '0 auto' }}>
+          
+          {/* BUSINESS UOMO */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+            <div className="showcase-text">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#0085FF' }}>Abbigliamento Business</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano il fit.</p>
+            </div>
+            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/business/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER INSTAGRAM</span>
+                 <img src="/showcase/business/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER SHOP ONLINE</span>
+                 <img src="/showcase/business/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
+            </div>
+          </div>
+
+          {/* SNEAKERS & CALZATURE */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center' }}>
+             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/scarpe/prima.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Prima" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>VETRINA E-COMMERCE</span>
+                 <img src="/showcase/scarpe/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>VETRINA E-COMMERCE</span>
+                 <img src="/showcase/scarpe/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
+            </div>
+            <div className="showcase-text">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature in Studio</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Punta il telefono sulla vetrina o sul pavimento. Ottieni Still-Life chirurgici con sfondo purissimo su cui vendere online, aggirando i lunghi set fotografici.</p>
+            </div>
+          </div>
+
+          {/* WEDDING & SPOSA */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+            <div className="showcase-text">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
+            </div>
+            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/sposa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK 1</span>
+                 <img src="/showcase/sposa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK 2</span>
+                 <img src="/showcase/sposa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
+            </div>
+          </div>
+
+          {/* FESTA E STREETWEAR */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center' }}>
+             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/festa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>SOCIAL POST</span>
+                 <img src="/showcase/festa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>SOCIAL POST</span>
+                 <img src="/showcase/festa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
+            </div>
+            <div className="showcase-text">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Fashion 18esimi</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Attraici un pubblico giovane mostrando subito l'attitudine del capo. L'algoritmo capisce in automatico il target e genera luci dinamiche e location esclusive.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* BENTO GRID FEATURES (Shortened) */}
+      <section id="features" className="bento-section" style={{ marginTop: '8rem' }}>
+        <h2 className="section-title">Zero attrito. Massimo risultato.</h2>
         <div className="bento-grid" style={{ marginTop: '4rem' }}>
           
-          {/* BENTO 1: Usa solo lo smartphone (HALF) */}
+          {/* BENTO 1 */}
           <div className="bento-card bento-half">
             <div className="bento-icon"><Smartphone /></div>
-            <h3 className="bento-title">Usa solo lo<br/>Smartphone.</h3>
-            <p className="bento-subtitle">Niente computer, niente app lente da scaricare. Apri Telegram, mandi una foto, e in meno di un minuto ottieni uno shooting pronto per Instagram.</p>
+            <h3 className="bento-title">Tutto via chat.</h3>
+            <p className="bento-subtitle">Mandi la foto su Telegram, ricevi le versioni perfette. Nessun sito complicato da imparare ad usare e nessuna app da installare.</p>
             <div className="bento-visual-center">
               <AnimatedTelegramMockup />
             </div>
           </div>
 
-          {/* BENTO 2: Galleria (HALF) */}
-          <div className="bento-card bento-half">
-            <div className="bento-icon"><Camera /></div>
-            <h3 className="bento-title">Tutto salvato in<br/>Galleria.</h3>
-            <p className="bento-subtitle">I tuoi abiti reimmaginati vengono inviati direttamente in Chat. Un tap e li salvi nella fotocamera del tuo cellulare, pronti per essere postati o inviati su WhatsApp.</p>
-            <div className="bento-visual-center">
-              <GalleryMockup />
-            </div>
-          </div>
-
-          {/* BENTO 3: Fedeltà (TWO THIRDS) */}
-          <div className="bento-card bento-two-thirds" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-            <div>
-              <div className="bento-icon"><Zap color="#0085FF" /></div>
-              <h3 className="bento-title">Fedeltà Matematica 1:1.</h3>
-              <p className="bento-subtitle" style={{ maxWidth: '400px' }}>
-                Grazie al protocollo Nano Banana Pro™ il nostro algoritmo genera modelle/i reali ma preserva esattamente le pieghe, le texture, la trama e la caduta dell'abito fotografato da te. Senza invenzioni.
-              </p>
-            </div>
-            <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-               <div style={{ flex: 1, borderRadius: '16px', overflow: 'hidden', border: '1px solid #eee' }}>
-                  <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>PRIMA</span>
-                  <img src="/prima_nuovo.png" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
-               </div>
-               <div style={{ flex: 1, borderRadius: '16px', overflow: 'hidden', border: '1px solid #eee' }}>
-                  <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>DOPO</span>
-                  <img src="/dopo_nuovo.png" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo" />
-               </div>
-            </div>
-          </div>
-
-          {/* BENTO 4: Risparmio (THIRD) */}
-          <div className="bento-card bento-third" style={{ background: '#111111', color: 'white' }}>
+          {/* BENTO 2 */}
+          <div className="bento-card bento-half" style={{ background: '#111111', color: 'white' }}>
             <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
             <h3 className="bento-title" style={{ color: 'white' }}>Taglia i costi<br/>Shooting.</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>Elimina definitivamente il budget mensile per modelle, trucco, parrucco e sale di posa.</p>
+            <p className="bento-subtitle" style={{ color: '#aaa' }}>Elimina definitivamente il budget mensile per modelle, trucco, fotografi e sale di posa.</p>
             <ul className="bento-list">
-              <li style={{ color: 'white' }}>❌ Basta Fotografi Freelance</li>
+              <li style={{ color: 'white' }}>❌ Nessuna modella da pagare</li>
               <li style={{ color: 'white' }}>❌ Nessun orario da rispettare</li>
-              <li style={{ color: 'white' }}>❌ Libera il magazzino in un tap</li>
+              <li style={{ color: 'white' }}>✅ Libera il magazzino sui Social in 1 min</li>
             </ul>
           </div>
-          
-        </div>
-      </section>
-
-      {/* CATEGORY SHOWCASE (NICCHIE) */}
-      <section className="bento-section" style={{ padding: '6rem 5%' }}>
-        <h2 className="section-title">Pronto per ogni Nicchia.</h2>
-        <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '4rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 4rem' }}>
-          Il nostro motore comprende il prodotto in foto e imposta automaticamente illuminazione, location e cast per intercettare il tuo cliente ideale.
-        </p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
-          
-          <div className="cat-card-bento">
-             <h3>Sposo & Cerimonia 🥂</h3>
-             <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>Abiti appesi resi magnifici su altari, ville di lusso e shooting matrimoniali iperrealistici.</p>
-          </div>
-
-          <div className="cat-card-bento">
-             <h3>Calzature 👟</h3>
-             <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>Stop a piedi tagliati. Seleziona lo still life su bianco asettico o richiedi target specifici per ambientazioni.</p>
-          </div>
-
-          <div className="cat-card-bento">
-             <h3>Kids & Bambini 🎈</h3>
-             <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>Aggira liberatorie e contratti d'immagine costosi generando bambini digitali perfetti in esterna.</p>
-          </div>
-
-          <div className="cat-card-bento">
-             <h3>Streetwear 🛹</h3>
-             <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>T-shirt e felpe accartocciate sul tavolo riprendono forma con attitude urban su skateboard e metro.</p>
-          </div>
-
         </div>
       </section>
 
       {/* PRICING */}
-      <section id="pricing" className="bento-section" style={{ marginBottom: '8rem' }}>
+      <section id="pricing" className="bento-section" style={{ marginBottom: '8rem', marginTop: '8rem' }}>
         <h2 className="section-title">Inizia a convertire.</h2>
         <div className="pricing-grid">
           
