@@ -158,8 +158,9 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
 
             let finalPrompt = "";
             
-            if (confirmedEnvironment === 'studio_calzature') {
-                finalPrompt = `[MASTER DIRECTIVES]
+            if (isShoesCategory) {
+                if (confirmedEnvironment === 'studio') {
+                    finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
 
 [SUBJECT AND SCENE]
@@ -176,6 +177,27 @@ ${brandRule}
 
 [NEGATIVE RULES]
 No humans, no feet, no legs. No distortions of the shoe shape. ${negativeBrandRule}`;
+                } else {
+                    finalPrompt = `[MASTER DIRECTIVES]
+${masterPromptText}
+
+[SUBJECT AND SCENE]
+${sceneText}
+CAMERA ANGLE: ${currentAngle}.
+
+[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
+The subject is wearing the target shoes. 
+YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM. You must IDENTICALLY CLONE the footwear item from the attached reference image onto the human model's feet.
+CLOTHING COLOR & PATTERN: ${garmentDetails.color}
+CLOTHING DESCRIPTION: ${garmentDetails.description}
+
+ABSOLUTE HARD RULE 1 (PRODUCT SHAPE & CUT LOCK): The structure, cut, shape, proportions, color, seams, laces, soles, and heels of the original shoe MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL.
+${brandRule}
+
+[NEGATIVE RULES]
+${negativeRulesText}
+${negativeBrandRule}`;
+                }
             } else {
                 finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
