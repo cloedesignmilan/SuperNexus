@@ -588,3 +588,39 @@ body {
     min-height: 250px;
   }
 }
+
+/* ANIMATIONS & EFFECTS */
+.hover-zoom {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  cursor: pointer;
+}
+.hover-zoom:hover {
+  transform: translateY(-8px) scale(1.03);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes floatBadge {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+.pill-badge {
+  animation: floatBadge 3s ease-in-out infinite;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.reveal-left {
+  animation: slideFadeRight 1.5s ease-out forwards;
+}
+.reveal-right {
+  animation: slideFadeLeft 1.5s ease-out forwards;
+}
+@keyframes slideFadeRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideFadeLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}

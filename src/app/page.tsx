@@ -46,93 +46,159 @@ export default function LandingPage() {
           Dalla scatola al web in 30 secondi. Guarda come le foto scattate velocemente nei nostri negozi affiliati si trasformano in immagini perfette per le Campagne Facebook, i Post Instagram e il catalogo del Sito.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '5rem', maxWidth: '1200px', margin: '0 auto' }}>
           
           {/* BUSINESS UOMO */}
           <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
-            <div className="showcase-text">
+            <div className="showcase-text reveal-left">
                <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#0085FF' }}>Abbigliamento Business</h3>
                <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano il fit.</p>
             </div>
             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
                  <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
                  <img src="/showcase/business/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
                  <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER INSTAGRAM</span>
                  <img src="/showcase/business/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
                  <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER SHOP ONLINE</span>
                  <img src="/showcase/business/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
                </div>
             </div>
           </div>
 
-          {/* SNEAKERS & CALZATURE */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center' }}>
-             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
+          {/* SNEAKERS & CALZATURE STUDIO */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
+             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
                  <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
                  <img src="/showcase/scarpe/prima.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Prima" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>VETRINA E-COMMERCE</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>STILL LIFE</span>
                  <img src="/showcase/scarpe/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>VETRINA E-COMMERCE</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>STILL LIFE</span>
                  <img src="/showcase/scarpe/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
                </div>
             </div>
-            <div className="showcase-text">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature in Studio</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Punta il telefono sulla vetrina o sul pavimento. Ottieni Still-Life chirurgici con sfondo purissimo su cui vendere online, aggirando i lunghi set fotografici.</p>
+            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature: Still Life Assoluto</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Punta il telefono. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). L'eliminazione totale di cartellini e tavoli per l'E-Commerce perfetto.</p>
+            </div>
+          </div>
+
+          {/* CALZATURE AMBIENTATA */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+            <div className="showcase-text reveal-left">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#03dac6' }}>Calzature: Vetrina Ambientata</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Le tue sneakers immerse nel cemento cittadino, campi da basket o asfalto bagnato. Il cliente vede la scarpa respirare nel suo habitat, aumentando l'Hype.</p>
+            </div>
+            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/scarpe-ambientata/prima.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Prima" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LIFESTYLE ADS</span>
+                 <img src="/showcase/scarpe-ambientata/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LIFESTYLE ADS</span>
+                 <img src="/showcase/scarpe-ambientata/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
             </div>
           </div>
 
           {/* WEDDING & SPOSA */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
-            <div className="showcase-text">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
-            </div>
-            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
+             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
                  <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
                  <img src="/showcase/sposa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK 1</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK</span>
                  <img src="/showcase/sposa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK 2</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK</span>
                  <img src="/showcase/sposa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
+            </div>
+            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
+            </div>
+          </div>
+          
+          {/* INVITATI CERIMONIA */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+            <div className="showcase-text reveal-left">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff8a65' }}>Invitati a Nozze</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Cattura subito l'attenzione di chi cerca l'abito per partecipare a un matrimonio. Vesti damigelle e testimoni in splendidi giardini estivi.</p>
+            </div>
+            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/invitati/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>CAROSELLO FB</span>
+                 <img src="/showcase/invitati/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>CAROSELLO FB</span>
+                 <img src="/showcase/invitati/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
                </div>
             </div>
           </div>
 
-          {/* FESTA E STREETWEAR */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center' }}>
-             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+          {/* FESTA E CASUAL */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
+             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
                  <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
                  <img src="/showcase/festa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>SOCIAL POST</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>IG STORY</span>
                  <img src="/showcase/festa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
                </div>
-               <div style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>SOCIAL POST</span>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>IG STORY</span>
                  <img src="/showcase/festa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
                </div>
             </div>
-            <div className="showcase-text">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Fashion 18esimi</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Attraici un pubblico giovane mostrando subito l'attitudine del capo. L'algoritmo capisce in automatico il target e genera luci dinamiche e location esclusive.</p>
+            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Abiti da Sera</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Mostra l'attrazione ipnotica dei tuoi capi serali con sfondi di locali lussuosi e luci vibranti notturne. Le Instagram Stories schizzeranno al vertice.</p>
+            </div>
+          </div>
+
+          {/* STREETWEAR RAGAZZO */}
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+            <div className="showcase-text reveal-left">
+               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#4caf50' }}>Streetwear & Urban</h3>
+               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Magliette stirate a terra? Trasformale in scatti hype nei quartieri metropolitani, skatepark e graffit-wall per attirare subito la GenZ.</p>
+            </div>
+            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
+                 <img src="/showcase/ragazzo/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>REEL COVER</span>
+                 <img src="/showcase/ragazzo/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
+               </div>
+               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
+                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>REEL COVER</span>
+                 <img src="/showcase/ragazzo/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+               </div>
             </div>
           </div>
 
