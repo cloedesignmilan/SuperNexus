@@ -11,9 +11,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GOOGLE_AI_STUDIO_API_KEY;
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY non configurata");
+      throw new Error("GOOGLE_AI_STUDIO_API_KEY non configurata");
     }
 
     const ai = new GoogleGenAI({ apiKey });
