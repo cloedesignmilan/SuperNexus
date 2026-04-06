@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
     
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
-    const analysisPrompt = `Sei un sarto e stilista. Il capo in foto appartiene a una specifica categoria selezionata dall'utente. ${contextStr}
-Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (colore principale e pattern), "description" (UNA DESCRIZIONE MANIACALE, PRECISA E ASSOLUTA. Devi descrivere forma, taglio esatto, proporzioni, materiali, cuciture, lacci, suole, colletti, bottoni, tasche e ogni singolo micro-dettaglio. Questa descrizione sarà usata come UNICA SORGENTE DI VERITÀ per clonare l'oggetto identico al 100%. Se alteri o ometti qualcosa, il risultato fallirà. Sii letalmente preciso nel preservare la fedeltà all'originale). Niente altro che il JSON.`;
+    const analysisPrompt = `Sei un esperto ispettore di qualità e clonazione prodotto. Il capo in foto appartiene a una categoria selezionata. ${contextStr}
+Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "color" (colore e pattern, in INGLESE), "description" (MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions, materials like leather, suede, mesh, distinct stitching patterns, sole thickness, tread style, laces type, toe box shape, and every single micro-detail. DO NOT hallucinate. Treat this as the absolute ground truth to mass-produce an identical clone without looking at the original image). Niente testo fuori dal JSON.`;
 
     const visionResult = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
