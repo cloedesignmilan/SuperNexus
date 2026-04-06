@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
                 name: data.name,
                 description: data.description || '',
                 age_range: data.age_range || "20-35",
+                child_age_range: data.child_age_range || "4-12",
                 is_active: data.is_active ?? true,
                 sort_order: data.sort_order ?? 0,
                 prompt_master: {

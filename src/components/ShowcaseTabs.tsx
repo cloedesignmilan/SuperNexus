@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Briefcase, Camera, MapPin, Heart, Users, Music, Flame, ChevronRight, Zap } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
-import InteractiveSposoDemo from './InteractiveSposoDemo';
 
 const CATEGORIES = [
   { 
@@ -82,14 +81,6 @@ const CATEGORIES = [
     post1Src: '/showcase/ragazzo/dopo1.jpg', post1Label: 'HYPE DROP', 
     post2Src: '/showcase/ragazzo/dopo2.jpg', post2Label: 'REEL COVER', 
     account: 'hype_street', likes: '15k'
-  },
-  { 
-    id: 'demo', 
-    label: 'PROVA LIVE ⚡', 
-    icon: <Zap size={28} strokeWidth={1.5} />, 
-    title: 'Generazione Live: Sposo', 
-    desc: 'Vuoi vedere la magia con i tuoi occhi? Carica una foto del tuo abito da sposo (o cerimonia) e osserva l\'intelligenza artificiale creare foto fotorealistiche in tempo reale, direttamente qui!',
-    imgSrc: '', phoneLabel: '', post1Src: '', post1Label: '', post2Src: '', post2Label: '', account: '', likes: ''
   }
 ];
 
@@ -142,9 +133,6 @@ export default function ShowcaseTabs() {
             </div>
             
             <div className="mac-main-viewer">
-               {activeTab === 'demo' ? (
-                 <InteractiveSposoDemo />
-               ) : (
                  <div className="collage-container" style={{ margin: '0' }}>
                    <div className="collage-pack">
                       <PhoneMockup imgSrc={activeCategory.imgSrc} label={activeCategory.phoneLabel} className="collage-phone" />
@@ -154,7 +142,6 @@ export default function ShowcaseTabs() {
                       </div>
                    </div>
                  </div>
-               )}
             </div>
 
          </div>

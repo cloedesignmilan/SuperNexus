@@ -9,6 +9,7 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
     const [name, setName] = useState(initialData?.name || "");
     const [description, setDescription] = useState(initialData?.description || "");
     const [ageRange, setAgeRange] = useState(initialData?.age_range || "20-35");
+    const [childAgeRange, setChildAgeRange] = useState(initialData?.child_age_range || "4-12");
     const [isActive, setIsActive] = useState(initialData?.is_active ?? true);
 
     const [masterPromptText, setMasterPromptText] = useState(initialData?.prompt_master?.prompt_text || "");
@@ -82,6 +83,7 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
                     name,
                     description,
                     age_range: ageRange,
+                    child_age_range: childAgeRange,
                     is_active: isActive,
                     prompt_master: {
                         title: `${name} Master`,
@@ -129,8 +131,16 @@ export default function CategoryEditor({ initialData }: { initialData?: any }) {
                 <label style={labelStyle}>Nome Categoria (Appare su Telegram)</label>
                 <input type="text" value={name} onChange={e => setName(e.target.value)} style={inputStyle} required placeholder="Es. Sposi, Streetwear, Ecc..." />
 
-                <label style={labelStyle}>Età dei Soggetti</label>
-                <input type="text" value={ageRange} onChange={e => setAgeRange(e.target.value)} style={inputStyle} required placeholder="Es. 20-35" />
+                <div style={{display: 'flex', gap: '20px'}}>
+                    <div style={{flex: 1}}>
+                        <label style={labelStyle}>Età Modelli (Adulti)</label>
+                        <input type="text" value={ageRange} onChange={e => setAgeRange(e.target.value)} style={inputStyle} required placeholder="Es. 20-35" />
+                    </div>
+                    <div style={{flex: 1}}>
+                        <label style={labelStyle}>Età Modelli (Bambini)</label>
+                        <input type="text" value={childAgeRange} onChange={e => setChildAgeRange(e.target.value)} style={inputStyle} required placeholder="Es. 4-12" />
+                    </div>
+                </div>
 
                 <label style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px', cursor: 'pointer'}}>
                     <input type="checkbox" checked={isActive} onChange={e => setIsActive(e.target.checked)} style={{width: '20px', height: '20px'}} />

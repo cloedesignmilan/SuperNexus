@@ -155,15 +155,19 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "co
         }
     }
 
-    let ageBracket = "20-35";
-    if (confirmedCategory === 'Sposi') ageBracket = "25-35";
-    else if (confirmedCategory === 'Festa 18°') ageBracket = "17-19";
-    else if (confirmedCategory === 'Business & tempo libero') ageBracket = "28-45";
-    else if (confirmedCategory === 'Cerimonia e festa') ageBracket = "25-45";
-    else if (confirmedCategory === 'Streetwear') ageBracket = "18-30";
-    else if (confirmedCategory === 'Sport') ageBracket = "20-40";
-    else if (confirmedCategory === 'Bambini') ageBracket = "4-12";
-    else if (confirmedCategory === 'Rivista') ageBracket = "20-35";
+    let ageBracket = categoryObj.age_range || "20-35";
+    let genderStr = "FEMALE";
+    
+    const lowerGender = confirmedGender?.toLowerCase() || '';
+    if (lowerGender === 'bambino') {
+        genderStr = "BOY (CHILD)";
+        ageBracket = categoryObj.child_age_range || "4-12";
+    } else if (lowerGender === 'bambina') {
+        genderStr = "GIRL (CHILD)";
+        ageBracket = categoryObj.child_age_range || "4-12";
+    } else if (lowerGender === 'uomo') {
+        genderStr = "MALE";
+    }
 
     const results = await Promise.allSettled(
         targetScenes.map(async (sceneText: string, index: number) => {
@@ -178,7 +182,6 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "co
                     finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference footwear color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is wearing EXACTLY the footwear item shown in the attached reference image. You must IDENTICALLY CLONE the footwear (preserving exact shape, seams, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
                 }
             } else {
-                const genderStr = isMale ? "MALE" : "FEMALE";
                 finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference garment color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is an attractive ${ageBracket} year old ${genderStr} model. The subject is wearing EXACTLY the clothing item shown in the attached reference image. ${confirmedBottom ? 'For the bottom part, the subject is wearing a ' + confirmedBottom + '.' : ''} You must IDENTICALLY CLONE the garment (preserving exact shape, seams, lapels, buttons, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
             }
 
