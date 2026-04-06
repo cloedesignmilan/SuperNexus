@@ -89,12 +89,12 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "co
 
              if (targetScenes.length === 0) {
                  targetScenes = [
-                     "Still life product photography, pair of shoes, straight top-down flat lay view, pure white background",
-                     "Still life product photography, pair of shoes, back heel view showing the rear details, pure white background",
-                     "Still life product photography, single shoe, side profile view, pure white background"
+                     "Still life product photography, pair of shoes, angled 3/4 front view, symmetrical placement, pure white studio background (#FFFFFF)",
+                     "Still life product photography, pair of shoes, straight top-down flat lay, perfectly aligned, pure white background (#FFFFFF)",
+                     "Still life product photography, pair of shoes, back heel view, centered composition, pure white background (#FFFFFF)",
+                     "Still life product photography, single shoe, side profile view, centered, pure white background (#FFFFFF)"
                  ];
              }
-             // imgCount è forzato a 3 dal webhook
         } else if (confirmedEnvironment === 'studio') {
             // Hardcode di scene neutre professionali per lo studio
              const studioScenes = [

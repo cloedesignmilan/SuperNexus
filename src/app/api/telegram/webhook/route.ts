@@ -281,17 +281,27 @@ export async function POST(req: NextRequest) {
                     ])
                 );
             } else {
-               // Tutto pronto! Tasto per lanciare.
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
-               await bot.telegram.sendMessage(
-                    chatId,
-                    `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
-                    Markup.inlineKeyboard([
-                        Markup.button.callback("📸 3", `run|${jobId}|3`),
-                        Markup.button.callback("📸 5", `run|${jobId}|5`),
-                        Markup.button.callback("📸 10", `run|${jobId}|10`)
-                    ], { columns: 3 })
-                );
+               
+               if (meta.confirmedEnvironment === 'studio_calzature') {
+                    await bot.telegram.sendMessage(
+                        chatId,
+                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: In Studio\n\nProcedo con la generazione del **Set E-Commerce Calzature Esecutivo** (4 inquadrature fisse:\n1. 3/4 Frontale\n2. Top-Down\n3. Tallone\n4. Profilo)`,
+                        Markup.inlineKeyboard([
+                            Markup.button.callback("🚀 Genera il Set (4 crediti)", `run|${jobId}|4`)
+                        ])
+                    );
+               } else {
+                    await bot.telegram.sendMessage(
+                        chatId,
+                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
+                        Markup.inlineKeyboard([
+                            Markup.button.callback("📸 3", `run|${jobId}|3`),
+                            Markup.button.callback("📸 5", `run|${jobId}|5`),
+                            Markup.button.callback("📸 10", `run|${jobId}|10`)
+                        ], { columns: 3 })
+                    );
+               }
             }
         }
         await bot.telegram.answerCbQuery(cbq.id);
