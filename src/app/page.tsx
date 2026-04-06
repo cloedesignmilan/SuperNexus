@@ -14,9 +14,9 @@ export default function LandingPage() {
           SuperNexus <span>AI</span>
         </div>
         <nav>
-          <Link href="/admin" prefetch={false} className="btn-secondary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }}>
+          <a href="/admin" className="btn-secondary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }}>
             Accedi
-          </Link>
+          </a>
         </nav>
       </header>
 
