@@ -7,6 +7,7 @@ import { Lock, User } from 'lucide-react';
 export default function LoginForm() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [showForm, setShowForm] = useState(false);
 
     async function handleSubmit(formData: FormData) {
         setLoading(true);
@@ -16,6 +17,19 @@ export default function LoginForm() {
             setError(result.error);
         }
         setLoading(false);
+    }
+
+    if (!showForm) {
+        return (
+            <div style={{textAlign: 'center', margin: '40px 0'}}>
+                <button 
+                    onClick={() => setShowForm(true)}
+                    style={{padding: '15px 40px', background: 'linear-gradient(to right, #bb86fc, #03dac6)', color: '#000', borderRadius: '30px', border: 'none', fontWeight: 'bold', fontSize: '1.2rem', cursor: 'pointer', boxShadow: '0 4px 15px rgba(3, 218, 198, 0.3)'}}
+                >
+                    Accedi al Portale
+                </button>
+            </div>
+        );
     }
 
     return (
