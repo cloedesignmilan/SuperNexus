@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
                             data: { status: "processing", metadata: meta }
                         });
                         
-                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 4 angolazioni professionali su sfondo bianco...)*`);
+                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 3 angolazioni professionali su sfondo bianco...)*`);
 
                         const baseUrl = `https://x-super-nexus.vercel.app`;
                         fetch(`${baseUrl}/api/generate`, {
@@ -146,7 +146,7 @@ export async function POST(req: NextRequest) {
                                 confirmedScene: null,
                                 confirmedEnvironment: 'studio_calzature',
                                 confirmedBrand: meta.confirmedBrand,
-                                imgCount: 4
+                                imgCount: 3
                             })
                         }).catch(e => console.error(e));
 
