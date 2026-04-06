@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from 'next/link';
 import { PlusCircle, FileEdit, Trash2 } from 'lucide-react';
 import styles from "../page.module.css"; 
+import GithubImportModal from './GithubImportModal';
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,7 @@ export default async function AdminCategoriesDashboard() {
                     <Link href="/admin" className={styles.secondaryBtn} style={{textDecoration: 'none'}}>
                         Torna ai Clienti
                     </Link>
+                    <GithubImportModal />
                     <Link href="/admin/categorie/nuova" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
                         <PlusCircle size={18} /> Nuova Categoria
                     </Link>
