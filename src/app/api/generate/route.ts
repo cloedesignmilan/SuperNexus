@@ -124,8 +124,8 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
 
     const isShoesCategory = categoryObj.name.toLowerCase().includes('scarpe') || categoryObj.name.toLowerCase().includes('calzature');
 
-    let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, tags, or watermarks.";
-    let negativeBrandRule = "No brand logos, no text in the image.";
+    let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, price tags, store tags, cardboard labels, hanging tags, or watermarks.";
+    let negativeBrandRule = "No brand logos, no text in the image, no price tags, no store tags, no cardboard tags, no hanging labels attached to the garments.";
 
     if (isShoesCategory) {
         cameraAngles = [
@@ -134,11 +134,11 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
             "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
         ];
         if (confirmedBrand) {
-             brandRule = `ABSOLUTE HARD RULE 3: IL CLIENTE HA ESPLICITAMENTE CONFERMATO CHE IL TESTO/LOGO SULLA SCARPA È: "${confirmedBrand}". DEVI INTAGLIARE O STAMPARE ESATTAMENTE LA PAROLA "${confirmedBrand}" SULLA TARGHETTA O SCARPA E RISPETTARE STRICTLY LE CUCITURE ORIGINALI. È ASSOLUTAMENTE VIETATO GENERARE TESTI INVENTATI O LASCIARE IL LOGO ILLEGGIBILE.`;
-             negativeBrandRule = `Do not invent fake text. You must write ONLY "${confirmedBrand}". Do not add extra seams.`;
+             brandRule = `ABSOLUTE HARD RULE 3: IL CLIENTE HA ESPLICITAMENTE CONFERMATO CHE IL TESTO/LOGO SULLA SCARPA È: "${confirmedBrand}". DEVI INTAGLIARE O STAMPARE ESATTAMENTE LA PAROLA "${confirmedBrand}" SULLA TARGHETTA O SCARPA E RISPETTARE STRICTLY LE CUCITURE ORIGINALI. È ASSOLUTAMENTE VIETATO GENERARE TESTI INVENTATI O LASCIARE IL LOGO ILLEGGIBILE. ASSOLUTAMENTE VIETATO generare cartellini del prezzo, etichette di cartone o store tags appesi.`;
+             negativeBrandRule = `Do not invent fake text. You must write ONLY "${confirmedBrand}". Do not add extra seams. No price tags, no store tags, no cardboard labels hanging from the shoes.`;
         } else {
-             brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND TAGS on the shoes. Do not invent new logos, do not blur them.";
-             negativeBrandRule = "Do not blur original logos. Do not invent fake text.";
+             brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND FABRIC TAGS on the shoes. Do not invent new logos, do not blur them. STRICT RULE: NEVER generate hanging cardboard price tags or store labels attached to the product.";
+             negativeBrandRule = "Do not blur original logos. Do not invent fake text. No price tags, no store tags, no cardboard labels hanging from the shoes.";
         }
     }
 

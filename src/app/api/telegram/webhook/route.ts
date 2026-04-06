@@ -204,12 +204,6 @@ export async function POST(req: NextRequest) {
                 return NextResponse.json({ ok: true });
             }
 
-            // Aggiorna il DB con il blocco confermato
-            await (prisma.generationJob as any).update({
-                where: { id: jobId },
-                data: { metadata: meta }
-            });
-
             // Verifica se è categoria scarpe
             let isShoesFeature = meta.isShoesCategory;
             if (isShoesFeature === undefined && meta.confirmedCategory) {
@@ -217,6 +211,12 @@ export async function POST(req: NextRequest) {
                 isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
                 meta.isShoesCategory = isShoesFeature;
             }
+
+            // Aggiorna il DB con il blocco confermato
+            await (prisma.generationJob as any).update({
+                where: { id: jobId },
+                data: { metadata: meta }
+            });
 
             // Determina la prossima domanda
             if (!meta.confirmedCategory) {
@@ -313,6 +313,14 @@ export async function POST(req: NextRequest) {
 
         if (pendingJob && pendingJob.metadata) {
             let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
+            
+            let isShoesFeature = meta.isShoesCategory;
+            if (isShoesFeature === undefined && meta.confirmedCategory) {
+                const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
+                isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
+                meta.isShoesCategory = isShoesFeature;
+            }
+
             if (meta.needsBrandClarification && meta.confirmedCategory && !meta.confirmedBrand && meta.isShoesCategory) {
                 meta.confirmedBrand = incomingText;
                 await (prisma.generationJob as any).update({
@@ -353,6 +361,9 @@ export async function POST(req: NextRequest) {
                         ], { columns: 3 })
                     );
                 }
+                return NextResponse.json({ ok: true });
+            } else {
+                await bot.telegram.sendMessage(chatId, `DEBUG FALLBACK test array:\nneedsBrand: ${meta.needsBrandClarification}\nconfirmedCat: ${meta.confirmedCategory}\nconfirmedBrand: ${meta.confirmedBrand}\nisShoes: ${meta.isShoesCategory}`);
                 return NextResponse.json({ ok: true });
             }
         }
@@ -487,9 +498,18 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
         console.log("==> Messaggio mandato con successo");
     } else if (incomingText) {
         // Se scrive ciao o parole a caso ed è già loggato
+        const allJobs = await (prisma.generationJob as any).findMany({
+             where: { telegram_chat_id: globalChatId },
+             orderBy: { createdAt: 'desc' },
+             take: 1
+        });
+        const lastJob = allJobs.length > 0 ? allJobs[0] : null;
+        
+        const debugStr = `DEBUG UNIVERSALE:\nChatID: ${globalChatId}\nTesto Rilevato: ${incomingText}\nUltimo Job ID: ${lastJob ? lastJob.id : 'Nessuno'}\nStatus Ultimo Job: ${lastJob ? lastJob.status : 'N/A'}\nHas Metadata: ${lastJob && lastJob.metadata ? 'Si' : 'No'}`;
+        
         await bot.telegram.sendMessage(
           chatId,
-          "👋 Ciao! Ricordati che sono un AI focalizzata sulle immagini.\nInvia la foto di un capo d'abbigliamento per iniziare l'analisi."
+          `👋 Ciao! Ricordati che sono un AI focalizzata sulle immagini.\n\n${debugStr}`
         );
     }
 
