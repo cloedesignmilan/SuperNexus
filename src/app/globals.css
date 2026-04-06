@@ -624,3 +624,217 @@ body {
   from { opacity: 0; transform: translateX(30px); }
   to { opacity: 1; transform: translateX(0); }
 }
+
+/* MOCKUPS STYLES */
+.mockup-floating-label {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  z-index: 20;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+
+/* PHONE MOCKUP */
+.phone-mockup {
+  position: relative;
+  width: 240px;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 5;
+}
+.phone-hardware {
+  background: #000;
+  border-radius: 36px;
+  padding: 10px;
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.4), 0 30px 60px rgba(0,0,0,0.6);
+  position: relative;
+  border: 2px solid #333;
+}
+.phone-notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 22px;
+  background: #000;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  z-index: 10;
+}
+.phone-screen {
+  background: #111;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 9/19.5;
+}
+.phone-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* SOCIAL POST MOCKUP */
+.social-post-mockup {
+  width: 280px;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 4;
+}
+.social-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,0.05);
+  color: #000;
+}
+.social-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+}
+.social-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.social-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.social-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.social-image-wrapper {
+  aspect-ratio: 4/5;
+  background: #f0f0f0;
+}
+.social-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.social-footer {
+  padding: 12px 14px;
+}
+.social-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.social-action-left {
+  display: flex;
+  gap: 14px;
+}
+.social-icon {
+  color: #222;
+  cursor: pointer;
+}
+.social-likes {
+  font-size: 0.85rem;
+  color: #222;
+}
+
+/* OVERLAPPING COLLAGE LAYOUT */
+.collage-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  position: relative;
+}
+.collage-pack {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.collage-phone {
+  transform: rotate(-6deg) translate(-20px, 10px);
+  z-index: 10;
+}
+.collage-social-group {
+  display: flex;
+  flex-direction: column;
+  gap: -30px; /* Overlap vertically too */
+  margin-left: -50px; /* Overlap horizontally */
+  z-index: 5;
+}
+.collage-social-top {
+  transform: rotate(3deg) translate(20px, 20px);
+  z-index: 6;
+}
+.collage-social-bottom {
+  transform: rotate(-2deg) translate(-10px, -20px);
+  z-index: 7;
+}
+
+/* HOVER DYNAMICS MAGIC (SPREAD) */
+.collage-container:hover .collage-phone {
+  transform: rotate(-2deg) translate(-40px, -10px) scale(1.05);
+}
+.collage-container:hover .collage-social-top {
+   transform: rotate(6deg) translate(50px, -10px) scale(1.05);
+}
+.collage-container:hover .collage-social-bottom {
+   transform: rotate(0deg) translate(20px, 30px) scale(1.05);
+}
+
+@media (max-width: 900px) {
+  .collage-pack {
+     flex-direction: column;
+  }
+  .collage-phone {
+     transform: scale(0.9) rotate(-3deg);
+     margin-bottom: -50px;
+  }
+  .collage-social-group {
+     margin-left: 0;
+     margin-top: -30px;
+  }
+  .collage-container:hover .collage-phone { transform: scale(0.95) translateY(-20px); }
+  .collage-container:hover .collage-social-bottom { transform: scale(0.95) translateY(20px); }
+}
+
+/* MARQUEE SCROLL */
+.infinite-marquee {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  background: #111;
+  padding: 20px 0;
+  white-space: nowrap;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+.marquee-content {
+  display: flex;
+  gap: 20px;
+  animation: scrollMarquee 30s linear infinite;
+}
+.marquee-img {
+  height: 250px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+

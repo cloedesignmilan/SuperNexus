@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2 } from 'lucide-react';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
+import PhoneMockup from '@/components/PhoneMockup';
+import SocialPostMockup from '@/components/SocialPostMockup';
 
 export default function LandingPage() {
   return (
@@ -46,158 +48,89 @@ export default function LandingPage() {
           Dalla scatola al web in 30 secondi. Guarda come le foto scattate velocemente nei nostri negozi affiliati si trasformano in immagini perfette per le Campagne Facebook, i Post Instagram e il catalogo del Sito.
         </p>
 
-        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '5rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto', overflowX: 'hidden', padding: '2rem 0' }}>
           
           {/* BUSINESS UOMO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
             <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#0085FF' }}>Abbigliamento Business</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano il fit.</p>
+               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#0085FF' }}>Abbigliamento Business</h3>
+               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano il fit.</p>
             </div>
-            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/business/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER INSTAGRAM</span>
-                 <img src="/showcase/business/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>PER SHOP ONLINE</span>
-                 <img src="/showcase/business/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+            <div className="collage-container" style={{ direction: 'ltr' }}>
+               <div className="collage-pack">
+                  <PhoneMockup imgSrc="/showcase/business/prima.jpg" label="SCATTO DAL NEGOZIO" className="collage-phone" />
+                  <div className="collage-social-group">
+                     <SocialPostMockup imgSrc="/showcase/business/dopo1.jpg" accountName="tailor_milano" likes="8.423" label="PER INSTAGRAM" className="collage-social-top" />
+                     <SocialPostMockup imgSrc="/showcase/business/dopo2.jpg" accountName="tailor_milano" likes="5.190" label="SITO E-COMMERCE" className="collage-social-bottom" />
+                  </div>
                </div>
             </div>
           </div>
 
           {/* SNEAKERS & CALZATURE STUDIO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
-             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/scarpe/prima.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Prima" />
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '1.5fr minmax(300px, 1fr)', gap: '4rem', alignItems: 'center', direction: 'rtl' }}>
+             <div className="collage-container" style={{ direction: 'ltr' }}>
+               <div className="collage-pack">
+                  <PhoneMockup imgSrc="/showcase/scarpe/prima.png" label="PIASTRELLA VETRINA" className="collage-phone" />
+                  <div className="collage-social-group">
+                     <SocialPostMockup imgSrc="/showcase/scarpe/dopo1.jpg" accountName="sneakers_hub" likes="12.044" label="STILL LIFE SHOP" className="collage-social-top" />
+                     <SocialPostMockup imgSrc="/showcase/scarpe/dopo2.jpg" accountName="sneakers_hub" likes="9.812" label="CATALOGO" className="collage-social-bottom" />
+                  </div>
                </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>STILL LIFE</span>
-                 <img src="/showcase/scarpe/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>STILL LIFE</span>
-                 <img src="/showcase/scarpe/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
-               </div>
-            </div>
+             </div>
             <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature: Still Life Assoluto</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Punta il telefono. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). L'eliminazione totale di cartellini e tavoli per l'E-Commerce perfetto.</p>
-            </div>
-          </div>
-
-          {/* CALZATURE AMBIENTATA */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
-            <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#03dac6' }}>Calzature: Vetrina Ambientata</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Le tue sneakers immerse nel cemento cittadino, campi da basket o asfalto bagnato. Il cliente vede la scarpa respirare nel suo habitat, aumentando l'Hype.</p>
-            </div>
-            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/scarpe-ambientata/prima.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="Prima" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LIFESTYLE ADS</span>
-                 <img src="/showcase/scarpe-ambientata/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LIFESTYLE ADS</span>
-                 <img src="/showcase/scarpe-ambientata/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
-               </div>
+               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#ffb300' }}>Calzature: Still Life Assoluto</h3>
+               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Punta il telefono. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). L'eliminazione totale di cartellini e tavoli per l'E-Commerce perfetto.</p>
             </div>
           </div>
 
           {/* WEDDING & SPOSA */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
-             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/sposa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK</span>
-                 <img src="/showcase/sposa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>LOOKBOOK</span>
-                 <img src="/showcase/sposa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
-               </div>
-            </div>
-            <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
-            </div>
-          </div>
-          
-          {/* INVITATI CERIMONIA */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
             <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#ff8a65' }}>Invitati a Nozze</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Cattura subito l'attenzione di chi cerca l'abito per partecipare a un matrimonio. Vesti damigelle e testimoni in splendidi giardini estivi.</p>
+               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#ff5470' }}>Abiti Sposa & Cerimonia</h3>
+               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Dall'abito anonimo appeso nell'armadio a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le spose sulle tue Ads social.</p>
             </div>
-            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/invitati/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>CAROSELLO FB</span>
-                 <img src="/showcase/invitati/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>CAROSELLO FB</span>
-                 <img src="/showcase/invitati/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+            <div className="collage-container" style={{ direction: 'ltr' }}>
+               <div className="collage-pack">
+                  <PhoneMockup imgSrc="/showcase/sposa/prima.jpg" label="MAGAZZINO ATELIER" className="collage-phone" />
+                  <div className="collage-social-group">
+                     <SocialPostMockup imgSrc="/showcase/sposa/dopo1.jpg" accountName="luxury_bridal" likes="24k" label="LOOKBOOK 1" className="collage-social-top" />
+                     <SocialPostMockup imgSrc="/showcase/sposa/dopo2.jpg" accountName="luxury_bridal" likes="18k" label="LOOKBOOK 2" className="collage-social-bottom" />
+                  </div>
                </div>
             </div>
           </div>
 
           {/* FESTA E CASUAL */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '2fr minmax(250px, 1fr)', gap: '2rem', alignItems: 'center', direction: 'rtl' }}>
-             <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%', direction: 'ltr' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/festa/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: '1.5fr minmax(300px, 1fr)', gap: '4rem', alignItems: 'center', direction: 'rtl' }}>
+             <div className="collage-container" style={{ direction: 'ltr' }}>
+               <div className="collage-pack">
+                  <PhoneMockup imgSrc="/showcase/festa/prima.jpg" label="APPESO IN NEGOZIO" className="collage-phone" />
+                  <div className="collage-social-group">
+                     <SocialPostMockup imgSrc="/showcase/festa/dopo1.jpg" accountName="party_milano" likes="4.321" label="IG STORY" className="collage-social-top" />
+                     <SocialPostMockup imgSrc="/showcase/festa/dopo2.jpg" accountName="party_milano" likes="6.890" label="SOCIAL ADS" className="collage-social-bottom" />
+                  </div>
                </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>IG STORY</span>
-                 <img src="/showcase/festa/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>IG STORY</span>
-                 <img src="/showcase/festa/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
-               </div>
-            </div>
+             </div>
             <div className="showcase-text reveal-right" style={{ direction: 'ltr' }}>
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Abiti da Sera</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Mostra l'attrazione ipnotica dei tuoi capi serali con sfondi di locali lussuosi e luci vibranti notturne. Le Instagram Stories schizzeranno al vertice.</p>
+               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#bb86fc' }}>Casual & Abiti da Sera</h3>
+               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Mostra l'attrazione ipnotica dei tuoi capi serali con sfondi di locali lussuosi e luci vibranti notturne. Le Instagram Stories schizzeranno al vertice.</p>
             </div>
           </div>
 
           {/* STREETWEAR RAGAZZO */}
-          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '2rem', alignItems: 'center' }}>
+          <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
             <div className="showcase-text reveal-left">
-               <h3 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#4caf50' }}>Streetwear & Urban</h3>
-               <p style={{ color: '#aaa', fontSize: '1.1rem', lineHeight: '1.6' }}>Magliette stirate a terra? Trasformale in scatti hype nei quartieri metropolitani, skatepark e graffit-wall per attirare subito la GenZ.</p>
+               <h3 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#4caf50' }}>Streetwear & Urban</h3>
+               <p style={{ color: '#aaa', fontSize: '1.2rem', lineHeight: '1.6' }}>Magliette stirate a terra? Trasformale in scatti hype nei quartieri metropolitani, skatepark e graffit-wall per attirare subito la GenZ.</p>
             </div>
-            <div className="showcase-images" style={{ display: 'flex', gap: '1rem', height: '100%' }}>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge" style={{ position: 'absolute', margin: '10px' }}>TUO SCATTO</span>
-                 <img src="/showcase/ragazzo/prima.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Prima" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>REEL COVER</span>
-                 <img src="/showcase/ragazzo/dopo1.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 1" />
-               </div>
-               <div className="hover-zoom" style={{ flex: 1, position: 'relative', borderRadius: '12px', overflow: 'hidden' }}>
-                 <span className="pill-badge active" style={{ position: 'absolute', margin: '10px' }}>REEL COVER</span>
-                 <img src="/showcase/ragazzo/dopo2.jpg" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Dopo 2" />
+            <div className="collage-container" style={{ direction: 'ltr' }}>
+               <div className="collage-pack">
+                  <PhoneMockup imgSrc="/showcase/ragazzo/prima.jpg" label="SCATTO SUL TAVOLO" className="collage-phone" />
+                  <div className="collage-social-group">
+                     <SocialPostMockup imgSrc="/showcase/ragazzo/dopo1.jpg" accountName="hype_street" likes="15k" label="REEL COVER" className="collage-social-top" />
+                     <SocialPostMockup imgSrc="/showcase/ragazzo/dopo2.jpg" accountName="hype_street" likes="12k" label="DROP ANNUNCIO" className="collage-social-bottom" />
+                  </div>
                </div>
             </div>
           </div>
