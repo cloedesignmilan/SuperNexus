@@ -23,7 +23,7 @@ export default function LandingPage() {
 
       {/* HERO SECTION */}
       <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', minWidth: '1000px', height: '100%', zIndex: 0, opacity: 0.35, mixBlendMode: 'multiply', pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', minWidth: '1000px', height: '100%', zIndex: 0, opacity: 0.15, mixBlendMode: 'multiply', pointerEvents: 'none' }}>
            <img src="/hero-bg.png" alt="Magical Flow" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
         </div>
 
