@@ -206,10 +206,17 @@ export async function POST(req: NextRequest) {
 
             // Verifica se è categoria scarpe
             let isShoesFeature = meta.isShoesCategory;
-            if (isShoesFeature === undefined && meta.confirmedCategory) {
+            let catCheckName = meta.confirmedCategory;
+
+            if (meta.confirmedCategory) {
                 const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
-                meta.isShoesCategory = isShoesFeature;
+                if (catCheck) {
+                    catCheckName = catCheck.name;
+                    if (isShoesFeature === undefined) {
+                        isShoesFeature = catCheck.name.toLowerCase().includes('scarpe') || catCheck.name.toLowerCase().includes('calzature');
+                        meta.isShoesCategory = isShoesFeature;
+                    }
+                }
             }
 
             // Aggiorna il DB con il blocco confermato
@@ -236,11 +243,11 @@ export async function POST(req: NextRequest) {
                     "🎯 **Scegli la Categoria di questo capo:**",
                     Markup.inlineKeyboard(catButtons, { columns: 2 })
                 );
-            } else if (meta.isWoman && meta.needsBottomClarification && !meta.confirmedBottom) {
+            } else if (meta.isWoman && meta.needsBottomClarification && !meta.confirmedBottom && !meta.isShoesCategory) {
                // Chiedi parte inferiore
                await bot.telegram.sendMessage(
                     chatId,
-                    `👗 Hai scelto **${meta.confirmedCategory}**.\n\nUna precisazione importante per le generazioni femminili: è una Gonna o un Pantalone?`,
+                    `👗 Hai scelto **${catCheckName}**.\n\nUna precisazione importante per le generazioni femminili: è una Gonna o un Pantalone?`,
                     Markup.inlineKeyboard([
                         Markup.button.callback("Gonna", `bot|${jobId}|gonna`), 
                         Markup.button.callback("Pantalone", `bot|${jobId}|pantalone`)
@@ -250,7 +257,7 @@ export async function POST(req: NextRequest) {
                 // Chiedi Genere Uomo/Donna (Salto automatico per scarpe)
                 await bot.telegram.sendMessage(
                     chatId,
-                    `🎯 Hai scelto **${meta.confirmedCategory}**.\n\nTuttavia, vorrei esserne certo per applicare il giusto modello: **Il capo in foto è per Uomo o per Donna?**`,
+                    `🎯 Hai scelto **${catCheckName}**.\n\nTuttavia, vorrei esserne certo per applicare il giusto modello: **Il capo in foto è per Uomo o per Donna?**`,
                     Markup.inlineKeyboard([
                         Markup.button.callback("Uomo", `gen|${jobId}|uomo`), 
                         Markup.button.callback("Donna", `gen|${jobId}|donna`)
