@@ -19,11 +19,26 @@ export function middleware(req: NextRequest) {
       }
     }
 
-    // Se l'autorizzazione fallisce o manca, chiediamo le credenziali nativamente
-    return new NextResponse('Autenticazione Richiesta', {
+    // Se l'autorizzazione fallisce o manca, chiediamo le credenziali nativamente.
+    // Se l'utente clicca Annulla, il browser carica questo blocco di codice HTML
+    // che effettua un redirect immediato alla pagina principale evitando la pagina bianca.
+    const fallbackHTML = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv="refresh" content="0;url=/" />
+        </head>
+        <body>
+          <script>window.location.href = "/";</script>
+        </body>
+      </html>
+    `;
+
+    return new NextResponse(fallbackHTML, {
       status: 401,
       headers: {
         'WWW-Authenticate': 'Basic realm="SuperNexus Admin"',
+        'Content-Type': 'text/html',
       },
     });
   }
