@@ -31,13 +31,17 @@ export default function LandingPage() {
           <p className="hero-subtitle">
             Il software AI indispensabile per Boutique e Negozi di abbigliamento. Scatta una foto col telefono al capo in magazzino e ottieni subito uno shooting iper-realistico perfetto per Facebook, Instagram e il tuo Sito E-Commerce.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '4rem' }}>
             <a href="#showcase" className="btn-primary">
               Guarda i Risultati
             </a>
             <a href="#pricing" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF' }}>
               Scopri i Piani
             </a>
+          </div>
+
+          <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.05)' }}>
+             <img src="/hero-illustration.jpg" alt="Flusso E-commerce SuperNexus" style={{ width: '100%', scale: '1.05', height: 'auto', display: 'block' }} />
           </div>
         </div>
       </section>
