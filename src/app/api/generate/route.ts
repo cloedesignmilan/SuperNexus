@@ -173,73 +173,20 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "co
             
             if (isShoesCategory) {
                 if (confirmedEnvironment === 'studio' || confirmedEnvironment === 'studio_calzature') {
-                    finalPrompt = `[MASTER DIRECTIVES]
-${masterPromptText}
-
-[SUBJECT AND SCENE]
-${sceneText}
-
-[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
-YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM FOR STILL LIFE PRODUCT PHOTOGRAPHY. You must IDENTICALLY CLONE the footwear item from the attached reference image.
-CRITICAL RULE: THIS IS STRICTLY STILL-LIFE PRODUCT PHOTOGRAPHY. DO NOT GENERATE ANY HUMANS, ANY LEGS, ANY FEET, OR ANY MANNEQUINS. GENERATE ONLY THE SHOES THEMSELVES ON A PURE WHITE STUDIO BACKGROUND.
-CLOTHING COLOR & PATTERN: ${garmentDetails.color}
-CLOTHING DESCRIPTION: ${garmentDetails.description}
-
-ABSOLUTE HARD RULE 1 (PRODUCT SHAPE & CUT LOCK): The structure, shape, cut, proportions, color, seams, laces, soles, heels, and materials of the shoe MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL. The original image is the ONLY absolute ground truth for the product.
-${brandRule}
-
-[NEGATIVE RULES]
-No humans, no feet, no legs. No distortions of the shoe shape. ${negativeBrandRule}`;
+                    finalPrompt = `${masterPromptText}. ${sceneText}. The reference footwear color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. This is strictly still-life product photography. GENERATE ONLY the footwear item on a pure white studio background. You must IDENTICALLY CLONE the footwear from the attached reference image (preserving shape, seams, cut, proportions, details). ${brandRule} No humans, no legs, no feet. ${negativeBrandRule}`;
                 } else {
-                    finalPrompt = `[MASTER DIRECTIVES]
-${masterPromptText}
-
-[SUBJECT AND SCENE]
-${sceneText}
-CAMERA ANGLE: ${currentAngle}.
-
-[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
-The subject is wearing the target shoes. 
-YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM. You must IDENTICALLY CLONE the footwear item from the attached reference image onto the human model's feet.
-CLOTHING COLOR & PATTERN: ${garmentDetails.color}
-CLOTHING DESCRIPTION: ${garmentDetails.description}
-
-ABSOLUTE HARD RULE 1 (PRODUCT SHAPE & CUT LOCK): The structure, cut, shape, proportions, color, seams, laces, soles, and heels of the original shoe MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL.
-${brandRule}
-
-[NEGATIVE RULES]
-${negativeRulesText}
-${negativeBrandRule}`;
+                    finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference footwear color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is wearing EXACTLY the footwear item shown in the attached reference image. You must IDENTICALLY CLONE the footwear (preserving exact shape, seams, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
                 }
             } else {
-                finalPrompt = `[MASTER DIRECTIVES]
-${masterPromptText}
-
-[SUBJECT AND SCENE]
-${sceneText}
-The subject MUST clearly look to be between ${ageBracket} years old.
-CAMERA ANGLE: ${currentAngle}.
-
-[CRITICAL - VIRTUAL TRY ON INSTRUCTIONS - MUST OBEY]
-${isMale 
-   ? 'The subject is MALE. CRITICAL RULE: He MUST be wearing a suitable base layer (like a dress shirt) underneath his outerwear. NO BARE-CHESTED.' 
-   : 'The subject is FEMALE.'}
-YOU ARE RUNNING A VIRTUAL TRY-ON ALGORITHM. You must IDENTICALLY CLONE the clothing item from the attached reference image onto the human model.
-CLOTHING COLOR & PATTERN: ${garmentDetails.color}
-CLOTHING DESCRIPTION: ${garmentDetails.description}
-${confirmedBottom ? 'BOTTOM CLOTHING TYPE: ' + confirmedBottom.toUpperCase() : ''}
-
-ABSOLUTE HARD RULE 1 (ACCESSORY LOCK): IF the reference image contains a specific tie (cravatta) or bow tie (papillon), you MUST render it with the EXACT same pattern, color, and knot. If the reference is a long tie, DO NOT generate a bow tie. If it's a bow tie, DO NOT generate a long tie!
-ABSOLUTE HARD RULE 2 (GARMENT SHAPE & CUT LOCK): The structure, cut, shape, proportions, color, seams, lapels, buttons, and fit of the original garment MUST BE PRESERVED AT 100%. DO NOT CHANGE, DO NOT INVENT, DO NOT ALTER ANY DETAIL. The original image is the ONLY absolute ground truth for the product.
-${brandRule}
-
-[NEGATIVE RULES]
-${negativeRulesText}
-${negativeBrandRule}`;
+                const genderStr = isMale ? "MALE" : "FEMALE";
+                finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference garment color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is an attractive ${ageBracket} year old ${genderStr} model. The subject is wearing EXACTLY the clothing item shown in the attached reference image. ${confirmedBottom ? 'For the bottom part, the subject is wearing a ' + confirmedBottom + '.' : ''} You must IDENTICALLY CLONE the garment (preserving exact shape, seams, lapels, buttons, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
             }
-            
+
+            // Remove double spaces and newlines
+            finalPrompt = finalPrompt.replace(/\n+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+
             const generated = await ai.models.generateContent({
-                model: 'gemini-3-pro-image-preview',
+                model: 'gemini-3.1-flash-image-preview',
                 contents: [
                     {
                         inlineData: {
