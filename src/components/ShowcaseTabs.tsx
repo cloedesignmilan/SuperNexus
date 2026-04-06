@@ -8,79 +8,80 @@ import SocialPostMockup from './SocialPostMockup';
 const CATEGORIES = [
   { 
     id: 'business', 
-    label: 'Business', 
+    label: 'Business Elegante', 
     icon: <Briefcase size={28} strokeWidth={1.5} />, 
-    title: 'Abbigliamento Business Uomo', 
-    desc: 'Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano i dettagli e il fit aziendale.',
+    title: 'Abbigliamento Business Elegante', 
+    desc: 'Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano i dettagli e il fit sartoriale.',
     imgSrc: '/showcase/business/prima.jpg', phoneLabel: 'SCATTO NEGOZIO', 
     post1Src: '/showcase/business/dopo1.jpg', post1Label: 'POST INSTAGRAM', 
     post2Src: '/showcase/business/dopo2.jpg', post2Label: 'CATALOGO E-COMMERCE', 
-    account: 'tailor_milano', likes: '8.423'
+    account: 'supernexus_ai', likes: '8.423'
   },
   { 
     id: 'studio', 
-    label: 'Still Life', 
+    label: 'Calzature', 
     icon: <Camera size={28} strokeWidth={1.5} />, 
-    title: 'Calzature: Still Life Assoluto', 
+    title: 'Calzature & Sneaker in Studio', 
     desc: 'Punta il telefono sulla mattonella. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). Eliminazione totale di difetti, mani o tavoli.',
     imgSrc: '/showcase/scarpe/prima.png', phoneLabel: 'SCATTO VETRINA', 
     post1Src: '/showcase/scarpe/dopo1.jpg', post1Label: 'PER LO SHOP', 
     post2Src: '/showcase/scarpe/dopo2.jpg', post2Label: 'CATALOGO', 
-    account: 'sneakers_hub', likes: '12.044'
+    account: 'supernexus_ai', likes: '12.044'
   },
   { 
     id: 'ambientata', 
-    label: 'Lifestyle', 
+    label: 'Casual Adulti', 
     icon: <MapPin size={28} strokeWidth={1.5} />, 
-    title: 'Sneakers: Vetrina Ambientata', 
-    desc: 'Le tue sneakers immerse nel cemento cittadino, campi da basket o asfalto bagnato. Il cliente vede la scarpa respirare nel suo habitat naturale.',
+    title: 'Completi e Casual per Adulti', 
+    desc: 'I tuoi look di tutti i giorni immersi nel contesto cittadino. Il cliente vede il capo vivere nel suo habitat naturale per un fortissimo impatto commerciale.',
     imgSrc: '/showcase/scarpe-ambientata/prima.png', phoneLabel: 'SCATTO VETRINA', 
     post1Src: '/showcase/scarpe-ambientata/dopo1.jpg', post1Label: 'LIFESTYLE ADS', 
     post2Src: '/showcase/scarpe-ambientata/dopo2.jpg', post2Label: 'STREET WEAR', 
-    account: 'sneakers_hub', likes: '15.300'
+    account: 'supernexus_ai', likes: '15.300'
   },
   { 
     id: 'sposa', 
-    label: 'Spose', 
+    label: 'Sposa & Sposo', 
     icon: <Heart size={28} strokeWidth={1.5} />, 
-    title: 'Abiti da Sposa & Cerimonia', 
-    desc: 'Dall\'abito anonimo appeso nell\'armadio dell\'Atelier a cataloghi sontuosi, palazzi antichi e navate storiche che incantano le future spose.',
+    title: 'Categorie Sposa, Sposo e Cerimonia', 
+    desc: 'Dall\'abito anonimo appeso nell\'armadio dell\'Atelier a cataloghi sontuosi, palazzi antichi e navate storiche che incantano i futuri sposi.',
     imgSrc: '/showcase/sposa/prima.jpg', phoneLabel: 'SCATTO ATELIER', 
     post1Src: '/showcase/sposa/dopo1.jpg', post1Label: 'LOOKBOOK', 
     post2Src: '/showcase/sposa/dopo2.jpg', post2Label: 'SOCIAL POST', 
-    account: 'luxury_bridal', likes: '24k'
+    account: 'supernexus_ai', likes: '24k'
   },
   { 
     id: 'invitati', 
     label: 'Invitati', 
     icon: <Users size={28} strokeWidth={1.5} />, 
-    title: 'Invitati a Nozze & Damigelle', 
-    desc: 'Cattura subito l\'attenzione di chi cerca l\'abito per partecipare a un matrimonio. Vesti testimoni e damigelle in splendidi giardini estivi fioriti.',
+    title: 'Invitati & Cerimonia', 
+    desc: 'Cattura subito l\'attenzione di chi cerca l\'abito per partecipare a un matrimonio. Vesti testimoni e invitati in splendidi giardini estivi fioriti.',
     imgSrc: '/showcase/invitati/prima.jpg', phoneLabel: 'SCATTO NEGOZIO', 
     post1Src: '/showcase/invitati/dopo1.jpg', post1Label: 'CAROSELLO FB', 
     post2Src: '/showcase/invitati/dopo2.jpg', post2Label: 'IG STORY', 
-    account: 'cerimonia_perfetta', likes: '9.102'
+    account: 'supernexus_ai', likes: '9.102'
   },
   { 
     id: 'festa', 
-    label: 'Party', 
+    label: 'Festa 18°', 
     icon: <Music size={28} strokeWidth={1.5} />, 
-    title: 'Abiti da Sera & Nightlife', 
-    desc: 'Mostra l\'attrazione ipnotica dei tuoi capi serali con sfondi di locali lussuosi e luci vibranti notturne. Le Stories schizzeranno al vertice.',
+    title: 'Festa 18° e Abiti da Sera', 
+    desc: 'Mostra l\'attrazione ipnotica dei tuoi capi serali con sfondi di locali chic e luci vibranti notturne. Le tue Stories schizzeranno al vertice.',
     imgSrc: '/showcase/festa/prima.jpg', phoneLabel: 'SCATTO SULLA GRUCCIA', 
     post1Src: '/showcase/festa/dopo1.jpg', post1Label: 'IG STORY', 
     post2Src: '/showcase/festa/dopo2.jpg', post2Label: 'TIKTOK COVER', 
-    account: 'party_milano', likes: '6.890'
+    account: 'supernexus_ai', likes: '6.890'
   },
   { 
     id: 'street', 
-    label: 'Streetwear', 
+    label: 'Teenager', 
     icon: <Flame size={28} strokeWidth={1.5} />, 
-    title: 'Urban Vibes per Gen Z', 
+    title: 'Abbigliamento Teenager', 
+    desc: 'Dimentica outfit piatti. Trasforma i capi pensati per la Gen Z in scatti dall\'energia pura, con Pose dinamiche ed esposizioni Street.',
     imgSrc: '/showcase/ragazzo/prima.jpg', phoneLabel: 'SCATTO A TERRA', 
     post1Src: '/showcase/ragazzo/dopo1.jpg', post1Label: 'HYPE DROP', 
     post2Src: '/showcase/ragazzo/dopo2.jpg', post2Label: 'REEL COVER', 
-    account: 'hype_street', likes: '15k'
+    account: 'supernexus_ai', likes: '15k'
   }
 ];
 
