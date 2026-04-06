@@ -40,8 +40,16 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <div style={{ maxWidth: '900px', margin: '0 auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.05)' }}>
-             <img src="/hero-illustration.jpg" alt="Flusso E-commerce SuperNexus" style={{ width: '100%', scale: '1.05', height: 'auto', display: 'block' }} />
+          <div style={{ 
+              maxWidth: '1000px', 
+              margin: '-2rem auto 0', 
+              opacity: 0.85, 
+              mixBlendMode: 'multiply',
+              pointerEvents: 'none',
+              maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)'
+          }}>
+             <img src="/hero-illustration.jpg" alt="Flusso E-commerce SuperNexus" style={{ width: '100%', height: 'auto', display: 'block' }} />
           </div>
         </div>
       </section>
