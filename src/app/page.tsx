@@ -48,7 +48,7 @@ export default function LandingPage() {
           Dalla scatola al web in 30 secondi. Guarda come le foto scattate velocemente nei nostri negozi affiliati si trasformano in immagini perfette per le Campagne Facebook, i Post Instagram e il catalogo del Sito.
         </p>
 
-        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto', overflowX: 'hidden', padding: '2rem 0' }}>
+        <div className="showcase-wrapper" style={{ display: 'flex', flexDirection: 'column', maxWidth: '1200px', margin: '0 auto', paddingBottom: '20vh' }}>
           
           {/* BUSINESS UOMO */}
           <div className="showcase-row" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>

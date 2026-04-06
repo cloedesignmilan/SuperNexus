@@ -572,15 +572,37 @@ body {
 }
 @media (min-width: 900px) { .telephones-container { flex-direction: row; gap: 80px; } }
 
-/* NEW SHOWCASE RESPONSIVE */
+/* STICKY DECK STACKING FOR SHOWCASE */
 .showcase-row {
-  margin-bottom: 4rem;
+  position: sticky;
+  background: #080808; /* Colore sfondo per coprire le card precedenti */
+  border-top: 1px solid rgba(255, 255, 255, 0.08); /* Effetto vetro/taglio in alto */
+  box-shadow: 0 -30px 50px rgba(0, 0, 0, 0.7); /* Ombra potente verso l'alto per stacco */
+  min-height: 85vh;
+  padding: 4rem 2rem;
+  border-radius: 40px 40px 0 0; /* Arrotonda solo gli angoli in alto per far sembrare una scheda */
+  margin-bottom: 0 !important;
+  top: 100px;
 }
+
+/* Scala le distanze di Top per farle impilare sfasate! */
+.showcase-row:nth-child(1) { top: 120px; z-index: 10; }
+.showcase-row:nth-child(2) { top: 140px; z-index: 11; }
+.showcase-row:nth-child(3) { top: 160px; z-index: 12; }
+.showcase-row:nth-child(4) { top: 180px; z-index: 13; }
+.showcase-row:nth-child(5) { top: 200px; z-index: 14; }
+.showcase-row:nth-child(6) { top: 220px; z-index: 15; }
+.showcase-row:nth-child(7) { top: 240px; z-index: 16; }
+
 @media (max-width: 900px) {
   .showcase-row {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
+    min-height: auto;
+    padding: 3rem 1rem;
+    border-radius: 24px 24px 0 0;
   }
+
   .showcase-images {
     flex-direction: column !important;
   }
