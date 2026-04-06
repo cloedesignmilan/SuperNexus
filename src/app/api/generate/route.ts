@@ -159,7 +159,7 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto), "color" (color
             let finalPrompt = "";
             
             if (isShoesCategory) {
-                if (confirmedEnvironment === 'studio') {
+                if (confirmedEnvironment === 'studio' || confirmedEnvironment === 'studio_calzature') {
                     finalPrompt = `[MASTER DIRECTIVES]
 ${masterPromptText}
 
