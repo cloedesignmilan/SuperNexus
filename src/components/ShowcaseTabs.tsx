@@ -7,17 +7,6 @@ import SocialPostMockup from './SocialPostMockup';
 
 const CATEGORIES = [
   { 
-    id: 'business', 
-    label: 'Business Elegante', 
-    icon: <Briefcase size={28} strokeWidth={1.5} />, 
-    title: 'Abbigliamento Business Elegante', 
-    desc: 'Smetti di stendere gli abiti eleganti sui manichini. Presentali indossati da modelli ultra-realistici, in pose spontanee che ne valorizzano i dettagli e il fit sartoriale.',
-    imgSrc: '/showcase/business/prima.jpg', phoneLabel: 'SCATTO NEGOZIO', 
-    post1Src: '/showcase/business/dopo1.jpg', post1Label: 'POST INSTAGRAM', 
-    post2Src: '/showcase/business/dopo2.jpg', post2Label: 'CATALOGO E-COMMERCE', 
-    account: 'supernexus_ai', likes: '8.423'
-  },
-  { 
     id: 'studio', 
     label: 'Calzature', 
     icon: <Footprints size={28} strokeWidth={1.5} />, 
