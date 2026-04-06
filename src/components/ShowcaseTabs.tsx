@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Briefcase, Camera, MapPin, Heart, Users, Music, Flame, ChevronRight, Zap } from 'lucide-react';
+import { Briefcase, Footprints, Shirt, Heart, Users, PartyPopper, Flame, ChevronRight } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
 
@@ -20,7 +20,7 @@ const CATEGORIES = [
   { 
     id: 'studio', 
     label: 'Calzature', 
-    icon: <Camera size={28} strokeWidth={1.5} />, 
+    icon: <Footprints size={28} strokeWidth={1.5} />, 
     title: 'Calzature & Sneaker in Studio', 
     desc: 'Punta il telefono sulla mattonella. Ottieni Still-Life chirurgici con sfondo purissimo (#FFFFFF). Eliminazione totale di difetti, mani o tavoli.',
     imgSrc: '/showcase/scarpe/prima.png', phoneLabel: 'SCATTO VETRINA', 
@@ -31,7 +31,7 @@ const CATEGORIES = [
   { 
     id: 'ambientata', 
     label: 'Casual Adulti', 
-    icon: <MapPin size={28} strokeWidth={1.5} />, 
+    icon: <Shirt size={28} strokeWidth={1.5} />, 
     title: 'Completi e Casual per Adulti', 
     desc: 'I tuoi look di tutti i giorni immersi nel contesto cittadino. Il cliente vede il capo vivere nel suo habitat naturale per un fortissimo impatto commerciale.',
     imgSrc: '/showcase/scarpe-ambientata/prima.png', phoneLabel: 'SCATTO VETRINA', 
@@ -64,7 +64,7 @@ const CATEGORIES = [
   { 
     id: 'festa', 
     label: 'Festa 18°', 
-    icon: <Music size={28} strokeWidth={1.5} />, 
+    icon: <PartyPopper size={28} strokeWidth={1.5} />, 
     title: 'Festa 18° e Abiti da Sera', 
     desc: 'Mostra l\'attrazione ipnotica dei tuoi capi serali con sfondi di locali chic e luci vibranti notturne. Le tue Stories schizzeranno al vertice.',
     imgSrc: '/showcase/festa/prima.jpg', phoneLabel: 'SCATTO SULLA GRUCCIA', 
