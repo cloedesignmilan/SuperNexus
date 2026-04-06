@@ -22,8 +22,12 @@ export default function LandingPage() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="hero-section">
-        <div className="hero-content">
+      <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', minWidth: '1000px', height: '100%', zIndex: 0, opacity: 0.15, pointerEvents: 'none' }}>
+           <img src="/hero-bg.png" alt="Magical Flow" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'invert(1)', objectPosition: 'center' }} />
+        </div>
+
+        <div className="hero-content" style={{ position: 'relative', zIndex: 10 }}>
           <h1 className="hero-title">
             Meno Grucce Tristi.<br />
             <span>Più Vendite Online.</span>
@@ -31,25 +35,13 @@ export default function LandingPage() {
           <p className="hero-subtitle">
             Il software AI indispensabile per Boutique e Negozi di abbigliamento. Scatta una foto col telefono al capo in magazzino e ottieni subito uno shooting iper-realistico perfetto per Facebook, Instagram e il tuo Sito E-Commerce.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '4rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
             <a href="#showcase" className="btn-primary">
               Guarda i Risultati
             </a>
             <a href="#pricing" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF' }}>
               Scopri i Piani
             </a>
-          </div>
-
-          <div style={{ 
-              maxWidth: '1000px', 
-              margin: '-2rem auto 0', 
-              opacity: 0.85, 
-              mixBlendMode: 'multiply',
-              pointerEvents: 'none',
-              maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)'
-          }}>
-             <img src="/hero-illustration.jpg" alt="Flusso E-commerce SuperNexus" style={{ width: '100%', height: 'auto', display: 'block' }} />
           </div>
         </div>
       </section>
