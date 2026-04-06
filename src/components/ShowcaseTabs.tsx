@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Briefcase, Camera, MapPin, Heart, Users, Music, Flame, ChevronRight } from 'lucide-react';
+import { Briefcase, Camera, MapPin, Heart, Users, Music, Flame, ChevronRight, Zap } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
+import InteractiveSposoDemo from './InteractiveSposoDemo';
 
 const CATEGORIES = [
   { 
@@ -77,11 +78,18 @@ const CATEGORIES = [
     label: 'Streetwear', 
     icon: <Flame size={28} strokeWidth={1.5} />, 
     title: 'Urban Vibes per Gen Z', 
-    desc: 'Magliette stirate a terra? Trasformale in scatti hype nei quartieri metropolitani dominati da neon e graffiti per attivare la curiosità dei ragazzi.',
     imgSrc: '/showcase/ragazzo/prima.jpg', phoneLabel: 'SCATTO A TERRA', 
     post1Src: '/showcase/ragazzo/dopo1.jpg', post1Label: 'HYPE DROP', 
     post2Src: '/showcase/ragazzo/dopo2.jpg', post2Label: 'REEL COVER', 
     account: 'hype_street', likes: '15k'
+  },
+  { 
+    id: 'demo', 
+    label: 'PROVA LIVE ⚡', 
+    icon: <Zap size={28} strokeWidth={1.5} />, 
+    title: 'Generazione Live: Sposo', 
+    desc: 'Vuoi vedere la magia con i tuoi occhi? Carica una foto del tuo abito da sposo (o cerimonia) e osserva l\'intelligenza artificiale creare foto fotorealistiche in tempo reale, direttamente qui!',
+    imgSrc: '', phoneLabel: '', post1Src: '', post1Label: '', post2Src: '', post2Label: '', account: '', likes: ''
   }
 ];
 
@@ -134,15 +142,19 @@ export default function ShowcaseTabs() {
             </div>
             
             <div className="mac-main-viewer">
-               <div className="collage-container" style={{ margin: '0' }}>
-                 <div className="collage-pack">
-                    <PhoneMockup imgSrc={activeCategory.imgSrc} label={activeCategory.phoneLabel} className="collage-phone" />
-                    <div className="collage-social-group">
-                       <SocialPostMockup imgSrc={activeCategory.post1Src} accountName={activeCategory.account} likes={activeCategory.likes} label={activeCategory.post1Label} className="collage-social-top" />
-                       <SocialPostMockup imgSrc={activeCategory.post2Src} accountName={activeCategory.account} likes={activeCategory.likes} label={activeCategory.post2Label} className="collage-social-bottom" />
-                    </div>
+               {activeTab === 'demo' ? (
+                 <InteractiveSposoDemo />
+               ) : (
+                 <div className="collage-container" style={{ margin: '0' }}>
+                   <div className="collage-pack">
+                      <PhoneMockup imgSrc={activeCategory.imgSrc} label={activeCategory.phoneLabel} className="collage-phone" />
+                      <div className="collage-social-group">
+                         <SocialPostMockup imgSrc={activeCategory.post1Src} accountName={activeCategory.account} likes={activeCategory.likes} label={activeCategory.post1Label} className="collage-social-top" />
+                         <SocialPostMockup imgSrc={activeCategory.post2Src} accountName={activeCategory.account} likes={activeCategory.likes} label={activeCategory.post2Label} className="collage-social-bottom" />
+                      </div>
+                   </div>
                  </div>
-               </div>
+               )}
             </div>
 
          </div>
