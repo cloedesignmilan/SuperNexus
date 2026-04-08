@@ -144,6 +144,7 @@ export default function LandingPage() {
               <li><CheckCircle2 size={20} color="#0085FF" /> 50 generazioni / mese</li>
               <li><CheckCircle2 size={20} color="#0085FF" /> Accesso Bot Telegram</li>
               <li><CheckCircle2 size={20} color="#0085FF" /> Setup veloce</li>
+              <li><CheckCircle2 size={20} color="#0085FF" /> Tutte le nicchie sbloccate</li>
             </ul>
             <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</Link>
           </div>
