@@ -48,7 +48,7 @@ export default function LandingPage() {
             boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
           }}>
             <p style={{ fontSize: '1.15rem', fontWeight: '800', color: '#fff', margin: 0, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-              ✨ Trasforma foto normali in immagini che vendono davvero
+              ✨ Foto che vendono davvero
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
