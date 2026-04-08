@@ -66,7 +66,7 @@ export default function RegistrazionePage() {
                         </label>
 
                         {/* RETAIL ANNUALE */}
-                        <label style={{cursor: 'pointer', display: 'block'}}>
+                        <label style={{cursor: 'pointer', display: 'block', gridColumn: '1 / -1'}}>
                             <input type="radio" name="planName" value="retail_annual" className="peer" style={{display: 'none'}} />
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
                                  className="radio-card annual-card">
