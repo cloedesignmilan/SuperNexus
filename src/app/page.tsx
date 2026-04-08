@@ -170,7 +170,7 @@ export default function LandingPage() {
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#ccff00' }}>RETAIL ANNUALE</h3>
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Massimo risparmio.</p>
             <div className="pricing-price" style={{ color: 'white' }}>€49<span>/mese</span></div>
-            <div style={{ fontSize: '0.85rem', color: '#888', marginTop: '-32px', marginBottom: '1.5rem', position: 'relative', zIndex: 1 }}>Addebitato annualmente a 588€</div>
+            <div style={{ fontSize: '0.85rem', color: '#ccff00', fontWeight: 'bold', marginTop: '-32px', marginBottom: '1.5rem', position: 'relative', zIndex: 1 }}>Addebitato annualmente a 588€</div>
             
             <ul className="bento-list" style={{ flex: 1 }}>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>Tutto il piano Retail</strong></li>
