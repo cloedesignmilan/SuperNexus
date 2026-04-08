@@ -6,6 +6,7 @@ import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
 import ShowcaseTabs from '@/components/ShowcaseTabs';
 import VisualStorytelling from '@/components/VisualStorytelling';
+import TargetAudience from '@/components/TargetAudience';
 
 export default function LandingPage() {
   return (
@@ -36,6 +37,19 @@ export default function LandingPage() {
           <p className="hero-subtitle">
             Il software AI indispensabile per Boutique e Negozi di abbigliamento. Scatta una foto col telefono al capo in magazzino e ottieni subito uno shooting iper-realistico perfetto per Facebook, Instagram e il tuo Sito E-Commerce.
           </p>
+          <div style={{ 
+            background: 'linear-gradient(135deg, #111, #222)', 
+            display: 'inline-block', 
+            padding: '0.8rem 1.8rem', 
+            borderRadius: '50px', 
+            marginBottom: '3rem', 
+            border: '1px solid rgba(0,0,0,0.8)',
+            boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+          }}>
+            <p style={{ fontSize: '1.15rem', fontWeight: '800', color: '#fff', margin: 0, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+              ✨ Trasforma foto normali in immagini che vendono davvero
+            </p>
+          </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
             <a href="#showcase" className="btn-primary">
               Guarda i Risultati
@@ -49,6 +63,9 @@ export default function LandingPage() {
 
       {/* VISUAL STORYTELLING */}
       <VisualStorytelling />
+
+      {/* TARGET AUDIENCE */}
+      <TargetAudience />
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" className="bento-section" style={{ padding: '4rem 5%', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
