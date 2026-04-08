@@ -142,7 +142,7 @@ Se richiesto:
 
 📩 SUPPORTO
 
-- Supporto via email
+- Supporto via email (info@supernexusai.com)
 - Risposta entro 2 ore in orario di ufficio
 
 ---
