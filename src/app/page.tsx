@@ -10,10 +10,12 @@ import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
+import ChatBot from '@/components/ChatBot';
 
 export default function LandingPage() {
   return (
     <div className="landing-container">
+      <ChatBot />
       {/* HEADER */}
       <header className="landing-header">
         <div className="landing-logo">
