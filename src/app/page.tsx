@@ -162,6 +162,25 @@ export default function LandingPage() {
             <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800' }}>Attiva Boutique</Link>
           </div>
 
+          {/* Boutique Annuale */}
+          <div className="pricing-card" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '1px solid #ccff00', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: '-14px', right: '20px', background: '#ccff00', color: '#000', padding: '0.4rem 1rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '800', letterSpacing: '0.05em' }}>
+              OFFERTA SPECIALE
+            </div>
+            <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#ccff00' }}>BOUTIQUE ANNUALE</h3>
+            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Massimo risparmio. Stessa qualità reale.</p>
+            <div className="pricing-price" style={{ color: 'white' }}>€49<span>/mese</span></div>
+            <div style={{ fontSize: '0.85rem', color: '#888', marginTop: '-15px', marginBottom: '1.5rem' }}>Addebitato annualmente a 588€</div>
+            
+            <ul className="bento-list" style={{ flex: 1 }}>
+              <li><CheckCircle2 size={20} color="#ccff00" /> <strong>Tutto il piano Boutique</strong></li>
+              <li><CheckCircle2 size={20} color="#ccff00" /> Risparmi 360€ all'anno</li>
+              <li><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario H24</li>
+              <li><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato per sempre</li>
+            </ul>
+            <Link href="/registrazione?plan=annual" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none' }}>Blocca a 49€/mese</Link>
+          </div>
+
         </div>
       </section>
       
