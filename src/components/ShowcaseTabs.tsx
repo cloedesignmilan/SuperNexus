@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight, Scissors, ArrowLeft, ArrowRight } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight, Scissors } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
 
@@ -88,55 +88,47 @@ const CATEGORIES = [
 
 export default function ShowcaseTabs() {
   const [activeTab, setActiveTab] = useState(CATEGORIES[0].id);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [showArrow, setShowArrow] = useState(true);
+  const tabsRef = useRef<HTMLDivElement>(null);
 
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe || isRightSwipe) {
-      const currentIndex = CATEGORIES.findIndex(c => c.id === activeTab);
-      let nextIndex = currentIndex;
-      
-      if (isLeftSwipe) {
-        // Swipe verso sinistra -> Categoria successiva
-        nextIndex = (currentIndex + 1) % CATEGORIES.length;
+  // GESTORE SCROLL DELLE CATEGORIE SUI DISPOSITIVI MOBILI
+  const handleTabsScroll = () => {
+    if (tabsRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+      // Se l'utente è arrivato quasi alla fine (+/- 10px), nascondi la freccia
+      if (scrollLeft + clientWidth >= scrollWidth - 20) {
+        setShowArrow(false);
       } else {
-        // Swipe verso destra -> Categoria precedente
-        nextIndex = (currentIndex - 1 + CATEGORIES.length) % CATEGORIES.length;
+        setShowArrow(true);
       }
-      setActiveTab(CATEGORIES[nextIndex].id);
     }
   };
+
+  // Controlla alla prima apertura se serve la freccia (es. schermi molto piccoli)
+  useEffect(() => {
+    handleTabsScroll();
+    // Aggiungiamo un event listener al resize per ricalcolare
+    window.addEventListener('resize', handleTabsScroll);
+    return () => window.removeEventListener('resize', handleTabsScroll);
+  }, []);
 
   const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0];
 
   return (
-    <div className="showcase-tabs-container">
+    <div className="showcase-tabs-container" style={{ position: 'relative' }}>
       
-      {/* TABS ROW */}
-      <div className="tabs-row">
+      {/* TABS ROW (Scorrevole orizzontalmente su mobile) */}
+      <div 
+        className="tabs-row-scrollable" 
+        ref={tabsRef}
+        onScroll={handleTabsScroll}
+      >
         {CATEGORIES.map((cat) => (
           <button 
             key={cat.id} 
             className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
             onClick={() => setActiveTab(cat.id)}
-            style={{ position: 'relative' }}
+            style={{ position: 'relative', flexShrink: 0 }}
           >
             {(cat as any).isNew && (
               <span style={{
@@ -162,13 +154,26 @@ export default function ShowcaseTabs() {
         ))}
       </div>
 
-      {/* MAC OS WINDOW INTERATTIVA */}
+      {/* FRECCIA HAND-DRAWN PREMIUM SU MOBILE */}
       <div 
-        className="mac-window"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        className={`hand-drawn-arrow ${showArrow ? 'visible' : 'hidden'}`}
       >
+        <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '0.9rem', marginBottom: '-5px', transform: 'rotate(-5deg)' }}>Scorri</span>
+        <svg 
+          width="60" 
+          height="30" 
+          viewBox="0 0 120 40" 
+          fill="none" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Curve fatte a mano morbide */}
+          <path d="M10 20 Q 50 10, 100 20" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none"/>
+          <path d="M85 10 L 105 20 L 85 30" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+        </svg>
+      </div>
+
+      {/* MAC OS WINDOW INTERATTIVA */}
+      <div className="mac-window">
          {/* HEADER MAC */}
          <div className="mac-header">
            <div className="mac-dots">
@@ -180,11 +185,6 @@ export default function ShowcaseTabs() {
              <span className="hide-mobile">SuperNexus </span>Dashboard / {activeCategory.label}
            </div>
            <div style={{ width: '60px' }}></div> {/* Spacer */}
-         </div>
-
-         {/* MOBILE SWIPE INDICATOR */}
-         <div className="mobile-swipe-indicator">
-           <ArrowLeft size={16} /> Scorri per esplorare <ArrowRight size={16} />
          </div>
          
          {/* IL CONTENUTO CHE CAMBIA */}
