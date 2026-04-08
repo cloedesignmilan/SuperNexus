@@ -738,6 +738,7 @@ body {
     -webkit-overflow-scrolling: touch;
     justify-content: flex-start;
     padding-bottom: 20px; 
+    padding-top: 15px; /* Aggiunto per evitare il taglio della label NEW in the overflow context */
     scrollbar-width: none; 
     margin-bottom: 1rem;
     width: 100vw;
@@ -753,18 +754,26 @@ body {
     display: none;
   }
 
-  /* Freccia Premium ora Sticky all'interno del contenitore NATIVO */
+  /* Wrapper sticky robusto per iOS per posizionare a destra */
+  .hand-drawn-arrow-wrapper {
+    position: sticky;
+    top: 50vh;
+    width: 100%;
+    height: 0px;
+    z-index: 100;
+    pointer-events: none;
+    margin-top: 15vh;
+  }
+
+  /* Freccia Premium */
   .hand-drawn-arrow {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    position: sticky;
-    top: 50vh; /* Scende fino a metà schermo prima di incollarsi */
-    float: right;
-    width: 60px;
-    margin-top: 15vh; /* Aiuta a posizionarla correttamente all'inizio in layout */
+    position: absolute;
     right: 5vw;
-    z-index: 100;
+    top: 0;
+    width: 60px;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
