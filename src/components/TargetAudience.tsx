@@ -6,22 +6,26 @@ export default function TargetAudience() {
     {
       title: "Negozi di abbigliamento",
       description: "Carica l'intera nuova collezione sul tuo sito in una frazione del tempo e azzera i costi della sala di posa.",
-      icon: <Store size={32} />
+      icon: <Store size={32} />,
+      color: "#ccff00" // Neon Yellow
     },
     {
       title: "Negozi Outlet, Ebay, Etsy, Amazon",
       description: "Smaltisci le giacenze velocemente risultando iper-professionale anche come venditore su Amazon, Ebay o Etsy.",
-      icon: <ShoppingBag size={32} />
+      icon: <ShoppingBag size={32} />,
+      color: "#ff5470" // Neon Pink
     },
     {
       title: "Ecommerce di Moda",
       description: "Aumenta vertiginosamente il conversion rate con immagini coerenti, premium e brandizzate.",
-      icon: <Globe size={32} />
+      icon: <Globe size={32} />,
+      color: "#03dac6" // Neon Cyan
     },
     {
       title: "Vendita su Instagram",
       description: "Ferma lo scroll dei tuoi follower con scatti editoriali bellissimi che ispirano l'acquisto immediato.",
-      icon: <Camera size={32} />
+      icon: <Camera size={32} />,
+      color: "#bb86fc" // Neon Purple
     }
   ];
 
@@ -55,12 +59,13 @@ export default function TargetAudience() {
               
               <div style={{ 
                 width: '60px', height: '60px', 
-                background: '#fff', 
+                background: '#111', 
                 borderRadius: '16px', 
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#111',
+                color: item.color,
                 marginBottom: '1.5rem',
-                boxShadow: '0 8px 20px rgba(0,0,0,0.06)'
+                boxShadow: `0 8px 25px ${item.color}40`,
+                border: `1px solid ${item.color}80`
               }}>
                 {item.icon}
               </div>
