@@ -56,7 +56,22 @@ export default function ChatBot() {
       )}
 
       {isOpen && (
-        <div style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999, width: '350px', background: '#151515', border: '1px solid #333', borderRadius: '16px', display: 'flex', flexDirection: 'column', boxShadow: '0 10px 40px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
+        <>
+          <style dangerouslySetInnerHTML={{__html: `
+            .chatbot-window {
+              bottom: 30px;
+              right: 30px;
+              width: 350px;
+            }
+            @media (max-width: 450px) {
+              .chatbot-window {
+                bottom: 15px !important;
+                right: 15px !important;
+                width: calc(100vw - 30px) !important;
+              }
+            }
+          `}} />
+          <div className="chatbot-window" style={{ position: 'fixed', zIndex: 9999, background: '#151515', border: '1px solid #333', borderRadius: '16px', display: 'flex', flexDirection: 'column', boxShadow: '0 10px 40px rgba(0,0,0,0.8)', overflow: 'hidden' }}>
             <div style={{ background: '#0a0a0a', padding: '16px 20px', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h4 style={{ margin: 0, color: '#fff', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ width: '10px', height: '10px', background: '#03dac6', borderRadius: '50%', display: 'inline-block' }}></span>
@@ -104,15 +119,16 @@ export default function ChatBot() {
                         value={input} 
                         onChange={(e) => setInput(e.target.value)} 
                         placeholder="Chiedimi qualcosa..." 
-                        style={{ flex: 1, background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '20px', padding: '10px 16px', outline: 'none' }}
+                        style={{ flex: 1, background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '20px', padding: '10px 16px', outline: 'none', fontSize: '16px' }}
                         disabled={isLoading}
                     />
-                    <button type="submit" disabled={isLoading} style={{ background: '#ccff00', color: '#000', border: 'none', borderRadius: '50%', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                    <button type="submit" disabled={isLoading} style={{ background: '#ccff00', color: '#000', border: 'none', borderRadius: '50%', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
                         <Send size={18} />
                     </button>
                 </form>
             </div>
         </div>
+        </>
       )}
     </>
   );
