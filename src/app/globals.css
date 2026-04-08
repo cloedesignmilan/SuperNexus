@@ -749,16 +749,24 @@ body {
     display: none; 
   }
 
-  /* Freccia Premium (ora dentro mac-window) */
+  /* Contenitore per lo sticky - alto quanto l'intera tab section */
+  .sticky-arrow-container {
+    position: absolute;
+    top: 50px; /* Sotto la prima riga di testo/tabs */
+    bottom: 50px; /* Taglialo prima della fine della riga nera */
+    right: 5vw;
+    width: 60px;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  /* Freccia Premium ora Sticky all'interno del contenitore */
   .hand-drawn-arrow {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: absolute;
-    right: 20px;
-    top: 60px; /* Sotto l'header del mac window */
-    z-index: 100;
-    pointer-events: none;
+    position: sticky;
+    top: 35vh; /* Sta attaccato a circa un terzo dello schermo in basso durante lo scroll */
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
     transform: translateX(10px);
