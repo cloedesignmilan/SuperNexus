@@ -26,7 +26,7 @@ export default function RegistrazionePage() {
                         <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>Questo nome verrà usato per configurare il tuo cruscotto aziendale e generare le tue chiavi di sicurezza.</p>
                     </div>
 
-                    <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#bb86fc'}}>Seleziona il tuo abbonamento mensile</h3>
+                    <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ccff00'}}>Seleziona il tuo abbonamento mensile</h3>
                     
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
                         {/* STARTER */}
