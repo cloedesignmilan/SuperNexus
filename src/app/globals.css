@@ -713,11 +713,15 @@ body {
   -webkit-overflow-scrolling: touch;
   justify-content: flex-start;
   gap: 1rem;
-  margin-bottom: 2rem;
   padding-bottom: 20px;
   padding-top: 15px;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+
+  /* Fix per centrare su desktop ma preservare scroll se eccede */
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto 2rem auto;
 }
 
 .tabs-row-scrollable::-webkit-scrollbar {
