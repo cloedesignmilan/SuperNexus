@@ -78,7 +78,7 @@ export default function LandingPage() {
 
       {/* BENTO GRID FEATURES (Shortened) */}
       <section id="features" className="bento-section" style={{ marginTop: '8rem' }}>
-        <h2 className="section-title">Zero attrito. Massimo risultato.</h2>
+        <h2 className="section-title">Nessun set fotografico. Nessuna App da installare.</h2>
         <div className="bento-grid" style={{ marginTop: '4rem' }}>
           
           {/* BENTO 1 */}
