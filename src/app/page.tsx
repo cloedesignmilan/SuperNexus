@@ -176,7 +176,7 @@ export default function LandingPage() {
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>Tutto il piano Retail</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Risparmi 360€ all'anno</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario</li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato per 12 Mesi</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato 12 Mesi</li>
             </ul>
             <Link href="/registrazione?plan=annual" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none' }}>Blocca a 49€/mese</Link>
           </div>
