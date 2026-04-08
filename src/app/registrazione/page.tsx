@@ -28,38 +28,61 @@ export default function RegistrazionePage() {
 
                     <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#bb86fc'}}>Seleziona il tuo abbonamento mensile</h3>
                     
-                    <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '40px'}}>
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
                         {/* STARTER */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
                             <input type="radio" name="planName" value="starter" className="peer" style={{display: 'none'}} defaultChecked />
-                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s'}} 
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#03dac6" /> Starter 150</h4>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#0085FF" /> Starter</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>€29<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
-                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#03dac6"/> 150 Immagini incluse/mese</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#03dac6"/> Server Condiviso</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#03dac6"/> Ricariche Extra a 0.25€</li>
+                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> 50 generazioni / mese</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Accesso Bot Telegram</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Setup veloce</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
 
-                        {/* PRO */}
+                        {/* RETAIL */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
-                            <input type="radio" name="planName" value="pro" className="peer" style={{display: 'none'}} />
-                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative'}}
-                                 className="radio-card pro-card">
-                                <span style={{position: 'absolute', top: '-12px', right: '20px', background: '#bb86fc', color: '#000', fontSize: '0.7rem', fontWeight: 'bold', padding: '4px 8px', borderRadius: '10px', textTransform: 'uppercase'}}>Più Popolare</span>
+                            <input type="radio" name="planName" value="retail" className="peer" style={{display: 'none'}} />
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
+                                 className="radio-card retail-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#bb86fc" /> Pro 500</h4>
-                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>€69<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#fff" /> Retail</h4>
+                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff'}}>€79<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
-                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '8px'}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#bb86fc"/> 500 Immagini incluse/mese</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#bb86fc"/> Server Prioritario</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#bb86fc"/> Ricariche Extra a 0.15€</li>
+                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> <strong>300 generazioni / mese</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Fedeltà assoluta Nano Pro</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Priorità Bot GPU Ultra</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Tutte le nicchie sbloccate</li>
+                                </ul>
+                            </div>
+                        </label>
+
+                        {/* RETAIL ANNUALE */}
+                        <label style={{cursor: 'pointer', display: 'block'}}>
+                            <input type="radio" name="planName" value="retail_annual" className="peer" style={{display: 'none'}} />
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
+                                 className="radio-card annual-card">
+                                <span style={{position: 'absolute', top: '-12px', right: '10px', background: '#ccff00', color: '#000', fontSize: '0.65rem', fontWeight: 'bold', padding: '4px 8px', borderRadius: '10px', textTransform: 'uppercase'}}>Offerta Speciale</span>
+                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px'}}>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, color: '#ccff00', display: 'flex', alignItems: 'center', gap: '8px'}}>Retail Annuale</h4>
+                                    <div style={{textAlign: 'right'}}>
+                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', display: 'block'}}>€49<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
+                                        <span style={{fontSize: '0.7rem', color: '#ccff00'}}>Fatturato a 588€</span>
+                                    </div>
+                                </div>
+                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#e0e0e0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> <strong>Tutto il piano Retail</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Risparmi 360€ all'anno</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Supporto prioritario</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Prezzo bloccato 12 Mesi</li>
                                 </ul>
                             </div>
                         </label>
@@ -79,8 +102,9 @@ export default function RegistrazionePage() {
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `
                 .radio-card { border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
-                input[value="starter"]:checked + .radio-card { border-color: #03dac6 !important; background: rgba(3,218,198,0.05) !important; }
-                input[value="pro"]:checked + .radio-card { border-color: #bb86fc !important; background: rgba(187,134,252,0.05) !important; }
+                input[value="starter"]:checked + .radio-card { border-color: #0085FF !important; background: rgba(0,133,255,0.05) !important; }
+                input[value="retail"]:checked + .radio-card { border-color: #ffffff !important; background: rgba(255,255,255,0.05) !important; }
+                input[value="retail_annual"]:checked + .radio-card { border-color: #ccff00 !important; background: rgba(204,255,0,0.05) !important; }
             `}} />
         </div>
     );
