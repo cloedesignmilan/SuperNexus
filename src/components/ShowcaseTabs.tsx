@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight, Scissors } from 'lucide-react';
+import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight, Scissors, ArrowLeft, ArrowRight } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
 
@@ -176,8 +176,15 @@ export default function ShowcaseTabs() {
              <div className="mac-dot" style={{ backgroundColor: '#ffbd2e' }}></div>
              <div className="mac-dot" style={{ backgroundColor: '#27c93f' }}></div>
            </div>
-           <div className="mac-title">SuperNexus Dashboard / {activeCategory.label}</div>
+           <div className="mac-title">
+             <span className="hide-mobile">SuperNexus </span>Dashboard / {activeCategory.label}
+           </div>
            <div style={{ width: '60px' }}></div> {/* Spacer */}
+         </div>
+
+         {/* MOBILE SWIPE INDICATOR */}
+         <div className="mobile-swipe-indicator">
+           <ArrowLeft size={16} /> Scorri per esplorare <ArrowRight size={16} />
          </div>
          
          {/* IL CONTENUTO CHE CAMBIA */}

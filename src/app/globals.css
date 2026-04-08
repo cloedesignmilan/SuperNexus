@@ -706,6 +706,10 @@ body {
   background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 60%);
 }
 
+.mobile-swipe-indicator {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .mac-content {
     grid-template-columns: 1fr;
@@ -715,6 +719,30 @@ body {
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
+  .hide-mobile {
+    display: none !important;
+  }
+  .mobile-swipe-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    animation: pulseGlow 2s infinite;
+  }
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
 }
 
 
