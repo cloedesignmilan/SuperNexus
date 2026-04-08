@@ -7,6 +7,7 @@ import SocialPostMockup from '@/components/SocialPostMockup';
 import ShowcaseTabs from '@/components/ShowcaseTabs';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
+import GalleryMockup from '@/components/GalleryMockup';
 
 export default function LandingPage() {
   return (
@@ -92,15 +93,20 @@ export default function LandingPage() {
           </div>
 
           {/* BENTO 2 */}
-          <div className="bento-card bento-half" style={{ background: '#111111', color: 'white' }}>
+          <div className="bento-card bento-half" style={{ background: '#111111', color: 'white', display: 'flex', flexDirection: 'column' }}>
             <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
             <h3 className="bento-title" style={{ color: 'white' }}>Taglia i costi<br/>Shooting.</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>Elimina definitivamente il budget mensile per modelle, trucco, fotografi e sale di posa.</p>
+            <p className="bento-subtitle" style={{ color: '#aaa' }}>Elimina definitivamente il budget mensile per modelle, trucco, fotografi e sale di posa. Tutte le tue creazioni rimangono sempre disponibili nel cloud di Telegram, a portata di tap.</p>
             <ul className="bento-list">
               <li style={{ color: 'white' }}>❌ Nessuna modella da pagare</li>
               <li style={{ color: 'white' }}>❌ Nessun orario da rispettare</li>
-              <li style={{ color: 'white' }}>✅ Libera il magazzino sui Social in 1 min</li>
+              <li style={{ color: 'white' }}>✅ Libreria Cloud accessibile 24/7</li>
             </ul>
+            
+            {/* GALLERIA MOCKUP ROOT */}
+            <div style={{ marginTop: 'auto', paddingTop: '3rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <GalleryMockup />
+            </div>
           </div>
         </div>
       </section>
