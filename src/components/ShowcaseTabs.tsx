@@ -112,6 +112,7 @@ export default function ShowcaseTabs() {
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe || isRightSwipe) {
+      setShowArrow(false); // Nascondi la freccia dopo il primo swipe con successo
       const currentIndex = CATEGORIES.findIndex(c => c.id === activeTab);
       let nextIndex = currentIndex;
       if (isLeftSwipe) {
@@ -186,21 +187,13 @@ export default function ShowcaseTabs() {
         ))}
       </div>
 
-      {/* FRECCIA HAND-DRAWN PREMIUM SU MOBILE */}
-      <div className={`hand-drawn-arrow ${showArrow ? 'visible' : 'hidden'}`}>
-        <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '0.9rem', marginBottom: '-5px', transform: 'rotate(-5deg)', color: 'rgba(255,255,255,0.9)' }}>Scorri</span>
-        <svg width="60" height="30" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 20 Q 50 10, 100 20" stroke="rgba(255,255,255,0.7)" strokeWidth="3" strokeLinecap="round" fill="none"/>
-          <path d="M85 10 L 105 20 L 85 30" stroke="rgba(255,255,255,0.7)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-        </svg>
-      </div>
-
       {/* MAC OS WINDOW INTERATTIVA */}
       <div 
         className="mac-window"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
+        style={{ position: 'relative' }}
       >
          {/* HEADER MAC */}
          <div className="mac-header">
@@ -213,6 +206,15 @@ export default function ShowcaseTabs() {
              <span className="hide-mobile">SuperNexus </span>Dashboard / {activeCategory.label}
            </div>
            <div style={{ width: '60px' }}></div> {/* Spacer */}
+         </div>
+
+         {/* FRECCIA HAND-DRAWN PREMIUM SU MOBILE */}
+         <div className="hand-drawn-arrow visible">
+           <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '1rem', fontWeight: 'bold', marginBottom: '-5px', transform: 'rotate(-5deg)', color: 'rgba(255,255,255,0.95)' }}>Scorri</span>
+           <svg width="60" height="30" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path d="M10 20 Q 50 10, 100 20" stroke="rgba(255,255,255,0.85)" strokeWidth="3" strokeLinecap="round" fill="none"/>
+             <path d="M85 10 L 105 20 L 85 30" stroke="rgba(255,255,255,0.85)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+           </svg>
          </div>
          
          {/* IL CONTENUTO CHE CAMBIA */}

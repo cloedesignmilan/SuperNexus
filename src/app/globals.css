@@ -749,33 +749,32 @@ body {
     display: none; 
   }
 
-  /* Freccia Premium */
+  /* Freccia Premium (ora dentro mac-window) */
   .hand-drawn-arrow {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    right: 5vw;
-    top: 5px;
-    z-index: 50;
+    right: 20px;
+    top: 60px; /* Sotto l'header del mac window */
+    z-index: 100;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
     transform: translateX(10px);
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,1));
   }
   
   .hand-drawn-arrow.visible {
     opacity: 1;
     transform: translateX(0);
-    animation: bounceHand 1.5s ease-in-out infinite;
+    animation: swipeHintMobile 1.5s ease-in-out infinite alternate;
   }
 }
 
-@keyframes bounceHand {
-  0% { transform: translateX(0) scale(1); }
-  50% { transform: translateX(6px) scale(1.05); }
-  100% { transform: translateX(0) scale(1); }
+@keyframes swipeHintMobile {
+  0% { transform: translateX(0px) scale(1); opacity: 0.6; }
+  100% { transform: translateX(-15px) scale(1.05); opacity: 1; }
 }
 
 
