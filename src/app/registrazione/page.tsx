@@ -75,7 +75,7 @@ export default function RegistrazionePage() {
                                     <h4 style={{fontSize: '1.2rem', margin: 0, color: '#ccff00', display: 'flex', alignItems: 'center', gap: '8px'}}>Retail Annuale</h4>
                                     <div style={{textAlign: 'right'}}>
                                         <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', display: 'block'}}>€49<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
-                                        <span style={{fontSize: '0.7rem', color: '#ccff00'}}>Fatturato a 588€</span>
+                                        <span style={{fontSize: '0.7rem', color: '#ccff00'}}>Addebito da 588€</span>
                                     </div>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#e0e0e0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
