@@ -11,7 +11,7 @@ export default function GalleryMockup() {
       <div className="telegram-app-header" style={{ borderBottom: '1px solid rgba(3, 218, 198, 0.2)', paddingBottom: '10px' }}>
         <div className="header-back" style={{ color: '#888' }}><Cloud size={20} /></div>
         <div className="header-title">
-          <span className="logo-text" style={{ color: '#03dac6', fontSize: '1rem' }}>Media Condivisi</span>
+          <span className="logo-text" style={{ color: '#03dac6', fontSize: '1rem' }}>Media SuperNexus AI</span>
           <span className="bot-status">Sempre Disponibili</span>
         </div>
         <div className="header-avatar" style={{ background: 'transparent', color: '#fff' }}><LayoutGrid size={20} /></div>
