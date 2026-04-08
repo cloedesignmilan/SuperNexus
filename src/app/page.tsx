@@ -100,7 +100,7 @@ export default function LandingPage() {
             <ul className="bento-list">
               <li style={{ color: 'white' }}>❌ Nessuna modella da pagare</li>
               <li style={{ color: 'white' }}>❌ Nessun orario da rispettare</li>
-              <li style={{ color: 'white' }}>✅ Libreria Cloud accessibile 24/7</li>
+              <li style={{ color: 'white' }}>✅ Libreria Media accessibile 24/7</li>
             </ul>
             
             {/* GALLERIA MOCKUP ROOT */}
