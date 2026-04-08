@@ -153,7 +153,7 @@ export default function ShowcaseTabs() {
       {/* FRECCIA STICKY PREMIUM SU MOBILE (In flow nativo per supporto Safari/iOS) */}
       <div className={`hand-drawn-arrow ${showArrow ? 'visible' : 'hidden'}`}>
         <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '1rem', fontWeight: 'bold', marginBottom: '-5px', transform: 'rotate(-5deg)', color: 'rgba(255,255,255,0.95)' }}>Scorri</span>
-        <svg width="60" height="30" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg style={{ flexShrink: 0, minHeight: '30px' }} width="60" height="30" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M10 20 Q 50 10, 100 20" stroke="rgba(255,255,255,0.85)" strokeWidth="3" strokeLinecap="round" fill="none"/>
           <path d="M85 10 L 105 20 L 85 30" stroke="rgba(255,255,255,0.85)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
         </svg>

@@ -762,7 +762,6 @@ body {
     top: 50vh; /* Scende fino a metà schermo prima di incollarsi */
     float: right;
     width: 60px;
-    height: 0px; /* Evita che il box spinga via i contenuti */
     margin-top: 15vh; /* Aiuta a posizionarla correttamente all'inizio in layout */
     right: 5vw;
     z-index: 100;
