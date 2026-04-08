@@ -36,6 +36,8 @@
   left: 0;
   width: 100%;
   z-index: 50;
+  border-top-left-radius: 38px;
+  border-top-right-radius: 38px;
 }
 
 .header-back {
