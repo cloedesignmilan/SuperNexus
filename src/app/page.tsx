@@ -146,7 +146,7 @@ export default function LandingPage() {
               <li><CheckCircle2 size={20} color="#ff5e00" /> Setup veloce</li>
               <li><CheckCircle2 size={20} color="#ff5e00" /> Tutte le nicchie sbloccate</li>
             </ul>
-            <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</Link>
+            <button disabled className="btn-secondary" style={{ marginTop: '2rem', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
           </div>
 
           {/* Retail */}
@@ -160,7 +160,7 @@ export default function LandingPage() {
               <li><CheckCircle2 size={20} color="#00ffff" /> Priorità Bot GPU Ultra</li>
               <li><CheckCircle2 size={20} color="#00ffff" /> Tutte le nicchie sbloccate</li>
             </ul>
-            <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800' }}>Attiva Retail</Link>
+            <button disabled className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
           </div>
 
           {/* Retail Annuale */}
@@ -179,7 +179,7 @@ export default function LandingPage() {
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato 12 Mesi</li>
             </ul>
-            <Link href="/registrazione?plan=annual" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none' }}>Blocca a 49€/mese</Link>
+            <button disabled className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', background: '#333', color: '#888', border: 'none', opacity: 0.5, cursor: 'not-allowed', width: '100%' }}>In Aggiornamento</button>
           </div>
 
         </div>

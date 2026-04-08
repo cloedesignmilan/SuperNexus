@@ -89,8 +89,8 @@ export default function RegistrazionePage() {
                     </div>
 
                     <div style={{borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px', textAlign: 'center'}}>
-                        <button type="submit" style={{background: 'linear-gradient(135deg, #0085FF 0%, #00C6FF 100%)', color: '#fff', border: 'none', padding: '18px 40px', fontSize: '1.2rem', fontWeight: 'bold', borderRadius: '30px', cursor: 'pointer', width: '100%', maxWidth: '400px', boxShadow: '0 10px 30px rgba(0, 133, 255, 0.3)', transition: 'transform 0.2s'}}>
-                            Piazza Ordine Sicuro
+                        <button type="submit" disabled style={{background: 'linear-gradient(135deg, #333 0%, #444 100%)', color: '#888', border: 'none', padding: '18px 40px', fontSize: '1.2rem', fontWeight: 'bold', borderRadius: '30px', cursor: 'not-allowed', width: '100%', maxWidth: '400px', boxShadow: 'none'}}>
+                            Sistemi di Pagamento in Aggiornamento
                         </button>
                         <p style={{color: '#666', fontSize: '0.8rem', marginTop: '15px'}}>
                             Cliccando accetti i Terms of Service. L'addebito simulato configurerà istantaneamente il tuo negozio.
