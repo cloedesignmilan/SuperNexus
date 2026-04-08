@@ -227,8 +227,10 @@ export default function ShowcaseTabs() {
                <p>{activeCategory.desc}</p>
                <ul className="mac-features">
                  <li><ChevronRight size={16} /> Ottimizzato per Social Ads</li>
+                 <li><ChevronRight size={16} /> Set da 3, 5 o 10 scatti simultanei</li>
+                 <li><ChevronRight size={16} /> Check IA preventivo sui dettagli del capo</li>
                  <li><ChevronRight size={16} /> Ultra-realismo garantito</li>
-                 <li><ChevronRight size={16} /> Pronto in 30 secondi</li>
+                 <li><ChevronRight size={16} /> Pronto in soli 30 secondi</li>
                </ul>
             </div>
             
