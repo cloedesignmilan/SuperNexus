@@ -35,14 +35,14 @@ export default function RegistrazionePage() {
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#00ffff" /> Starter</h4>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff5e00" /> Starter</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>€29<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> 50 generazioni / mese</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Accesso Bot Telegram</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Setup veloce</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Tutte le nicchie sbloccate</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> 50 generazioni / mese</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Accesso Bot Telegram</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Setup veloce</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
@@ -53,14 +53,14 @@ export default function RegistrazionePage() {
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
                                  className="radio-card retail-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#fff" /> Retail</h4>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#00ffff" /> Retail</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff'}}>€79<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> <strong>300 generazioni / mese</strong></li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Fedeltà assoluta Nano Pro</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Priorità Bot GPU Ultra</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#fff"/> Tutte le nicchie sbloccate</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> <strong>300 generazioni / mese</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Fedeltà assoluta Nano Pro</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Priorità Bot GPU Ultra</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
@@ -102,8 +102,8 @@ export default function RegistrazionePage() {
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `
                 .radio-card { border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
-                input[value="starter"]:checked + .radio-card { border-color: #00ffff !important; background: rgba(0,255,255,0.05) !important; }
-                input[value="retail"]:checked + .radio-card { border-color: #ffffff !important; background: rgba(255,255,255,0.05) !important; }
+                input[value="starter"]:checked + .radio-card { border-color: #ff5e00 !important; background: rgba(255,94,0,0.05) !important; }
+                input[value="retail"]:checked + .radio-card { border-color: #00ffff !important; background: rgba(0,255,255,0.05) !important; }
                 input[value="retail_annual"]:checked + .radio-card { border-color: #ccff00 !important; background: rgba(204,255,0,0.05) !important; }
             `}} />
         </div>

@@ -141,10 +141,10 @@ export default function LandingPage() {
             <p style={{ color: '#888', marginBottom: '2rem' }}>Perfetto per testare l'acqua.</p>
             <div className="pricing-price">€29<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#00ffff" /> 50 generazioni / mese</li>
-              <li><CheckCircle2 size={20} color="#00ffff" /> Accesso Bot Telegram</li>
-              <li><CheckCircle2 size={20} color="#00ffff" /> Setup veloce</li>
-              <li><CheckCircle2 size={20} color="#00ffff" /> Tutte le nicchie sbloccate</li>
+              <li><CheckCircle2 size={20} color="#ff5e00" /> 50 generazioni / mese</li>
+              <li><CheckCircle2 size={20} color="#ff5e00" /> Accesso Bot Telegram</li>
+              <li><CheckCircle2 size={20} color="#ff5e00" /> Setup veloce</li>
+              <li><CheckCircle2 size={20} color="#ff5e00" /> Tutte le nicchie sbloccate</li>
             </ul>
             <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</Link>
           </div>
@@ -155,10 +155,10 @@ export default function LandingPage() {
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Per scalare i volumi social.</p>
             <div className="pricing-price">€79<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#FFFFFF" /> <strong>300 generazioni / mese</strong></li>
-              <li><CheckCircle2 size={20} color="#FFFFFF" /> Fedeltà assoluta Nano Pro</li>
-              <li><CheckCircle2 size={20} color="#FFFFFF" /> Priorità Bot GPU Ultra</li>
-              <li><CheckCircle2 size={20} color="#FFFFFF" /> Tutte le nicchie sbloccate</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> <strong>300 generazioni / mese</strong></li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Fedeltà assoluta Nano Pro</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Priorità Bot GPU Ultra</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Tutte le nicchie sbloccate</li>
             </ul>
             <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800' }}>Attiva Retail</Link>
           </div>
