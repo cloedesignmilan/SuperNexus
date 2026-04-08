@@ -5,6 +5,7 @@ import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
 import ShowcaseTabs from '@/components/ShowcaseTabs';
+import VisualStorytelling from '@/components/VisualStorytelling';
 
 export default function LandingPage() {
   return (
@@ -45,6 +46,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* VISUAL STORYTELLING */}
+      <VisualStorytelling />
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" className="bento-section" style={{ padding: '4rem 5%', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
