@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight } from 'lucide-react';
+import { Briefcase, Footprints, Shirt, Heart, Smartphone, PartyPopper, ChevronRight, Scissors } from 'lucide-react';
 import PhoneMockup from './PhoneMockup';
 import SocialPostMockup from './SocialPostMockup';
 
@@ -27,6 +27,18 @@ const CATEGORIES = [
     post1Src: '/showcase/uomo/1.webp', post1Label: 'LOOKBOOK CITY', 
     post2Src: '/showcase/uomo/2.webp', post2Label: 'STREET ADS', 
     account: 'uomo_style', likes: '2.100'
+  },
+  { 
+    id: 'tshirt', 
+    label: 'T-Shirt', 
+    isNew: true,
+    icon: <Scissors size={28} strokeWidth={1.5} />, 
+    title: 'T-Shirt & Maglieria', 
+    desc: 'Basta scatti su manichini rigidi! Le tue t-shirt prenderanno vita su modelli dinamici, creando un look in stile street super accattivante.',
+    imgSrc: '/showcase/tshirt/prima.webp', phoneLabel: 'PRIMA (TAVOLO)', 
+    post1Src: '/showcase/tshirt/1.webp', post1Label: 'STREETWEAR', 
+    post2Src: '/showcase/tshirt/2.webp', post2Label: 'CATALOGO', 
+    account: 'street_apparel', likes: '5.200'
   },
   { 
     id: 'cerimonia', 
@@ -76,6 +88,41 @@ const CATEGORIES = [
 
 export default function ShowcaseTabs() {
   const [activeTab, setActiveTab] = useState(CATEGORIES[0].id);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe || isRightSwipe) {
+      const currentIndex = CATEGORIES.findIndex(c => c.id === activeTab);
+      let nextIndex = currentIndex;
+      
+      if (isLeftSwipe) {
+        // Swipe verso sinistra -> Categoria successiva
+        nextIndex = (currentIndex + 1) % CATEGORIES.length;
+      } else {
+        // Swipe verso destra -> Categoria precedente
+        nextIndex = (currentIndex - 1 + CATEGORIES.length) % CATEGORIES.length;
+      }
+      setActiveTab(CATEGORIES[nextIndex].id);
+    }
+  };
 
   const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0];
 
@@ -89,7 +136,26 @@ export default function ShowcaseTabs() {
             key={cat.id} 
             className={`tab-btn ${activeTab === cat.id ? 'active' : ''}`}
             onClick={() => setActiveTab(cat.id)}
+            style={{ position: 'relative' }}
           >
+            {(cat as any).isNew && (
+              <span style={{
+                position: 'absolute',
+                top: '-8px',
+                right: '-8px',
+                background: '#ccff00',
+                color: '#000',
+                fontSize: '0.65rem',
+                fontWeight: '800',
+                padding: '2px 8px',
+                borderRadius: '12px',
+                boxShadow: '0 4px 10px rgba(204,255,0,0.4)',
+                letterSpacing: '0.5px',
+                zIndex: 10
+              }}>
+                NEW
+              </span>
+            )}
             <div className="tab-icon-wrapper">{cat.icon}</div>
             <span className="tab-label">{cat.label}</span>
           </button>
@@ -97,7 +163,12 @@ export default function ShowcaseTabs() {
       </div>
 
       {/* MAC OS WINDOW INTERATTIVA */}
-      <div className="mac-window">
+      <div 
+        className="mac-window"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
          {/* HEADER MAC */}
          <div className="mac-header">
            <div className="mac-dots">
