@@ -203,7 +203,10 @@ export default function LandingPage() {
       </section>
       
       <footer style={{ textAlign: 'center', padding: '3rem', color: '#888', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        © 2026 SuperNexus AI. Tutti i diritti riservati.
+        <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Supporto e Assistenza: <a href="mailto:info@supernexusai.com" style={{ color: '#03dac6', textDecoration: 'none', fontWeight: 'bold' }}>info@supernexusai.com</a></p>
+        <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+          © 2026 SuperNexus AI. Tutti i diritti riservati.
+        </div>
       </footer>
 
     </div>
