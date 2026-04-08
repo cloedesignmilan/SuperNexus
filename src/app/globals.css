@@ -757,7 +757,7 @@ body {
   .hand-drawn-arrow {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     position: sticky;
     top: 50vh; /* Scende fino a metà schermo prima di incollarsi */
     float: right;
@@ -769,7 +769,7 @@ body {
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
     transform: translateX(10px);
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,1));
+    filter: drop-shadow(0px 2px 8px rgba(0,0,0,0.8));
   }
   
   .hand-drawn-arrow.visible {
