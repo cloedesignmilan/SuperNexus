@@ -172,8 +172,8 @@ export default function LandingPage() {
             <div className="pricing-price" style={{ color: 'white' }}>€49<span>/mese</span></div>
             <div style={{ fontSize: '0.85rem', color: '#888', marginTop: '-15px', marginBottom: '1.5rem' }}>Addebitato annualmente a 588€</div>
             
-            <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#ccff00" /> <strong>Tutto il piano Boutique</strong></li>
+            <ul className="bento-list" style={{ flex: 1, color: '#e0e0e0' }}>
+              <li><CheckCircle2 size={20} color="#ccff00" /> <strong style={{ color: '#fff' }}>Tutto il piano Boutique</strong></li>
               <li><CheckCircle2 size={20} color="#ccff00" /> Risparmi 360€ all'anno</li>
               <li><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario H24</li>
               <li><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato per sempre</li>
