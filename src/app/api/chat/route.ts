@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
 const SYSTEM_PROMPT = `Sei l’assistente ufficiale di SuperNexus AI.
 
@@ -234,7 +234,7 @@ export async function POST(req: Request) {
         parts: [{text: m.content}]
     }));
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GOOGLE_AI_STUDIO_API_KEY) {
         return NextResponse.json({ reply: 'Attenzione: Chiave API AI mancante nel server. [Risposta Test AI Mockata]' });
     }
 
