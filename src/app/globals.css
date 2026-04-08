@@ -708,10 +708,28 @@ body {
 
 .tabs-row-scrollable {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  justify-content: flex-start;
   gap: 1rem;
   margin-bottom: 2rem;
+  padding-bottom: 20px;
+  padding-top: 15px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
+}
+
+.tabs-row-scrollable::-webkit-scrollbar {
+  height: 6px;
+}
+.tabs-row-scrollable::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+.tabs-row-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 .hand-drawn-arrow {
@@ -731,20 +749,14 @@ body {
     display: none !important;
   }
   
-  /* Logica di scrolling orizzontale */
+  /* Logica di scrolling orizzontale (Mobile Bleed) */
   .tabs-row-scrollable {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    padding-bottom: 20px; 
-    padding-top: 15px; /* Aggiunto per evitare il taglio della label NEW in the overflow context */
-    scrollbar-width: none; 
     margin-bottom: 1rem;
     width: 100vw;
     margin-left: -5vw;
     padding-left: 5vw;
     padding-right: 5vw;
+    scrollbar-width: none; /* Nascondi su mobile per pulizia */
   }
   .tabs-row-scrollable::-webkit-scrollbar {
     display: none; 
