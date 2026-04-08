@@ -194,6 +194,10 @@ export default function LandingPage() {
           </div>
 
         </div>
+
+        <div style={{ textAlign: 'center', marginTop: '2.5rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
+            <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> Puoi disdire in qualsiasi momento. Il piano resterà attivo fino alla scadenza o fino all’utilizzo completo delle immagini.
+        </div>
       </section>
       
       <footer style={{ textAlign: 'center', padding: '3rem', color: '#888', borderTop: '1px solid rgba(0,0,0,0.05)' }}>

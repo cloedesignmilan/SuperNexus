@@ -95,6 +95,9 @@ export default function RegistrazionePage() {
                         <p style={{color: '#666', fontSize: '0.8rem', marginTop: '15px'}}>
                             Cliccando accetti i Terms of Service. L'addebito simulato configurerà istantaneamente il tuo negozio.
                         </p>
+                        <p style={{color: '#888', fontSize: '0.9rem', marginTop: '15px', fontWeight: '500'}}>
+                            <span style={{color: '#03dac6', marginRight: '5px'}}>✓</span> Puoi disdire in qualsiasi momento. Il piano resterà attivo fino alla scadenza o fino all’utilizzo completo delle immagini.
+                        </p>
                     </div>
 
                 </form>
