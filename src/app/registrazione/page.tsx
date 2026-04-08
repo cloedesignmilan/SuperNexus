@@ -14,7 +14,7 @@ export default function RegistrazionePage() {
 
                 <div style={{textAlign: 'center', marginBottom: '40px'}}>
                     <h1 style={{fontSize: '2.5rem', marginBottom: '10px'}}>Inizia con SuperNexus</h1>
-                    <p style={{color: '#a0a0a0', fontSize: '1.1rem'}}>Seleziona il piano più adatto al tuo volume di vendite e lancia la tua scuderia AI.</p>
+                    <p style={{color: '#a0a0a0', fontSize: '1.1rem'}}>Seleziona il piano più adatto al tuo volume di vendite e inizia subito a vendere.</p>
                 </div>
 
                 <form action={processRegistration} style={{background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '40px'}}>
