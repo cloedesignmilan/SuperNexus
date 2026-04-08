@@ -35,14 +35,14 @@ export default function RegistrazionePage() {
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#0085FF" /> Starter</h4>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#00ffff" /> Starter</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>€29<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> 50 generazioni / mese</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Accesso Bot Telegram</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Setup veloce</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#0085FF"/> Tutte le nicchie sbloccate</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> 50 generazioni / mese</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Accesso Bot Telegram</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Setup veloce</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
@@ -102,7 +102,7 @@ export default function RegistrazionePage() {
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `
                 .radio-card { border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
-                input[value="starter"]:checked + .radio-card { border-color: #0085FF !important; background: rgba(0,133,255,0.05) !important; }
+                input[value="starter"]:checked + .radio-card { border-color: #00ffff !important; background: rgba(0,255,255,0.05) !important; }
                 input[value="retail"]:checked + .radio-card { border-color: #ffffff !important; background: rgba(255,255,255,0.05) !important; }
                 input[value="retail_annual"]:checked + .radio-card { border-color: #ccff00 !important; background: rgba(204,255,0,0.05) !important; }
             `}} />

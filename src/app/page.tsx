@@ -141,10 +141,10 @@ export default function LandingPage() {
             <p style={{ color: '#888', marginBottom: '2rem' }}>Perfetto per testare l'acqua.</p>
             <div className="pricing-price">€29<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#0085FF" /> 50 generazioni / mese</li>
-              <li><CheckCircle2 size={20} color="#0085FF" /> Accesso Bot Telegram</li>
-              <li><CheckCircle2 size={20} color="#0085FF" /> Setup veloce</li>
-              <li><CheckCircle2 size={20} color="#0085FF" /> Tutte le nicchie sbloccate</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> 50 generazioni / mese</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Accesso Bot Telegram</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Setup veloce</li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> Tutte le nicchie sbloccate</li>
             </ul>
             <Link href="/registrazione" className="btn-secondary" style={{ marginTop: '2rem' }}>Inizia Ora</Link>
           </div>
