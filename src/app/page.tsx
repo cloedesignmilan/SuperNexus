@@ -168,7 +168,7 @@ export default function LandingPage() {
               OFFERTA SPECIALE
             </div>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#ccff00' }}>RETAIL ANNUALE</h3>
-            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Massimo risparmio. Stessa qualità reale.</p>
+            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Massimo risparmio.</p>
             <div className="pricing-price" style={{ color: 'white' }}>€49<span>/mese</span></div>
             <div style={{ fontSize: '0.85rem', color: '#888', marginTop: '-15px', marginBottom: '1.5rem' }}>Addebitato annualmente a 588€</div>
             
