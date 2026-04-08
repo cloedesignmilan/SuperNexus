@@ -737,9 +737,13 @@ body {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     justify-content: flex-start;
-    padding-bottom: 15px; 
+    padding-bottom: 20px; 
     scrollbar-width: none; 
     margin-bottom: 1rem;
+    width: 100vw;
+    margin-left: -5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
   }
   .tabs-row-scrollable::-webkit-scrollbar {
     display: none; 
@@ -751,14 +755,14 @@ body {
     flex-direction: column;
     align-items: center;
     position: absolute;
-    right: 0px;
+    right: 5vw;
     top: 5px;
-    color: #000;
     z-index: 50;
     pointer-events: none;
     transition: opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
     transform: translateX(10px);
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));
   }
   
   .hand-drawn-arrow.visible {
