@@ -104,7 +104,7 @@ export default function LandingPage() {
             </ul>
             
             {/* GALLERIA MOCKUP ROOT */}
-            <div style={{ marginTop: 'auto', paddingTop: '3rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <div className="bento-visual-center" style={{ marginBottom: '-250px' }}>
               <GalleryMockup />
             </div>
           </div>
