@@ -1,0 +1,145 @@
+.testimonials-section {
+  padding: 8rem 0 6rem;
+  background: radial-gradient(circle at 50% 100%, #111111 0%, #000000 100%);
+  color: #fff;
+  overflow: hidden;
+}
+
+.testimonials-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding: 0 5%;
+}
+
+.testimonials-header p {
+  color: #aaa;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.marquee-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+
+/* Sfumature ai bordi per nascondere l'entrata/uscita */
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #000, transparent);
+}
+
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #000, transparent);
+}
+
+.marquee-row {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 2rem;
+  animation: scrollMarquee 40s linear infinite;
+  padding-left: 2rem;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.track-reverse {
+  animation-direction: reverse;
+}
+
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1rem)); } 
+  /* Si sposta esattamente della metà (essendoci le card duplicate) e poi riparte fluido */
+}
+
+.testimonial-card {
+  width: 350px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.testimonial-card:hover {
+  background: #151515;
+  transform: translateY(-5px);
+  border-color: rgba(204, 255, 0, 0.3); /* Leggero glow giallo al passaggio */
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.testimonial-text {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #e0e0e0;
+  font-style: italic;
+  flex-grow: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 1.5rem;
+}
+
+.avatar-circle {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #ccff00, #03dac6);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.testimonial-author h4 {
+  margin: 0 0 0.2rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.testimonial-author p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  .testimonial-card {
+    width: 300px;
+    padding: 1.5rem;
+  }
+}

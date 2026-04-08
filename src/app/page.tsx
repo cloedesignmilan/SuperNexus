@@ -8,6 +8,7 @@ import ShowcaseTabs from '@/components/ShowcaseTabs';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
+import Testimonials from '@/components/Testimonials';
 
 export default function LandingPage() {
   return (
@@ -62,6 +63,21 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* METRICHE SOCIAL PROOF */}
+      <section style={{ padding: '3rem 5%', background: '#0a0a0a', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
+          <div style={{ textAlign: 'center' }}>
+            <h3 style={{ fontSize: '3.5rem', fontWeight: '900', color: '#ccff00', margin: 0, lineHeight: '1' }}>+10.000</h3>
+            <p style={{ color: '#888', fontSize: '1.2rem', margin: '0.5rem 0 0 0', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 'bold' }}>Immagini Create</p>
+          </div>
+          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} className="hide-mobile"></div>
+          <div style={{ textAlign: 'center' }}>
+            <h3 style={{ fontSize: '3.5rem', fontWeight: '900', color: '#03dac6', margin: 0, lineHeight: '1' }}>+100</h3>
+            <p style={{ color: '#888', fontSize: '1.2rem', margin: '0.5rem 0 0 0', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 'bold' }}>Negozi Attivi</p>
+          </div>
+        </div>
+      </section>
+
       {/* VISUAL STORYTELLING */}
       <VisualStorytelling />
 
@@ -111,8 +127,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TESTIMONIALS */}
+      <Testimonials />
+
       {/* PRICING */}
-      <section id="pricing" className="bento-section" style={{ marginBottom: '8rem', marginTop: '8rem' }}>
+      <section id="pricing" className="bento-section" style={{ marginBottom: '8rem', marginTop: '4rem' }}>
         <h2 className="section-title">Inizia a convertire.</h2>
         <div className="pricing-grid">
           
