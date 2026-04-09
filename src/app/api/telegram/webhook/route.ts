@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     // Inizializza subito il bot globale
     const bot = new Telegraf(botToken);
     const update = await req.json();
+    console.log("🔥 TELEGRAM WEBHOOK HIT");
     console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
 
     const globalChatIdNum = update?.message?.chat?.id || update?.callback_query?.message?.chat?.id;

@@ -95,8 +95,24 @@ REGOLE AGGIUNTIVE TASSATIVE:
       ]
     });
 
-    let inspectorData;
-    let garmentDetails;
+    interface InspectorData {
+        technical_validation?: { is_usable: boolean; };
+        product_classification?: { main_category: string; confidence: string; };
+        ambiguity_flags?: { requires_user_clarification: boolean; };
+        suggested_ui_options?: { recommended_categories: string[]; };
+        legacy_creator_data?: { short_description: string; color: string; type: string; };
+        preservation_constraints?: { critical_details?: string; };
+        [key: string]: any;
+    }
+
+    interface GarmentDetails {
+        description: string;
+        color: string;
+        type: string;
+    }
+
+    let inspectorData: InspectorData | any = {};
+    let garmentDetails: GarmentDetails;
     try {
         const cleaned = (visionResult.text || "{}").replace(/```json/g, "").replace(/```/g, "").trim();
         inspectorData = JSON.parse(cleaned);
