@@ -213,7 +213,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     if (targetScenes.length === 0) {
         if (confirmedEnvironment === 'studio_calzature') {
              // 4 Specific angles for strictly product shoes
-             const adminCustomPrompts = categoryObj.prompt_master.studio_prompts;
+             const adminCustomPrompts = categoryObj?.prompt_master?.studio_prompts;
              if (adminCustomPrompts && adminCustomPrompts.trim() !== '') {
                  const lines = adminCustomPrompts.split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
                  if (lines.length > 0) {
@@ -293,16 +293,16 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
     }
 
-    let ageBracket = categoryObj.age_range || "20-35";
+    let ageBracket = categoryObj?.age_range || "20-35";
     let genderStr = "FEMALE";
     
     const lowerGender = confirmedGender?.toLowerCase() || '';
     if (lowerGender === 'bambino') {
         genderStr = "BOY (CHILD)";
-        ageBracket = categoryObj.child_age_range || "4-12";
+        ageBracket = categoryObj?.child_age_range || "4-12";
     } else if (lowerGender === 'bambina') {
         genderStr = "GIRL (CHILD)";
-        ageBracket = categoryObj.child_age_range || "4-12";
+        ageBracket = categoryObj?.child_age_range || "4-12";
     } else if (lowerGender === 'uomo') {
         genderStr = "MALE";
     }
@@ -519,7 +519,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
  
         try {
-            const safeCategory = (categoryObj as any).name ? (categoryObj as any).name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
+            const safeCategory = (categoryObj as any)?.name ? (categoryObj as any).name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
             const safeBottom = confirmedBottom ? confirmedBottom.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Dato non richiesto';
             
             await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
