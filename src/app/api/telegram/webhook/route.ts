@@ -322,7 +322,7 @@ export async function POST(req: NextRequest) {
     const chatId = update.message?.chat?.id;
 
     if (incomingText && !incomingText.startsWith("/") && !incomingPhoto && !incomingDoc) {
-        // Controlla se c'è un job in sospeso che aspetta il brand
+        // Controlla se c'è un job in sospeso che aspetta il brand o clarification
         const pendingJob = await (prisma.generationJob as any).findFirst({
             where: { telegram_chat_id: globalChatId, status: "awaiting_input" },
             orderBy: { createdAt: 'desc' }
@@ -331,6 +331,41 @@ export async function POST(req: NextRequest) {
         if (pendingJob && pendingJob.metadata) {
             let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
             
+            // Nuova logica: Risoluzione Ambiguità Generale (Step 2.0)
+            if (meta.isCustomClarification) {
+                meta.clarificationContext = incomingText;
+                meta.isCustomClarification = false;
+                
+                await (prisma.generationJob as any).update({
+                    where: { id: pendingJob.id },
+                    data: { metadata: meta }
+                });
+                
+                await bot.telegram.sendMessage(chatId, `✅ Ottimo, ho annotato: "${incomingText}".`);
+                
+                // Ora procediamo con i bottoni delle categorie (precalcolate nell'Inspector)
+                const fallbacksFromDB = await (prisma as any).category.findMany({
+                    where: { is_active: true },
+                    orderBy: { sort_order: 'asc' }
+                });
+                const recommendedCats = meta.precalculatedCategories || [];
+                const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
+                const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
+
+                const fallbackButtons = [];
+                for (let i = 0; i < listToRender.length; i++) {
+                    fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${pendingJob.id}|${listToRender[i].id}`));
+                }
+
+                await bot.telegram.sendMessage(
+                    chatId,
+                    `🤖 **Continuo il percorso...**\nSeleziona la categoria corretta: 👇`,
+                    Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
+                );
+                return NextResponse.json({ ok: true });
+            }
+            
+            // Logica legacy Brand: solo se usata in futuro o lasciata compatibile
             let isShoesFeature = meta.isShoesCategory;
             if (isShoesFeature === undefined && meta.confirmedCategory) {
                 const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
@@ -380,7 +415,6 @@ export async function POST(req: NextRequest) {
                 }
                 return NextResponse.json({ ok: true });
             } else {
-                await bot.telegram.sendMessage(chatId, `DEBUG FALLBACK test array:\nneedsBrand: ${meta.needsBrandClarification}\nconfirmedCat: ${meta.confirmedCategory}\nconfirmedBrand: ${meta.confirmedBrand}\nisShoes: ${meta.isShoesCategory}`);
                 return NextResponse.json({ ok: true });
             }
         }
@@ -415,17 +449,69 @@ export async function POST(req: NextRequest) {
       });
       const validCategoriesStr = templatesSchemaList.map((t: any) => `ID: "${t.id}" (Nome: ${t.name})`).join(" | ");
 
-      const analysisPrompt = `Sei un esperto. Analizza la foto in allegato (potrebbe esserci un abito o delle scarpe) e restituisci SOLO UN JSON. Questo JSON deve contenere l'esatta chiave: "predicted_category". 
-Il valore di "predicted_category" DEVE ESSERE RIGOROSAMENTE UNO E SOLO UNO degli ID menzionati in questa lista, scelto in base al contenuto della foto: [ ${validCategoriesStr} ]. Restituisci ESATTAMENTE solo la stringa alfanumerica dell'ID, senza aggiungere "ID:" o il nome.
-Altre chiavi obbligatorie: 
-- "is_women_dress" (booleano. DEVI mettere TRUE se vedi un capo palesemente femminile come abiti da sposa, gonne, scolli, corpetti tulle o tacchi. Metti FALSE se vedi abbigliamento palesemente maschile come giacche, smoking, cravatte e scarpe da uomo classiche).
-- "needs_gender_clarification" (booleano. Metti TRUE se e solo se l'abbigliamento è totalmente unisex, come t-shirt o felpe neutre. Per abiti da sposa, tailleur femminili, o abiti da uomo eleganti devi SEMPRE mettere FALSE).
-- "needs_bottom_clarification" (booleano true/false), 
-- "needs_brand_clarification" (booleano. DEVI mettere true SE E SOLO SE vedi un logo evidente, targa metallica o un testo sui lacci/tomaia/capo di cui non sei perfettamente certo), 
-- "predicted_bottom" (stringa). 
-Solo parentesi graffe, nessuna formattazione markdown.`;
+      const analysisPrompt = `Sei un esperto ispettore di qualità e analista prodotto. Il capo in foto appartiene a una categoria selezionata.
+
+Analizza l'immagine fornita e restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco JSON.
+Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inventare valori. Se l'informazione non è deducibile, usa null.
+
+REGOLE AGGIUNTIVE TASSATIVE:
+- IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
+- IN 'ambiguity_flags': se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
+- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo, niente "This is an image of...".
+
+{
+  "technical_validation": {
+    "is_usable": true,
+    "lighting": "good" | "acceptable" | "poor",
+    "sharpness": "good" | "acceptable" | "poor",
+    "framing": "full" | "partial" | "unclear",
+    "issues": ["too_dark", "blurred", "cluttered_background", "cropped_subject", "low_contrast", "multiple_items", "unclear_focus"] // o array vuoto
+  },
+  "product_classification": {
+    "main_category": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
+    "confidence": 0.95,
+    "is_single_item": true,
+    "gender_presentation": "male" | "female" | "unisex" | "unknown",
+    "front_or_back": "front" | "back" | "unknown"
+  },
+  "preservation_constraints": {
+    "must_preserve_color": true,
+    "must_preserve_shape": true,
+    "must_preserve_fit": true,
+    "must_preserve_print": true,
+    "must_preserve_logo": true,
+    "critical_details": "HYPER-REALISTIC, MANIACAL 1:1 CLONING BLUEPRINT in English. Max 80-120 words. No fluff.",
+    "main_color": "main color or null",
+    "secondary_color": "secondary color or null",
+    "fabric": "fabric material or null",
+    "fit": "slim, loose, oversized, regular or null",
+    "sleeve_length": "short, long, sleeveless, etc or null",
+    "neckline": "v-neck, crew, etc or null",
+    "print_description": "print details or null",
+    "logo_description": "logo details or null",
+    "length": "midi, maxi, cropped, etc or null",
+    "closure_type": "zip, button, lace-up, slip-on, etc or null"
+  },
+  "ambiguity_flags": {
+    "multiple_items_detected": false,
+    "unclear_garment_type": false,
+    "requires_user_clarification": false,
+    "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
+  },
+  "suggested_ui_options": {
+    "recommended_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 3, solo tra questi valori
+    "disabled_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 4, solo tra questi valori, mutuamente esclusivi dai recommended
+    "should_ask_question": false,
+    "suggested_question": "stringa domanda breve in italiano o null"
+  },
+  "legacy_creator_data": {
+    "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
+    "type": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
+    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline without fluff."
+  }
+}`;
       
-      let aiResult: any = { predicted_category: null, is_women_dress: false, needs_gender_clarification: false, needs_bottom_clarification: false, needs_brand_clarification: false };
+      let inspectorData: any = {};
       
       try {
           const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
@@ -446,19 +532,57 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
           const gData = await apiResp.json();
           const rawText = gData?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
           const cleanedText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-          aiResult = JSON.parse(cleanedText);
+          inspectorData = JSON.parse(cleanedText);
+          console.log(`[DECISION ENGINE SINTETICO] Usable: ${inspectorData.technical_validation?.is_usable} | Chiarimenti: ${inspectorData.ambiguity_flags?.requires_user_clarification} | Consigliati: ${inspectorData.suggested_ui_options?.recommended_categories?.join(',')}`);
       } catch(e) {
           console.error("Fetch/Parse API fallito", e);
       }
 
-      // Creazione JOB in attesa
+      // 1) BLOCCO QUALITÀ FOTO
+      if (inspectorData.technical_validation?.is_usable === false) {
+          await bot.telegram.sendMessage(chatId, "❌ **Foto Non Idonea**\n\nLa foto non è abbastanza chiara per lavorare bene. Prova con una foto più luminosa e nitida.");
+          return NextResponse.json({ ok: true });
+      }
+
+      // 2) GESTIONE AMBIGUITÀ (Soft Block)
+      if (inspectorData.ambiguity_flags?.requires_user_clarification && inspectorData.suggested_ui_options?.suggested_question) {
+          const jobId = "job_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+          const metadataObj = {
+              fileUrl,
+              isCustomClarification: true,
+              clarificationType: inspectorData.ambiguity_flags.clarification_type,
+              clarificationContext: null, // Utente dovrà rispondere con un testo
+              confirmedCategory: null,
+              confirmedBottom: null,
+              confirmedGender: null,
+              confirmedBrand: null,
+              precalculatedCategories: inspectorData.suggested_ui_options?.recommended_categories || []
+          };
+          await (prisma.generationJob as any).create({
+              data: {
+                  id: jobId,
+                  original_image_url: fileUrl,
+                  status: "awaiting_input",
+                  store_id: currentStore.id,
+                  telegram_chat_id: chatId.toString(),
+                  metadata: metadataObj
+              }
+          });
+          await bot.telegram.sendMessage(chatId, `🤔 **Chiarimento Richiesto dall'AI**\n\n${inspectorData.suggested_ui_options.suggested_question}`);
+          return NextResponse.json({ ok: true });
+      }
+
+      // 3) FILTRO CATEGORIE (Tutto Ok, mostra opzioni raccomandate)
+      const recommendedCats = inspectorData.suggested_ui_options?.recommended_categories || [];
+      const genderPres = inspectorData.product_classification?.gender_presentation;
+
       const jobId = "job_" + Date.now() + "_" + Math.floor(Math.random()*1000);
       const metadataObj = {
           fileUrl,
-          isWoman: aiResult.is_women_dress,
-          needsGenderClarification: aiResult.needs_gender_clarification,
-          needsBottomClarification: aiResult.needs_bottom_clarification,
-          needsBrandClarification: aiResult.needs_brand_clarification,
+          isWoman: genderPres === "female",
+          needsGenderClarification: genderPres === "unisex" || genderPres === "unknown",
+          needsBottomClarification: false,
+          needsBrandClarification: false, // Disabilitato, se ne occuperà lo schema avanzato in futuro
           confirmedCategory: null,
           confirmedBottom: null,
           confirmedGender: null,
@@ -476,50 +600,22 @@ Solo parentesi graffe, nessuna formattazione markdown.`;
           }
       });
 
-      // Partiamo chiedendo la categoria se l'IA ha un "guess" o partiamo da zero
       const fallbacksFromDB = await (prisma as any).category.findMany({
           where: { is_active: true },
           orderBy: { sort_order: 'asc' }
       });
 
       const fallbackButtons = [];
-      if (aiResult.predicted_category) {
-          const predictedStr = aiResult.predicted_category;
-          const guess = fallbacksFromDB.find((c: any) => 
-             c.id === predictedStr || 
-             c.name.toLowerCase().includes(predictedStr.toLowerCase())
-          );
-          if(guess) {
-              fallbackButtons.push(Markup.button.callback(`✅ Conferma (${guess.name})`, `cat|${jobId}|${guess.id}`));
-          }
-      }
-      
-      let filteredCategories = fallbacksFromDB;
-      if (aiResult.needs_gender_clarification === false) {
-          filteredCategories = fallbacksFromDB.filter((c: any) => {
-              const catName = c.name.toLowerCase();
-              if (aiResult.is_women_dress) {
-                   // Rimuovi esplicitamente categorie puramente maschili
-                   if (catName === 'sposo' || catName.includes('uomo')) return false;
-              } else {
-                   // Rimuovi esplicitamente categorie puramente femminili
-                   if (catName === 'sposa' || catName.includes('donna') || catName.includes('damigelle')) return false;
-              }
-              return true;
-          });
-      }
+      const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
+      const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
 
-      for (let i = 0; i < filteredCategories.length; i++) {
-          // Preveniamo che il bottone di guess (già pushato sopra) crei un duplicato inutile se non vogliamo
-          // Ma per tenere l'ordine originale, facciamo il push garantito
-          fallbackButtons.push(Markup.button.callback(filteredCategories[i].name, `cat|${jobId}|${filteredCategories[i].id}`));
+      for (let i = 0; i < listToRender.length; i++) {
+          fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${jobId}|${listToRender[i].id}`));
       }
-
-      const predictedName = aiResult.predicted_category ? fallbacksFromDB.find((c: any) => c.id === aiResult.predicted_category)?.name : 'Sconosciuto';
 
       await bot.telegram.sendMessage(
           chatId,
-          `🤖 **Analisi Rapida Completata!**\n\nPenso si tratti di: **${predictedName || 'Sconosciuto'}**.\nConfermi o modifichi? 👇`,
+          `🤖 **Analisi Completata!**\n\nSeleziona la categoria corretta: 👇`,
           Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
       );
 
