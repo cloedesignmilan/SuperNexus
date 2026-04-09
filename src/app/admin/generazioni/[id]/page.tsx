@@ -53,6 +53,24 @@ export default async function JobAuditPage(props: any) {
 
             <RatingPanel jobId={job.id} currentRating={meta.quality_rating} />
 
+            {meta.generatedImages && meta.generatedImages.length > 0 && (
+                <div style={{ marginTop: '30px', padding: '20px', background: '#111', borderRadius: '12px', border: '1px solid #333' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', color: '#ff79c6' }}>
+                        <ImageIcon size={20} /> Preview Immagini Generate ({meta.generatedImages.length})
+                    </h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px' }}>
+                        {meta.generatedImages.map((imgStr: string, idx: number) => {
+                            const isDataUrl = imgStr.startsWith('data:');
+                            const srcStr = isDataUrl ? imgStr : `data:image/jpeg;base64,${imgStr}`;
+                            return (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img key={idx} src={srcStr} alt={`Output ${idx + 1}`} style={{ width: '100%', height: 'auto', borderRadius: '8px', objectFit: 'cover' }} />
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '30px' }}>
                 {/* COLONNA SINISTRA: Input e Inspector */}
                 <div>

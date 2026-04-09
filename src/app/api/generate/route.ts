@@ -382,6 +382,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     let metaMerge = existingJob?.metadata ? (typeof existingJob.metadata === 'string' ? JSON.parse(existingJob.metadata) : existingJob.metadata) : {};
 
     metaMerge.finalPrompts = auditPrompts;
+    metaMerge.generatedImages = generatedUrls; // Array di stringhe Base64 restituite per renderle visibili all'Admin
     if (useModularBuilder) {
         metaMerge.adminConfigSnapshot = adminConfig;
     }
