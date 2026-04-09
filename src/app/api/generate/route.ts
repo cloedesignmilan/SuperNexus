@@ -26,13 +26,19 @@ export async function POST(req: NextRequest) {
 
 Analizza l'immagine fornita e restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco JSON.
 Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inventare valori. Se l'informazione non è deducibile, usa null.
+
+REGOLE AGGIUNTIVE TASSATIVE:
+- IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
+- IN 'ambiguity_flags': se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
+- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo, niente "This is an image of...".
+
 {
   "technical_validation": {
     "is_usable": true,
     "lighting": "good" | "acceptable" | "poor",
     "sharpness": "good" | "acceptable" | "poor",
     "framing": "full" | "partial" | "unclear",
-    "issues": ["too_dark", "blurred", "cluttered_background"] // o array vuoto
+    "issues": ["too_dark", "blurred", "cluttered_background", "cropped_subject", "low_contrast", "multiple_items", "unclear_focus"] // o array vuoto
   },
   "product_classification": {
     "main_category": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
@@ -47,7 +53,7 @@ Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inve
     "must_preserve_fit": true,
     "must_preserve_print": true,
     "must_preserve_logo": true,
-    "critical_details": "MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions.",
+    "critical_details": "HYPER-REALISTIC, MANIACAL 1:1 CLONING BLUEPRINT in English. Max 80-120 words. No fluff.",
     "main_color": "main color or null",
     "secondary_color": "secondary color or null",
     "fabric": "fabric material or null",
@@ -66,15 +72,15 @@ Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inve
     "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
   },
   "suggested_ui_options": {
-    "recommended_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Scegli solo tra questi esatti valori
-    "disabled_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Scegli solo tra questi esatti valori
+    "recommended_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 3, solo tra questi valori
+    "disabled_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 4, solo tra questi valori, mutuamente esclusivi dai recommended
     "should_ask_question": false,
-    "suggested_question": "stringa in italiano o null"
+    "suggested_question": "stringa domanda breve in italiano o null"
   },
   "legacy_creator_data": {
     "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
-    "type": "exact type string in English",
-    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline."
+    "type": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
+    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline without fluff."
   }
 }`;
 
