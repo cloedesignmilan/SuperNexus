@@ -331,10 +331,51 @@ export async function POST(req: NextRequest) {
         if (pendingJob && pendingJob.metadata) {
             let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
             
-            // Nuova logica: Risoluzione Ambiguità Generale (Step 2.0)
+            // Nuova logica: Risoluzione Ambiguità Generale (Step 2.1)
             if (meta.isCustomClarification) {
-                // SALVO RISPOSTA IN confirmedBottom, in modo che passi automaticamente
-                // nell'API generator in "contextStr" senza dover toccare il flusso a valle.
+                // Fallback pulito: se manca il type per corruzione dati
+                if (!meta.clarificationType) {
+                    await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { status: "corrupted_state" } });
+                    await bot.telegram.sendMessage(chatId, `⚠️ **Sessione scaduta.**\nPer favore, reinvia la foto per ricominciare l'analisi.`);
+                    return NextResponse.json({ ok: true });
+                }
+
+                // Whitelist Control (Gated Validation)
+                let isValid = false;
+                let validOptions: string[] = [];
+                const txt = incomingText.toLowerCase();
+
+                switch(meta.clarificationType) {
+                    case 'skirt_or_trousers':
+                        validOptions = ['gonna', 'pantalone', 'pantaloni', 'gonne'];
+                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
+                        break;
+                    case 'top_or_bottom':
+                        validOptions = ['sopra', 'sotto', 'maglia', 'maglietta', 'pantalone', 'gonna'];
+                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
+                        break;
+                    case 'gender_target':
+                        validOptions = ['uomo', 'donna', 'bambino', 'bambina', 'unisex'];
+                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
+                        break;
+                    case 'focus_item':
+                        // Più aperta, verifichiamo che sia sensata (almeno 3 lettere)
+                        if (txt.length >= 3) isValid = true;
+                        validOptions = ['il dettaglio mostrato'];
+                        break;
+                    default:
+                        isValid = true; // custom fallback pass-through
+                        break;
+                }
+
+                if (!isValid) {
+                    console.log(`[CLARIFICATION] Valutazione risposta utente: "${incomingText}" per tipo ${meta.clarificationType}... Esito: RIFIUTATA`);
+                    await bot.telegram.sendMessage(chatId, `❌ **Risposta non valida.**\nPer favore, usa parole chiave come: ${validOptions.join(', ')}`);
+                    return NextResponse.json({ ok: true });
+                }
+
+                console.log(`[CLARIFICATION] Risposta ACCETTATA. Contesto iniettato e stato avanzato.`);
+                // SALVO RISPOSTA IN confirmedBottom per passarlo allo Step Generator
                 meta.confirmedBottom = incomingText;
                 meta.isCustomClarification = false;
                 
@@ -540,6 +581,17 @@ REGOLE AGGIUNTIVE TASSATIVE:
           console.error("Fetch/Parse API fallito", e);
       }
 
+      // Creazione JOB in attesa
+      console.log(`[CLARIFICATION] Reset automatico applicato (nuova foto in arrivo cancella code vecchie).`);
+      try {
+          await (prisma.generationJob as any).updateMany({
+              where: { telegram_chat_id: chatId.toString(), status: "awaiting_input" },
+              data: { status: "cancelled_by_new_image" }
+          });
+      } catch (e) {
+          console.error("Cleanup fallito", e);
+      }
+
       // 1) BLOCCO QUALITÀ FOTO
       if (inspectorData.technical_validation?.is_usable === false) {
           await bot.telegram.sendMessage(chatId, "❌ **Foto Non Idonea**\n\nLa foto non è abbastanza chiara per lavorare bene. Prova con una foto più luminosa e nitida.");
@@ -548,6 +600,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
       // 2) GESTIONE AMBIGUITÀ (Soft Block)
       if (inspectorData.ambiguity_flags?.requires_user_clarification && inspectorData.suggested_ui_options?.suggested_question) {
+          console.log(`[CLARIFICATION] Creato stato di attesa per tipo: ${inspectorData.ambiguity_flags.clarification_type}`);
           const jobId = "job_" + Date.now() + "_" + Math.floor(Math.random()*1000);
           const metadataObj = {
               fileUrl,
