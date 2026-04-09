@@ -56,6 +56,26 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
+    // Validazione strict: Il master prompt deve esistere se è un salvataggio legittimo
+    if (!body.PROMPT_CONFIG_MASTER || typeof body.PROMPT_CONFIG_MASTER.prompt_text !== 'string' || body.PROMPT_CONFIG_MASTER.prompt_text.trim() === '') {
+       return NextResponse.json({ error: "Master Prompt nullo o non valido. Salvataggio interrotto per sicurezza." }, { status: 400 });
+    }
+
+    // Capture the existing state for Backup Before Overwriting
+    const oldKeys = Object.keys(DEFAULT_CONFIG);
+    const oldState: any = {};
+    for (const key of oldKeys) {
+        const setting = await (prisma as any).setting.findUnique({ where: { key } });
+        if (setting) oldState[key] = JSON.parse(setting.value);
+    }
+    
+    // Save snapshot 
+    await (prisma as any).setting.upsert({
+         where: { key: 'PROMPT_CONFIG_BACKUP_SNAPSHOT' },
+         update: { value: JSON.stringify({...oldState, _timestamp: new Date().toISOString() }) },
+         create: { key: 'PROMPT_CONFIG_BACKUP_SNAPSHOT', value: JSON.stringify({...oldState, _timestamp: new Date().toISOString() }) }
+    });
+
     // Support partial updates
     for (const key of Object.keys(body)) {
       if (Object.keys(DEFAULT_CONFIG).includes(key)) {
@@ -71,5 +91,29 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("POST prompt-builder completato con errore", error);
     return NextResponse.json({ error: "DB Write Error" }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  // RESTORE BACKUP ENDPOINT
+  try {
+      const backupSetting = await (prisma as any).setting.findUnique({ where: { key: 'PROMPT_CONFIG_BACKUP_SNAPSHOT' }});
+      if (!backupSetting) return NextResponse.json({ error: "Nessun backup trovato." }, { status: 404 });
+
+      const backupData = JSON.parse(backupSetting.value);
+      
+      for (const key of Object.keys(DEFAULT_CONFIG)) {
+          if (backupData[key]) {
+              await (prisma as any).setting.upsert({
+                  where: { key },
+                  update: { value: JSON.stringify(backupData[key]) },
+                  create: { key, value: JSON.stringify(backupData[key]) }
+              });
+          }
+      }
+      return NextResponse.json({ success: true, message: "Backup ripristinato con successo." });
+  } catch(error) {
+      console.error("PUT prompt-builder completato con errore", error);
+      return NextResponse.json({ error: "Restore Error" }, { status: 500 });
   }
 }

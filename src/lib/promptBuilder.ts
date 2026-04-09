@@ -1,0 +1,56 @@
+export function buildCreatorPrompt(
+  inspectorData: any,
+  categoryName: string,
+  modifiers: { gender?: string, bottomType?: string | null, customBrand?: string | null, cameraAngle?: string },
+  dbMasterPrompt: string,
+  dbSceneText: string,
+  dbNegativeRules: string,
+  brandRule: string,
+  negativeBrandRule: string
+) {
+  const blocks: string[] = [];
+
+  // 1. MASTER PROMPT
+  blocks.push(dbMasterPrompt || "You are a world-class professional commercial photographer. Create a hyper-realistic, 8k resolution, ultra-detailed fashion editorial photo.");
+
+  // 2. SCENARIO / ENVIRONMENT PROMPT
+  blocks.push(`ENVIRONMENT & SCENE:\n${dbSceneText}`);
+  if (modifiers.cameraAngle) blocks.push(`CAMERA ANGLE: ${modifiers.cameraAngle}`);
+
+  // 3. PRESERVATION RULES (Il Cuore)
+  let preservation = "STRICT GARMENT PRESERVATION RULES (1:1 CLONE):\nYou must IDENTICALLY CLONE the garment/item from the reference image, preserving exact shape, seams, cut, proportions and details.\n";
+  const cons = inspectorData?.preservation_constraints || {};
+  const cdetails = cons.critical_details || inspectorData?.legacy_creator_data?.short_description || "Follow original item closely";
+  const mcolor = cons.main_color || inspectorData?.legacy_creator_data?.color;
+  
+  preservation += `- Critical Blueprint: ${cdetails}\n`;
+  if (mcolor) preservation += `- Main Color: ${mcolor}\n`;
+  if (cons.fabric) preservation += `- Fabric/Material: ${cons.fabric}\n`;
+  if (cons.fit) preservation += `- Fit: ${cons.fit}\n`;
+  if (cons.neckline) preservation += `- Neckline: ${cons.neckline}\n`;
+  if (cons.closure_type) preservation += `- Closure: ${cons.closure_type}\n`;
+  blocks.push(preservation);
+
+  // 4. STYLE / CATEGORY FOCUS
+  blocks.push(`CATEGORY FOCUS: ${categoryName}`);
+
+  // 5. MODIFIERS (Humans & Details)
+  const isShows = categoryName.toLowerCase().includes("scarpe") || categoryName.toLowerCase().includes("calzature");
+  
+  let mods = "SPECIFIC MODIFIERS:\n";
+  if (isShows) {
+     mods += `- STRICT NEGATIVE: No humans, no legs, no feet unless naturally implied by the composition. If lifestyle, keep extremely minimal.\n`;
+  } else {
+     mods += `- Model Description: An attractive ${modifiers.gender || 'model'} posing naturally.\n`;
+  }
+  if (modifiers.bottomType) mods += `- Paired Bottom: ${modifiers.bottomType} (keep it matching, elegant and neutral, do not let it steal focus from the main garment)\n`;
+  blocks.push(mods);
+
+  // 6. BRAND RULES
+  if (brandRule) blocks.push(brandRule);
+
+  // 7. NEGATIVE RULES
+  blocks.push(`AVOID: ${dbNegativeRules} ${negativeBrandRule}`);
+
+  return blocks.filter(b => b.trim() !== "").join("\n\n---\n\n");
+}

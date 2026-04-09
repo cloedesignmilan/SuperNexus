@@ -45,15 +45,22 @@ export default function PromptBuilderAdmin() {
         <p className={styles.subtitle}>Gestisci e concatena in tempo reale l'architettura testuale per il motore generativo.</p>
       </div>
 
-      <div className={styles.topActions}>
+      <div className={styles.topActions} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+           {data.PROMPT_CONFIG_SETTINGS.use_modular_builder ? (
+               <span style={{background: '#1b4a2e', color: '#4ade80', padding: '6px 12px', borderRadius: '4px', fontWeight: 'bold'}}>🟢 KILLSWITCH ATTIVO: Telegram usa questo Builder</span>
+           ) : (
+               <span style={{background: '#4a1b1b', color: '#ff6b6b', padding: '6px 12px', borderRadius: '4px', fontWeight: 'bold'}}>🔴 KILLSWITCH SPENTO: Telegram usa backend legacy</span>
+           )}
+        </div>
         <button className={styles.saveBtn} onClick={handleSave} disabled={isSaving}>
           <Save size={18} /> {isSaving ? "Salvataggio..." : "Salva Configurazioni"}
         </button>
       </div>
 
-      <div className={styles.tabs}>
+      <div className={styles.tabs} style={{ flexWrap: 'wrap' }}>
         <button className={`${styles.tabBtn} ${activeTab === 'settings' ? styles.active : ''}`} onClick={() => setActiveTab('settings')}>
-          <Settings size={16} /> Impostazioni Globali
+          <Settings size={16} /> Impostazioni
         </button>
         <button className={`${styles.tabBtn} ${activeTab === 'master' ? styles.active : ''}`} onClick={() => setActiveTab('master')}>
           <Blocks size={16} /> 1. Master Prompt
@@ -70,6 +77,12 @@ export default function PromptBuilderAdmin() {
         <button className={`${styles.tabBtn} ${activeTab === 'negatives' ? styles.active : ''}`} onClick={() => setActiveTab('negatives')}>
           <ShieldAlert size={16} /> 5. Negative Rules
         </button>
+        <button className={`${styles.tabBtn} ${activeTab === 'preview' ? styles.active : ''}`} onClick={() => setActiveTab('preview')} style={{ color: '#facc15' }}>
+          👁️ Preview & Dry Run
+        </button>
+        <button className={`${styles.tabBtn} ${activeTab === 'backups' ? styles.active : ''}`} onClick={() => setActiveTab('backups')} style={{ color: '#9ca3af' }}>
+          🕒 Backups
+        </button>
       </div>
 
       {activeTab === 'settings' && (
@@ -85,7 +98,7 @@ export default function PromptBuilderAdmin() {
                 PROMPT_CONFIG_SETTINGS: { ...data.PROMPT_CONFIG_SETTINGS, use_modular_builder: e.target.checked }
               })}
             />
-            <span>Attiva il nuovo Modular Prompt Builder nell'App (Esclude le vecchie configurazioni Category-based)</span>
+            <span>Attiva il nuovo Modular Prompt Builder nell'App (Esclude le vecchie configurazioni Category-based del DB)</span>
           </label>
         </div>
       )}
@@ -212,6 +225,115 @@ export default function PromptBuilderAdmin() {
         </div>
       )}
 
+      {activeTab === 'backups' && (
+        <div className={styles.section}>
+          <div className={styles.sectionTitle}>Gestione Sicurezza e Rollback</div>
+          <div className={styles.formGroup}>
+            <p style={{ color: '#ccc', marginBottom: '20px' }}>
+              Ogni volta che premi "Salva Configurazioni", il sistema crea una copia di sicurezza automatica dello stato precedente.
+            </p>
+            <button 
+              className={styles.saveBtn} 
+              style={{ background: '#aa3333' }}
+              onClick={async () => {
+                if(!confirm("Vuoi davvero ripristinare il blocco di configurazioni antecedente all'ultimo salvataggio? Questo sovrascriverà le modifiche attuali.")) return;
+                try {
+                  const res = await fetch("/api/admin/prompt-builder", { method: "PUT" });
+                  if (res.ok) { alert("Backup ripristinato! Ricarico la pagina."); window.location.reload(); }
+                  else alert("Nessun backup trovato.");
+                } catch(e) { console.error(e); }
+              }}
+            >
+              🔄 Ripristina Ultimo Backup (Undo)
+            </button>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'preview' && <PreviewPanel data={data} />}
+
+    </div>
+  );
+}
+
+function PreviewPanel({ data }: { data: any }) {
+  const [cat, setCat] = useState("Cerimonia");
+  const [scene, setScene] = useState("ambientata");
+  const [gender, setGender] = useState("female");
+  const [bottom, setBottom] = useState("");
+  const [previewText, setPreviewText] = useState("Premi Simula per caricare la Preview...");
+  const [loading, setLoading] = useState(false);
+
+  const handleSimulate = async () => {
+     setLoading(true);
+     try {
+       const res = await fetch("/api/admin/prompt-builder/preview", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({
+           config: data,
+           categoryName: cat,
+           scenarioId: scene,
+           modifiers: { gender, bottomType: bottom }
+         })
+       });
+       const json = await res.json();
+       if (json.prompt) setPreviewText(json.prompt);
+       else setPreviewText("Errore API: " + json.error);
+     } catch (e) {
+       setPreviewText("Network error.");
+     }
+     setLoading(false);
+  };
+
+  return (
+    <div className={styles.section}>
+      <div className={styles.sectionTitle}>Console di Simulazione (Dry Run)</div>
+      <p style={{ color: '#ccc', marginBottom: '20px' }}>
+        Verifica cosa produrrebbero questi blocchi config in produzione prima di salvare.
+      </p>
+      
+      <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+         <div style={{flex: 1}}>
+            <label className={styles.label}>Mock Categoria</label>
+            <select className={styles.input} value={cat} onChange={(e) => setCat(e.target.value)}>
+               {data.PROMPT_CONFIG_CATEGORIES.map((c: any) => <option key={c.category_name} value={c.category_name}>{c.category_name}</option>)}
+            </select>
+         </div>
+         <div style={{flex: 1}}>
+            <label className={styles.label}>Mock Ambiente</label>
+            <select className={styles.input} value={scene} onChange={(e) => setScene(e.target.value)}>
+               {data.PROMPT_CONFIG_SCENARIOS.map((s: any) => <option key={s.id} value={s.id}>{s.title}</option>)}
+            </select>
+         </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+         <div style={{flex: 1}}>
+            <label className={styles.label}>Mock Genere</label>
+            <select className={styles.input} value={gender} onChange={(e) => setGender(e.target.value)}>
+               <option value="male">Uomo</option>
+               <option value="female">Donna</option>
+            </select>
+         </div>
+         <div style={{flex: 1}}>
+            <label className={styles.label}>Mock Bottom (es. gonna)</label>
+            <input className={styles.input} value={bottom} onChange={(e) => setBottom(e.target.value)} placeholder="Vuoto per null..." />
+         </div>
+      </div>
+
+      <button className={styles.saveBtn} style={{ marginBottom: '20px', background: '#eab308', color: '#000' }} onClick={handleSimulate}>
+        {loading ? "Calcolo in corso..." : "▶️ Esegui Simulatore Textuale"}
+      </button>
+
+      <div className={styles.formGroup}>
+        <label className={styles.label}>Risultato esatto che Gemini riceverebbe:</label>
+        <textarea 
+          className={styles.textarea} style={{minHeight: '400px', backgroundColor: '#000', color: '#32cd32', fontFamily: 'monospace', fontSize: '14px', lineHeight: '1.5'}}
+          value={previewText}
+          readOnly
+        />
+      </div>
     </div>
   );
 }
