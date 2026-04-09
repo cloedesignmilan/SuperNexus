@@ -133,10 +133,15 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const useModularBuilder = adminConfig?.PROMPT_CONFIG_SETTINGS?.use_modular_builder === true;
 
-    const categoryObj = await (prisma as any).category.findUnique({
-         where: { id: confirmedCategory },
-         include: { prompt_master: true }
-    });
+    let categoryObj = null;
+    try {
+        categoryObj = await (prisma as any).category.findUnique({
+             where: { id: confirmedCategory },
+             include: { prompt_master: true }
+        });
+    } catch(e) {
+        // Ignorato. Se l'ID non è un UUID (caso MODULAR BUILDER in cui passa un nome testo es: 'Donna'), Prisma fallisce giustamente. Il fallback modulare bypasserà il DB interamente.
+    }
         
     if (!useModularBuilder && (!categoryObj || !categoryObj.prompt_master)) {
          console.error(`[CRITICO] Categoria Master non trovata nel DB: ${confirmedCategory}`);
@@ -151,7 +156,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         ? adminConfig.PROMPT_CONFIG_NEGATIVES.global_rules
         : (categoryObj?.prompt_master?.negative_rules || 'No modifiche al capo, no tagli');
 
-    let categoryFocusName = categoryObj?.name || 'Outfit';
+    let categoryFocusName = categoryObj?.name || confirmedCategory || 'Outfit';
     if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
         const catOverride = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === categoryFocusName && c.is_active);
         if (catOverride) {

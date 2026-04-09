@@ -84,6 +84,21 @@ export async function POST(req: NextRequest) {
     const totalAvail = currentStore.subscription_credits + currentStore.supplementary_credits;
     // --- FINE BILLING ---
 
+    // --- CARICAMENTO CONFIGURAZIONI MODULARI ADMIN ---
+    let adminConfig: any = null;
+    try {
+        const settingsBlob = await (prisma as any).setting.findMany({
+            where: { key: { in: ['PROMPT_CONFIG_SETTINGS', 'PROMPT_CONFIG_MASTER', 'PROMPT_CONFIG_NEGATIVES', 'PROMPT_CONFIG_SCENARIOS', 'PROMPT_CONFIG_CATEGORIES', 'PROMPT_CONFIG_MODIFIERS'] } }
+        });
+        adminConfig = {};
+        for (const s of settingsBlob) {
+            adminConfig[s.key] = JSON.parse(s.value);
+        }
+    } catch(e) {
+        console.log("Fallback Admin Config failed in webhook");
+    }
+    const useModularBuilder = adminConfig?.PROMPT_CONFIG_SETTINGS?.use_modular_builder === true;
+
     // 1) GESTIONE PULSANTI CLICKATI (CALLBACK QUERY)
     if (update.callback_query) {
         const cbq = update.callback_query;
@@ -398,18 +413,30 @@ export async function POST(req: NextRequest) {
                 
                 await bot.telegram.sendMessage(chatId, `✅ Perfetto, ho registrato il dettaglio: "${incomingText}".`);
                 
-                // Ora procediamo con i bottoni delle categorie (precalcolati nell'Inspector)
-                const fallbacksFromDB = await (prisma as any).category.findMany({
-                    where: { is_active: true },
-                    orderBy: { sort_order: 'asc' }
-                });
-                const recommendedCats = meta.precalculatedCategories || [];
-                const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
-                const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
+                // Ora procediamo con i bottoni delle categorie
+                let recommendedCats = meta.precalculatedCategories || [];
+                let fallbackButtons = [];
 
-                const fallbackButtons = [];
-                for (let i = 0; i < listToRender.length; i++) {
-                    fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${pendingJob.id}|${listToRender[i].id}`));
+                if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+                    const fallbackCats = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).sort((a:any, b:any) => a.order - b.order);
+                    const filteredCats = fallbackCats.filter((c:any) => recommendedCats.includes(c.category_name));
+                    const listToRender = filteredCats.length > 0 ? filteredCats : fallbackCats;
+                    for (let c of listToRender) {
+                        // Passiamo category_name come payload invece di uuid DB
+                        fallbackButtons.push(Markup.button.callback(c.category_name, `cat|${pendingJob.id}|${c.category_name}`));
+                    }
+                } else {
+                    // Legacy DB Category Fallback
+                    const fallbacksFromDB = await (prisma as any).category.findMany({
+                        where: { is_active: true },
+                        orderBy: { sort_order: 'asc' }
+                    });
+                    const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
+                    const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
+
+                    for (let i = 0; i < listToRender.length; i++) {
+                        fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${pendingJob.id}|${listToRender[i].id}`));
+                    }
                 }
 
                 await bot.telegram.sendMessage(
@@ -439,13 +466,23 @@ export async function POST(req: NextRequest) {
                 
                 // Passa alla prossima domanda
                 if (!meta.confirmedEnvironment) {
+                    let envButtons = [];
+                    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_SCENARIOS) {
+                        const activeScenes = adminConfig.PROMPT_CONFIG_SCENARIOS.filter((s:any) => s.is_active);
+                        for (let s of activeScenes) {
+                           envButtons.push(Markup.button.callback(`🌍 ${s.title}`, `env|${pendingJob.id}|${s.id}`));
+                        }
+                    } else {
+                        envButtons = [
+                            Markup.button.callback("🌍 Ambientata", `env|${pendingJob.id}|ambientata`),
+                            Markup.button.callback("📸 In Studio", `env|${pendingJob.id}|studio`)
+                        ];
+                    }
+
                     await bot.telegram.sendMessage(
                         chatId,
                         `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
-                        Markup.inlineKeyboard([
-                            Markup.button.callback("🌍 Ambientata", `env|${pendingJob.id}|ambientata`),
-                            Markup.button.callback("📸 In Studio", `env|${pendingJob.id}|studio`)
-                        ], { columns: 2 })
+                        Markup.inlineKeyboard(envButtons, { columns: 2 })
                     );
                 } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
                     await bot.telegram.sendMessage(
@@ -667,17 +704,26 @@ REGOLE AGGIUNTIVE TASSATIVE:
           }
       });
 
-      const fallbacksFromDB = await (prisma as any).category.findMany({
-          where: { is_active: true },
-          orderBy: { sort_order: 'asc' }
-      });
-
       const fallbackButtons = [];
-      const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
-      const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
+      
+      if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+          const fallbackCats = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).sort((a:any, b:any) => a.order - b.order);
+          const filteredCats = fallbackCats.filter((c:any) => recommendedCats.includes(c.category_name));
+          const listToRender = filteredCats.length > 0 ? filteredCats : fallbackCats;
+          for (let c of listToRender) {
+              fallbackButtons.push(Markup.button.callback(c.category_name, `cat|${jobId}|${c.category_name}`));
+          }
+      } else {
+          const fallbacksFromDB = await (prisma as any).category.findMany({
+              where: { is_active: true },
+              orderBy: { sort_order: 'asc' }
+          });
+          const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
+          const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
 
-      for (let i = 0; i < listToRender.length; i++) {
-          fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${jobId}|${listToRender[i].id}`));
+          for (let i = 0; i < listToRender.length; i++) {
+              fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${jobId}|${listToRender[i].id}`));
+          }
       }
 
       await bot.telegram.sendMessage(
