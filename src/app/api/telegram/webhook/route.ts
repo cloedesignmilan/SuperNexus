@@ -333,7 +333,9 @@ export async function POST(req: NextRequest) {
             
             // Nuova logica: Risoluzione Ambiguità Generale (Step 2.0)
             if (meta.isCustomClarification) {
-                meta.clarificationContext = incomingText;
+                // SALVO RISPOSTA IN confirmedBottom, in modo che passi automaticamente
+                // nell'API generator in "contextStr" senza dover toccare il flusso a valle.
+                meta.confirmedBottom = incomingText;
                 meta.isCustomClarification = false;
                 
                 await (prisma.generationJob as any).update({
@@ -341,9 +343,9 @@ export async function POST(req: NextRequest) {
                     data: { metadata: meta }
                 });
                 
-                await bot.telegram.sendMessage(chatId, `✅ Ottimo, ho annotato: "${incomingText}".`);
+                await bot.telegram.sendMessage(chatId, `✅ Perfetto, ho registrato il dettaglio: "${incomingText}".`);
                 
-                // Ora procediamo con i bottoni delle categorie (precalcolate nell'Inspector)
+                // Ora procediamo con i bottoni delle categorie (precalcolati nell'Inspector)
                 const fallbacksFromDB = await (prisma as any).category.findMany({
                     where: { is_active: true },
                     orderBy: { sort_order: 'asc' }
@@ -359,7 +361,7 @@ export async function POST(req: NextRequest) {
 
                 await bot.telegram.sendMessage(
                     chatId,
-                    `🤖 **Continuo il percorso...**\nSeleziona la categoria corretta: 👇`,
+                    `🤖 **Continuo il percorso...**\nSeleziona la Categoria corretta: 👇`,
                     Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
                 );
                 return NextResponse.json({ ok: true });
