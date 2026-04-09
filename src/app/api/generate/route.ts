@@ -10,8 +10,15 @@ export const maxDuration = 60;
 export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
+  let gJobId = null, gChatId = null, gStoreId = null;
+
   try {
-    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = await req.json();
+    const jsonBody = await req.json();
+    gJobId = jsonBody.jobId;
+    gChatId = jsonBody.chatId;
+    gStoreId = jsonBody.storeId;
+    
+    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = jsonBody;
 
     if (!jobId || !fileUrl) {
       return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
@@ -343,12 +350,17 @@ REGOLE AGGIUNTIVE TASSATIVE:
                     model: 'gemini-3.1-flash-image-preview',
                     contents: [
                         {
-                            inlineData: {
-                               data: imageBuffer.toString("base64"),
-                               mimeType: "image/jpeg"
-                            }
-                        },
-                        finalPrompt
+                            role: 'user',
+                            parts: [
+                                {
+                                    inlineData: {
+                                       data: imageBuffer.toString("base64"),
+                                       mimeType: "image/jpeg"
+                                    }
+                                },
+                                { text: finalPrompt }
+                            ]
+                        }
                     ],
                     config: {
                         // @ts-ignore
@@ -492,9 +504,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
        const finalBotToken = process.env.TELEGRAM_BOT_TOKEN as string;
        const bot = new Telegraf(finalBotToken);
        
-       const mediaGroup = generatedUrls.map((urlStr) => {
+       const mediaGroup = generatedUrls.map((urlStr, i) => {
            if (urlStr.startsWith("http")) return { type: 'photo' as const, media: urlStr };
-           return { type: 'photo' as const, media: { source: Buffer.from(urlStr, 'base64') } };
+           const cleanB64 = urlStr.replace(/^data:image\/\w+;base64,/, "");
+           return { type: 'photo' as const, media: { source: Buffer.from(cleanB64, 'base64'), filename: `image_${i}.jpg` } };
        });
        
         const totalRimasti = newSub + newSupp;
@@ -506,7 +519,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
  
         try {
-            await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${(categoryObj as any).name}\n- Taglieria: ${confirmedBottom || 'Dato non richiesto'}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
+            const safeCategory = (categoryObj as any).name ? (categoryObj as any).name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
+            const safeBottom = confirmedBottom ? confirmedBottom.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Dato non richiesto';
+            
+            await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
             if (mediaGroup.length > 0) {
                 await bot.telegram.sendMediaGroup(chatId, mediaGroup);
             }
@@ -520,27 +536,40 @@ REGOLE AGGIUNTIVE TASSATIVE:
   } catch (error: any) {
     console.error("Worker Background Errore:", error);
     try {
-        const { jobId, chatId, storeId } = await req.clone().json().catch(() => ({ jobId: null, chatId: null, storeId: null }));
-        if (jobId) {
+        let errorJobId = gJobId;
+        let errorChatId = gChatId;
+        let errorStoreId = gStoreId;
+        
+        try {
+            const bodyText = await req.text().catch(() => "");
+            if (bodyText && !errorJobId) {
+                const b = JSON.parse(bodyText);
+                errorJobId = b.jobId; errorChatId = b.chatId; errorStoreId = b.storeId;
+            }
+        } catch(e) {}
+        
+        if (errorJobId) {
              await (prisma as any).generationJob.update({
-                  where: { id: jobId },
+                  where: { id: errorJobId },
                   data: { status: "errore" }
              });
         }
         
-        if (chatId) {
+        if (errorChatId) {
              let botToken = process.env.TELEGRAM_BOT_TOKEN;
-             if (storeId) {
-                 const st = await (prisma as any).store.findUnique({ where: { id: storeId } });
+             if (errorStoreId) {
+                 const st = await (prisma as any).store.findUnique({ where: { id: errorStoreId } });
                  if (st?.telegram_bot_token) botToken = st.telegram_bot_token;
              }
              if (botToken) {
                  const { Telegraf } = require('telegraf');
                  const errorBot = new Telegraf(botToken);
-                 await errorBot.telegram.sendMessage(chatId, `❌ **Errore generazione IA:**\n\n\`${error?.message || "Errore sconosciuto"}\`\n\nTornerò operativo a breve!`, { parse_mode: 'Markdown' }).catch(()=>{});
+                 await errorBot.telegram.sendMessage(errorChatId, `❌ Errore generazione IA:\n\n${error?.message || "Errore sconosciuto"}\n\nTornerò operativo a breve!`).catch(()=>{});
              }
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Fatal in error handler:", e);
+    }
     
     return NextResponse.json({ error: error?.message || "Internal" }, { status: 500 });
   }
