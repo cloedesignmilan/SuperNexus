@@ -101,6 +101,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         inspectorData = JSON.parse(cleaned);
         
         console.log("[DEBUG] Inspector JSON Strutturato:", JSON.stringify(inspectorData, null, 2));
+        console.log(`[DEBUG SINTETICO] Usable: ${inspectorData.technical_validation?.is_usable} | Categoria: ${inspectorData.product_classification?.main_category} (${inspectorData.product_classification?.confidence}) | Chiarimenti: ${inspectorData.ambiguity_flags?.requires_user_clarification} | Consigliati: ${inspectorData.suggested_ui_options?.recommended_categories?.join(',')}`);
 
         garmentDetails = {
            description: inspectorData.legacy_creator_data?.short_description || inspectorData.preservation_constraints?.critical_details || "elegant high quality outfit",
