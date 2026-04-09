@@ -340,10 +340,12 @@ export async function POST(req: NextRequest) {
                     return NextResponse.json({ ok: true });
                 }
 
+                meta.clarificationAttempts = (meta.clarificationAttempts || 0) + 1;
+                
                 // Whitelist Control (Gated Validation)
                 let isValid = false;
                 let validOptions: string[] = [];
-                const txt = incomingText.toLowerCase();
+                const txt = incomingText.toLowerCase().trim().replace(/[^a-z0-9 ]/g, "");
 
                 switch(meta.clarificationType) {
                     case 'skirt_or_trousers':
@@ -369,14 +371,24 @@ export async function POST(req: NextRequest) {
                 }
 
                 if (!isValid) {
-                    console.log(`[CLARIFICATION] Valutazione risposta utente: "${incomingText}" per tipo ${meta.clarificationType}... Esito: RIFIUTATA`);
-                    await bot.telegram.sendMessage(chatId, `❌ **Risposta non valida.**\nPer favore, usa parole chiave come: ${validOptions.join(', ')}`);
+                    if (meta.clarificationAttempts >= 2) {
+                        console.log(`[CLARIFICATION] Valutazione fallita 2 volte. Sessione abbattuta.`);
+                        await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { status: "failed_clarification" } });
+                        await bot.telegram.sendMessage(chatId, `❌ **Troppi tentativi falliti.**\nL'operazione è stata annullata per sicurezza. Per favore, carica nuovamente la foto e prova ancora.`);
+                        return NextResponse.json({ ok: true });
+                    }
+                    
+                    console.log(`[CLARIFICATION] Valutazione risposta utente: "${txt}" per tipo ${meta.clarificationType}... Esito: RIFIUTATA`);
+                    await bot.telegram.sendMessage(chatId, `❌ **Risposta non valida.**\nPer favore, scrivi chiaramente una di queste opzioni: ${validOptions.join(', ')}`);
+                    
+                    // Salviamo il tentativo incrementato
+                    await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { metadata: meta } });
                     return NextResponse.json({ ok: true });
                 }
 
                 console.log(`[CLARIFICATION] Risposta ACCETTATA. Contesto iniettato e stato avanzato.`);
                 // SALVO RISPOSTA IN confirmedBottom per passarlo allo Step Generator
-                meta.confirmedBottom = incomingText;
+                meta.confirmedBottom = txt; // Normalizzato
                 meta.isCustomClarification = false;
                 
                 await (prisma.generationJob as any).update({
