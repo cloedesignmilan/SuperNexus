@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Images, Box, Search } from 'lucide-react';
 import PrintButton from './PrintButton';
 import Link from 'next/link';
+import { CompareProvider, CompareCheckbox } from './CompareContext';
 
 export const revalidate = 0;
 
@@ -17,7 +18,7 @@ export default async function GenerazioniPage() {
   });
 
   return (
-    <>
+    <CompareProvider>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem'}} className="print-hide">
           <div style={{display: 'flex', alignItems: 'center', gap: '15px'}}>
             <Images size={40} color="#bb86fc" />
@@ -55,6 +56,7 @@ export default async function GenerazioniPage() {
                     <table className="data-table">
                   <thead>
                     <tr>
+                      <th style={{width: '60px'}}>A/B</th>
                       <th>ID Identificativo</th>
                       <th>Esito Sistema</th>
                       <th>Data di Richiesta</th>
@@ -65,6 +67,9 @@ export default async function GenerazioniPage() {
                   <tbody>
                     {store.jobs.map((job) => (
                       <tr key={job.id}>
+                        <td>
+                            <CompareCheckbox jobId={job.id} />
+                        </td>
                         <td>
                           <span style={{ fontSize: "0.85rem", color: "#888", fontFamily: "monospace" }}>
                             {job.id}
@@ -90,6 +95,6 @@ export default async function GenerazioniPage() {
               </details>
           )
       })}
-    </>
+    </CompareProvider>
   );
 }
