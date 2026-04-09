@@ -14,8 +14,15 @@ const HighlightDiff = ({ str1, str2, isBaseline }: { str1?: string, str2?: strin
     return <span style={{ background: isBaseline ? 'rgba(255, 107, 107, 0.2)' : 'rgba(74, 222, 128, 0.2)', borderBottom: `2px solid ${isBaseline ? '#ff6b6b' : '#4ade80'}` }}>{isBaseline ? s1 : s2}</span>;
 }
 
-export default async function ComparePage({ searchParams }: { searchParams: Promise<{ job1?: string, job2?: string }> }) {
-    const { job1: searchJob1, job2: searchJob2 } = await searchParams;
+type CompareProps = {
+    params: Promise<any>;
+    searchParams: Promise<{ job1?: string, job2?: string }>;
+};
+
+export default async function ComparePage(props: CompareProps) {
+    const searchParams = await props.searchParams;
+    const { job1: searchJob1, job2: searchJob2 } = searchParams;
+    
     if (!searchJob1 || !searchJob2) {
         return notFound();
     }

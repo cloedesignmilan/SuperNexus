@@ -5,8 +5,17 @@ import RatingPanel from './RatingPanel';
 
 export const revalidate = 0;
 
-export default async function JobAuditPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params;
+type PageProps = {
+    params: Promise<{ id: string }>;
+    searchParams?: Promise<any>;
+};
+
+export default async function JobAuditPage(props: PageProps) {
+    const params = await props.params;
+    const id = params?.id;
+
+    if (!id) return <div>Invalid Job ID</div>;
+
     const job = await (prisma as any).generationJob.findUnique({
         where: { id },
         include: { store: true, images: true }
