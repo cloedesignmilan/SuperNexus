@@ -22,8 +22,48 @@ export async function POST(req: NextRequest) {
     
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
-    const analysisPrompt = `Sei un esperto ispettore di qualità e clonazione prodotto. Il capo in foto appartiene a una categoria selezionata. ${contextStr}
-Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "color" (colore e pattern, in INGLESE), "description" (MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions, materials like leather, suede, mesh, distinct stitching patterns, sole thickness, tread style, laces type, toe box shape, and every single micro-detail. DO NOT hallucinate. Treat this as the absolute ground truth to mass-produce an identical clone without looking at the original image). Niente testo fuori dal JSON.`;
+    const analysisPrompt = `Sei un esperto ispettore di qualità e analista prodotto. Il capo in foto appartiene a una categoria selezionata. ${contextStr}
+Restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco:
+{
+  "technical_validation": {
+    "is_usable": true,
+    "lighting": "good" | "acceptable" | "poor",
+    "sharpness": "good" | "acceptable" | "poor",
+    "framing": "full" | "partial" | "unclear",
+    "issues": ["too_dark", "blurred", "cluttered_background"] // o vuoto
+  },
+  "product_classification": {
+    "main_category": "type like tshirt, dress, shoes, outfit",
+    "confidence": 0.95,
+    "is_single_item": true,
+    "gender_presentation": "male" | "female" | "unisex",
+    "front_or_back": "front" | "back" | "unknown"
+  },
+  "preservation_constraints": {
+    "must_preserve_color": true,
+    "must_preserve_shape": true,
+    "must_preserve_fit": true,
+    "must_preserve_print": true,
+    "must_preserve_logo": true,
+    "critical_details": "MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions, materials like leather, suede, mesh, patterns, and every micro-detail."
+  },
+  "ambiguity_flags": {
+    "multiple_items_detected": false,
+    "unclear_garment_type": false,
+    "requires_user_clarification": false,
+    "clarification_type": "top_or_bottom" // o null
+  },
+  "suggested_ui_options": {
+    "recommended_categories": ["dress", "eveningwear"],
+    "disabled_categories": ["shoes"],
+    "should_ask_question": false,
+    "suggested_question": "Vuoi focheggiare la gonna o la maglia?" // o null
+  },
+  "legacy_creator_data": {
+    "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
+    "type": "exact type in English"
+  }
+}`;
 
     const visionResult = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -35,11 +75,21 @@ Restituisci SOLO un JSON con queste chiavi: "type" (tipo esatto in inglese), "co
       ]
     });
 
+    let inspectorData;
     let garmentDetails;
     try {
-        const cleaned = (visionResult.text || "{}").replace(/```json/g, "").replace(/```/g, "");
-        garmentDetails = JSON.parse(cleaned);
-    } catch {
+        const cleaned = (visionResult.text || "{}").replace(/```json/g, "").replace(/```/g, "").trim();
+        inspectorData = JSON.parse(cleaned);
+        
+        console.log("[DEBUG] Inspector JSON Strutturato:", JSON.stringify(inspectorData, null, 2));
+
+        garmentDetails = {
+           description: inspectorData.preservation_constraints?.critical_details || "elegant high quality outfit",
+           color: inspectorData.legacy_creator_data?.color || "original",
+           type: inspectorData.legacy_creator_data?.type || inspectorData.product_classification?.main_category || "outfit"
+        };
+    } catch (e) {
+        console.error("[CRITICO] Fallito parsing JSON dell'Inspector. Uso dati di fallback.", e);
         garmentDetails = { description: "elegant high quality outfit", type: "outfit", color: "original" };
     }
 
