@@ -250,7 +250,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         "Slight close-up portrait, focusing on the upper chest and face"
     ];
 
-    const isShoesCategory = categoryObj.name.toLowerCase().includes('scarpe') || categoryObj.name.toLowerCase().includes('calzature');
+    const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
 
     let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, price tags, store tags, cardboard labels, hanging tags, or watermarks.";
     let negativeBrandRule = "No brand logos, no text in the image, no price tags, no store tags, no cardboard tags, no hanging labels attached to the garments.";
@@ -284,9 +284,11 @@ REGOLE AGGIUNTIVE TASSATIVE:
         genderStr = "MALE";
     }
 
+    let auditPrompts: string[] = [];
+
     const results = await Promise.allSettled(
-        targetScenes.map(async (sceneText: string, index: number) => {
-            const currentAngle = cameraAngles[index % cameraAngles.length];
+        targetScenes.map(async (sceneText: string, idx: number) => {
+            const currentAngle = cameraAngles[idx % cameraAngles.length];
 
             const modifiers = {
                 gender: genderStr === "FEMALE" ? "female (20-35 years old)" :
@@ -308,6 +310,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
                 brandRule,
                 negativeBrandRule
             );
+            
+            auditPrompts.push(finalPrompt);
 
             const generated = await ai.models.generateContent({
                 model: 'gemini-3.1-flash-image-preview',
@@ -374,9 +378,20 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
     });
 
+    const existingJob = await (prisma as any).generationJob.findUnique({ select: { metadata: true }, where: { id: jobId }});
+    let metaMerge = existingJob?.metadata ? (typeof existingJob.metadata === 'string' ? JSON.parse(existingJob.metadata) : existingJob.metadata) : {};
+
+    metaMerge.finalPrompts = auditPrompts;
+    if (useModularBuilder) {
+        metaMerge.adminConfigSnapshot = adminConfig;
+    }
+
     await (prisma as any).generationJob.update({
         where: { id: jobId },
-        data: { status: "completato" }
+        data: { 
+             status: "completato",
+             metadata: metaMerge
+        }
     });
 
     // FASE 5: Pulizia

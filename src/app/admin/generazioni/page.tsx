@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { Images, Box } from 'lucide-react';
+import { Images, Box, Search } from 'lucide-react';
 import PrintButton from './PrintButton';
+import Link from 'next/link';
 
 export const revalidate = 0;
 
@@ -58,6 +59,7 @@ export default async function GenerazioniPage() {
                       <th>Esito Sistema</th>
                       <th>Data di Richiesta</th>
                       <th>Consumo (Output)</th>
+                      <th>Azioni</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -75,6 +77,11 @@ export default async function GenerazioniPage() {
                         </td>
                         <td>{job.createdAt.toLocaleString("it-IT")}</td>
                         <td><span style={{color: '#a0a0a0'}}> {job._count.images} di <span className="print-dark-text" style={{color:'#fff', fontWeight: 'bold'}}>{job.results_count}</span> erogate</span></td>
+                        <td>
+                            <Link href={`/admin/generazioni/${job.id}`} style={{display: 'inline-flex', alignItems: 'center', gap: '5px', padding: '6px 12px', background: '#bb86fc', color: '#000', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold', fontSize: '0.85rem'}}>
+                               <Search size={16} /> Audit
+                            </Link>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
