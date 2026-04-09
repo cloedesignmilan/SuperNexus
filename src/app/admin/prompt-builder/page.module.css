@@ -1,0 +1,176 @@
+.container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00d2ff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: #999;
+  font-size: 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #333;
+  overflow-x: auto;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  color: #888;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: #ddd;
+}
+
+.tabBtn.active {
+  color: #00d2ff;
+  border-bottom: 2px solid #00d2ff;
+}
+
+.section {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.input, .textarea {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.input:focus, .textarea:focus {
+  outline: none;
+  border-color: #00d2ff;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  background: #1a1a1a;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #00d2ff;
+}
+
+.saveBtn {
+  background: linear-gradient(135deg, #00d2ff 0%, #0088cc 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.saveBtn:hover {
+  opacity: 0.9;
+}
+
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.topActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.dangerWrap {
+  background: #2a1111;
+  border: 1px solid #aa3333;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.itemCard {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 16px;
+  border-radius: 8px;
+}

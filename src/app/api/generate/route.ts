@@ -175,28 +175,67 @@ REGOLE AGGIUNTIVE TASSATIVE:
     // FASE 2: Carica Prompt Master e Scene (Nuova Architettura Modulare)
     const storeObj = await (prisma as any).store.findUnique({ where: { id: storeId } });
 
+    // --- CARICAMENTO ADMIN MODULAR PROMPT ---
+    let adminConfig: any = null;
+    try {
+        const settingsBlob = await (prisma as any).setting.findMany({
+            where: { key: { in: ['PROMPT_CONFIG_SETTINGS', 'PROMPT_CONFIG_MASTER', 'PROMPT_CONFIG_NEGATIVES', 'PROMPT_CONFIG_SCENARIOS', 'PROMPT_CONFIG_CATEGORIES'] } }
+        });
+        adminConfig = {};
+        for (const s of settingsBlob) {
+            adminConfig[s.key] = JSON.parse(s.value);
+        }
+    } catch (e) {
+        console.error("Failed to load Modular Prompt UI config, switching to DB legacy.", e);
+    }
+
+    const useModularBuilder = adminConfig?.PROMPT_CONFIG_SETTINGS?.use_modular_builder === true;
+
     const categoryObj = await (prisma as any).category.findUnique({
          where: { id: confirmedCategory },
          include: { prompt_master: true }
     });
         
-    if (!categoryObj || !categoryObj.prompt_master) {
+    if (!useModularBuilder && (!categoryObj || !categoryObj.prompt_master)) {
          console.error(`[CRITICO] Categoria Master non trovata nel DB: ${confirmedCategory}`);
          throw new Error(`Architettura Prompt Master mancante per l'ID: ${confirmedCategory}`);
     }
 
-    const masterPromptText = categoryObj.prompt_master.prompt_text || 'Modella fotorealistica e professionale.';
-    const negativeRulesText = categoryObj.prompt_master.negative_rules || 'No modifiche al capo, no tagli';
+    const masterPromptText = (useModularBuilder && adminConfig?.PROMPT_CONFIG_MASTER?.is_active) 
+        ? adminConfig.PROMPT_CONFIG_MASTER.prompt_text 
+        : (categoryObj?.prompt_master?.prompt_text || 'Modella fotorealistica e professionale.');
+
+    const negativeRulesText = (useModularBuilder && adminConfig?.PROMPT_CONFIG_NEGATIVES?.is_active)
+        ? adminConfig.PROMPT_CONFIG_NEGATIVES.global_rules
+        : (categoryObj?.prompt_master?.negative_rules || 'No modifiche al capo, no tagli');
+
+    let categoryFocusName = categoryObj?.name || 'Outfit';
+    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+        const catOverride = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === categoryFocusName && c.is_active);
+        if (catOverride) {
+            categoryFocusName = catOverride.prompt_text; // Iniettiamo tutto l'override testuale al posto del nome
+        }
+    }
 
     let targetScenes: any[] = [];
     const count = imgCount ? parseInt(imgCount) : 3;
 
-    if (confirmedScene && confirmedScene !== 'random') {
+    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_SCENARIOS) {
+         // Cerca lo scenario nei moduli Admin (es 'ambientata', 'studio')
+         const sc = adminConfig.PROMPT_CONFIG_SCENARIOS.find((s: any) => s.id === confirmedEnvironment && s.is_active);
+         if (sc) {
+              targetScenes = [];
+              for(let i=0; i<count; i++) {
+                  targetScenes.push(sc.scene_text); // For now repeat same scene text, camera angles handle variety
+              }
+         }
+    }
+
+    if (targetScenes.length === 0 && confirmedScene && confirmedScene !== 'random') {
         const specificScene = await (prisma as any).scene.findUnique({
              where: { id: confirmedScene }
         });
         if (specificScene) {
-            // Se scelgo foto singola scena, magari clono l'array per le 3 angolature
             targetScenes = Array(count).fill(specificScene.scene_text);
         }
     }
@@ -314,7 +353,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
             const finalPrompt = buildCreatorPrompt(
                 inspectorData,
-                categoryObj.name,
+                categoryFocusName,
                 modifiers,
                 masterPromptText,
                 sceneText,
