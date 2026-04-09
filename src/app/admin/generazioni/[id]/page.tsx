@@ -5,14 +5,10 @@ import RatingPanel from './RatingPanel';
 
 export const revalidate = 0;
 
-type PageProps = {
-    params: Promise<{ id: string }>;
-    searchParams?: Promise<any>;
-};
-
-export default async function JobAuditPage(props: PageProps) {
-    const params = await props.params;
-    const id = params?.id;
+export default async function JobAuditPage(props: any) {
+    // Gestione ibrida Next 14 / 15 per i parametri
+    const paramsObj = props.params instanceof Promise ? await props.params : props.params;
+    const id = paramsObj?.id;
 
     if (!id) return <div>Invalid Job ID</div>;
 
