@@ -301,9 +301,14 @@ REGOLE AGGIUNTIVE TASSATIVE:
     }
 
     let auditPrompts: string[] = [];
+    let totalPromptsAttempted = 0;
+    
+    // LOG ESPLICITO LOOP GENERAZIONE
+    console.log(`[GENERATION] Inizio loop richieste Gemini 3.1 Flash per ${targetScenes.length} scene.`);
 
     const results = await Promise.allSettled(
         targetScenes.map(async (sceneText: string, idx: number) => {
+            totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
 
             const modifiers = {
@@ -329,46 +334,110 @@ REGOLE AGGIUNTIVE TASSATIVE:
             
             auditPrompts.push(finalPrompt);
 
-            const generated = await ai.models.generateContent({
-                model: 'gemini-3.1-flash-image-preview',
-                contents: [
-                    {
-                        inlineData: {
-                           data: imageBuffer.toString("base64"),
-                           mimeType: "image/jpeg"
+            console.log(`[GENERATION][Scene ${idx+1}] Invio prompt a Gemini... Prompt preview: ${finalPrompt.slice(0, 100)}...`);
+            const timestampStart = Date.now();
+            let generated;
+
+            try {
+                generated = await ai.models.generateContent({
+                    model: 'gemini-3.1-flash-image-preview',
+                    contents: [
+                        {
+                            inlineData: {
+                               data: imageBuffer.toString("base64"),
+                               mimeType: "image/jpeg"
+                            }
+                        },
+                        finalPrompt
+                    ],
+                    config: {
+                        // @ts-ignore
+                        imageConfig: {
+                            aspectRatio: "3:4",
+                            imageSize: "1K"
                         }
-                    },
-                    finalPrompt
-                ],
-                config: {
-                    // @ts-ignore
-                    imageConfig: {
-                        aspectRatio: "3:4",
-                        imageSize: "1K"
                     }
-                }
-            });
+                });
+            } catch (err: any) {
+                console.error(`[GENERATION][Scene ${idx+1}] Eccezione diretta durante la chiamata al modello:`, err?.message || err);
+                throw new Error(`Modello API Fault: ${err?.message}`);
+            }
+
+            const timestampEnd = Date.now();
+            console.log(`[GENERATION][Scene ${idx+1}] Risposta ricevuta in ${(timestampEnd - timestampStart) / 1000}s`);
 
             let base64Image = null;
-            if (generated.candidates?.[0]?.content?.parts) {
-                 for (const part of generated.candidates[0].content.parts) {
-                     if (part.inlineData) {
-                         base64Image = part.inlineData.data;
+            
+            // VERIFICA PARSING GEMINI JSON
+            if (generated && generated.candidates && generated.candidates.length > 0) {
+                 const firstCandidate = generated.candidates[0];
+                 const parts = firstCandidate.content?.parts;
+                 if (parts && parts.length > 0) {
+                     for (const part of parts) {
+                         if (part.inlineData && part.inlineData.data) {
+                             base64Image = part.inlineData.data;
+                             console.log(`[GENERATION][Scene ${idx+1}] InlineData scovato! Dimensione base64: ${base64Image.length} bytes. MimeType: ${part.inlineData.mimeType}`);
+                         }
                      }
+                 } else {
+                     console.error(`[GENERATION][Scene ${idx+1}] Niente 'parts' nell'oggetto content. Struttura candidate:`, JSON.stringify(firstCandidate).substring(0, 500));
                  }
+            } else {
+                 console.error(`[GENERATION][Scene ${idx+1}] Nessun 'candidate' ritornato da Gemini. Risposta intera:`, JSON.stringify(generated).substring(0, 500));
             }
 
             if (base64Image) {
-                // Passaggio diretto dell'immagine in Base64 senza salvataggio persistente su Storage/Database!
                 return base64Image; 
             }
-            throw new Error("No image inlineData in candidates");
+            throw new Error(`Generazione abortita. Nessun 'inlineData' utile nel payload di risposta per la Scena ${idx+1}.`);
         })
     );
 
     const generatedUrls = results
         .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
         .map(r => r.value);
+        
+    const failedPromises = results.filter(r => r.status === 'rejected') as PromiseRejectedResult[];
+    if (failedPromises.length > 0) {
+        console.error(`[GENERATION] Ci sono stati ${failedPromises.length} fallimenti durante le risoluzioni parallele di Gemini.`);
+        failedPromises.forEach((fp, i) => console.error(` - Error ${i+1}: ${fp.reason}`));
+    }
+
+    // UPDATE METADATA PRIMA DELLE CONDIZIONI HARD FAIL
+    const existingJob = await (prisma as any).generationJob.findUnique({ select: { metadata: true }, where: { id: jobId }});
+    let metaMerge = existingJob?.metadata ? (typeof existingJob.metadata === 'string' ? JSON.parse(existingJob.metadata) : existingJob.metadata) : {};
+
+    metaMerge.finalPrompts = auditPrompts;
+    metaMerge.generatedImages = generatedUrls;
+    metaMerge.total_prompts_attempted = totalPromptsAttempted;
+    metaMerge.total_images_generated = generatedUrls.length;
+    metaMerge.total_images_saved = generatedUrls.length;
+
+    if (useModularBuilder) {
+        metaMerge.adminConfigSnapshot = adminConfig;
+    }
+
+    // HARD FAIL CONTROL
+    if (generatedUrls.length === 0) {
+        console.error("[CRITICO][GENERATION] Tutte le immagini hanno fallito la generazione (0 URL ricevuti). Avvio Hard Fail.");
+        metaMerge.creator_error_message = `Zero immagini generate. Errori estratti: ${failedPromises.map(f => f.reason).join(' | ')}`;
+        
+        await (prisma as any).generationJob.update({
+            where: { id: jobId },
+            data: { 
+                 status: "errore",
+                 metadata: metaMerge
+            }
+        });
+
+        if (chatId) {
+            const finalBotToken = process.env.TELEGRAM_BOT_TOKEN as string;
+            const bot = new Telegraf(finalBotToken);
+            await bot.telegram.sendMessage(chatId, "⚠️ Si è verificato un problema tecnico severo durante la pittura delle immagini sui server Google Gemini. I modelli potrebbero essere congestionati o aver applicato censure al prompt di stile.\n\n*Non ti sono stati temporaneamente scalati crediti.* Riprova tra 2 minuti.", { parse_mode: 'Markdown' }).catch(()=>null);
+        }
+
+        return NextResponse.json({ success: false, error: "Zero images generated", metadata: metaMerge }, { status: 400 });
+    }
 
     // FASE 4: Segna completato e SCALA CREDITI
     let toDeduct = generatedUrls.length;
@@ -394,14 +463,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
     });
 
-    const existingJob = await (prisma as any).generationJob.findUnique({ select: { metadata: true }, where: { id: jobId }});
-    let metaMerge = existingJob?.metadata ? (typeof existingJob.metadata === 'string' ? JSON.parse(existingJob.metadata) : existingJob.metadata) : {};
-
-    metaMerge.finalPrompts = auditPrompts;
-    metaMerge.generatedImages = generatedUrls; // Array di stringhe Base64 restituite per renderle visibili all'Admin
-    if (useModularBuilder) {
-        metaMerge.adminConfigSnapshot = adminConfig;
-    }
+    metaMerge.creator_error_message = null; // Nessun errore fatale (Hard Fail scongiurato)
 
     await (prisma as any).generationJob.update({
         where: { id: jobId },
