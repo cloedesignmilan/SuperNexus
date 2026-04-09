@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
     // Passiamo il contesto già deciso all'IA affinché faccia focus sui dettagli
     const contextStr = confirmedBottom ? `(Nota: il cliente ha confermato che la parte inferiore è un/una ${confirmedBottom}).` : "";
     const analysisPrompt = `Sei un esperto ispettore di qualità e analista prodotto. Il capo in foto appartiene a una categoria selezionata. ${contextStr}
-Restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco:
+
+Analizza l'immagine fornita e restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco JSON.
+Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inventare valori. Se l'informazione non è deducibile, usa null.
 {
   "technical_validation": {
     "is_usable": true,
@@ -33,11 +35,11 @@ Restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo 
     "issues": ["too_dark", "blurred", "cluttered_background"] // o array vuoto
   },
   "product_classification": {
-    "main_category": "topwear" | "bottomwear" | "dress" | "outerwear" | "shoes" | "accessories" | "outfit" | "other",
+    "main_category": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
     "confidence": 0.95,
     "is_single_item": true,
-    "gender_presentation": "male" | "female" | "unisex" | "child_boy" | "child_girl" | "unknown",
-    "front_or_back": "front" | "back" | "side" | "unknown"
+    "gender_presentation": "male" | "female" | "unisex" | "unknown",
+    "front_or_back": "front" | "back" | "unknown"
   },
   "preservation_constraints": {
     "must_preserve_color": true,
@@ -45,7 +47,7 @@ Restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo 
     "must_preserve_fit": true,
     "must_preserve_print": true,
     "must_preserve_logo": true,
-    "critical_details": "MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions, distinct stitching patterns, and every micro-detail.",
+    "critical_details": "MUST BE IN ENGLISH. Provide a HYPER-REALISTIC, MANIACAL, 1:1 CLONING BLUEPRINT. Describe exact shape, silhouette, proportions.",
     "main_color": "main color or null",
     "secondary_color": "secondary color or null",
     "fabric": "fabric material or null",
@@ -61,18 +63,18 @@ Restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo 
     "multiple_items_detected": false,
     "unclear_garment_type": false,
     "requires_user_clarification": false,
-    "clarification_type": "top_or_bottom" | "focus_item" | "multiple_items" | "unclear_item" | null
+    "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
   },
   "suggested_ui_options": {
-    "recommended_categories": ["topwear", "dress", "outfit", "other"], // only use valid main_category enums
-    "disabled_categories": ["shoes", "accessories"], // only use valid main_category enums
+    "recommended_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Scegli solo tra questi esatti valori
+    "disabled_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Scegli solo tra questi esatti valori
     "should_ask_question": false,
-    "suggested_question": "string in italiano o null"
+    "suggested_question": "stringa in italiano o null"
   },
   "legacy_creator_data": {
     "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
     "type": "exact type string in English",
-    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description for legacy generative pipeline."
+    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline."
   }
 }`;
 
