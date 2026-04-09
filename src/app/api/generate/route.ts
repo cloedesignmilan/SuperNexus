@@ -3,6 +3,65 @@ import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
 
+// --- STEP 3: PROMPT BUILDER MODULARE ---
+function buildCreatorPrompt(
+  inspectorData: any,
+  categoryName: string,
+  modifiers: { gender: string, bottomType: string | null, customBrand: string | null, cameraAngle: string },
+  dbMasterPrompt: string,
+  dbSceneText: string,
+  dbNegativeRules: string,
+  brandRule: string,
+  negativeBrandRule: string
+) {
+  const blocks: string[] = [];
+
+  // 1. MASTER PROMPT
+  blocks.push(dbMasterPrompt || "You are a world-class professional commercial photographer. Create a hyper-realistic, 8k resolution, ultra-detailed fashion editorial photo.");
+
+  // 2. SCENARIO / ENVIRONMENT PROMPT
+  blocks.push(`ENVIRONMENT & SCENE:\n${dbSceneText}`);
+  blocks.push(`CAMERA ANGLE: ${modifiers.cameraAngle}`);
+
+  // 3. PRESERVATION RULES (Il Cuore)
+  let preservation = "STRICT GARMENT PRESERVATION RULES (1:1 CLONE):\nYou must IDENTICALLY CLONE the garment/item from the reference image, preserving exact shape, seams, cut, proportions and details.\n";
+  const cons = inspectorData?.preservation_constraints || {};
+  const cdetails = cons.critical_details || inspectorData?.legacy_creator_data?.short_description || "Follow original item closely";
+  const mcolor = cons.main_color || inspectorData?.legacy_creator_data?.color;
+  
+  preservation += `- Critical Blueprint: ${cdetails}\n`;
+  if (mcolor) preservation += `- Main Color: ${mcolor}\n`;
+  if (cons.fabric) preservation += `- Fabric/Material: ${cons.fabric}\n`;
+  if (cons.fit) preservation += `- Fit: ${cons.fit}\n`;
+  if (cons.neckline) preservation += `- Neckline: ${cons.neckline}\n`;
+  if (cons.closure_type) preservation += `- Closure: ${cons.closure_type}\n`;
+  blocks.push(preservation);
+
+  // 4. STYLE / CATEGORY FOCUS
+  blocks.push(`CATEGORY FOCUS: ${categoryName}`);
+
+  // 5. MODIFIERS (Humans & Details)
+  const isShows = categoryName.toLowerCase().includes("scarpe") || categoryName.toLowerCase().includes("calzature");
+  
+  let mods = "SPECIFIC MODIFIERS:\n";
+  if (isShows) {
+     mods += `- STRICT NEGATIVE: No humans, no legs, no feet unless naturally implied by the composition. If lifestyle, keep extremely minimal.\n`;
+  } else {
+     mods += `- Model Description: An attractive ${modifiers.gender} model posing naturally.\n`;
+  }
+  if (modifiers.bottomType) mods += `- Paired Bottom: ${modifiers.bottomType} (keep it matching, elegant and neutral, do not let it steal focus from the main garment)\n`;
+  blocks.push(mods);
+
+  // 6. BRAND RULES
+  blocks.push(brandRule);
+
+  // 7. NEGATIVE RULES
+  blocks.push(`AVOID: ${dbNegativeRules} ${negativeBrandRule}`);
+
+  return blocks.filter(b => b.trim() !== "").join("\n\n---\n\n");
+}
+// --- FINE PROMPT BUILDER ---
+
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
@@ -243,20 +302,26 @@ REGOLE AGGIUNTIVE TASSATIVE:
         targetScenes.map(async (sceneText: string, index: number) => {
             const currentAngle = cameraAngles[index % cameraAngles.length];
 
-            let finalPrompt = "";
-            
-            if (isShoesCategory) {
-                if (confirmedEnvironment === 'studio' || confirmedEnvironment === 'studio_calzature') {
-                    finalPrompt = `${masterPromptText}. ${sceneText}. The reference footwear color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. This is strictly still-life product photography. GENERATE ONLY the footwear item on a pure white studio background. You must IDENTICALLY CLONE the footwear from the attached reference image (preserving shape, seams, cut, proportions, details). ${brandRule} No humans, no legs, no feet. ${negativeBrandRule}`;
-                } else {
-                    finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference footwear color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is wearing EXACTLY the footwear item shown in the attached reference image. You must IDENTICALLY CLONE the footwear (preserving exact shape, seams, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
-                }
-            } else {
-                finalPrompt = `${masterPromptText}. ${sceneText}. Camera angle: ${currentAngle}. The reference garment color/pattern is ${garmentDetails.color} and can be described as: ${garmentDetails.description}. The subject is an attractive ${ageBracket} year old ${genderStr} model. The subject is wearing EXACTLY the clothing item shown in the attached reference image. ${confirmedBottom ? 'For the bottom part, the subject is wearing a ' + confirmedBottom + '.' : ''} You must IDENTICALLY CLONE the garment (preserving exact shape, seams, lapels, buttons, cut, proportions). ${brandRule} ${negativeRulesText} ${negativeBrandRule}`;
-            }
+            const modifiers = {
+                gender: genderStr === "FEMALE" ? "female (20-35 years old)" :
+                        genderStr === "MALE" ? "male (20-35 years old)" :
+                        genderStr === "BOY (CHILD)" ? "young boy (4-12 years old)" :
+                        genderStr === "GIRL (CHILD)" ? "young girl (4-12 years old)" : "attractive model",
+                bottomType: confirmedBottom || null,
+                customBrand: confirmedBrand || null,
+                cameraAngle: currentAngle
+            };
 
-            // Remove double spaces and newlines
-            finalPrompt = finalPrompt.replace(/\n+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+            const finalPrompt = buildCreatorPrompt(
+                inspectorData,
+                categoryObj.name,
+                modifiers,
+                masterPromptText,
+                sceneText,
+                negativeRulesText,
+                brandRule,
+                negativeBrandRule
+            );
 
             const generated = await ai.models.generateContent({
                 model: 'gemini-3.1-flash-image-preview',
