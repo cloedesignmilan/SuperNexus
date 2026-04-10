@@ -378,8 +378,8 @@ export async function POST(req: NextRequest) {
                     chatId,
                     `👟 **Target Demografico:**\n\nPer creare un set coerente e utilizzare il giusto modello del piede, specifica a chi sono destinate queste scarpe:`,
                     Markup.inlineKeyboard([
-                        [Markup.button.callback("👨 Uomo", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna", `targ|${jobId}|donna`)],
-                        [Markup.button.callback("👦 Bambino", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina", `targ|${jobId}|bambina`)]
+                        [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${jobId}|donna`)],
+                        [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${jobId}|bambina`)]
                     ])
                 );
             } else {
@@ -568,13 +568,13 @@ export async function POST(req: NextRequest) {
                         `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
                         Markup.inlineKeyboard(envButtons, { columns: 2 })
                     );
-                } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
+                } else if (meta.isShoesCategory && meta.confirmedEnvironment !== 'calz_premium' && !meta.confirmedShoeTarget) {
                     await bot.telegram.sendMessage(
                         chatId,
                         `👟 **Target Demografico:**\n\nPer creare un set coerente, specifica a chi sono destinate queste scarpe:`,
                         Markup.inlineKeyboard([
-                            [Markup.button.callback("👨 Uomo", `targ|${pendingJob.id}|uomo`), Markup.button.callback("👩 Donna", `targ|${pendingJob.id}|donna`)],
-                            [Markup.button.callback("👦 Bambino", `targ|${pendingJob.id}|bambino`), Markup.button.callback("👧 Bambina", `targ|${pendingJob.id}|bambina`)]
+                            [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${pendingJob.id}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${pendingJob.id}|donna`)],
+                            [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${pendingJob.id}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${pendingJob.id}|bambina`)]
                         ])
                     );
                 } else {

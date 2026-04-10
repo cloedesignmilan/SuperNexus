@@ -19,9 +19,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Link href="/admin/generazioni" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
             <Images size={18} /> Operazioni AI
           </Link>
-          <Link href="/admin/categorie" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-            <Command size={18} /> Legacy Prompts (Old)
-          </Link>
           <Link href="/admin/prompt-builder" className="nav-item" style={{display: 'flex', alignItems: 'center', gap: '10px', color: '#00d2ff', fontWeight: 600}}>
             <Blocks size={18} /> Modular Prompt Builder
           </Link>

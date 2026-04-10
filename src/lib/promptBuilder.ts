@@ -13,6 +13,12 @@ export function buildCreatorPrompt(
   // 1. MASTER PROMPT
   blocks.push(dbMasterPrompt || "You are a world-class professional commercial photographer. Create a hyper-realistic, 8k resolution, ultra-detailed fashion editorial photo.");
 
+  // 1.1 PHOTOGRAPHIC EQUIPMENT DIRECTIVE
+  blocks.push("PHOTOGRAPHY DIRECTIVE: This must look exactly like a genuine high-end professional commercial photoshoot. Emulate professional full-frame camera aesthetics (e.g., Hasselblad, Sony A7R IV, Canon EOS R5) paired with premium lenses tailored to the shot type (e.g., 85mm f/1.4 for portraits/fashion, 50mm f/1.2 for lifestyle, 100mm macro for extreme footwear details). Perfectly execute depth of field, crisp focus, hyper-realistic textures, and flawless studio or cinematic outdoor lighting setups.");
+
+  // 1.2 COMMERCIAL SALES DIRECTIVE
+  blocks.push("COMMERCIAL E-COMMERCE DIRECTIVE: The primary goal of this image is TO SELL THE PRODUCT. The absolute maximum focus, extreme crispness, and photographic emphasis MUST be placed on the exact details, shape, color, and textile quality of the main garment. Do not let backgrounds or accessories steal the focus. Flawless presentation of the product is your ultimate priority.");
+
   // 2. SCENARIO / ENVIRONMENT PROMPT
   blocks.push(`ENVIRONMENT & SCENE:\n${dbSceneText}`);
   if (modifiers.cameraAngle) blocks.push(`CAMERA ANGLE: ${modifiers.cameraAngle}`);
@@ -35,10 +41,10 @@ export function buildCreatorPrompt(
   blocks.push(`CATEGORY FOCUS: ${categoryName}`);
 
   // 5. MODIFIERS (Humans & Details)
-  const isShows = categoryName.toLowerCase().includes("scarpe") || categoryName.toLowerCase().includes("calzature");
+  const isShoes = categoryName.toLowerCase().includes("scarpe") || categoryName.toLowerCase().includes("calzature");
   
   let mods = "SPECIFIC MODIFIERS:\n";
-  if (isShows) {
+  if (isShoes) {
      mods += `- STRICT NEGATIVE: No humans, no legs, no feet unless naturally implied by the composition. If lifestyle, keep extremely minimal.\n`;
   } else {
      mods += `- Model Description: An attractive ${modifiers.gender || 'model'} posing naturally.\n`;

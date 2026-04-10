@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from 'next/link';
 import { Settings, FileText, PlusCircle } from 'lucide-react';
 import styles from "./page.module.css";
+import AdminDashboardClient from './AdminDashboardClient';
 
 export const dynamic = "force-dynamic";
 
@@ -44,8 +45,8 @@ export default async function AdminDashboard() {
             <header className={styles.header}>
                 <h1 className={styles.title}>SUPERNEXUS</h1>
                 <div style={{display: 'flex', gap: '15px'}}>
-                    <Link href="/admin/categorie" className={styles.secondaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                        <FileText size={18} /> Gestione Prompts
+                    <Link href="/admin/prompt-builder" className={styles.secondaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <FileText size={18} /> Modular Prompt Builder
                     </Link>
                     <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
                         <PlusCircle size={18} /> Registra Cliente
@@ -53,91 +54,12 @@ export default async function AdminDashboard() {
                 </div>
             </header>
 
-            <section className={styles.kpiGrid}>
-                <div className={styles.glassCard}>
-                    <div className={styles.kpiLabel}>MRR (Ricavi Mensili)</div>
-                    <div className={styles.kpiValue}>€{mrr.toFixed(2)}</div>
-                </div>
-                <div className={styles.glassCard}>
-                    <div className={styles.kpiLabel}>Costi API (Gemini/Cloud)</div>
-                    <div className={styles.kpiValue} style={{color: '#ff5470'}}>
-                        €{totalApiCost.toFixed(2)}
-                    </div>
-                </div>
-                <div className={styles.glassCard}>
-                    <div className={styles.kpiLabel}>Margine Netto</div>
-                    <div className={styles.kpiValue} style={{color: '#03dac6'}}>
-                        €{netProfit.toFixed(2)}
-                    </div>
-                </div>
-            </section>
-
-            <section className={styles.tableSection}>
-                <h2 className={styles.sectionTitle}>Clienti & Negozi Attivi</h2>
-                <div className={styles.tableWrapper}>
-                    <table className={styles.clientTable}>
-                        <thead>
-                            <tr>
-                                <th>Stato</th>
-                                <th>Nominativo / Brand</th>
-                                <th>Piano & Password</th>
-                                <th>Fee Mensile</th>
-                                <th>Capacità Mese</th>
-                                <th>Status Crediti (Rimasti)</th>
-                                <th>Foto Create (Tot)</th>
-                                <th>Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {storesData.length === 0 && (
-                                <tr>
-                                    <td colSpan={7} style={{textAlign: 'center'}}>Nessun cliente registrato a sistema.</td>
-                                </tr>
-                            )}
-                            {storesData.map((store: any) => (
-                                <tr key={store.id}>
-                                    <td>
-                                        <div className={styles.statusWrapper}>
-                                            <div className={`${styles.statusDot} ${store.is_active ? styles.statusActive : styles.statusSuspended}`}></div>
-                                            <span style={{fontSize: '0.8rem', color: '#888'}}>
-                                                {store.is_active ? 'ATTIVO' : 'SOSPESO'}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td className={styles.storeName}>{store.name}</td>
-                                    <td>
-                                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                                            <span style={{color: '#bb86fc', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase'}}>{store.plan_name || 'Starter'}</span>
-                                            <span style={{fontFamily: 'monospace', color: '#fff', fontSize: '0.9rem'}}>🔑 {store.password || 'Manca PWD'}</span>
-                                        </div>
-                                    </td>
-                                    <td><span style={{color: '#fff', fontWeight: 600}}>€{store.monthly_fee.toFixed(2)}</span></td>
-                                    <td>
-                                        <div style={{display: 'flex', flexDirection: 'column'}}>
-                                            <span style={{fontSize: '0.9rem'}}>{store.generation_limit} mrc</span>
-                                            {store.supplementary_credits > 0 && <span style={{fontSize: '0.75rem', color: '#03dac6'}}>+ {store.supplementary_credits} extra</span>}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span style={{color: store.subscription_credits > 15 ? '#03dac6' : '#ff5470', fontWeight: 'bold', fontSize: '1rem'}}>
-                                            {store.subscription_credits + store.supplementary_credits} Disp.
-                                        </span>
-                                    </td>
-                                    <td>{store.total_images} foto / {store.jobs.length} bk</td>
-                                    <td style={{display: 'flex', gap: '8px', alignItems: 'center'}}>
-                                        <Link href={`/admin/cliente/${store.id}`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'rgba(187, 134, 252, 0.15)', border: '1px solid #bb86fc', color: '#bb86fc', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
-                                            <Settings size={14} /> Gestisci
-                                        </Link>
-                                        <Link href={`/admin/cliente/${store.id}/report`} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#a0a0a0', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem'}}>
-                                            <FileText size={14} /> Fatture
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <AdminDashboardClient 
+                initialStores={storesData} 
+                mrr={mrr} 
+                totalApiCost={totalApiCost} 
+                netProfit={netProfit} 
+            />
         </div>
     );
 }

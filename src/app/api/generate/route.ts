@@ -273,7 +273,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     }
     
     // PERSONA LOCK GENERATOR (Coerenza facciale del Batch)
-    const isMale = confirmedGender === 'uomo' || confirmedGender === 'Uomo';
+    const isMale = confirmedGender === 'uomo' || confirmedGender === 'Uomo' || confirmedGender?.toLowerCase().includes('uomo') || confirmedGender?.toLowerCase().includes('bambino');
     
     console.log(`[Persona Lock UGC] Campagna: ${confirmedCategory} | Bottom: ${confirmedBottom} | Genere: ${isMale ? 'UOMO' : 'DONNA'}`);
 
@@ -296,21 +296,23 @@ REGOLE AGGIUNTIVE TASSATIVE:
         ];
     }
 
-    let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, price tags, store tags, cardboard labels, hanging tags, or watermarks.";
-    let negativeBrandRule = "No brand logos, no text in the image, no price tags, no store tags, no cardboard tags, no hanging labels attached to the garments.";
+    let brandRule = "ABSOLUTE HARD RULE 3: NO STORE TAGS. If the original image contains plastic tags, cardboard price tags, or store labels attached to the garment, YOU MUST COMPLETELY REMOVE AND IGNORE THEM. DO NOT replicate store labels or price tags under any circumstances. DO NOT generate any fake text, brand logos, price tags, hanging tags, or watermarks.";
+    let negativeBrandRule = "No brand logos, no text in the image, no price tags, no store tags, no cardboard tags, no plastic tags, no hanging labels attached to the garments. Remove original price tags.";
 
     if (isShoesCategory) {
-        cameraAngles = [
-            "Low angle full body shot, incredibly sharp focus on the shoes", 
-            "Macro close-up shot focused specifically on the footwear and ankles, stylish pose with neutral clothing", 
-            "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
-        ];
+        if (!customCameraAngles) {
+            cameraAngles = [
+                "Low angle full body shot, incredibly sharp focus on the shoes", 
+                "Macro close-up shot focused specifically on the footwear and ankles, stylish pose with neutral clothing", 
+                "Full body shot, head to toe completely visible, dynamic walking motion highlighting the shoes"
+            ];
+        }
         if (confirmedBrand) {
              brandRule = `ABSOLUTE HARD RULE 3: IL CLIENTE HA ESPLICITAMENTE CONFERMATO CHE IL TESTO/LOGO SULLA SCARPA È: "${confirmedBrand}". DEVI INTAGLIARE O STAMPARE ESATTAMENTE LA PAROLA "${confirmedBrand}" SULLA TARGHETTA O SCARPA E RISPETTARE STRICTLY LE CUCITURE ORIGINALI. È ASSOLUTAMENTE VIETATO GENERARE TESTI INVENTATI O LASCIARE IL LOGO ILLEGGIBILE. ASSOLUTAMENTE VIETATO generare cartellini del prezzo, etichette di cartone o store tags appesi.`;
              negativeBrandRule = `Do not invent fake text. You must write ONLY "${confirmedBrand}". Do not add extra seams. No price tags, no store tags, no cardboard labels hanging from the shoes.`;
         } else {
-             brandRule = "ABSOLUTE HARD RULE 3: CLONE ALL ORIGINAL DETAILS EXACTLY as they appear in the reference image, INCLUDING ANY BRAND LOGOS, TEXT, GLITTER, ACCESSORIES, AND FABRIC TAGS on the shoes. Do not invent new logos, do not blur them. STRICT RULE: NEVER generate hanging cardboard price tags or store labels attached to the product.";
-             negativeBrandRule = "Do not blur original logos. Do not invent fake text. No price tags, no store tags, no cardboard labels hanging from the shoes.";
+             brandRule = "ABSOLUTE HARD RULE 3: EXTREMELY STRICT PRESERVATION OF LOGOS, TEXTS AND ACCESSORIES. You MUST rigorously respect the correctness and coherence of ANY logos, texts, labels, or physical accessories present on the shoes in the original image. Clone them EXACTLY across all views. Do not blur them, do not scramble letters. STRICT RULE: NEVER generate hanging cardboard price tags or store labels.";
+             negativeBrandRule = "Do not blur original logos. Do not invent fake text or scramble letters. Do not modify or alter original accessories. No price tags, no store tags, no cardboard labels hanging from the shoes.";
         }
     }
 
@@ -318,14 +320,17 @@ REGOLE AGGIUNTIVE TASSATIVE:
     let genderStr = "FEMALE";
     
     const lowerGender = confirmedGender?.toLowerCase() || '';
-    if (lowerGender === 'bambino') {
+    if (lowerGender === 'bambino' || lowerGender.includes('bambino')) {
         genderStr = "BOY (CHILD)";
-        ageBracket = categoryObj?.child_age_range || "4-12";
-    } else if (lowerGender === 'bambina') {
+        ageBracket = "4-10";
+    } else if (lowerGender === 'bambina' || lowerGender.includes('bambina')) {
         genderStr = "GIRL (CHILD)";
-        ageBracket = categoryObj?.child_age_range || "4-12";
-    } else if (lowerGender === 'uomo') {
+        ageBracket = "4-10";
+    } else if (lowerGender === 'uomo' || lowerGender.includes('uomo')) {
         genderStr = "MALE";
+        ageBracket = "20-30";
+    } else {
+        ageBracket = "20-30"; // Default for Donna or general female
     }
 
     let auditPrompts: string[] = [];
@@ -340,10 +345,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
             const currentAngle = cameraAngles[idx % cameraAngles.length];
 
             const modifiers = {
-                gender: genderStr === "FEMALE" ? "female (20-35 years old)" :
-                        genderStr === "MALE" ? "male (20-35 years old)" :
-                        genderStr === "BOY (CHILD)" ? "young boy (4-12 years old)" :
-                        genderStr === "GIRL (CHILD)" ? "young girl (4-12 years old)" : "attractive model",
+                gender: genderStr === "FEMALE" ? `stunningly beautiful high-end fashion female top model (${ageBracket} years old), flawless photorealistic skin, vogue photoshoot` :
+                        genderStr === "MALE" ? `handsome confident high-end fashion male model (${ageBracket} years old), flawless photorealistic skin, GQ commercial` :
+                        genderStr === "BOY (CHILD)" ? `handsome young boy child model (${ageBracket} years old), photorealistic natural smile, gorgeous` :
+                        genderStr === "GIRL (CHILD)" ? `beautiful young girl child model (${ageBracket} years old), photorealistic natural smile, gorgeous` : "stunningly attractive photorealistic high-end model",
                 bottomType: confirmedBottom || null,
                 customBrand: confirmedBrand || null,
                 cameraAngle: currentAngle
