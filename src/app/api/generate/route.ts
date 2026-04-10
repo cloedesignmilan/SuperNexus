@@ -475,8 +475,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
     });
 
-    metaMerge.creator_error_message = null; // Nessun errore fatale (Hard Fail scongiurato)
-
+    metaMerge.telegram_delivered = false; // Sarà flaggato true solo quando Telegram restituirà OK
+    
     await (prisma as any).generationJob.update({
         where: { id: jobId },
         data: { 
@@ -526,6 +526,13 @@ REGOLE AGGIUNTIVE TASSATIVE:
             await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
             if (mediaGroup.length > 0) {
                 await bot.telegram.sendMediaGroup(chatId, mediaGroup);
+                
+                // VERIFICA SUPERATA: Il sistema certifica l'avvenuta consegna salvandola in audit
+                metaMerge.telegram_delivered = true;
+                await (prisma as any).generationJob.update({
+                     where: { id: jobId },
+                     data: { metadata: metaMerge }
+                });
             }
         } catch (botErr) {
             console.error("Errore fatale invio Telegram:", botErr);

@@ -73,15 +73,47 @@ export async function POST(req: NextRequest) {
     nextCycle.setMonth(nextCycle.getMonth() + 1);
 
     if (now >= nextCycle) {
-        // Reset mensile e sposta la data ad oggi
-        currentStore = await (prisma as any).store.update({
-             where: { id: currentStore.id },
-             data: {
-                 subscription_credits: currentStore.generation_limit,
-                 billing_cycle_start: now
-             }
+        await (prisma as any).store.update({
+            where: { id: currentStore.id },
+            data: {
+                subscription_credits: currentStore.generation_limit,
+                billing_cycle_start: now
+            }
         });
+        currentStore.subscription_credits = currentStore.generation_limit;
     }
+
+    // --- VERIFICA AUTOMATICA DELLE IMMAGINI NON RESTITUITE (Vercel Timeout Fallback) ---
+    // Se c'è stata una generazione in cui Vercel è saltato per timeout proprio nel momento dell'invio Telegram
+    const pendingJobs = await (prisma as any).generationJob.findMany({
+        where: { telegram_chat_id: globalChatId.toString(), status: "completato" },
+        orderBy: { createdAt: 'desc' },
+        take: 2
+    });
+    for (let job of pendingJobs) {
+        let meta = job.metadata ? (typeof job.metadata === 'string' ? JSON.parse(job.metadata) : job.metadata) : {};
+        if (meta.generatedImages && meta.generatedImages.length > 0 && meta.telegram_delivered === false && !meta.delivery_retried) {
+            meta.delivery_retried = true; // Evita loop infiniti
+            await (prisma as any).generationJob.update({ where: { id: job.id }, data: { metadata: meta } });
+
+            await bot.telegram.sendMessage(globalChatId, `🔄 **Verifica Automatica di Sistema**\nMi risulta che nell'ultima generazione le foto non ti siano arrivate correttamente a causa della congestione server, le sto recuperando in questo istante e rinviando!`);
+            
+            try {
+                const { Input } = require('telegraf');
+                const mediaGroup = meta.generatedImages.map((urlStr: string, i: number) => {
+                    if (urlStr.startsWith("http")) return { type: 'photo' as const, media: urlStr };
+                    const cleanB64 = urlStr.replace(/^data:image\/\w+;base64,/, "");
+                    return { type: 'photo' as const, media: Input.fromBuffer(Buffer.from(cleanB64, 'base64'), `image_${i}.jpg`) };
+                });
+                await bot.telegram.sendMediaGroup(globalChatId, mediaGroup);
+                meta.telegram_delivered = true;
+                await (prisma as any).generationJob.update({ where: { id: job.id }, data: { metadata: meta } });
+            } catch (err) {
+                console.error("Recupero fallito:", err);
+            }
+        }
+    }
+
     const totalAvail = currentStore.subscription_credits + currentStore.supplementary_credits;
     // --- FINE BILLING ---
 
