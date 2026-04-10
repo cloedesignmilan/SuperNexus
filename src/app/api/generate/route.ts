@@ -540,16 +540,16 @@ REGOLE AGGIUNTIVE TASSATIVE:
         const totalRimasti = newSub + newSupp;
         let warningStrHTML = ``;
         if (totalRimasti <= 15 && totalRimasti > 0) {
-            warningStrHTML = `\n\n⚠️ <b>ATTENZIONE</b>: Ti restano solo ${totalRimasti} generazioni. <a href="https://supernexus.ai/ricarica">Acquista Pacchetto</a> per ricaricare subito.`;
+            warningStrHTML = `\n\n⚠️ <b>ATTENZIONE</b>: Ti restano solo ${totalRimasti} immagini. <a href="https://supernexus.ai/ricarica">Acquista Immagini Extra</a> per ricaricare subito.`;
         } else if (totalRimasti === 0) {
-            warningStrHTML = `\n\n⚠️ <b>Crediti Esauriti</b>: Hai raggiunto zero generazioni. Affrettati a <a href="https://supernexus.ai/ricarica">ricaricare il pacchetto</a> per continuare a vendere!`;
+            warningStrHTML = `\n\n⚠️ <b>Immagini Esaurite</b>: Hai esaurito le immagini a tua disposizione. Affrettati a <a href="https://supernexus.ai/ricarica">ricaricare il piano</a> per continuare a vendere!`;
         }
  
         try {
             const safeCategory = (categoryObj as any)?.name ? (categoryObj as any).name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
             const safeBottom = confirmedBottom ? confirmedBottom.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Dato non richiesto';
             
-            await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Crediti Rimanenti: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
+            await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Immagini Rimanenti Mensili: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);
             if (mediaGroup.length > 0) {
                 await bot.telegram.sendMediaGroup(chatId, mediaGroup);
                 

@@ -154,26 +154,32 @@ export default function LandingPage() {
             <p style={{ color: '#888', marginBottom: '2rem' }}>Perfetto per testare l'acqua.</p>
             <div className="pricing-price">€29<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#ff5e00" /> 50 generazioni / mese</li>
+              <li><CheckCircle2 size={20} color="#ff5e00" /> <strong>100 immagini / mese</strong></li>
               <li><CheckCircle2 size={20} color="#ff5e00" /> Accesso Bot Telegram</li>
               <li><CheckCircle2 size={20} color="#ff5e00" /> Setup veloce</li>
               <li><CheckCircle2 size={20} color="#ff5e00" /> Tutte le nicchie sbloccate</li>
             </ul>
-            <button disabled className="btn-secondary" style={{ marginTop: '2rem', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
+            <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
+              Ricarica Extra: <strong>+100 immagini a 19€</strong>
+            </div>
+            <button disabled className="btn-secondary" style={{ opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
           </div>
 
           {/* Retail */}
           <div className="pricing-card popular">
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: 'white' }}>RETAIL</h3>
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Per scalare i volumi social.</p>
-            <div className="pricing-price">€79<span>/mese</span></div>
+            <div className="pricing-price">€69<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#00ffff" /> <strong>300 generazioni / mese</strong></li>
+              <li><CheckCircle2 size={20} color="#00ffff" /> <strong>300 immagini / mese</strong></li>
               <li><CheckCircle2 size={20} color="#00ffff" /> Fedeltà assoluta Nano Pro</li>
               <li><CheckCircle2 size={20} color="#00ffff" /> Priorità Bot GPU Ultra</li>
               <li><CheckCircle2 size={20} color="#00ffff" /> Tutte le nicchie sbloccate</li>
             </ul>
-            <button disabled className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
+            <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
+              Ricarica Extra: <strong>+300 immagini a 49€</strong>
+            </div>
+            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
           </div>
 
           {/* Retail Annuale */}
@@ -187,12 +193,12 @@ export default function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#ccff00', fontWeight: 'bold', marginTop: '-32px', marginBottom: '1.5rem', position: 'relative', zIndex: 1 }}>Addebito annuale di 588€</div>
             
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>Tutto il piano Retail</strong></li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Risparmi 360€ all'anno</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>300 immagini sbloccate al mese</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Risparmi 240€ all'anno</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario</li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Prezzo bloccato 12 Mesi</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Accesso ricariche extra (49€)</li>
             </ul>
-            <button disabled className="btn-secondary" style={{ marginTop: '2rem', padding: '1.2rem', fontWeight: '800', background: '#333', color: '#888', border: 'none', opacity: 0.5, cursor: 'not-allowed', width: '100%' }}>In Aggiornamento</button>
+            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#333', color: '#888', border: 'none', opacity: 0.5, cursor: 'not-allowed', width: '100%' }}>In Aggiornamento</button>
           </div>
 
         </div>

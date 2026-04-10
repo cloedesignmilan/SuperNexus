@@ -185,7 +185,7 @@ export async function POST(req: NextRequest) {
 
                         // Verifica Quota
                         if (totalAvail < customAnglesCount) {
-                             await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${customAnglesCount} immagini, ma il tuo piano ne ha solo ${totalAvail} residui.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+                             await bot.telegram.sendMessage(chatId, `⚠️ **Immagini Insufficienti**\n\nHai tentato di generare una nuova inquadratura, ma non hai abbastanza immagini nel tuo piano.\n\n👉 [Acquista Immagini Extra](https://supernexus.ai/ricarica)`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
                              return NextResponse.json({ ok: true });
                         }
 
@@ -234,9 +234,8 @@ export async function POST(req: NextRequest) {
                 // Avvia generazione!
                 const generationCount = parseInt(value || "3");
                 
-                // --- QUOTA CHECK PRE-GENERAZIONE ---
                 if (totalAvail < generationCount) {
-                     await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${generationCount} immagini, ma il tuo piano ha solo ${totalAvail} crediti residui.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per ricaricare subito o attendi il rinnovo.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+                     await bot.telegram.sendMessage(chatId, `⚠️ **Immagini Insufficienti**\n\nHai richiesto la generazione di ${generationCount} immagini, ma il tuo piano mensile dispone solo di ${totalAvail} immagini residue.\n\n👉 [Acquista Immagini Extra](https://supernexus.ai/ricarica) per ricaricare subito il tuo monte immagini o attendi il rinnovo automatico.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
                      return NextResponse.json({ ok: true });
                 }
 

@@ -22,14 +22,14 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
     };
 
     const handleRefill = async (id: string) => {
-        const amountStr = prompt("Inserisci quanti crediti EXTRA assegnare a questo cliente:");
+        const amountStr = prompt("Inserisci quante IMMAGINI EXTRA assegnare a questo cliente:");
         if (!amountStr) return;
         const amount = parseInt(amountStr, 10);
         if (isNaN(amount) || amount <= 0) return alert("Inserisci un numero valido!");
         
         setStores(stores.map((s: any) => s.id === id ? { ...s, supplementary_credits: s.supplementary_credits + amount } : s));
         const res = await addStoreCredits(id, amount);
-        if (!res.success) alert("Errore durante la ricarica: " + res.error);
+        if (!res.success) alert("Errore durante l'aggiunta delle immagini: " + res.error);
     };
 
     const handleResetPwd = async (id: string) => {
@@ -189,7 +189,7 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
                                                     <div className={styles.healthBarFill} style={{ width: `${Math.min(100, fillPercentage)}%`, backgroundColor: healthColor }}></div>
                                                 </div>
                                             </div>
-                                            <button onClick={() => handleRefill(store.id)} style={{background: 'rgba(3, 218, 198, 0.1)', border: '1px solid #03dac6', color: '#03dac6', padding: '6px', borderRadius: '6px', cursor: 'pointer'}} title="Ricarica + Crediti">
+                                            <button onClick={() => handleRefill(store.id)} style={{background: 'rgba(3, 218, 198, 0.1)', border: '1px solid #03dac6', color: '#03dac6', padding: '6px', borderRadius: '6px', cursor: 'pointer'}} title="Aggiungi Immagini Extra">
                                                 <Zap size={14} />
                                             </button>
                                         </div>
