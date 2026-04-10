@@ -354,7 +354,7 @@ export async function POST(req: NextRequest) {
                 let envButtons = [];
                 if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
                     const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
-                    const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active) || [
+                    const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active !== false) || [
                         { button_label: "📸 In Studio", button_id: "studio" },
                         { button_label: "🌍 Ambientata", button_id: "ambientata" }
                     ];
@@ -549,7 +549,7 @@ export async function POST(req: NextRequest) {
                     let envButtons = [];
                     if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
                         const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
-                        const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active) || [
+                        const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active !== false) || [
                             { button_label: "📸 In Studio", button_id: "studio" },
                             { button_label: "🌍 Ambientata", button_id: "ambientata" }
                         ];
