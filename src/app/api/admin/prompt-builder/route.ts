@@ -45,6 +45,22 @@ export async function GET(request: Request) {
       }
     }
     
+    // MIGRATION: Convert global scenarios to local category scenarios if missing
+    if (result.PROMPT_CONFIG_CATEGORIES) {
+        result.PROMPT_CONFIG_CATEGORIES = result.PROMPT_CONFIG_CATEGORIES.map((cat: any) => {
+             if (!cat.scenarios) {
+                 const customAngles = cat.custom_camera_angles || "";
+                 cat.scenarios = [
+                     { button_label: "📸 In Studio", button_id: "studio", is_active: true, ask_quantity: customAngles ? false : true, camera_angles: customAngles, scene_text: "Shot in a professional photo studio. Clean, neutral gray or white seamless backdrop. Softbox studio lighting for perfect product clarity." },
+                     { button_label: "🌍 Ambientata", button_id: "ambientata", is_active: true, ask_quantity: true, camera_angles: "", scene_text: "Shot on location in a stylish, modern realistic environment that matches the garment's vibe. Cinematic warm lighting." }
+                 ];
+                 // Clean up legacy property
+                 delete cat.custom_camera_angles; 
+             }
+             return cat;
+        });
+    }
+    
     return NextResponse.json(result);
   } catch (error) {
     console.error("GET prompt-builder completato con errore", error);

@@ -190,16 +190,24 @@ REGOLE AGGIUNTIVE TASSATIVE:
     const count = imgCount ? parseInt(imgCount) : 3;
 
     let customCameraAngles: any[] | null = null;
-    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_SCENARIOS) {
-         const sc = adminConfig.PROMPT_CONFIG_SCENARIOS.find((s: any) => s.id === confirmedEnvironment && s.is_active);
-         if (sc) {
-              targetScenes = [];
-              for(let i=0; i<count; i++) {
-                  targetScenes.push(sc.scene_text);
-              }
-              if (sc.camera_angles && Array.isArray(sc.camera_angles) && sc.camera_angles.length > 0) {
-                  customCameraAngles = sc.camera_angles;
-              }
+    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+         const cat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === confirmedCategory);
+         if (cat && cat.scenarios) {
+             const sc = cat.scenarios.find((s: any) => s.button_id === confirmedEnvironment);
+             if (sc) {
+                 targetScenes = [];
+                 if (sc.scene_text) {
+                     for(let i=0; i<count; i++) {
+                         targetScenes.push(sc.scene_text);
+                     }
+                 }
+                 if (sc.camera_angles && sc.camera_angles.trim() !== '') {
+                     const parsedAngles = sc.camera_angles.split('\n').filter((l: string) => l.trim() !== '');
+                     if (parsedAngles.length > 0) {
+                         customCameraAngles = parsedAngles;
+                     }
+                 }
+             }
          }
     }
 
@@ -277,21 +285,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
 
-    // 1. Priorità Assoluta: Custom Camera Angles della Specifica Categoria (dal Modular Builder)
-    let categoryLevelCustomAngles = null;
-    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-        const cat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === confirmedCategory);
-        if (cat && cat.custom_camera_angles && cat.custom_camera_angles.trim() !== '') {
-            const parsedAngles = cat.custom_camera_angles.split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
-            if (parsedAngles.length > 0) {
-                categoryLevelCustomAngles = parsedAngles;
-            }
-        }
-    }
-
-    if (categoryLevelCustomAngles) {
-        cameraAngles = categoryLevelCustomAngles;
-    } else if (customCameraAngles) {
+    if (customCameraAngles) {
         cameraAngles = customCameraAngles;
     } else if (isShoesCategory) {
         cameraAngles = [

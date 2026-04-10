@@ -163,25 +163,29 @@ export async function POST(req: NextRequest) {
                 meta.confirmedShoeTarget = value;
                 meta.confirmedGender = value;
             } else if (action === 'env') {
-                if (value === 'studio' && meta.confirmedCategory) {
-                    let customAnglesCount = 0;
-                    if (useModularBuilder) {
-                        const cat = adminConfig?.PROMPT_CONFIG_CATEGORIES?.find((c: any) => c.category_name === meta.confirmedCategory);
-                        if (cat && cat.custom_camera_angles && cat.custom_camera_angles.trim() !== '') {
-                            const angles = cat.custom_camera_angles.split('\n').filter((x: string) => x.trim().length > 0);
-                            customAnglesCount = angles.length;
-                        }
+                if (useModularBuilder) {
+                    let customScenario = null;
+                    const cat = adminConfig?.PROMPT_CONFIG_CATEGORIES?.find((c: any) => c.category_name === meta.confirmedCategory);
+                    if (cat && cat.scenarios) {
+                        customScenario = cat.scenarios.find((s: any) => s.button_id === value);
                     }
                     
-                    if (customAnglesCount > 0) {
-                        meta.confirmedEnvironment = 'studio'; // Ritorna nomalmente a studio
+                    if (customScenario && customScenario.ask_quantity === false) {
+                        // Bypass quantity question if the scenario forces predefined angles
+                        let customAnglesCount = 1;
+                        if (customScenario.camera_angles && customScenario.camera_angles.trim() !== '') {
+                            const angles = customScenario.camera_angles.split('\n').filter((x: string) => x.trim().length > 0);
+                            customAnglesCount = angles.length;
+                        }
+                        
+                        meta.confirmedEnvironment = value; 
                         
                         // Previeni doppi click
                         if (job.status === "processing") return NextResponse.json({ ok: true });
 
                         // Verifica Quota
                         if (totalAvail < customAnglesCount) {
-                             await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${customAnglesCount} inquadrature personalizzate, ma il tuo piano ha solo ${totalAvail} crediti residui.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per ricaricare subito o attendi il rinnovo.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+                             await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${customAnglesCount} immagini, ma il tuo piano ne ha solo ${totalAvail} residui.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
                              return NextResponse.json({ ok: true });
                         }
 
@@ -190,7 +194,7 @@ export async function POST(req: NextRequest) {
                             data: { status: "processing", metadata: meta }
                         });
                         
-                        bot.telegram.sendMessage(chatId, `✨ **Modalità Studio Personalizzata!**\n*(Sto scattando ${customAnglesCount} angolazioni custom...)*`);
+                        bot.telegram.sendMessage(chatId, `✨ **Modalità ${customScenario.button_label} attivata!**\n*(Sto scattando ${customAnglesCount} angolazioni custom...)*`);
 
                         const protocol = req.headers.get("x-forwarded-proto") || "https";
                         const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
@@ -208,7 +212,7 @@ export async function POST(req: NextRequest) {
                                 confirmedBottom: null,
                                 confirmedGender: meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo'),
                                 confirmedScene: null,
-                                confirmedEnvironment: 'studio',
+                                confirmedEnvironment: value, // stringa custom
                                 confirmedBrand: meta.confirmedBrand,
                                 imgCount: customAnglesCount,
                                 isCustomAnglesOverride: true
@@ -219,7 +223,9 @@ export async function POST(req: NextRequest) {
                         return NextResponse.json({ ok: true });
                     }
                 }
+                
                 meta.confirmedEnvironment = value;
+
             } else if (action === 'run') {
                 // Previene doppi click
                 if (job.status === "processing") {
@@ -527,10 +533,14 @@ export async function POST(req: NextRequest) {
                 // Passa alla prossima domanda
                 if (!meta.confirmedEnvironment) {
                     let envButtons = [];
-                    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_SCENARIOS) {
-                        const activeScenes = adminConfig.PROMPT_CONFIG_SCENARIOS.filter((s:any) => s.is_active);
+                    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+                        const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
+                        const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active) || [
+                            { button_label: "📸 In Studio", button_id: "studio" },
+                            { button_label: "🌍 Ambientata", button_id: "ambientata" }
+                        ];
                         for (let s of activeScenes) {
-                           envButtons.push(Markup.button.callback(`🌍 ${s.title}`, `env|${pendingJob.id}|${s.id}`));
+                           envButtons.push(Markup.button.callback(s.button_label, `env|${pendingJob.id}|${s.button_id}`));
                         }
                     } else {
                         envButtons = [

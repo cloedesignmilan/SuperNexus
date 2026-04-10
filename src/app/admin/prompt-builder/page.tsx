@@ -65,11 +65,8 @@ export default function PromptBuilderAdmin() {
         <button className={`${styles.tabBtn} ${activeTab === 'master' ? styles.active : ''}`} onClick={() => setActiveTab('master')}>
           <Blocks size={16} /> 1. Master Prompt
         </button>
-        <button className={`${styles.tabBtn} ${activeTab === 'scenarios' ? styles.active : ''}`} onClick={() => setActiveTab('scenarios')}>
-          <ImageIcon size={16} /> 2. Scenari
-        </button>
         <button className={`${styles.tabBtn} ${activeTab === 'categories' ? styles.active : ''}`} onClick={() => setActiveTab('categories')}>
-          <Tags size={16} /> 3. Focus Categorie
+          <Tags size={16} /> 2. Categorie & Scenari
         </button>
         <button className={`${styles.tabBtn} ${activeTab === 'modifiers' ? styles.active : ''}`} onClick={() => setActiveTab('modifiers')}>
           <SlidersHorizontal size={16} /> 4. Modificatori
@@ -126,119 +123,174 @@ export default function PromptBuilderAdmin() {
         </div>
       )}
 
-      {activeTab === 'scenarios' && (
-        <div className={styles.section}>
-          <div className={styles.sectionTitle}>Gestione Scenari ed Environment</div>
-          <div className={styles.cardList}>
-            {data.PROMPT_CONFIG_SCENARIOS.map((scene: any, idx: number) => (
-              <div key={idx} className={styles.itemCard}>
-                <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between'}}>
-                  <label className={styles.label}>ID Scenario & Titolo</label>
-                  <button 
-                    onClick={() => {
-                        if(confirm('Eliminare questo scenario?')) {
-                            const nu = [...data.PROMPT_CONFIG_SCENARIOS];
-                            nu.splice(idx, 1);
-                            setData({...data, PROMPT_CONFIG_SCENARIOS: nu});
-                        }
-                    }} 
-                    style={{background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '12px'}}
-                  >
-                    Rimuovi
-                  </button>
-                </div>
-                <input className={styles.input} value={`${scene.id} - ${scene.title}`} disabled />
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Prompt Ambientale</label>
-                  <textarea 
-                    className={styles.textarea} style={{minHeight: '80px'}}
-                    value={scene.scene_text}
-                    onChange={(e) => {
-                      const nu = [...data.PROMPT_CONFIG_SCENARIOS];
-                      nu[idx].scene_text = e.target.value;
-                      setData({...data, PROMPT_CONFIG_SCENARIOS: nu});
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {activeTab === 'categories' && (
         <div className={styles.section}>
-          <div className={styles.sectionTitle}>Prompt Specifici per Categoria</div>
+          <div className={styles.sectionTitle}>I Tuoi Modelli (Categorie & Scenari Personalizzati)</div>
+          <p style={{fontSize: '13px', color: '#888', marginBottom: '20px'}}>Clicca su una categoria per esplodere i suoi prompt e i suoi pulsanti visibili all'utente in Telegram. Il controllo è totale.</p>
           <div className={styles.cardList}>
-            {data.PROMPT_CONFIG_CATEGORIES.map((cat: any, idx: number) => (
-              <div key={idx} className={styles.itemCard}>
-                <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between'}}>
-                  <label className={styles.label}>Categoria UI</label>
+            {data.PROMPT_CONFIG_CATEGORIES.map((cat: any, cIdx: number) => (
+              <details key={cIdx} className={styles.itemCard} style={{cursor: 'pointer', padding: '0'}}>
+                <summary style={{padding: '15px', fontWeight: 'bold', fontSize: '16px', borderBottom: '1px solid #333', outline: 'none'}}>
+                  📂 {cat.category_name}
+                </summary>
+                
+                <div style={{padding: '20px', cursor: 'default'}}>
+                  <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <label className={styles.label}>Nome UI Categoria (Esatto)</label>
+                    <button 
+                      onClick={() => {
+                          if(confirm('Eliminare l\'intera categoria?')) {
+                              const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                              nu.splice(cIdx, 1);
+                              setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                          }
+                      }} 
+                      style={{background: '#ff444422', padding: '5px 10px', borderRadius: '4px', border: '1px solid #ff4444', color: '#ff4444', cursor: 'pointer', fontSize: '12px'}}
+                    >
+                      🗑 Rimuovi Categoria Completa
+                    </button>
+                  </div>
+                  <input 
+                      className={styles.input} 
+                      style={{marginBottom: '15px'}}
+                      value={cat.category_name}
+                      onChange={(e) => {
+                        const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                        nu[cIdx].category_name = e.target.value;
+                        setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                      }}
+                      placeholder="Nome esatto categoria (es. Donna)"
+                  />
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>Prompt Master Categoria</label>
+                    <p style={{fontSize: '11px', color: '#aaa', margin: '4px 0 8px 0'}}>Regola base applicata ad ogni foto generata per {cat.category_name}.</p>
+                    <textarea 
+                      className={styles.textarea} style={{minHeight: '60px'}}
+                      value={cat.prompt_text}
+                      onChange={(e) => {
+                        const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                        nu[cIdx].prompt_text = e.target.value;
+                        setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                      }}
+                    />
+                  </div>
+
+                  <hr style={{borderColor: '#444', margin: '20px 0'}} />
+                  <h3 style={{fontSize: '15px', color: '#fff', marginBottom: '15px'}}>🔘 Pulsanti Telegram (Scenari per {cat.category_name})</h3>
+                  
+                  {cat.scenarios?.map((sc: any, sIdx: number) => (
+                    <div key={sIdx} style={{background: '#1a1a1a', border: '1px solid #333', padding: '15px', borderRadius: '8px', marginBottom: '15px'}}>
+                      <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between', marginBottom: '10px'}}>
+                        <input 
+                          className={styles.input} style={{width: '60%', fontWeight: 'bold'}}
+                          value={sc.button_label}
+                          onChange={(e) => {
+                            const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                            nu[cIdx].scenarios[sIdx].button_label = e.target.value;
+                            setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                          }}
+                          placeholder="Etichetta Pulsante (es. 📸 In Studio)"
+                        />
+                        <button 
+                          onClick={() => {
+                            const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                            nu[cIdx].scenarios.splice(sIdx, 1);
+                            setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                          }}
+                          style={{background: 'transparent', color: '#ff4a4a', border: 'none', cursor: 'pointer', fontSize: '13px'}}
+                        >
+                          X Rimuovi Pulsante
+                        </button>
+                      </div>
+
+                      <div className={styles.formGroup} style={{display: 'flex', gap: '15px'}}>
+                         <div style={{flex: 1}}>
+                           <label className={styles.label}>ID Logico (Univoco)</label>
+                           <input 
+                              className={styles.input} value={sc.button_id}
+                              onChange={(e) => {
+                                const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                                nu[cIdx].scenarios[sIdx].button_id = e.target.value;
+                                setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                              }}
+                           />
+                         </div>
+                         <div style={{flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                           <label className={styles.checkboxContainer} style={{marginTop: 'auto', marginBottom: '10px'}}>
+                             <input 
+                               type="checkbox" className={styles.checkbox} checked={sc.ask_quantity}
+                               onChange={(e) => {
+                                 const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                                 nu[cIdx].scenarios[sIdx].ask_quantity = e.target.checked;
+                                 setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                               }}
+                             />
+                             <span style={{fontSize: '12px'}}>Chiedi Variante 3/5/10 su Telegram?</span>
+                           </label>
+                         </div>
+                      </div>
+
+                      <div className={styles.formGroup}>
+                         <label className={styles.label}>Descrizione Scenario (Sfondo / Luci)</label>
+                         <textarea 
+                           className={styles.textarea} style={{minHeight: '60px'}}
+                           value={sc.scene_text}
+                           onChange={(e) => {
+                             const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                             nu[cIdx].scenarios[sIdx].scene_text = e.target.value;
+                             setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                           }}
+                         />
+                      </div>
+
+                      <div className={styles.formGroup}>
+                         <label className={styles.label}>Inquadrature Fotografiche Precise (1 per riga)</label>
+                         {!sc.ask_quantity && <p style={{fontSize: '11px', color: '#f59e0b', margin: '0 0 5px 0'}}>Attenzione: Avendo disattivato la domanda 3/5/10, il bot scatterà esattamente {Math.max(sc.camera_angles.split('\n').filter((x:any)=>x.trim()!=='').length, 1)} foto usando queste angolazioni in sequenza fissa!</p>}
+                         {sc.ask_quantity && <p style={{fontSize: '11px', color: '#9ca3af', margin: '0 0 5px 0'}}>Avendo attivato la domanda 3/5/10, queste inquadrature verranno ruotate casualmente sulle {`{N}`} immagini richieste dal cliente.</p>}
+                         <textarea 
+                           className={styles.textarea} style={{minHeight: '80px', fontFamily: 'monospace', fontSize: '11px'}}
+                           placeholder="Full body shot...&#10;Close-up face..."
+                           value={sc.camera_angles}
+                           onChange={(e) => {
+                             const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                             nu[cIdx].scenarios[sIdx].camera_angles = e.target.value;
+                             setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                           }}
+                         />
+                      </div>
+                    </div>
+                  ))}
+
                   <button 
                     onClick={() => {
-                        if(confirm('Eliminare questa categoria?')) {
-                            const nu = [...data.PROMPT_CONFIG_CATEGORIES];
-                            nu.splice(idx, 1);
-                            setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
-                        }
-                    }} 
-                    style={{background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '12px'}}
+                        const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                        if (!nu[cIdx].scenarios) nu[cIdx].scenarios = [];
+                        nu[cIdx].scenarios.push({
+                            button_label: "✨ Nuovo Scenario", button_id: "new_scene_" + Date.now().toString().slice(-4), is_active: true, ask_quantity: true, camera_angles: "", scene_text: ""
+                        });
+                        setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                    }}
+                    style={{background: '#333', color: '#fff', border: '1px dashed #555', padding: '10px', width: '100%', borderRadius: '4px', cursor: 'pointer', marginTop: '5px'}}
                   >
-                    Rimuovi
+                    + Aggiungi Nuovo Pulsante Telegram per {cat.category_name}
                   </button>
+
                 </div>
-                <input 
-                    className={styles.input} 
-                    style={{marginBottom: '10px'}}
-                    value={cat.category_name}
-                    onChange={(e) => {
-                      const nu = [...data.PROMPT_CONFIG_CATEGORIES];
-                      nu[idx].category_name = e.target.value;
-                      setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
-                    }}
-                    placeholder="Nome esatto categoria (es. Donna)"
-                />
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Prompt Master</label>
-                  <textarea 
-                    className={styles.textarea} style={{minHeight: '80px'}}
-                    value={cat.prompt_text}
-                    onChange={(e) => {
-                      const nu = [...data.PROMPT_CONFIG_CATEGORIES];
-                      nu[idx].prompt_text = e.target.value;
-                      setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
-                    }}
-                  />
-                </div>
-                <div className={styles.formGroup} style={{marginTop: '10px'}}>
-                  <label className={styles.label}>Inquadrature Personalizzate In Studio (Opzionale, 1 per riga)</label>
-                  <div style={{fontSize: '11px', color: '#ffaaaa', marginBottom: '5px'}}>
-                    Se compili questo campo, il Bot in modalità "Studio" scatterà ESATTAMENTE le angolazioni richieste qui (es. 4 righe = 4 foto) ignorando le inquadrature globali.
-                  </div>
-                  <textarea 
-                    className={styles.textarea} style={{minHeight: '80px'}}
-                    placeholder="Es:&#10;Vista asimmetrica a 3/4...&#10;Ripresa zenitale piatta...&#10;Vista posteriore...&#10;Vista di profilo..."
-                    value={cat.custom_camera_angles || ''}
-                    onChange={(e) => {
-                      const nu = [...data.PROMPT_CONFIG_CATEGORIES];
-                      nu[idx].custom_camera_angles = e.target.value;
-                      setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
-                    }}
-                  />
-                </div>
-              </div>
+              </details>
             ))}
           </div>
           <button 
             className={styles.saveBtn} 
-            style={{ marginTop: '20px', background: '#3b82f6' }}
+            style={{ marginTop: '20px', background: '#3b82f6', width: '100%' }}
             onClick={() => {
                 const nu = [...data.PROMPT_CONFIG_CATEGORIES];
-                nu.push({ category_name: "Nuova Categoria", prompt_text: "", order: nu.length + 1, is_active: true });
+                nu.push({ category_name: "Nuova Categoria", prompt_text: "", order: nu.length + 1, is_active: true, scenarios: [] });
                 setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
             }}
           >
-            + Aggiungi Nuova Categoria
+            + Crea Intera Nuova Categoria
           </button>
         </div>
       )}
