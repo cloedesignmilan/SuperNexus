@@ -5,8 +5,7 @@ import { Telegraf } from "telegraf";
 import { buildCreatorPrompt } from "@/lib/promptBuilder";
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60;
-
+export const maxDuration = 300; // Allows up to 5 mins on Vercel Pro
 export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
@@ -20,8 +19,8 @@ export async function POST(req: NextRequest) {
     
     const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = jsonBody;
 
-    if (!jobId || !fileUrl) {
-      return NextResponse.json({ error: "Dati mancanti" }, { status: 400 });
+    if (!jobId || !fileUrl || !storeId) {
+      return NextResponse.json({ error: "jobId, fileUrl, and storeId are required" }, { status: 400 });
     }
 
     // FASE 1: Estrazione Dettagli (Vision)
@@ -282,10 +281,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
         cameraAngles = customCameraAngles;
     } else if (isShoesCategory) {
         cameraAngles = [
-             "E-commerce macro still-life footwear, angled 3/4 front view, symmetrical placement, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
-             "E-commerce macro still-life footwear, straight top-down flat lay view, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
-             "E-commerce macro still-life footwear, back heel view, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
-             "E-commerce macro still-life footwear, side profile view, centered, perfectly isolated. NO HUMAN FACES OR BODY PARTS."
+             "E-commerce macro still-life footwear, angled 3/4 front view, symmetrical placement, perfectly isolated on clean studio background. Exclude people.",
+             "E-commerce macro still-life footwear, straight top-down flat lay view, perfectly isolated. Exclude people.",
+             "E-commerce macro still-life footwear, back heel view, perfectly isolated. Exclude people.",
+             "E-commerce macro still-life footwear, side profile view, centered, perfectly isolated. Exclude people."
         ];
     }
 
