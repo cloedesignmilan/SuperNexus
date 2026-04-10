@@ -164,8 +164,15 @@ export async function POST(req: NextRequest) {
                 meta.confirmedGender = value;
             } else if (action === 'env') {
                 if (value === 'studio' && meta.confirmedCategory) {
-                    const catForEnv = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                    const isShoes = catForEnv?.name.toLowerCase().includes('scarpe') || catForEnv?.name.toLowerCase().includes('calzature');
+                    let isShoes = false;
+                    if (useModularBuilder) {
+                        isShoes = meta.confirmedCategory.toLowerCase().includes('scarpe') || meta.confirmedCategory.toLowerCase().includes('calzature');
+                    } else {
+                        try {
+                            const catForEnv = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
+                            isShoes = catForEnv?.name.toLowerCase().includes('scarpe') || catForEnv?.name.toLowerCase().includes('calzature') || false;
+                        } catch(e) {}
+                    }
                     
                     if (isShoes) {
                         meta.confirmedEnvironment = 'studio_calzature';
@@ -257,13 +264,23 @@ export async function POST(req: NextRequest) {
             let catCheckName = meta.confirmedCategory;
 
             if (meta.confirmedCategory) {
-                const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                if (catCheck) {
-                    catCheckName = catCheck.name;
+                if (useModularBuilder) {
+                    catCheckName = meta.confirmedCategory;
                     if (isShoesFeature === undefined) {
-                        isShoesFeature = catCheck.name.toLowerCase().includes('scarpe') || catCheck.name.toLowerCase().includes('calzature');
+                        isShoesFeature = meta.confirmedCategory.toLowerCase().includes('scarpe') || meta.confirmedCategory.toLowerCase().includes('calzature');
                         meta.isShoesCategory = isShoesFeature;
                     }
+                } else {
+                    try {
+                        const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
+                        if (catCheck) {
+                            catCheckName = catCheck.name;
+                            if (isShoesFeature === undefined) {
+                                isShoesFeature = catCheck.name.toLowerCase().includes('scarpe') || catCheck.name.toLowerCase().includes('calzature');
+                                meta.isShoesCategory = isShoesFeature;
+                            }
+                        }
+                    } catch(e) {}
                 }
             }
 
