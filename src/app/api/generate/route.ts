@@ -507,7 +507,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
        const mediaGroup = generatedUrls.map((urlStr, i) => {
            if (urlStr.startsWith("http")) return { type: 'photo' as const, media: urlStr };
            const cleanB64 = urlStr.replace(/^data:image\/\w+;base64,/, "");
-           return { type: 'photo' as const, media: { source: Buffer.from(cleanB64, 'base64'), filename: `image_${i}.jpg` } };
+           const { Input } = require('telegraf');
+           return { type: 'photo' as const, media: Input.fromBuffer(Buffer.from(cleanB64, 'base64'), `image_${i}.jpg`) };
        });
        
         const totalRimasti = newSub + newSupp;
