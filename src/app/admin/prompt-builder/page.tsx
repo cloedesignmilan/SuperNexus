@@ -198,6 +198,22 @@ export default function PromptBuilderAdmin() {
                     }}
                   />
                 </div>
+                <div className={styles.formGroup} style={{marginTop: '10px'}}>
+                  <label className={styles.label}>Inquadrature Personalizzate In Studio (Opzionale, 1 per riga)</label>
+                  <div style={{fontSize: '11px', color: '#ffaaaa', marginBottom: '5px'}}>
+                    Se compili questo campo, il Bot in modalità "Studio" scatterà ESATTAMENTE le angolazioni richieste qui (es. 4 righe = 4 foto) ignorando le inquadrature globali.
+                  </div>
+                  <textarea 
+                    className={styles.textarea} style={{minHeight: '80px'}}
+                    placeholder="Es:&#10;Vista asimmetrica a 3/4...&#10;Ripresa zenitale piatta...&#10;Vista posteriore...&#10;Vista di profilo..."
+                    value={cat.custom_camera_angles || ''}
+                    onChange={(e) => {
+                      const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                      nu[idx].custom_camera_angles = e.target.value;
+                      setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                    }}
+                  />
+                </div>
               </div>
             ))}
           </div>

@@ -164,27 +164,33 @@ export async function POST(req: NextRequest) {
                 meta.confirmedGender = value;
             } else if (action === 'env') {
                 if (value === 'studio' && meta.confirmedCategory) {
-                    let isShoes = false;
+                    let customAnglesCount = 0;
                     if (useModularBuilder) {
-                        isShoes = meta.confirmedCategory.toLowerCase().includes('scarpe') || meta.confirmedCategory.toLowerCase().includes('calzature');
-                    } else {
-                        try {
-                            const catForEnv = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                            isShoes = catForEnv?.name.toLowerCase().includes('scarpe') || catForEnv?.name.toLowerCase().includes('calzature') || false;
-                        } catch(e) {}
+                        const cat = adminConfig?.PROMPT_CONFIG_CATEGORIES?.find((c: any) => c.category_name === meta.confirmedCategory);
+                        if (cat && cat.custom_camera_angles && cat.custom_camera_angles.trim() !== '') {
+                            const angles = cat.custom_camera_angles.split('\n').filter((x: string) => x.trim().length > 0);
+                            customAnglesCount = angles.length;
+                        }
                     }
                     
-                    if (isShoes) {
-                        meta.confirmedEnvironment = 'studio_calzature';
+                    if (customAnglesCount > 0) {
+                        meta.confirmedEnvironment = 'studio'; // Ritorna nomalmente a studio
                         
                         // Previeni doppi click
                         if (job.status === "processing") return NextResponse.json({ ok: true });
+
+                        // Verifica Quota
+                        if (totalAvail < customAnglesCount) {
+                             await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Insufficienti**\n\nHai richiesto ${customAnglesCount} inquadrature personalizzate, ma il tuo piano ha solo ${totalAvail} crediti residui.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per ricaricare subito o attendi il rinnovo.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
+                             return NextResponse.json({ ok: true });
+                        }
+
                         await (prisma.generationJob as any).update({
                             where: { id: jobId },
                             data: { status: "processing", metadata: meta }
                         });
                         
-                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 4 angolazioni professionali su sfondo bianco...)*`);
+                        bot.telegram.sendMessage(chatId, `✨ **Modalità Studio Personalizzata!**\n*(Sto scattando ${customAnglesCount} angolazioni custom...)*`);
 
                         const protocol = req.headers.get("x-forwarded-proto") || "https";
                         const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
@@ -200,11 +206,12 @@ export async function POST(req: NextRequest) {
                                 storeId: currentStore.id,
                                 confirmedCategory: meta.confirmedCategory,
                                 confirmedBottom: null,
-                                confirmedGender: 'Uomo', // ignora genere
+                                confirmedGender: meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo'),
                                 confirmedScene: null,
-                                confirmedEnvironment: 'studio_calzature',
+                                confirmedEnvironment: 'studio',
                                 confirmedBrand: meta.confirmedBrand,
-                                imgCount: 4
+                                imgCount: customAnglesCount,
+                                isCustomAnglesOverride: true
                             })
                         }).catch(e => console.error(e));
 

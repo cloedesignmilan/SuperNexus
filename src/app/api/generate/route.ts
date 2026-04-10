@@ -277,7 +277,21 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
 
-    if (customCameraAngles) {
+    // 1. Priorità Assoluta: Custom Camera Angles della Specifica Categoria (dal Modular Builder)
+    let categoryLevelCustomAngles = null;
+    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+        const cat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === confirmedCategory);
+        if (cat && cat.custom_camera_angles && cat.custom_camera_angles.trim() !== '') {
+            const parsedAngles = cat.custom_camera_angles.split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
+            if (parsedAngles.length > 0) {
+                categoryLevelCustomAngles = parsedAngles;
+            }
+        }
+    }
+
+    if (categoryLevelCustomAngles) {
+        cameraAngles = categoryLevelCustomAngles;
+    } else if (customCameraAngles) {
         cameraAngles = customCameraAngles;
     } else if (isShoesCategory) {
         cameraAngles = [
