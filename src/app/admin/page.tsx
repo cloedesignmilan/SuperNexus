@@ -7,7 +7,9 @@ import AdminDashboardClient from './AdminDashboardClient';
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-    const COST_PER_IMAGE_ESTIMATE = 0.03; // Costo medio stima Imagen3 / Gemini Flash
+    // Pricing Ufficiale Vertex AI / Gemini (dal listino di fatturazione GCP)
+    const COST_PER_IMAGE_GEN = 0.03; // Costo esatto per immagine generata (Imagen 3 / Gemini 3.1 Flash Image Output)
+    const COST_PER_VISION_ANALYSIS = 0.0001315; // Costo esatto input immagine (Gemini 2.5 Flash Vision Image Input)
 
     // 1. Dati Prisma
     const stores = await (prisma as any).store.findMany({
@@ -22,10 +24,22 @@ export default async function AdminDashboard() {
         orderBy: { createdAt: 'desc' }
     });
 
-    // 2. Calcoli Finanziari Totali (Iterando sui clienti)
+    // 2. Calcoli Finanziari Totali (Iterando sui clienti con perfezione API)
     const storesData = stores.map((store: any) => {
-        const storeImages = store.jobs.reduce((sum: number, job: any) => sum + (job.status === "completato" ? job.results_count : 0), 0);
-        const total_cost = storeImages * COST_PER_IMAGE_ESTIMATE;
+        let total_cost = 0;
+        let storeImages = 0;
+
+        for (const job of store.jobs) {
+            // Ogni job nato (completato o errore) consuma comunque una chiamata Vision di analisi
+            total_cost += COST_PER_VISION_ANALYSIS;
+            
+            // Solo i job completati hanno generato foto a pagamento
+            if (job.status === "completato") {
+                storeImages += job.results_count;
+                total_cost += (job.results_count * COST_PER_IMAGE_GEN);
+            }
+        }
+
         const net_profit = store.monthly_fee - total_cost;
 
         return {
