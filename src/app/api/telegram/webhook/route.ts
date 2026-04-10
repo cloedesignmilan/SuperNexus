@@ -606,8 +606,8 @@ Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inve
 
 REGOLE AGGIUNTIVE TASSATIVE:
 - IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
-- IN 'ambiguity_flags': se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
-- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo, niente "This is an image of...".
+- IN 'ambiguity_flags': se individui una calzatura (scarpa) o capo che possiede loghi, scritte o brand visibili ma NON sei in grado di leggerli chiaramente al 100%, setta "unclear_text_or_logo": true. Se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
+- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo.
 
 {
   "technical_validation": {
@@ -645,6 +645,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
   "ambiguity_flags": {
     "multiple_items_detected": false,
     "unclear_garment_type": false,
+    "unclear_text_or_logo": false,
     "requires_user_clarification": false,
     "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
   },
@@ -744,7 +745,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
           isWoman: genderPres === "female",
           needsGenderClarification: genderPres === "unisex" || genderPres === "unknown",
           needsBottomClarification: false,
-          needsBrandClarification: false, // Disabilitato, se ne occuperà lo schema avanzato in futuro
+          needsBrandClarification: inspectorData.ambiguity_flags?.unclear_text_or_logo || false,
           confirmedCategory: null,
           confirmedBottom: null,
           confirmedGender: null,

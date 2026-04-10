@@ -281,10 +281,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
         cameraAngles = customCameraAngles;
     } else if (isShoesCategory) {
         cameraAngles = [
-             "E-commerce macro still-life footwear, angled 3/4 front view, symmetrical placement, perfectly isolated on clean studio background. Exclude people.",
-             "E-commerce macro still-life footwear, straight top-down flat lay view, perfectly isolated. Exclude people.",
-             "E-commerce macro still-life footwear, back heel view, perfectly isolated. Exclude people.",
-             "E-commerce macro still-life footwear, side profile view, centered, perfectly isolated. Exclude people."
+             "E-commerce macro still-life footwear, angled 3/4 front view, symmetrical placement, resting on a glossy white reflective surface. NO pedestals, NO props. Exclude people.",
+             "E-commerce macro still-life footwear, straight top-down flat lay view, resting on a glossy white reflective surface. NO pedestals, NO props. Exclude people.",
+             "E-commerce macro still-life footwear, back heel view, resting on a glossy white reflective surface. NO pedestals, NO props. Exclude people.",
+             "E-commerce macro still-life footwear, side profile view, centered, resting on a glossy white reflective surface. NO pedestals, NO props. Exclude people."
         ];
     }
 
