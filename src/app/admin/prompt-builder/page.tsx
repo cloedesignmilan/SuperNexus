@@ -132,10 +132,22 @@ export default function PromptBuilderAdmin() {
           <div className={styles.cardList}>
             {data.PROMPT_CONFIG_SCENARIOS.map((scene: any, idx: number) => (
               <div key={idx} className={styles.itemCard}>
-                <div className={styles.formGroup}>
+                <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between'}}>
                   <label className={styles.label}>ID Scenario & Titolo</label>
-                  <input className={styles.input} value={`${scene.id} - ${scene.title}`} disabled />
+                  <button 
+                    onClick={() => {
+                        if(confirm('Eliminare questo scenario?')) {
+                            const nu = [...data.PROMPT_CONFIG_SCENARIOS];
+                            nu.splice(idx, 1);
+                            setData({...data, PROMPT_CONFIG_SCENARIOS: nu});
+                        }
+                    }} 
+                    style={{background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '12px'}}
+                  >
+                    Rimuovi
+                  </button>
                 </div>
+                <input className={styles.input} value={`${scene.id} - ${scene.title}`} disabled />
                 <div className={styles.formGroup}>
                   <label className={styles.label}>Prompt Ambientale</label>
                   <textarea 
