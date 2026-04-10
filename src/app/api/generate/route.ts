@@ -190,13 +190,16 @@ REGOLE AGGIUNTIVE TASSATIVE:
     let targetScenes: any[] = [];
     const count = imgCount ? parseInt(imgCount) : 3;
 
+    let customCameraAngles: any[] | null = null;
     if (useModularBuilder && adminConfig?.PROMPT_CONFIG_SCENARIOS) {
-         // Cerca lo scenario nei moduli Admin (es 'ambientata', 'studio')
          const sc = adminConfig.PROMPT_CONFIG_SCENARIOS.find((s: any) => s.id === confirmedEnvironment && s.is_active);
          if (sc) {
               targetScenes = [];
               for(let i=0; i<count; i++) {
-                  targetScenes.push(sc.scene_text); // For now repeat same scene text, camera angles handle variety
+                  targetScenes.push(sc.scene_text);
+              }
+              if (sc.camera_angles && Array.isArray(sc.camera_angles) && sc.camera_angles.length > 0) {
+                  customCameraAngles = sc.camera_angles;
               }
          }
     }
@@ -274,6 +277,17 @@ REGOLE AGGIUNTIVE TASSATIVE:
     ];
 
     const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
+
+    if (customCameraAngles) {
+        cameraAngles = customCameraAngles;
+    } else if (isShoesCategory) {
+        cameraAngles = [
+             "E-commerce macro still-life footwear, angled 3/4 front view, symmetrical placement, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
+             "E-commerce macro still-life footwear, straight top-down flat lay view, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
+             "E-commerce macro still-life footwear, back heel view, perfectly isolated. NO HUMAN FACES OR BODY PARTS.",
+             "E-commerce macro still-life footwear, side profile view, centered, perfectly isolated. NO HUMAN FACES OR BODY PARTS."
+        ];
+    }
 
     let brandRule = "ABSOLUTE HARD RULE 3: DO NOT generate any text, brand logos, price tags, store tags, cardboard labels, hanging tags, or watermarks.";
     let negativeBrandRule = "No brand logos, no text in the image, no price tags, no store tags, no cardboard tags, no hanging labels attached to the garments.";

@@ -184,9 +184,12 @@ export async function POST(req: NextRequest) {
                             data: { status: "processing", metadata: meta }
                         });
                         
-                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 3 angolazioni professionali su sfondo bianco...)*`);
+                        bot.telegram.sendMessage(chatId, `✨ **Modalità Still Life Calzature attivata!**\n*(Sto scattando 4 angolazioni professionali su sfondo bianco...)*`);
 
-                        const baseUrl = `https://x-super-nexus.vercel.app`;
+                        const protocol = req.headers.get("x-forwarded-proto") || "https";
+                        const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
+                        const baseUrl = host ? `${protocol}://${host}` : `https://x-super-nexus.vercel.app`;
+                        
                         fetch(`${baseUrl}/api/generate`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -201,7 +204,7 @@ export async function POST(req: NextRequest) {
                                 confirmedScene: null,
                                 confirmedEnvironment: 'studio_calzature',
                                 confirmedBrand: meta.confirmedBrand,
-                                imgCount: 3
+                                imgCount: 4
                             })
                         }).catch(e => console.error(e));
 
