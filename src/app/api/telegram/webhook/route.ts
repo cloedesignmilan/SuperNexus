@@ -350,14 +350,28 @@ export async function POST(req: NextRequest) {
                     "👟 **Dettaglio Custom Rilevato!**\n\nHo notato una scritta, un logo o una targhetta su questo capo e non voglio allucinare parole a caso!\n\n👉 **Per favore, scrivimi qui in chat il testo testuale esatto da stamparci sopra.** (Es. GAËLLE, Guess, ecc.)\n\n*Scrivi il testo nel box qui sotto ed invia.*"
                 );
             } else if (!meta.confirmedEnvironment) {
-                // Chiedi Ambientata o Studio
+                // Chiedi Ambientata o Studio dinamicamente
+                let envButtons = [];
+                if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+                    const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
+                    const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active) || [
+                        { button_label: "📸 In Studio", button_id: "studio" },
+                        { button_label: "🌍 Ambientata", button_id: "ambientata" }
+                    ];
+                    for (let s of activeScenes) {
+                       envButtons.push(Markup.button.callback(s.button_label, `env|${jobId}|${s.button_id}`));
+                    }
+                } else {
+                    envButtons = [
+                        Markup.button.callback("🌍 Ambientata", `env|${jobId}|ambientata`),
+                        Markup.button.callback("📸 In Studio", `env|${jobId}|studio`)
+                    ];
+                }
+
                 await bot.telegram.sendMessage(
                     chatId,
                     `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
-                    Markup.inlineKeyboard([
-                        Markup.button.callback("🌍 Ambientata", `env|${jobId}|ambientata`),
-                        Markup.button.callback("📸 In Studio", `env|${jobId}|studio`)
-                    ], { columns: 2 })
+                    Markup.inlineKeyboard(envButtons, { columns: 2 })
                 );
             } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
                 await bot.telegram.sendMessage(
