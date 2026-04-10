@@ -536,11 +536,16 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ ok: true });
       }
 
-      // Costruiamo le Categorie Dinamiche per Gemini
-      const templatesSchemaList = await (prisma as any).category.findMany({
-          where: { is_active: true }
-      });
-      const validCategoriesStr = templatesSchemaList.map((t: any) => `ID: "${t.id}" (Nome: ${t.name})`).join(" | ");
+      // Costruiamo le Categorie Dinamiche per Gemini in base all'architettura attiva
+      let activeCatNames: string[] = [];
+      if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
+          activeCatNames = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).map((c:any) => c.category_name);
+      } else {
+          const templatesSchemaList = await (prisma as any).category.findMany({ where: { is_active: true } });
+          activeCatNames = templatesSchemaList.map((c:any) => c.name);
+      }
+      
+      const catsJsonArray = JSON.stringify(activeCatNames);
 
       const analysisPrompt = `Sei un esperto ispettore di qualità e analista prodotto. Il capo in foto appartiene a una categoria selezionata.
 
@@ -592,8 +597,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
     "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
   },
   "suggested_ui_options": {
-    "recommended_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 3, solo tra questi valori
-    "disabled_categories": ["Donna", "Uomo", "T-Shirt", "Cerimonia", "Feste & 18°", "Calzature", "Vendita Online"], // Max 4, solo tra questi valori, mutuamente esclusivi dai recommended
+    "recommended_categories": ${catsJsonArray}, // Scegli al MASSIMO 3 di questi valori testuali esatti se adatti all'immagine.
+    "disabled_categories": ${catsJsonArray}, // Scegli da questa lista se ci sono.
     "should_ask_question": false,
     "suggested_question": "stringa domanda breve in italiano o null"
   },
