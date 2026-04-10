@@ -160,8 +160,34 @@ export default function PromptBuilderAdmin() {
           <div className={styles.cardList}>
             {data.PROMPT_CONFIG_CATEGORIES.map((cat: any, idx: number) => (
               <div key={idx} className={styles.itemCard}>
+                <div className={styles.formGroup} style={{display: 'flex', justifyContent: 'space-between'}}>
+                  <label className={styles.label}>Categoria UI</label>
+                  <button 
+                    onClick={() => {
+                        if(confirm('Eliminare questa categoria?')) {
+                            const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                            nu.splice(idx, 1);
+                            setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                        }
+                    }} 
+                    style={{background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '12px'}}
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+                <input 
+                    className={styles.input} 
+                    style={{marginBottom: '10px'}}
+                    value={cat.category_name}
+                    onChange={(e) => {
+                      const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                      nu[idx].category_name = e.target.value;
+                      setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+                    }}
+                    placeholder="Nome esatto categoria (es. Donna)"
+                />
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Categoria UI ({cat.category_name})</label>
+                  <label className={styles.label}>Prompt Master</label>
                   <textarea 
                     className={styles.textarea} style={{minHeight: '80px'}}
                     value={cat.prompt_text}
@@ -175,6 +201,17 @@ export default function PromptBuilderAdmin() {
               </div>
             ))}
           </div>
+          <button 
+            className={styles.saveBtn} 
+            style={{ marginTop: '20px', background: '#3b82f6' }}
+            onClick={() => {
+                const nu = [...data.PROMPT_CONFIG_CATEGORIES];
+                nu.push({ category_name: "Nuova Categoria", prompt_text: "", order: nu.length + 1, is_active: true });
+                setData({...data, PROMPT_CONFIG_CATEGORIES: nu});
+            }}
+          >
+            + Aggiungi Nuova Categoria
+          </button>
         </div>
       )}
 
