@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Settings, FileText, Search, Copy, PauseCircle, PlayCircle } from 'lucide-react';
+import { Settings, FileText, Search, Copy, PauseCircle, PlayCircle, Zap, RefreshCw, Download } from 'lucide-react';
 import styles from "./page.module.css";
-import { toggleStoreStatus } from './actions';
+import { toggleStoreStatus, addStoreCredits, resetStorePassword } from './actions';
 
 export default function AdminDashboardClient({ initialStores, mrr, totalApiCost, netProfit }: any) {
     const [searchQuery, setSearchQuery] = useState("");
@@ -12,7 +12,6 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
     const [stores, setStores] = useState(initialStores);
 
     const handleToggleStatus = async (id: string, currentStatus: boolean) => {
-        // Optimistic update
         setStores(stores.map((s: any) => s.id === id ? { ...s, is_active: !currentStatus } : s));
         await toggleStoreStatus(id, currentStatus);
     };
@@ -20,6 +19,53 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
     const handleCopyPwd = (pwd: string) => {
         navigator.clipboard.writeText(pwd || '');
         alert("Password copiata negli appunti!");
+    };
+
+    const handleRefill = async (id: string) => {
+        const amountStr = prompt("Inserisci quanti crediti EXTRA assegnare a questo cliente:");
+        if (!amountStr) return;
+        const amount = parseInt(amountStr, 10);
+        if (isNaN(amount) || amount <= 0) return alert("Inserisci un numero valido!");
+        
+        setStores(stores.map((s: any) => s.id === id ? { ...s, supplementary_credits: s.supplementary_credits + amount } : s));
+        const res = await addStoreCredits(id, amount);
+        if (!res.success) alert("Errore durante la ricarica: " + res.error);
+    };
+
+    const handleResetPwd = async (id: string) => {
+        if (!confirm("Sei sicuro di invalidare l'accesso e generare un nuovo PIN per questo negozio?")) return;
+        const res = await resetStorePassword(id);
+        if (res.success) {
+            setStores(stores.map((s: any) => s.id === id ? { ...s, password: res.newPassword } : s));
+            alert("Nuovo PIN generato con successo!");
+        } else {
+            alert("Errore reset password.");
+        }
+    };
+
+    const downloadCSV = () => {
+        const headers = ["Brand", "Stato", "Piano", "Password", "Canone", "Capacita", "Crediti Extra", "Crediti Rimanenti", "Foto Generate", "Ultimo Accesso"];
+        const rows = stores.map((s: any) => [
+            s.name, s.is_active ? "Attivo" : "Sospeso", s.plan_name, s.password || "N/A", 
+            s.monthly_fee.toFixed(2), s.generation_limit, s.supplementary_credits, 
+            s.subscription_credits + s.supplementary_credits, s.total_images, 
+            s.last_active_date ? new Date(s.last_active_date).toISOString().split('T')[0] : "Mai usato"
+        ]);
+        const csvContent = [headers.join(","), ...rows.map((r: any) => r.join(","))].join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `report_supernexus_${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+    };
+
+    const getTimeAgo = (dateStr: string | null) => {
+        if (!dateStr) return "Mai usato";
+        const diff = Date.now() - new Date(dateStr).getTime();
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        if (hours < 24) return `Attivo ${hours === 0 ? 'poco' : hours} ore fa`;
+        const days = Math.floor(hours / 24);
+        return `Fermo da ${days} giorn${days === 1 ? 'o' : 'i'}`;
     };
 
     const filteredStores = stores.filter((store: any) => {
@@ -68,16 +114,21 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
                         <button className={`${styles.tabBtn} ${statusFilter === 'active' ? styles.active : ''}`} onClick={() => setStatusFilter('active')}>Attivi ({stores.filter((s:any) => s.is_active).length})</button>
                         <button className={`${styles.tabBtn} ${statusFilter === 'suspended' ? styles.active : ''}`} onClick={() => setStatusFilter('suspended')}>Sospesi ({stores.filter((s:any) => !s.is_active).length})</button>
                     </div>
-                    <div style={{ position: 'relative' }}>
-                        <Search size={18} style={{position: 'absolute', left: '12px', top: '12px', color: '#888'}} />
-                        <input 
-                            type="text" 
-                            className={styles.searchInput} 
-                            placeholder="Cerca per Nome o Password..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{ paddingLeft: '40px' }}
-                        />
+                    <div style={{ position: 'relative', display: 'flex', gap: '15px' }}>
+                        <button onClick={downloadCSV} style={{background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '10px 15px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                            <Download size={16} /> Esporta CSV
+                        </button>
+                        <div style={{position: 'relative'}}>
+                            <Search size={18} style={{position: 'absolute', left: '12px', top: '12px', color: '#888'}} />
+                            <input 
+                                type="text" 
+                                className={styles.searchInput} 
+                                placeholder="Cerca per Nome o Password..." 
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                style={{ paddingLeft: '40px' }}
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -123,24 +174,30 @@ export default function AdminDashboardClient({ initialStores, mrr, totalApiCost,
                                             <div style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
                                                 <span style={{fontFamily: 'monospace', color: '#fff', fontSize: '0.9rem'}}>🔑 {store.password || 'N/A'}</span>
                                                 <button onClick={() => handleCopyPwd(store.password)} className={styles.copyBtn} title="Copia Password"><Copy size={12} /></button>
+                                                <button onClick={() => handleResetPwd(store.id)} className={styles.copyBtn} title="Rigenera Password Nuova"><RefreshCw size={12} /></button>
                                             </div>
                                         </div>
                                     </td>
                                     <td><span style={{color: '#fff', fontWeight: 600}}>€{store.monthly_fee.toFixed(2)}</span></td>
                                     <td>
-                                        <div style={{display: 'flex', flexDirection: 'column', width: '130px'}}>
-                                            <span style={{color: healthColor, fontWeight: 'bold', fontSize: '0.95rem'}}>
-                                                {remaining} / {totalCapacity}
-                                            </span>
-                                            <div className={styles.healthBarTrack}>
-                                                <div className={styles.healthBarFill} style={{ width: `${Math.min(100, fillPercentage)}%`, backgroundColor: healthColor }}></div>
+                                        <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                            <div style={{display: 'flex', flexDirection: 'column', width: '130px'}}>
+                                                <span style={{color: healthColor, fontWeight: 'bold', fontSize: '0.95rem'}}>
+                                                    {remaining} / {totalCapacity}
+                                                </span>
+                                                <div className={styles.healthBarTrack}>
+                                                    <div className={styles.healthBarFill} style={{ width: `${Math.min(100, fillPercentage)}%`, backgroundColor: healthColor }}></div>
+                                                </div>
                                             </div>
+                                            <button onClick={() => handleRefill(store.id)} style={{background: 'rgba(3, 218, 198, 0.1)', border: '1px solid #03dac6', color: '#03dac6', padding: '6px', borderRadius: '6px', cursor: 'pointer'}} title="Ricarica + Crediti">
+                                                <Zap size={14} />
+                                            </button>
                                         </div>
                                     </td>
                                     <td>
                                         <div style={{display: 'flex', flexDirection: 'column'}}>
-                                            <span style={{fontSize: '0.9rem', color: '#fff'}}>{store.total_images} foto gen.</span>
-                                            <span style={{fontSize: '0.75rem', color: '#888'}}>{store.jobs.length} cicli server</span>
+                                            <span style={{fontSize: '0.9rem', color: '#fff'}}>{getTimeAgo(store.last_active_date)}</span>
+                                            <span style={{fontSize: '0.75rem', color: '#888'}}>{store.jobs_count} righe storico</span>
                                         </div>
                                     </td>
                                     <td>

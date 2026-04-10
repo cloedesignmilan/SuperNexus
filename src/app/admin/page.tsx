@@ -12,17 +12,31 @@ export default async function AdminDashboard() {
     const COST_PER_VISION_ANALYSIS = 0.0001315; // Costo esatto input immagine (Gemini 2.5 Flash Vision Image Input)
 
     // 1. Dati Prisma
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
     const stores = await (prisma as any).store.findMany({
         include: {
             _count: {
                 select: { templates: true, users: true }
             },
             jobs: {
+                where: {
+                    createdAt: { gte: startOfMonth }
+                },
                 select: { status: true, results_count: true }
             }
         },
         orderBy: { createdAt: 'desc' }
     });
+
+    // Ottenere l'ultima attività (Last Active) globalmente tramite aggregazione 
+    const latestJobs = await (prisma as any).generationJob.groupBy({
+        by: ['store_id'],
+        _max: { createdAt: true }
+    });
+    const latestJobsMap = new Map(latestJobs.map((j: any) => [j.store_id, j._max.createdAt]));
 
     // 2. Calcoli Finanziari Totali (Iterando sui clienti con perfezione API)
     const storesData = stores.map((store: any) => {
@@ -30,10 +44,7 @@ export default async function AdminDashboard() {
         let storeImages = 0;
 
         for (const job of store.jobs) {
-            // Ogni job nato (completato o errore) consuma comunque una chiamata Vision di analisi
             total_cost += COST_PER_VISION_ANALYSIS;
-            
-            // Solo i job completati hanno generato foto a pagamento
             if (job.status === "completato") {
                 storeImages += job.results_count;
                 total_cost += (job.results_count * COST_PER_IMAGE_GEN);
@@ -41,12 +52,20 @@ export default async function AdminDashboard() {
         }
 
         const net_profit = store.monthly_fee - total_cost;
+        const jobs_count = store.jobs.length;
+        
+        const last_active_date = latestJobsMap.get(store.id) || null;
+
+        // Strip heavy relations from payload for blazing fast hydration
+        const { jobs, _count, ...lightStore } = store;
 
         return {
-            ...store,
+            ...lightStore,
             total_cost,
             net_profit,
-            total_images: storeImages
+            total_images: storeImages,
+            jobs_count,
+            last_active_date
         };
     });
 
