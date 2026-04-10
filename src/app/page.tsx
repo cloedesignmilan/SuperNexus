@@ -151,7 +151,7 @@ export default function LandingPage() {
           {/* Starter */}
           <div className="pricing-card">
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0' }}>STARTER</h3>
-            <p style={{ color: '#888', marginBottom: '2rem' }}>Perfetto per testare l'acqua.</p>
+            <p style={{ color: '#888', marginBottom: '2rem' }}>Perfetto per testare le prime vendite.</p>
             <div className="pricing-price">€29<span>/mese</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
               <li><CheckCircle2 size={20} color="#ff5e00" /> <strong>100 immagini / mese</strong></li>
