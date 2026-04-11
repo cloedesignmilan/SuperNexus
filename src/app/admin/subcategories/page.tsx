@@ -60,7 +60,7 @@ export default async function SubcategoriesPage() {
               Nessuno stile d'addestramento trovato.
             </div>
           ) : (
-            subcats.map((sub) => (
+            subcats.map((sub: any) => (
               <div key={sub.id} className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div style={{ flex: 1, minWidth: '250px' }}>
