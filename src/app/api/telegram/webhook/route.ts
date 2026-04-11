@@ -628,7 +628,13 @@ export async function POST(req: NextRequest) {
                 }
                 return NextResponse.json({ ok: true });
             } else {
-        if (totalAvail <= 0) {
+                return NextResponse.json({ ok: true });
+            }
+        }
+    }
+
+    if (incomingPhoto || incomingDoc) {
+      if (totalAvail <= 0) {
            await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Mensili Esauriti**\n\nHai esaurito tutto il tuo credito per questo mese. Nessun abito verrà processato.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per continuare a vendere senza limiti.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
            return NextResponse.json({ ok: true });
       }
