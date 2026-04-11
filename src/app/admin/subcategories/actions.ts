@@ -187,7 +187,7 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
     }],
     generationConfig: {
       temperature: 0.2, // Temperatura bassa per massima estrazione analitica
-      maxOutputTokens: 800
+      maxOutputTokens: 4000
     },
     safetySettings: [
       { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
@@ -217,7 +217,8 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
 
   const generatedPrompt = aiData.candidates[0].content?.parts?.[0]?.text?.trim() || "";
   if (!generatedPrompt) {
-     throw new Error("Generazione Vuota ritornata dall'AI.");
+     console.error("Generazione VUOTA. Dati completi:", JSON.stringify(aiData, null, 2));
+     throw new Error(`Generazione Vuota. FinishReason: ${aiData.candidates[0].finishReason}. Dati: ${JSON.stringify(aiData)}`);
   }
 
   // 3. Salva nel PromptTemplateSettings
