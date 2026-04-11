@@ -734,7 +734,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
       
       try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 5500); // Timeout a 5.5s per evitare il Vercel Kill (10s max)
+          const timeoutId = setTimeout(() => controller.abort(), 4500); // Timeout a 4.5s per evitare il Vercel Kill (10s max)
 
           const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
               method: "POST",
