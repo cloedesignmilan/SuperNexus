@@ -184,7 +184,7 @@ export async function POST(req: NextRequest) {
                     const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
                     // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
-                    const masterStyle = subcat.prompt_settings.base_prompt_prefix;
+                    const masterStyle = subcat.prompt_settings!.base_prompt_prefix;
                     // Richiesta Operativa con forzatura sulle pose
                     // Richiesta Operativa Estrema per "Virtual Try-On" Rigoroso
                     const userPrompt = `[CLINICAL VIRTUAL TRY-ON OPERATION] 
