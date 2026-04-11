@@ -755,8 +755,11 @@ REGOLE AGGIUNTIVE TASSATIVE:
       let inspectorData: any = {};
       
       try {
+          /* 
+          // BYPASS TEMPORANEO GEMINI PER EVITARE I TIMEOUT DI VERCEL HOBBY (10S LIMIT)
+          // IN MODO DA RENDERE LA SCELTA CATEGORIE IMMEDIATA (0.5 Secondi)
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 4500); // Timeout a 4.5s per evitare il Vercel Kill (10s max)
+          const timeoutId = setTimeout(() => controller.abort(), 4500);
 
           const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
               method: "POST",
@@ -779,7 +782,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
           const rawText = gData?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
           const cleanedText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
           inspectorData = JSON.parse(cleanedText);
-          console.log(`[DECISION ENGINE SINTETICO] Usable: ${inspectorData.technical_validation?.is_usable} | Chiarimenti: ${inspectorData.ambiguity_flags?.requires_user_clarification} | Consigliati: ${inspectorData.suggested_ui_options?.recommended_categories?.join(',')}`);
+          */
+          console.log(`[DECISION ENGINE SINTETICO] Bypass Attivo: Categorie Complete`);
       } catch(e) {
           console.error("Gemini Scaduto o Fallito (Bypass Attivato)", e);
       }
