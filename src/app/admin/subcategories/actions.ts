@@ -166,25 +166,32 @@ export async function runVisionAnalysis(subcategoryId: string) {
   );
 
   // 2. Build Gemini prompt
-  const systemInstruction = "Sei un Senior Art Director. Il tuo compito è analizzare un set di reference fotografiche e sfornare un PROMPT DI GENERAZIONE (in inglese) per clonare l'esatto Mood/Lifestyle fotografico di queste reference. NON limitarti solo alle luci. Presta MOLTA attenzione al LIFESTYLE: descrivi fedelmente l'ambiente circostante (es. strada di New York sfocata, cafe parigino, camera da letto luxury), il mood (gioioso, candid, posato, editoriale) e SE SONO PRESENTI PERSONE, DEVI descrivere il loro atteggiamento, etnicità apparente e pose (es. 'young european woman walking happily, candid lifestyle pose'). Crea una ricetta visiva testuale ricchissima, piena di tag fotografici (photorealistic, 8k, 35mm lens, depth of field). L'output deve essere SOLO in inglese e SOLO il blocco di prompt.";
+  const systemInstruction = `Sei un Master Prompt Engineer e Senior Art Director.
+Il tuo compito è analizzare un set di reference fotografiche e fare "reverse engineering" per estrarre il VERO "DNA visivo" creando un PROMPT DI GENERAZIONE MAGISTRALE (in inglese).
+Il tuo prompt DEVE incorporare queste 4 dimensioni e amalgamarle in un testo descrittivo continuo, denso e iper-tecnico:
+1. Cinematography & Camera: Tipologia di pellicola, lenti, esposizione (es. 35mm, f/1.8, bokeh, Kodak Portra 400). Orario solare, direzionalità e tipologia del lighting (golden hour, neon, rim lighting, softbox).
+2. Environment: Sfondo e macro-ambiente circostante dettagliati al millimetro. Non essere vago, fornisci il mood spaziale esatto.
+3. Subject & Lifestyle: L'atteggiamento dei soggetti, posa, emozione, probabile etnicità (se essenziale per il vibe). La tipologia di scatto (es. candid street photography, posed high-end fashion editorial).
+4. Styling Mood: Le texture dominanti (seta, pelle, materiali industriali) per supportare il mood.
+ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo narrativo ricchissimo in inglese (max 120 parole). Sii specifico, non generalizzare. L'output deve essere composto SOLO ED ESCLUSIVAMENTE dal testo per il prompt, nessuna parola introduttiva.`;
 
-  const visualDirection = subcat.visual_direction_notes ? `REQUISITI EXTRA DELL'AMMINISTRATORE: ${subcat.visual_direction_notes}` : "";
+  const visualDirection = subcat.visual_direction_notes ? `\nDIRETTIVA CATEGORICA DELL'AMMINISTRATORE (Deve avere assoluta priorità sull'estrazione): ${subcat.visual_direction_notes}\n` : "";
 
   const payload = {
     contents: [{
       role: "user",
       parts: [
-        { text: `${systemInstruction}\n\n${visualDirection}\n\nEstrai la ricetta visiva master in inglese da queste reference:` },
+        { text: `${systemInstruction}\n\n${visualDirection}\n\nAdesso estrai l'identikit visivo master in inglese da queste reference fornite:` },
         ...inlineDataImages
       ]
     }],
     generationConfig: {
-      temperature: 0.4,
-      maxOutputTokens: 600
+      temperature: 0.2, // Temperatura bassa per massima estrazione analitica
+      maxOutputTokens: 800
     }
   };
 
-  const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
+  const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
