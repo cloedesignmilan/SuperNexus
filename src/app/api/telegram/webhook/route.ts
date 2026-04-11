@@ -153,7 +153,9 @@ export async function POST(req: NextRequest) {
 
             let meta: any = typeof job.metadata === 'string' ? JSON.parse(job.metadata) : job.metadata;
 
-            if (action === 'cat') {
+            if (action === 'topcat') {
+                meta.confirmedTopCategory = value;
+            } else if (action === 'cat') {
                 meta.confirmedCategory = value;
             } else if (action === 'bot') {
                 meta.confirmedBottom = value;
@@ -306,23 +308,49 @@ export async function POST(req: NextRequest) {
             });
 
             // Determina la prossima domanda
-            if (!meta.confirmedCategory) {
-                // Recupera Categorie Dinamiche da DB (la nuova Tabella)
-                const categories = await (prisma as any).category.findMany({
-                   where: { is_active: true },
+            if (!meta.confirmedTopCategory) {
+                // Recupera SOLTANTO le Categorie Padre (root)
+                const rootCategories = await (prisma as any).category.findMany({
+                   where: { is_active: true, parent_id: null },
                    orderBy: { sort_order: 'asc' }
                 });
                 
                 const catButtons = [];
-                for (let i = 0; i < categories.length; i++) {
-                    catButtons.push(Markup.button.callback(categories[i].name, `cat|${jobId}|${categories[i].id}`));
+                for (let i = 0; i < rootCategories.length; i++) {
+                    catButtons.push(Markup.button.callback(rootCategories[i].name, `topcat|${jobId}|${rootCategories[i].id}`));
                 }
 
                 await bot.telegram.sendMessage(
                     chatId,
-                    "🎯 **Scegli la Categoria di questo capo:**",
+                    "🎯 **Scegli la Macrocategoria di questo capo:**",
                     Markup.inlineKeyboard(catButtons, { columns: 2 })
                 );
+            } else if (!meta.confirmedCategory) {
+                // L'utente ha scelto la Root (es: "Donna"), ora deve scegliere la SubCategory (es: "Catalogo")
+                const subCategories = await (prisma as any).category.findMany({
+                   where: { is_active: true, parent_id: meta.confirmedTopCategory },
+                   orderBy: { sort_order: 'asc' }
+                });
+                
+                if (subCategories.length > 0) {
+                    const subButtons = [];
+                    for (let i = 0; i < subCategories.length; i++) {
+                        subButtons.push(Markup.button.callback(subCategories[i].name, `cat|${jobId}|${subCategories[i].id}`));
+                    }
+                    await bot.telegram.sendMessage(
+                        chatId,
+                        "🌟 **Scegli ora lo Stile / Sottocategoria:**",
+                        Markup.inlineKeyboard(subButtons, { columns: 2 })
+                    );
+                } else {
+                    // Fallback: se non ci sono figli, usa la categoria padre come finale
+                    meta.confirmedCategory = meta.confirmedTopCategory;
+                    await (prisma.generationJob as any).update({
+                        where: { id: jobId },
+                        data: { metadata: meta }
+                    });
+                     await bot.telegram.sendMessage(chatId, `✅ Categoria confermata. Scegli le opzioni finali qui sotto.`, Markup.inlineKeyboard([Markup.button.callback("Avanti ➡️", `next|${jobId}`)]));
+                }
             } else if (meta.isWoman && meta.needsBottomClarification && !meta.confirmedBottom && !meta.isShoesCategory) {
                // Chiedi parte inferiore
                await bot.telegram.sendMessage(
@@ -348,6 +376,15 @@ export async function POST(req: NextRequest) {
                     chatId,
                     "👟 **Dettaglio Custom Rilevato!**\n\nHo notato una scritta, un logo o una targhetta su questo capo e non voglio allucinare parole a caso!\n\n👉 **Per favore, scrivimi qui in chat il testo testuale esatto da stamparci sopra.** (Es. GAËLLE, Guess, ecc.)\n\n*Scrivi il testo nel box qui sotto ed invia.*"
                 );
+            } else if (meta.isShoesCategory && !meta.confirmedShoeTarget) {
+                await bot.telegram.sendMessage(
+                    chatId,
+                    `👟 **Target Demografico:**\n\nPer creare un set coerente e utilizzare il giusto modello del piede, specifica a chi sono destinate queste scarpe:`,
+                    Markup.inlineKeyboard([
+                        [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${jobId}|donna`)],
+                        [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${jobId}|bambina`)]
+                    ])
+                );
             } else if (!meta.confirmedEnvironment) {
                 // Chiedi Ambientata o Studio dinamicamente
                 let envButtons = [];
@@ -372,15 +409,6 @@ export async function POST(req: NextRequest) {
                     `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
                     Markup.inlineKeyboard(envButtons, { columns: 2 })
                 );
-            } else if (meta.isShoesCategory && meta.confirmedEnvironment === 'ambientata' && !meta.confirmedShoeTarget) {
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `👟 **Target Demografico:**\n\nPer creare un set coerente e utilizzare il giusto modello del piede, specifica a chi sono destinate queste scarpe:`,
-                    Markup.inlineKeyboard([
-                        [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${jobId}|donna`)],
-                        [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${jobId}|bambina`)]
-                    ])
-                );
             } else {
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                
@@ -395,7 +423,7 @@ export async function POST(req: NextRequest) {
                } else {
                     await bot.telegram.sendMessage(
                         chatId,
-                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
+                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: Automatico\n\nScegli quante proposte desideri generare:`,
                         Markup.inlineKeyboard([
                             Markup.button.callback("📸 3", `run|${jobId}|3`),
                             Markup.button.callback("📸 5", `run|${jobId}|5`),
@@ -507,14 +535,14 @@ export async function POST(req: NextRequest) {
                 } else {
                     // Legacy DB Category Fallback
                     const fallbacksFromDB = await (prisma as any).category.findMany({
-                        where: { is_active: true },
+                        where: { is_active: true, parent_id: null },
                         orderBy: { sort_order: 'asc' }
                     });
                     const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
                     const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
 
                     for (let i = 0; i < listToRender.length; i++) {
-                        fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${pendingJob.id}|${listToRender[i].id}`));
+                        fallbackButtons.push(Markup.button.callback(listToRender[i].name, `topcat|${pendingJob.id}|${listToRender[i].id}`));
                     }
                 }
 
@@ -804,14 +832,14 @@ REGOLE AGGIUNTIVE TASSATIVE:
           }
       } else {
           const fallbacksFromDB = await (prisma as any).category.findMany({
-              where: { is_active: true },
+              where: { is_active: true, parent_id: null },
               orderBy: { sort_order: 'asc' }
           });
           const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
           const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
 
           for (let i = 0; i < listToRender.length; i++) {
-              fallbackButtons.push(Markup.button.callback(listToRender[i].name, `cat|${jobId}|${listToRender[i].id}`));
+              fallbackButtons.push(Markup.button.callback(listToRender[i].name, `topcat|${jobId}|${listToRender[i].id}`));
           }
       }
 

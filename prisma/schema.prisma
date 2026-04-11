@@ -101,6 +101,9 @@ model Setting {
 
 model Category {
   id               String   @id @default(uuid())
+  parent_id        String?
+  parent           Category?  @relation("SubCategories", fields: [parent_id], references: [id])
+  children         Category[] @relation("SubCategories")
   name             String
   description      String?  @db.Text
   age_range        String?
