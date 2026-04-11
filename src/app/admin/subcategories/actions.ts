@@ -188,7 +188,13 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
     generationConfig: {
       temperature: 0.2, // Temperatura bassa per massima estrazione analitica
       maxOutputTokens: 800
-    }
+    },
+    safetySettings: [
+      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+    ]
   };
 
   const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
@@ -204,9 +210,17 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
     throw new Error("Errore Gemini: " + (aiData.error?.message || "Unknown error"));
   }
 
-  const generatedPrompt = aiData.candidates[0].content.parts[0].text.trim();
+  if (!aiData.candidates || !aiData.candidates[0]) {
+    console.error("Gemini Response Data:", JSON.stringify(aiData, null, 2));
+    throw new Error(`Risposta AI Anomala o Blocco Sicurezza: ${JSON.stringify(aiData)}`);
+  }
 
-  // 3. Save to DB PromptTemplateSettings
+  const generatedPrompt = aiData.candidates[0].content?.parts?.[0]?.text?.trim() || "";
+  if (!generatedPrompt) {
+     throw new Error("Generazione Vuota ritornata dall'AI.");
+  }
+
+  // 3. Salva nel PromptTemplateSettings
   await prisma.promptTemplateSettings.upsert({
     where: { subcategory_id: subcategoryId },
     create: {
