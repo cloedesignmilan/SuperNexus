@@ -628,14 +628,7 @@ export async function POST(req: NextRequest) {
                 }
                 return NextResponse.json({ ok: true });
             } else {
-                return NextResponse.json({ ok: true });
-            }
-        }
-    }
-
-    if (incomingPhoto || incomingDoc) {
-      // --- QUOTA CHECK ANTI INVASIONE STRUTTURALE ---
-      if (totalAvail <= 0) {
+        if (totalAvail <= 0) {
            await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Mensili Esauriti**\n\nHai esaurito tutto il tuo credito per questo mese. Nessun abito verrà processato.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per continuare a vendere senza limiti.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
            return NextResponse.json({ ok: true });
       }
@@ -652,18 +645,6 @@ export async function POST(req: NextRequest) {
       let fileId = incomingPhoto ? incomingPhoto[targetIndex].file_id : incomingDoc.file_id;
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
-
-      // Scarichiamo per Gemini Rapido
-      let imgBuffer = null;
-      /*
-      try {
-          const res = await fetch(fileUrl);
-          imgBuffer = await res.arrayBuffer();
-      } catch(e) {
-          await bot.telegram.sendMessage(chatId, "Errore di download temporaneo.");
-          return NextResponse.json({ ok: true });
-      }
-      */
 
       // Costruiamo le Categorie Dinamiche per Gemini in base all'architettura attiva
       let activeCatNames: string[] = [];
@@ -735,7 +716,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
   "legacy_creator_data": {
     "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
     "type": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
-    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline without fluff."
+    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline senza fluff."
   }
 }`;
       
@@ -848,6 +829,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
               metadata: metadataObj
           }
       });
+
+      await bot.telegram.sendMessage(chatId, "⚙️ TRACE: Nuovo job salvato in DB.", { disable_notification: true });
 
       const fallbackButtons = [];
       
