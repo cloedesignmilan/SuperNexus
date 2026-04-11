@@ -385,45 +385,23 @@ export async function POST(req: NextRequest) {
                         [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${jobId}|bambina`)]
                     ])
                 );
-            } else if (!meta.confirmedEnvironment) {
-                // Chiedi Ambientata o Studio dinamicamente
-                let envButtons = [];
-                if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-                    const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
-                    const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active !== false) || [
-                        { button_label: "📸 In Studio", button_id: "studio" },
-                        { button_label: "🌍 Ambientata", button_id: "ambientata" }
-                    ];
-                    for (let s of activeScenes) {
-                       envButtons.push(Markup.button.callback(s.button_label, `env|${jobId}|${s.button_id}`));
-                    }
-                } else {
-                    envButtons = [
-                        Markup.button.callback("🌍 Ambientata", `env|${jobId}|ambientata`),
-                        Markup.button.callback("📸 In Studio", `env|${jobId}|studio`)
-                    ];
-                }
-
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
-                    Markup.inlineKeyboard(envButtons, { columns: 2 })
-                );
             } else {
                const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
                
-               if (meta.confirmedEnvironment === 'studio_calzature') {
+               if (meta.isCustomClarification) {
                     await bot.telegram.sendMessage(
                         chatId,
-                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: In Studio\n\nProcedo con la generazione del **Set E-Commerce Calzature Esecutivo** (4 inquadrature fisse:\n1. 3/4 Frontale\n2. Top-Down\n3. Tallone\n4. Profilo)`,
+                        `✅ **Tutto Confermato:**\nChiarimento inserito!\n\nScegli quante proposte desideri generare:`,
                         Markup.inlineKeyboard([
-                            Markup.button.callback("🚀 Genera il Set (4 crediti)", `run|${jobId}|4`)
-                        ])
+                            Markup.button.callback("📸 3", `run|${jobId}|3`),
+                            Markup.button.callback("📸 5", `run|${jobId}|5`),
+                            Markup.button.callback("📸 10", `run|${jobId}|10`)
+                        ], { columns: 3 })
                     );
                } else {
                     await bot.telegram.sendMessage(
                         chatId,
-                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: Automatico\n\nScegli quante proposte desideri generare:`,
+                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: Automatico (Designazione Categoria Finale)\n\nScegli quante proposte desideri generare:`,
                         Markup.inlineKeyboard([
                             Markup.button.callback("📸 3", `run|${jobId}|3`),
                             Markup.button.callback("📸 5", `run|${jobId}|5`),
