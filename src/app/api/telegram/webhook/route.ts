@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
         ]);
 
         await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, 
-            "📸 **Immagine Archiviata.**\n\nA quale *Macrocategoria* appartiene questo capo?", 
+            "📸 **Immagine Archiviata.**\n\nGrazie! Scegli la Categoria di questo capo:", 
             { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
         );
         return NextResponse.json({ ok: true });
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Perfetto. Ora scegli il **Look Visivo** che vuoi applicare:", 
+                "✨ Perfetto. Scegli lo Stile:", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
             ];
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Perfetto. Quante foto vuoi generare per questo Book?", 
+                "✨ Ottimo. Quante foto vuoi generare?", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -198,7 +198,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *Gemini Sta Renderizzando ${qty} Immagini Individuali... (Sii paziente)*`, { parse_mode: 'Markdown' });
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini Individuali... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
 
                 let generatedBase64s: string[] = [];
                 const promises = [];
@@ -261,10 +261,10 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
                 if (mediaGroup.length > 1) {
                      // Taglio l'array al limite max di 10 di MediaGroup
                      await bot.telegram.sendMediaGroup(globalChatId, mediaGroup.slice(0, 10));
-                     await bot.telegram.sendMessage(globalChatId, `✅ **BOOK GENERATO CON SUCCESSO! (${generatedBase64s.length} Foto)**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'album finale!`, { parse_mode: 'Markdown' });
+                     await bot.telegram.sendMessage(globalChatId, `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:`, { parse_mode: 'Markdown' });
                 } else {
                      await bot.telegram.sendPhoto(globalChatId, mediaGroup[0].media, {
-                         caption: `✅ **LOOK GENERATO CON SUCCESSO!**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'immagine finale!`,
+                         caption: `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:`,
                          parse_mode: 'Markdown'
                      });
                 }
