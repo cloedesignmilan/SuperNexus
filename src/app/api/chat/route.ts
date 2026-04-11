@@ -67,11 +67,11 @@ Funziona direttamente su Telegram.
 
 Starter:
 - 29€/mese
-- 50 immagini
+- 150 immagini
 
 Retail:
 - 79€/mese
-- 300 immagini
+- 600 immagini
 - priorità GPU
 
 Retail Annuale:
@@ -84,11 +84,11 @@ Retail Annuale:
 
 Se l’utente finisce le immagini:
 
-Starter:
-+50 immagini → 14,90€
+Pacchetto Base:
++100 immagini → 19,00€
 
-Retail:
-+300 immagini → 34,90€
+Pacchetto PRO:
++300 immagini → 39,00€
 
 Regole:
 - acquistabili in qualsiasi momento
