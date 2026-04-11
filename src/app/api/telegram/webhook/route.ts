@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Telegraf, Markup } from "telegraf";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@supabase/supabase-js";
+import { GoogleGenAI } from "@google/genai";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Max timeout for Vercel
@@ -165,38 +166,48 @@ export async function POST(req: NextRequest) {
                 // Richiesta Operativa per fondere l'immagine con lo stile
                 const userPrompt = `Quella che vedi è un'immagine di abbigliamento fornita da un utente (${subcat.category.name}). Voglio che tu RENDERIZZI QUESTA IMMAGINE usando ESATTAMENTE lo stile fotografico e visivo descritto qui di seguito:\n\n[STILE RICHIESTO]: ${masterStyle}\n\nREGOLE: mantieni l'integrità del capo d'abbigliamento principale (forma, taglio, colore), ma genera la nuova fotografia con il mood richiesto.`;
 
-                const payload = {
-                    contents: [{
-                      role: "user",
-                      parts: [
-                        { text: userPrompt },
-                        { inlineData: { data: base64, mimeType } }
-                      ]
-                    }],
-                    generationConfig: {
-                      temperature: 0.6,
-                      maxOutputTokens: 800
+                const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
+                
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "🧠 *Gemini Sta Renderizzando l'Immagine...*", { parse_mode: 'Markdown' });
+
+                const generated = await ai.models.generateContent({
+                    model: 'gemini-3.1-flash-image-preview',
+                    contents: [
+                        {
+                            role: 'user',
+                            parts: [
+                                { inlineData: { data: base64, mimeType } },
+                                { text: userPrompt }
+                            ]
+                        }
+                    ],
+                    config: {
+                        // @ts-ignore
+                        imageConfig: { aspectRatio: "3:4", imageSize: "1K" }
                     }
-                };
-
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "🧠 *Gemini Sta Elaborando il Capo...*", { parse_mode: 'Markdown' });
-
-                const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
                 });
 
-                const aiData = await aiResp.json();
-                
-                if (!aiResp.ok) throw new Error(aiData.error?.message || "Unknown error");
+                let generatedBase64 = null;
+                const candidate = generated.candidates?.[0];
+                if (candidate && candidate.content?.parts) {
+                     for (const part of candidate.content.parts) {
+                         if (part.inlineData && part.inlineData.data) {
+                             generatedBase64 = part.inlineData.data;
+                         }
+                     }
+                }
 
-                const resultText = aiData.candidates[0].content.parts[0].text;
+                if (!generatedBase64) {
+                     throw new Error("Il modello non ha restituito i byte visivi dell'immagine.");
+                }
 
-                // IN UN MONDO REALE: Qui manderesti questi dati a Midjourney/Runway.
-                // Poiché stiamo usando Gemini Flash (MMLM testuale), lui restituirà testo/descrizione.
-                // Se hai accesso a Imagen 3, useremmo Imagen.
-                // Ti rispondo con l'analisi di Gemini per dimostrare l'efficacia del prompt.
+                const { Input } = require('telegraf');
+                const mediaSource = Input.fromBuffer(Buffer.from(generatedBase64, 'base64'), `generated_${timestamp}.jpg`);
+
+                await bot.telegram.sendPhoto(globalChatId, mediaSource, {
+                     caption: `✅ **LOOK GENERATO CON SUCCESSO!**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'immagine finale!`,
+                     parse_mode: 'Markdown'
+                });
 
                 // Registro il Job
                 await prisma.generationJob.create({
@@ -206,11 +217,9 @@ export async function POST(req: NextRequest) {
                         subcategory_id: subId,
                         original_product_image_url: publicUrl,
                         status: "completed",
-                        provider_response: resultText
+                        provider_response: "Immagine Base64 Restituita con Successo"
                     }
                 });
-
-                await bot.telegram.sendMessage(globalChatId, `✅ **Generazione Simulata**\n\n*Il motore AI ha fuso il tuo stile di Addestramento con la tua foto, ecco il risultato testuale del suo output (Midjourney / Imagen genererebbe l'immagine 1:1 basandosi su questo output!)*\n\n${resultText}`, { parse_mode: 'Markdown' });
 
             } catch (error: any) {
                 console.error("AI Generation Error", error);
