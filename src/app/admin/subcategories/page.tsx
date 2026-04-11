@@ -79,6 +79,7 @@ export default async function SubcategoriesPage() {
                                 {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                              </select>
                              <textarea name="short_description" defaultValue={sub.short_description || ''} placeholder="Descrizione Breve" className="input-glass" rows={1}></textarea>
+                             <input type="text" name="target_age" defaultValue={sub.target_age || ''} placeholder="Controllore Età (es. Modello di 25 anni, Modella bambina 5 anni)" className="input-glass" />
                              <textarea name="visual_direction_notes" defaultValue={sub.visual_direction_notes || ''} placeholder="Brief" className="input-glass" rows={2}></textarea>
                              <button type="submit" className="btn-action-amber" style={{ padding: '0.3rem', fontSize: '0.7rem' }}>Salva Modifiche</button>
                           </form>
