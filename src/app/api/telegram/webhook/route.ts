@@ -193,60 +193,62 @@ Devi vestire un modello o adattare l'ambiente a questa precisa veste nello STILE
 REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 1. PRESERVAZIONE STRUTTURALE AL 100%: E' SEVERAMENTE VIETATO modificare o immaginare diversamente la scollatura, le cuciture, i dettagli, la lunghezza dell'abito o delle maniche, cinture e bottoni. Il capo deve essere perfettamente identico.
 2. PRESERVAZIONE MATERIALE AL 100%: Il colore ESATTO, il tipo di tessuto (seta, lana, cotone pesante, ecc) e la texturizzazione visiva devono essere identici all'originale. Non aggiungere pizzi, stampe, o increspature che non esistono nella foto.
-3. ADATTAMENTO CORPOREO: Se lo stile richiede una modella/o, modella virtualmente il capo affinché segua la postura e il volume del fisico, ma senza MAI tagliarlo o alterarne le proporzioni d'identità. Deve sembrare una fotografia reale di QUEL preciso capo indossato.
+3. ADATTAMENTO CORPOREO E VOLTI: Se lo stile richiede una modella/o, la persona DEVE aere un VISO e OCCHI A FUOCO, NITIDI (NO BLUR, NO BOKEH EXTREME SUL VISO). 
 4. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.`;
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *Gemini Sta Renderizzando le Immagini... (Sii paziente)*`, { parse_mode: 'Markdown' });
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *Gemini Sta Renderizzando ${qty} Immagini Individuali... (Sii paziente)*`, { parse_mode: 'Markdown' });
 
-                const numApiCalls = Math.ceil(qty / 4);
-                const remainder = qty % 4;
                 let generatedBase64s: string[] = [];
-
                 const promises = [];
-                for (let i = 0; i < numApiCalls; i++) {
-                    let currentBatchSize = (i === numApiCalls - 1 && remainder !== 0) ? remainder : 4;
-                    // Prevenire currentBatchSize = 0 o bug
-                    if (currentBatchSize <= 0) currentBatchSize = 4;
-                    
-                    promises.push(ai.models.generateContent({
-                        model: 'gemini-3.1-flash-image-preview',
-                        contents: [
-                            {
-                                role: 'user',
-                                parts: [
-                                    { inlineData: { data: base64, mimeType } },
-                                    { text: userPrompt }
-                                ]
+
+                // Esegue esattamente 'qty' richieste individuali per aggirare il limite interno
+                for (let i = 0; i < qty; i++) {
+                    const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
+                    promises.push(
+                        ai.models.generateContent({
+                            model: 'gemini-3.1-flash-image-preview',
+                            contents: [
+                                {
+                                    role: 'user',
+                                    parts: [
+                                        { inlineData: { data: base64, mimeType } },
+                                        { text: variantPrompt }
+                                    ]
+                                }
+                            ],
+                            config: {
+                                // @ts-ignore
+                                imageConfig: { aspectRatio: "3:4" }
                             }
-                        ],
-                        config: {
-                            // @ts-ignore
-                            imageConfig: { aspectRatio: "3:4", numberOfImages: currentBatchSize }
-                        }
-                    }));
+                        })
+                    );
                 }
 
-                const responses = await Promise.all(promises);
+                const responses = await Promise.allSettled(promises);
 
-                for (const resp of responses) {
-                    if (resp.candidates && resp.candidates.length > 0) {
-                        // Google Gemini restituisce N candidati se numberOfImages è N!
-                        for (const candidate of resp.candidates) {
-                            if (candidate.content && candidate.content.parts) {
-                                for (const part of candidate.content.parts) {
-                                    if (part.inlineData && part.inlineData.data) {
-                                        generatedBase64s.push(part.inlineData.data);
+                for (const outcome of responses) {
+                    if (outcome.status === 'fulfilled') {
+                        const resp = outcome.value;
+                        if (resp.candidates && resp.candidates.length > 0) {
+                            for (const candidate of resp.candidates) {
+                                if (candidate.content && candidate.content.parts) {
+                                    for (const part of candidate.content.parts) {
+                                        if (part.inlineData && part.inlineData.data) {
+                                            generatedBase64s.push(part.inlineData.data);
+                                        }
                                     }
                                 }
                             }
                         }
+                    } else {
+                        console.error('Una delle generazioni multiple ha fallito:', outcome.reason);
                     }
                 }
 
                 if (generatedBase64s.length === 0) {
-                     throw new Error("Il modello non ha restituito i byte visivi dell'immagine.");
+                     throw new Error("Tutte le chiamate API sono fallite. Riprova con una quantità minore.");
                 }
 
                 const { Input } = require('telegraf');
