@@ -183,15 +183,18 @@ export async function POST(req: NextRequest) {
                 // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
                 const masterStyle = subcat.prompt_settings.base_prompt_prefix;
                 // Richiesta Operativa con forzatura sulle pose
-                const userPrompt = `Questa immagine in input è il capo da analizzare (${subcat.category.name}).
-OBIETTIVO: Devi CREARE UNA FOTOGRAFIA NUOVA in cui questo capo è immerso o INDOSSATO nel seguente stile visivo:
+                // Richiesta Operativa Estrema per "Virtual Try-On" Rigoroso
+                const userPrompt = `[CLINICAL VIRTUAL TRY-ON OPERATION] 
+L'immagine allegata NON È UNA ISPIRAZIONE, è il SOGGETTO DEL RITRATTO (${subcat.category.name}). 
+Devi vestire un modello o adattare l'ambiente a questa precisa veste nello STILE richiesto:
 
 [STILE RICHIESTO]: ${masterStyle}
 
-REGOLE ASSOLUTE:
-1. SE lo "STILE RICHIESTO" descrive una modella, un manichino o una persona, TU DEVI GENERARE LA PERSONA CHE INDOSSA L'ABITO COPIANDO RIGOROSAMENTE LE LORO POSE E ATTEGGIAMENTI. VIETATO ricreare semplicemente una foto piana/stesa se lo stile dice altrimenti!
-2. Mantieni intatto il design del capo (taglio, colori). Fai una fusione magica.
-3. Se sto generando un batch, varia le pose umane in modo del tutto realistico riprendendo quegli atteggiamenti specifici dalle foto di addestramento.`;
+REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
+1. PRESERVAZIONE STRUTTURALE AL 100%: E' SEVERAMENTE VIETATO modificare o immaginare diversamente la scollatura, le cuciture, i dettagli, la lunghezza dell'abito o delle maniche, cinture e bottoni. Il capo deve essere perfettamente identico.
+2. PRESERVAZIONE MATERIALE AL 100%: Il colore ESATTO, il tipo di tessuto (seta, lana, cotone pesante, ecc) e la texturizzazione visiva devono essere identici all'originale. Non aggiungere pizzi, stampe, o increspature che non esistono nella foto.
+3. ADATTAMENTO CORPOREO: Se lo stile richiede una modella/o, modella virtualmente il capo affinché segua la postura e il volume del fisico, ma senza MAI tagliarlo o alterarne le proporzioni d'identità. Deve sembrare una fotografia reale di QUEL preciso capo indossato.
+4. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.`;
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
