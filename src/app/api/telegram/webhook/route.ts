@@ -435,6 +435,22 @@ export async function POST(req: NextRequest) {
     const incomingDoc = update.message?.document;
     const chatId = update.message?.chat?.id;
 
+    if (incomingText.startsWith("/start")) {
+        console.log("==> Rilevato comando START per la chat: ", chatId);
+        try {
+            await (prisma.generationJob as any).updateMany({
+                where: { telegram_chat_id: chatId.toString(), status: "awaiting_input" },
+                data: { status: "cancelled_by_new_image" }
+            });
+        } catch(e) {}
+
+        await bot.telegram.sendMessage(
+            chatId,
+            "👋 Bentornato su SuperNexus!\n\nSono l'assistente AI avanzato. Ho cancellato eventuali sessioni sospese.\n📸 **Invia direttamente la foto di un abito per iniziare!**"
+        );
+        return NextResponse.json({ ok: true });
+    }
+
     if (incomingText && !incomingText.startsWith("/") && !incomingPhoto && !incomingDoc) {
         // Controlla se c'è un job in sospeso che aspetta il brand o clarification
         const pendingJob = await (prisma.generationJob as any).findFirst({
@@ -841,13 +857,6 @@ REGOLE AGGIUNTIVE TASSATIVE:
           Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
       );
 
-    } else if (update.message?.text?.startsWith("/start")) {
-        console.log("==> Rilevato comando START per la chat: ", chatId);
-        await bot.telegram.sendMessage(
-          chatId,
-          "👋 Bentornato su SuperNexus! Sono l'assistente AI avanzato. Invia la foto di un abito e ti guiderò prima della generazione!"
-        );
-        console.log("==> Messaggio mandato con successo");
     } else if (incomingText) {
         // Se scrive ciao o parole a caso ed è già loggato
         const allJobs = await (prisma.generationJob as any).findMany({
