@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key } from "lucide-react";
+import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key, CheckCircle, XCircle } from "lucide-react";
 import { toggleSubscription, updateAllowance, deleteClient } from "./actions";
 
 export default function ClientList({ clients }: { clients: any[] }) {
@@ -28,105 +28,125 @@ export default function ClientList({ clients }: { clients: any[] }) {
     }
   };
 
-  return (
-    <div className="table-container">
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Cliente / Riferimento</th>
-            <th>Status / Accesso PIN</th>
-            <th>Generazioni (Succ./Err.)</th>
-            <th>Consumo Plafond</th>
-            <th>Azioni Rapide</th>
-          </tr>
-        </thead>
-        <tbody>
-          {clients.map(client => {
-            const isExhausted = client.images_generated >= client.images_allowance;
-            
-            return (
-              <tr key={client.id}>
-                <td>
-                  <strong>{client.email || 'Cliente senza referenza'}</strong>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)' }}>
-                    Creato: {new Date(client.createdAt).toLocaleDateString()}
-                  </div>
-                </td>
-                <td>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                     {client.subscription_active ? 
-                        <span style={{ color: 'var(--color-success)', fontWeight: 'bold' }}>ATTIVO</span> : 
-                        <span style={{ color: '#ef4444', fontWeight: 'bold' }}>SOSP.</span>}
-                  </div>
-                  <div style={{ marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px', background: '#333', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', width: 'fit-content' }}>
-                    <Key size={12} color="#ccff00" /> <strong style={{ color: '#ccff00', letterSpacing: '1px' }}>{client.bot_pin || 'N/A'}</strong>
-                  </div>
-                </td>
-                <td>
-                  <div style={{ fontSize: '0.9rem' }}>✅ {client.successfulJobs} completate</div>
-                  <div style={{ fontSize: '0.8rem', color: '#ef4444' }}>❌ {client.failedJobs} fallite</div>
-                </td>
-                <td>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
-                      <span>{client.images_generated} usati</span>
-                      <span>{client.images_allowance} max</span>
-                    </div>
-                    <div style={{ height: '6px', background: '#333', borderRadius: '3px', overflow: 'hidden' }}>
-                      <div style={{ 
-                        height: '100%', 
-                        width: `${Math.min((client.images_generated / (client.images_allowance || 1)) * 100, 100)}%`,
-                        background: isExhausted ? '#ef4444' : 'var(--color-success)'
-                      }}></div>
-                    </div>
-                    {isExhausted && <span style={{ fontSize: '0.7rem', color: '#ef4444' }}>Plafond esaurito!</span>}
-                  </div>
-                </td>
-                <td>
-                   <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                      <button 
-                        onClick={() => handleToggle(client.id, client.subscription_active)} 
-                        className={`action-btn ${client.subscription_active ? 'delete' : 'success'}`}
-                        title={client.subscription_active ? "Disattiva Cliente" : "Attiva Cliente"}
-                      >
-                         {client.subscription_active ? <PowerOff size={16} /> : <Power size={16} />}
-                      </button>
-                      
-                      <div style={{ display: 'flex', background: '#222', borderRadius: '6px', overflow: 'hidden', border: '1px solid #444' }}>
-                        <input 
-                           type="number" 
-                           placeholder="+50" 
-                           style={{ width: '50px', background: 'transparent', border: 'none', color: 'white', padding: '0 8px', fontSize: '0.8rem' }}
-                           value={topupAmount[client.id] || ""}
-                           onChange={e => setTopupAmount(prev => ({ ...prev, [client.id]: e.target.value }))}
-                        />
-                        <button 
-                          onClick={() => handleTopup(client.id)}
-                          style={{ background: '#ccff00', color: 'black', border: 'none', padding: '4px 8px', cursor: 'pointer', fontWeight: 'bold' }}
-                          title="Ricarica Plafond"
-                        >
-                          <BatteryCharging size={14} />
-                        </button>
-                      </div>
+  if (clients.length === 0) {
+     return (
+        <div style={{ textAlign: 'center', padding: '50px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <p style={{ color: 'var(--text-muted)' }}>Nessun cliente registrato nel CRM. Inizia creando il tuo primo Account Cliente!</p>
+        </div>
+     );
+  }
 
-                      <button onClick={() => handleDelete(client.id)} className="action-btn delete" title="Elimina">
-                        <Trash2 size={16} />
-                      </button>
-                   </div>
-                </td>
-              </tr>
-            );
-          })}
-          
-          {clients.length === 0 && (
-             <tr>
-                <td colSpan={5} style={{ textAlign: 'center', padding: '30px' }}>
-                   Nessun cliente registrato nel CRM. Creane uno nuovo per iniziare!
-                </td>
-             </tr>
-          )}
-        </tbody>
-      </table>
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+      {clients.map(client => {
+        const isExhausted = client.images_generated >= client.images_allowance;
+        const progressPercentage = Math.min((client.images_generated / (client.images_allowance || 1)) * 100, 100);
+        
+        return (
+          <div key={client.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', gap: '15px', position: 'relative', overflow: 'hidden' }}>
+            
+            {/* INTESTAZIONE CARD */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+               <div>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                     {client.email || 'Cliente Senza Nome'}
+                  </h3>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Membro dal {new Date(client.createdAt).toLocaleDateString()}</div>
+               </div>
+               
+               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                 <div style={{ 
+                    padding: '4px 8px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold', 
+                    background: client.subscription_active ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                    color: client.subscription_active ? '#22c55e' : '#ef4444',
+                    border: `1px solid ${client.subscription_active ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
+                 }}>
+                   {client.subscription_active ? 'ATTIVO' : 'SOSPESO'}
+                 </div>
+               </div>
+            </div>
+
+            {/* SEZIONE CHIAVE ACCESSO */}
+            <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid rgba(255,255,255,0.05)' }}>
+               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>PIN Segreto Bot</div>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ccff00', letterSpacing: '2px', fontWeight: 'bold', fontSize: '1.1rem' }}>
+                 <Key size={16} /> {client.bot_pin || '---'}
+               </div>
+            </div>
+
+            {/* PROGRESSO PLAFOND */}
+            <div style={{ marginTop: '5px' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px', color: 'var(--text-muted)' }}>
+                  <span>Consumo Crediti (<strong style={{color: 'white'}}>{client.images_generated}</strong> di <strong style={{color: 'white'}}>{client.images_allowance}</strong>)</span>
+                  <span style={{ color: isExhausted ? '#ef4444' : 'var(--color-primary)' }}>{Math.round(progressPercentage)}%</span>
+               </div>
+               <div style={{ height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                 <div style={{ 
+                   height: '100%', 
+                   width: `${progressPercentage}%`,
+                   background: isExhausted ? '#ef4444' : 'var(--color-primary)',
+                   transition: 'width 0.5s ease-out'
+                 }}></div>
+               </div>
+               {isExhausted && <div style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '6px', fontWeight: 'bold' }}>⚠️ Plafond Completamente Esaurito</div>}
+            </div>
+
+            {/* BOX STATISTICHE GENERAZIONI */}
+            <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                <div style={{ flex: 1, background: 'rgba(34, 197, 94, 0.05)', borderRadius: '8px', padding: '10px', textAlign: 'center', border: '1px solid rgba(34, 197, 94, 0.1)' }}>
+                   <CheckCircle size={20} color="#22c55e" style={{ margin: '0 auto 4px auto' }} />
+                   <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{client.successfulJobs}</div>
+                   <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Riuscite</div>
+                </div>
+                <div style={{ flex: 1, background: 'rgba(239, 68, 68, 0.05)', borderRadius: '8px', padding: '10px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+                   <XCircle size={20} color="#ef4444" style={{ margin: '0 auto 4px auto' }} />
+                   <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{client.failedJobs}</div>
+                   <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Fallite</div>
+                </div>
+            </div>
+
+            <hr style={{ borderColor: 'rgba(255,255,255,0.05)', margin: '5px 0' }} />
+
+            {/* AZIONI E RICARICA */}
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'center' }}>
+               
+               <div style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    onClick={() => handleToggle(client.id, client.subscription_active)} 
+                    className={`action-btn ${client.subscription_active ? 'delete' : 'success'}`}
+                    title={client.subscription_active ? "Sospendi Abbonamento" : "Riattiva Abbonamento"}
+                    style={{ padding: '8px', borderRadius: '8px' }}
+                  >
+                     {client.subscription_active ? <PowerOff size={18} /> : <Power size={18} />}
+                  </button>
+                  <button onClick={() => handleDelete(client.id)} className="action-btn delete" title="Elimina Permanentemente" style={{ padding: '8px', borderRadius: '8px' }}>
+                     <Trash2 size={18} />
+                  </button>
+               </div>
+
+               {/* COMPONENTE RICARICA RAPIDA */}
+               <div style={{ display: 'flex', background: 'rgba(0,0,0,0.5)', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ padding: '0 8px', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}>+</div>
+                  <input 
+                     type="number" 
+                     placeholder="Q.tà" 
+                     style={{ width: '45px', background: 'transparent', border: 'none', color: 'white', fontSize: '0.85rem', outline: 'none' }}
+                     value={topupAmount[client.id] || ""}
+                     onChange={e => setTopupAmount(prev => ({ ...prev, [client.id]: e.target.value }))}
+                  />
+                  <button 
+                    onClick={() => handleTopup(client.id)}
+                    style={{ background: 'var(--color-primary)', color: 'black', border: 'none', padding: '0 12px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
+                    title="Aggiungi Credito"
+                  >
+                    <BatteryCharging size={14} /> Add
+                  </button>
+               </div>
+            </div>
+
+          </div>
+        );
+      })}
     </div>
   );
 }
