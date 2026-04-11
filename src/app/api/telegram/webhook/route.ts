@@ -10,6 +10,8 @@ const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
 // Spostato Schema internamente per renderlo dinamico al runtime
 
+const seenUpdates = new Set<number>();
+
 export async function POST(req: NextRequest) {
   try {
     let botToken = process.env.TELEGRAM_BOT_TOKEN as string;
@@ -17,6 +19,18 @@ export async function POST(req: NextRequest) {
     // Inizializza subito il bot globale
     const bot = new Telegraf(botToken);
     const update = await req.json();
+    
+    // Idempotency: previeni esecuzioni multiple per colpa del timeout/retry automatico di Telegram
+    if (update.update_id) {
+        if (seenUpdates.has(update.update_id)) {
+            console.log("==> RETRY IGNORATO (GIÀ PROCESSATO): ", update.update_id);
+            return NextResponse.json({ ok: true });
+        }
+        seenUpdates.add(update.update_id);
+        // Libera la memoria dopo 5 minuti
+        setTimeout(() => seenUpdates.delete(update.update_id), 300000);
+    }
+
     console.log("🔥 TELEGRAM WEBHOOK HIT");
     console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
 
