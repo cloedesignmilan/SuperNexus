@@ -1,5 +1,4 @@
-import { prisma } from "@/lib/prisma";
-import { createCategory, deleteCategory, toggleCategoryStatus } from "./actions";
+import { createCategory, deleteCategory, toggleCategoryStatus, updateCategory } from "./actions";
 
 export default async function CategoriesPage() {
   const categories = await prisma.category.findMany({
@@ -74,7 +73,18 @@ export default async function CategoriesPage() {
                   categories.map((cat) => (
                     <tr key={cat.id}>
                       <td>
-                        <div style={{ fontWeight: 700 }}>{cat.name}</div>
+                        <details style={{ background: 'transparent' }}>
+                          <summary style={{ cursor: 'pointer', fontWeight: 700, outline: 'none' }}>
+                            {cat.name} ✏️
+                          </summary>
+                          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
+                             <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                               <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
+                               <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={2}></textarea>
+                               <button type="submit" className="btn-action-amber" style={{ padding: '0.3rem', fontSize: '0.7rem' }}>Salva Modifiche</button>
+                             </form>
+                          </div>
+                        </details>
                         {cat.description && <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>{cat.description}</div>}
                       </td>
                       <td style={{ color: 'var(--color-text-muted)', fontFamily: 'monospace' }}>

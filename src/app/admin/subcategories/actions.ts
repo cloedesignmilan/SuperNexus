@@ -48,6 +48,21 @@ export async function deleteSubcategory(id: string) {
   revalidatePath("/admin/subcategories");
 }
 
+export async function updateSubcategory(id: string, formData: FormData) {
+  const name = formData.get("name") as string;
+  const category_id = formData.get("category_id") as string;
+  const short_description = formData.get("short_description") as string;
+  const visual_direction_notes = formData.get("visual_direction_notes") as string;
+  
+  if (!name || !category_id) throw new Error("Nome e categoria sono obbligatori");
+
+  await prisma.subcategory.update({
+    where: { id },
+    data: { name, category_id, short_description, visual_direction_notes }
+  });
+  revalidatePath("/admin/subcategories");
+}
+
 export async function toggleSubcategoryStatus(id: string, currentStatus: boolean) {
   await prisma.subcategory.update({
     where: { id },

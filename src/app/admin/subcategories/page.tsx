@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { createSubcategory, deleteSubcategory, toggleSubcategoryStatus } from "./actions";
+import { createSubcategory, deleteSubcategory, toggleSubcategoryStatus, updateSubcategory } from "./actions";
 import { UploaderBase } from "./uploader-client";
 import { AnalyzeButton } from "./analyze-btn";
 
@@ -63,11 +63,28 @@ export default async function SubcategoriesPage() {
             subcats.map((sub) => (
               <div key={sub.id} className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                  <div>
+                  <div style={{ flex: 1, minWidth: '250px' }}>
                     <span style={{ display: 'inline-block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0.2rem 0.5rem', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '0.5rem' }}>
                       {sub.category.name}
                     </span>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>{sub.name}</h3>
+                    
+                    <details style={{ display: 'inline-block', width: '100%' }}>
+                       <summary style={{ cursor: 'pointer', fontSize: '1.5rem', fontWeight: 800, margin: 0, outline: 'none' }}>
+                          {sub.name} ✏️
+                       </summary>
+                       <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', minWidth: '100%' }}>
+                          <form action={updateSubcategory.bind(null, sub.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                             <input type="text" name="name" defaultValue={sub.name} required placeholder="Nome Subcat" className="input-glass" />
+                             <select name="category_id" defaultValue={sub.category_id} className="input-glass" style={{ color: 'black' }}>
+                                {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                             </select>
+                             <textarea name="short_description" defaultValue={sub.short_description || ''} placeholder="Descrizione Breve" className="input-glass" rows={1}></textarea>
+                             <textarea name="visual_direction_notes" defaultValue={sub.visual_direction_notes || ''} placeholder="Brief" className="input-glass" rows={2}></textarea>
+                             <button type="submit" className="btn-action-amber" style={{ padding: '0.3rem', fontSize: '0.7rem' }}>Salva Modifiche</button>
+                          </form>
+                       </div>
+                    </details>
+                    
                     {sub.visual_direction_notes && <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>{sub.visual_direction_notes}</p>}
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem' }}>

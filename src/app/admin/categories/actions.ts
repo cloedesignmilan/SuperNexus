@@ -53,6 +53,19 @@ export async function deleteCategory(id: string) {
   revalidatePath("/admin/categories");
 }
 
+export async function updateCategory(id: string, formData: FormData) {
+  const name = formData.get("name") as string;
+  const description = formData.get("description") as string;
+  
+  if (!name) throw new Error("Il nome della categoria è obbligatorio");
+
+  await prisma.category.update({
+    where: { id },
+    data: { name, description }
+  });
+  revalidatePath("/admin/categories");
+}
+
 export async function toggleCategoryStatus(id: string, currentStatus: boolean) {
   await prisma.category.update({
     where: { id },
