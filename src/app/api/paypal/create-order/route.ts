@@ -8,25 +8,24 @@ const base = process.env.PAYPAL_ENVIRONMENT === "live"
     : "https://api-m.sandbox.paypal.com";
 
 async function generateAccessToken() {
-    try {
-        if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET || PAYPAL_CLIENT_ID === 'test_client_id_placeholder') {
-            console.warn("MOCK PAYPAL TOKEN GENERATED (Replace with real credentials)");
-            return "mock_access_token";
-        }
-        const auth = Buffer.from(PAYPAL_CLIENT_ID + ":" + PAYPAL_SECRET).toString("base64");
-        const response = await fetch(`${base}/v1/oauth2/token`, {
-            method: "POST",
-            body: "grant_type=client_credentials",
-            headers: {
-                Authorization: `Basic ${auth}`,
-            },
-        });
-        const data = await response.json();
-        return data.access_token;
-    } catch (error) {
-        console.error("Failed to generate Access Token:", error);
-        return null;
+    if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET || PAYPAL_CLIENT_ID === 'test_client_id_placeholder') {
+        console.warn("MOCK PAYPAL TOKEN GENERATED (Replace with real credentials)");
+        return "mock_access_token";
     }
+    const auth = Buffer.from(PAYPAL_CLIENT_ID + ":" + PAYPAL_SECRET).toString("base64");
+    const response = await fetch(`${base}/v1/oauth2/token`, {
+        method: "POST",
+        body: "grant_type=client_credentials",
+        headers: {
+            Authorization: `Basic ${auth}`,
+        },
+    });
+    const data = await response.json();
+    if (data.error) {
+        console.error("PayPal OAuth Error:", data);
+        throw new Error(`Auth Failed in env [${process.env.PAYPAL_ENVIRONMENT || 'sandbox'}]: ${data.error_description || data.error}`);
+    }
+    return data.access_token;
 }
 
 export async function POST(req: Request) {

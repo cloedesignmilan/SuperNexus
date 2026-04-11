@@ -21,6 +21,10 @@ async function generateAccessToken() {
             },
         });
         const data = await response.json();
+        if (data.error) {
+            console.error("PayPal OAuth Error:", data);
+            throw new Error(`Auth Failed in env [${process.env.PAYPAL_ENVIRONMENT || 'sandbox'}]: ${data.error_description || data.error}`);
+        }
         return data.access_token;
     } catch (error) {
         console.error("Failed to generate Access Token:", error);
