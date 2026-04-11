@@ -21,9 +21,11 @@ export async function POST(req: NextRequest) {
     const update = await req.json();
     
     // Idempotency: previeni esecuzioni multiple per colpa del timeout/retry automatico di Telegram
-    if (update.update_id) {
+    // Applichiamo la protezione SOLO ai bottoni (callback) così evitiamo doppie-generazioni e doppi-addebiti.
+    // Non la applichiamo alle foto altrimenti Vercel le blocca a metà se scadono i 10 secondi!
+    if (update.callback_query && update.update_id) {
         if (seenUpdates.has(update.update_id)) {
-            console.log("==> RETRY IGNORATO (GIÀ PROCESSATO): ", update.update_id);
+            console.log("==> RETRY IGNORATO SUI PULSANTI: ", update.update_id);
             return NextResponse.json({ ok: true });
         }
         seenUpdates.add(update.update_id);
