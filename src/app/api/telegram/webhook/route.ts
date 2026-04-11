@@ -208,7 +208,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
                     const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
                     promises.push(
                         ai.models.generateContent({
-                            model: 'gemini-3.1-flash-image-preview',
+                            model: 'gemini-3-pro-image-preview',
                             contents: [
                                 {
                                     role: 'user',
