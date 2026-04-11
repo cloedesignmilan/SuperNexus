@@ -1,98 +1,55 @@
 import { prisma } from "@/lib/prisma";
-import Link from 'next/link';
-import { Settings, FileText, PlusCircle } from 'lucide-react';
-import styles from "./page.module.css";
-import AdminDashboardClient from './AdminDashboardClient';
-
-export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-    // Pricing Ufficiale Vertex AI / Gemini (dal listino di fatturazione GCP)
-    const COST_PER_IMAGE_GEN = 0.03; // Costo esatto per immagine generata (Imagen 3 / Gemini 3.1 Flash Image Output)
-    const COST_PER_VISION_ANALYSIS = 0.0001315; // Costo esatto input immagine (Gemini 2.5 Flash Vision Image Input)
+  const categoriesCount = await prisma.category.count();
+  const subcatsCount = await prisma.subcategory.count();
+  const jobsCount = await prisma.generationJob.count();
 
-    // 1. Dati Prisma
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
+  return (
+    <div>
+      <div style={{ marginBottom: '3rem' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Visore Centrale</h1>
+        <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
+      </div>
 
-    const stores = await (prisma as any).store.findMany({
-        include: {
-            _count: {
-                select: { templates: true, users: true }
-            },
-            jobs: {
-                where: {
-                    createdAt: { gte: startOfMonth }
-                },
-                select: { status: true, results_count: true }
-            }
-        },
-        orderBy: { createdAt: 'desc' }
-    });
-
-    // Ottenere l'ultima attività (Last Active) globalmente tramite aggregazione 
-    const latestJobs = await (prisma as any).generationJob.groupBy({
-        by: ['store_id'],
-        _max: { createdAt: true }
-    });
-    const latestJobsMap = new Map(latestJobs.map((j: any) => [j.store_id, j._max.createdAt]));
-
-    // 2. Calcoli Finanziari Totali (Iterando sui clienti con perfezione API)
-    const storesData = stores.map((store: any) => {
-        let total_cost = 0;
-        let storeImages = 0;
-
-        for (const job of store.jobs) {
-            total_cost += COST_PER_VISION_ANALYSIS;
-            if (job.status === "completato") {
-                storeImages += job.results_count;
-                total_cost += (job.results_count * COST_PER_IMAGE_GEN);
-            }
-        }
-
-        const net_profit = store.monthly_fee - total_cost;
-        const jobs_count = store.jobs.length;
-        
-        const last_active_date = latestJobsMap.get(store.id) || null;
-
-        // Strip heavy relations from payload for blazing fast hydration
-        const { jobs, _count, ...lightStore } = store;
-
-        return {
-            ...lightStore,
-            total_cost,
-            net_profit,
-            total_images: storeImages,
-            jobs_count,
-            last_active_date
-        };
-    });
-
-    let totalApiCost = storesData.reduce((acc: number, store: any) => acc + store.total_cost, 0);
-    const mrr = storesData.reduce((acc: number, store: any) => acc + (store.is_active ? store.monthly_fee : 0), 0);
-    const netProfit = mrr - totalApiCost;
-
-    return (
-        <div className={styles.container}>
-            <header className={styles.header}>
-                <h1 className={styles.title}>SUPERNEXUS</h1>
-                <div style={{display: 'flex', gap: '15px'}}>
-                    <Link href="/admin/prompt-builder" className={styles.secondaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                        <FileText size={18} /> Modular Prompt Builder
-                    </Link>
-                    <Link href="/admin/nuovo-cliente" className={styles.primaryBtn} style={{textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                        <PlusCircle size={18} /> Registra Cliente
-                    </Link>
-                </div>
-            </header>
-
-            <AdminDashboardClient 
-                initialStores={storesData} 
-                mrr={mrr} 
-                totalApiCost={totalApiCost} 
-                netProfit={netProfit} 
-            />
+      <div className="dashboard-grid">
+        <div className="glass-panel" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Macrocategorie</h3>
+            <span style={{ color: '#c084fc', background: 'rgba(168,85,247,0.1)', padding: '0.5rem', borderRadius: '10px' }}>❖</span>
+          </div>
+          <p className="stat-value">{categoriesCount}</p>
         </div>
-    );
+
+        <div className="glass-panel" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Reference Styles</h3>
+            <span style={{ color: 'var(--color-secondary)', background: 'rgba(236,72,153,0.1)', padding: '0.5rem', borderRadius: '10px' }}>◩</span>
+          </div>
+          <p className="stat-value">{subcatsCount}</p>
+        </div>
+
+        <div className="glass-panel" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Total Generations</h3>
+            <span style={{ color: 'var(--color-success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '10px' }}>⚡</span>
+          </div>
+          <p className="stat-value">{jobsCount}</p>
+        </div>
+      </div>
+      
+      <div className="glass-panel" style={{ marginTop: '3rem', padding: '2rem' }}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ color: 'var(--color-primary)' }}>●</span> Stato Motore AI
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>Provider Gemini 2.5 Flash</span>
+          <span style={{ color: 'var(--color-success)', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-success)', boxShadow: '0 0 10px var(--color-success)' }}></div>
+            Operativo
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 }

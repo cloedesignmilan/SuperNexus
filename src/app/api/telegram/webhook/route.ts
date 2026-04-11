@@ -1,901 +1,228 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Telegraf, Markup } from "telegraf";
 import { prisma } from "@/lib/prisma";
-import { GoogleGenAI, Type, Schema } from "@google/genai";
+import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 60;
-
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-
-// Spostato Schema internamente per renderlo dinamico al runtime
+export const maxDuration = 60; // Max timeout for Vercel
 
 const seenUpdates = new Set<number>();
+
+// Inizializza Supabase per caricamento immagini
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function POST(req: NextRequest) {
   try {
     let botToken = process.env.TELEGRAM_BOT_TOKEN as string;
-    
-    // Inizializza subito il bot globale
     const bot = new Telegraf(botToken);
     const update = await req.json();
     
-    // Idempotency: previeni esecuzioni multiple per colpa del timeout/retry automatico di Telegram
-    // Applichiamo la protezione SOLO ai bottoni (callback) così evitiamo doppie-generazioni e doppi-addebiti.
-    // Non la applichiamo alle foto altrimenti Vercel le blocca a metà se scadono i 10 secondi!
+    // Idempotency: skip duplicates
     if (update.callback_query && update.update_id) {
         if (seenUpdates.has(update.update_id)) {
-            console.log("==> RETRY IGNORATO SUI PULSANTI: ", update.update_id);
             return NextResponse.json({ ok: true });
         }
         seenUpdates.add(update.update_id);
-        // Libera la memoria dopo 5 minuti
-        setTimeout(() => seenUpdates.delete(update.update_id), 300000);
     }
-
-    console.log("🔥 TELEGRAM WEBHOOK HIT");
-    console.log("==> UPDATE RICEVUTO DA TELEGRAM: ", JSON.stringify(update));
 
     const globalChatIdNum = update?.message?.chat?.id || update?.callback_query?.message?.chat?.id;
     const globalChatId = globalChatIdNum ? globalChatIdNum.toString() : null;
 
-    if (!globalChatId) {
-         return NextResponse.json({ ok: true });
-    }
+    if (!globalChatId) return NextResponse.json({ ok: true });
 
-    let currentStore = null;
-
-    // --- AUTENTICAZIONE MULTI-TENANT E BLOCCO PASSWORD ---
-    const existingUser = await (prisma as any).user.findUnique({
-        where: { telegram_id: globalChatId }
+    // --- AUTENTICAZIONE PASSWORD ---
+    const existingUser = await prisma.user.findFirst({
+        where: { id: "tel_" + globalChatId }
     });
 
-    if (existingUser && existingUser.store_id) {
-        // Utente noto, carichiamo il suo negozio di appartenenza!
-        currentStore = await (prisma as any).store.findUnique({ where: { id: existingUser.store_id } });
-    } else {
-        // Utente sconosciuto. Chiediamo o controlliamo la password aziendale globale.
+    if (!existingUser) {
         const incomingText = update?.message?.text?.trim() || "";
+        const adminPass = process.env.ADMIN_PASSWORD;
+        if (incomingText && incomingText === adminPass) {
+             await prisma.user.create({
+                 data: { id: "tel_" + globalChatId, email: globalChatId + "@telegram.bot", role: "user" }
+             });
+             await bot.telegram.sendMessage(globalChatId, `✅ **Accesso Autorizzato!**\n\nBenvenuto nella piattaforma SuperNexus.\nMandami pure la foto del capo d'abbigliamento che vuoi trasformare.`, { parse_mode: 'Markdown' });
+             return NextResponse.json({ ok: true });
+        }
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato**\n\nScrivi la Master Password aziendale per sbloccare il bot.`, { parse_mode: 'Markdown' });
+        return NextResponse.json({ ok: true });
+    }
+
+    // --- GESTIONE FOTO IN INGRESSO ---
+    if (update.message?.photo) {
+        // L'utente ha mandato una foto!
+        const photo = update.message.photo[update.message.photo.length - 1]; // Risoluzione più alta
         
-        // Verifica se ci ha inviato una password valida (esiste un negozio con quella password?)
-        if (incomingText && incomingText.length > 2) {
-            const matchedStore = await (prisma as any).store.findFirst({
-                 where: { password: incomingText, is_active: true }
-            });
-            if (matchedStore) {
-                 // Match Perfetto! Registra l'utente per il futuro legandolo al negozio.
-                 await (prisma as any).user.create({
-                     data: { telegram_id: globalChatId, store_id: matchedStore.id, role: "user" }
-                 });
-                 await bot.telegram.sendMessage(globalChatId, `✅ **Accesso Autorizzato!**\n\nBenvenuto nella tua postazione virtuale per **${matchedStore.name}**.\n\nIl tuo account è stato collegato con successo. Da adesso non ti chiederò più la password. Mandami pure una foto dell'abito e cominciamo!`, { parse_mode: 'Markdown' });
-                 return NextResponse.json({ ok: true });
-            }
-        }
+        const loadingMsg = await bot.telegram.sendMessage(globalChatId, "⏳ *Scaricamento immagine in corso...*", { parse_mode: 'Markdown' });
+
+        // Scarica e Carica su Supabase
+        const fileUrl = await bot.telegram.getFileLink(photo.file_id);
+        const response = await fetch(fileUrl.href);
+        const arrayBuffer = await response.arrayBuffer();
         
-        // Nessun match o prima interazione: Blocca in rampa di lancio
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato SuperNexus**\n\nNon risulti registrato. Per favore, scrivi qui in chat la **Password Privata Aziendale** che ti è stata fornita per collegare il tuo account Telegram al tuo Negozio.\n\n*Se vuoi abbonarti o se non ricordi la password, contatta l'assistenza.*`, { parse_mode: 'Markdown' });
-        return NextResponse.json({ ok: true });
-    }
+        const timestamp = Date.now().toString();
+        const fileName = `${globalChatId}_${timestamp}.jpg`;
 
-    // Blocco finale se ci sono anomalie sul negozio caricato
-    if (!currentStore || !currentStore.is_active) {
-        await bot.telegram.sendMessage(globalChatId, `❌ **Errore di Servizio**: Il tuo negozio attualmente risulta disattivato o non più esistente. Contatta l'assistenza.`, { parse_mode: 'Markdown' });
-        return NextResponse.json({ ok: true });
-    }
-
-    // --- BILLING / ON-THE-FLY RESET ---
-    const now = new Date();
-    const nextCycle = new Date(currentStore.billing_cycle_start);
-    nextCycle.setMonth(nextCycle.getMonth() + 1);
-
-    if (now >= nextCycle) {
-        await (prisma as any).store.update({
-            where: { id: currentStore.id },
-            data: {
-                subscription_credits: currentStore.generation_limit,
-                billing_cycle_start: now
-            }
-        });
-        currentStore.subscription_credits = currentStore.generation_limit;
-    }
-
-    // --- VERIFICA AUTOMATICA DELLE IMMAGINI NON RESTITUITE (Vercel Timeout Fallback) ---
-    // Se c'è stata una generazione in cui Vercel è saltato per timeout proprio nel momento dell'invio Telegram
-    const pendingJobs = await (prisma as any).generationJob.findMany({
-        where: { telegram_chat_id: globalChatId.toString(), status: "completato" },
-        orderBy: { createdAt: 'desc' },
-        take: 2
-    });
-    for (let job of pendingJobs) {
-        let meta = job.metadata ? (typeof job.metadata === 'string' ? JSON.parse(job.metadata) : job.metadata) : {};
-        if (meta.generatedImages && meta.generatedImages.length > 0 && meta.telegram_delivered === false && !meta.delivery_retried) {
-            meta.delivery_retried = true; // Evita loop infiniti
-            await (prisma as any).generationJob.update({ where: { id: job.id }, data: { metadata: meta } });
-
-            await bot.telegram.sendMessage(globalChatId, `🔄 **Verifica Automatica di Sistema**\nMi risulta che nell'ultima generazione le foto non ti siano arrivate correttamente a causa della congestione server, le sto recuperando in questo istante e rinviando!`);
-            
-            try {
-                const { Input } = require('telegraf');
-                const mediaGroup = meta.generatedImages.map((urlStr: string, i: number) => {
-                    if (urlStr.startsWith("http")) return { type: 'photo' as const, media: urlStr };
-                    const cleanB64 = urlStr.replace(/^data:image\/\w+;base64,/, "");
-                    return { type: 'photo' as const, media: Input.fromBuffer(Buffer.from(cleanB64, 'base64'), `image_${i}.jpg`) };
-                });
-                await bot.telegram.sendMediaGroup(globalChatId, mediaGroup);
-                meta.telegram_delivered = true;
-                await (prisma as any).generationJob.update({ where: { id: job.id }, data: { metadata: meta } });
-            } catch (err) {
-                console.error("Recupero fallito:", err);
-            }
-        }
-    }
-
-    const totalAvail = currentStore.subscription_credits + currentStore.supplementary_credits;
-    // --- FINE BILLING ---
-
-    // --- CARICAMENTO CONFIGURAZIONI MODULARI ADMIN ---
-    let adminConfig: any = null;
-    try {
-        const settingsBlob = await (prisma as any).setting.findMany({
-            where: { key: { in: ['PROMPT_CONFIG_SETTINGS', 'PROMPT_CONFIG_MASTER', 'PROMPT_CONFIG_NEGATIVES', 'PROMPT_CONFIG_SCENARIOS', 'PROMPT_CONFIG_CATEGORIES', 'PROMPT_CONFIG_MODIFIERS'] } }
-        });
-        adminConfig = {};
-        for (const s of settingsBlob) {
-            adminConfig[s.key] = JSON.parse(s.value);
-        }
-    } catch(e) {
-        console.log("Fallback Admin Config failed in webhook");
-    }
-    const useModularBuilder = adminConfig?.PROMPT_CONFIG_SETTINGS?.use_modular_builder === true;
-
-    // 1) GESTIONE PULSANTI CLICKATI (CALLBACK QUERY)
-    if (update.callback_query) {
-        const cbq = update.callback_query;
-        const dataStr = cbq.data; // formato "cat|jobId|Valore" o "bot|jobId|Valore" o "run|jobId"
-        const chatId = cbq.message?.chat?.id;
-
-        if (dataStr) {
-            await bot.telegram.answerCbQuery(cbq.id).catch(() => {});
-            const parts = dataStr.split('|');
-            const action = parts[0];
-            const jobId = parts[1];
-            const value = parts[2];
-
-            const job: any = await prisma.generationJob.findUnique({ where: { id: jobId } });
-            if (!job || !job.metadata) {
-                await bot.telegram.sendMessage(chatId, "⚠️ Sessione scaduta o non trovata.");
-                return NextResponse.json({ ok: true });
-            }
-
-            let meta: any = typeof job.metadata === 'string' ? JSON.parse(job.metadata) : job.metadata;
-
-            if (action === 'topcat') {
-                meta.confirmedTopCategory = value;
-            } else if (action === 'cat') {
-                meta.confirmedCategory = value;
-            } else if (action === 'bot') {
-                meta.confirmedBottom = value;
-            } else if (action === 'gen') {
-                meta.confirmedGender = value;
-            } else if (action === 'targ') {
-                meta.confirmedShoeTarget = value;
-                meta.confirmedGender = value;
-            } else if (action === 'env') {
-                if (useModularBuilder) {
-                    let customScenario = null;
-                    const cat = adminConfig?.PROMPT_CONFIG_CATEGORIES?.find((c: any) => c.category_name === meta.confirmedCategory);
-                    if (cat && cat.scenarios) {
-                        customScenario = cat.scenarios.find((s: any) => s.button_id === value);
-                    }
-                    
-                    if (customScenario && customScenario.ask_quantity === false) {
-                        // Bypass quantity question if the scenario forces predefined angles
-                        let customAnglesCount = 1;
-                        if (customScenario.camera_angles && customScenario.camera_angles.trim() !== '') {
-                            const angles = customScenario.camera_angles.split('\n').filter((x: string) => x.trim().length > 0);
-                            customAnglesCount = angles.length;
-                        }
-                        
-                        meta.confirmedEnvironment = value; 
-                        
-                        // Previeni doppi click
-                        if (job.status === "processing") return NextResponse.json({ ok: true });
-
-                        // Verifica Quota
-                        if (totalAvail < customAnglesCount) {
-                             await bot.telegram.sendMessage(chatId, `⚠️ **Immagini Insufficienti**\n\nHai tentato di generare una nuova inquadratura, ma non hai abbastanza immagini nel tuo piano.\n\n👉 [Acquista Immagini Extra](https://supernexus.ai/ricarica)`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
-                             return NextResponse.json({ ok: true });
-                        }
-
-                        await (prisma.generationJob as any).update({
-                            where: { id: jobId },
-                            data: { status: "processing", metadata: meta }
-                        });
-                        
-                        bot.telegram.sendMessage(chatId, `✨ **Modalità ${customScenario.button_label} attivata!**\n*(Sto scattando ${customAnglesCount} angolazioni custom...)*`);
-
-                        const protocol = req.headers.get("x-forwarded-proto") || "https";
-                        const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
-                        const baseUrl = host ? `${protocol}://${host}` : `https://x-super-nexus.vercel.app`;
-                        
-                        fetch(`${baseUrl}/api/generate`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                jobId: jobId,
-                                fileUrl: meta.fileUrl,
-                                chatId: chatId,
-                                storeId: currentStore.id,
-                                confirmedCategory: meta.confirmedCategory,
-                                confirmedBottom: null,
-                                confirmedGender: meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo'),
-                                confirmedScene: null,
-                                confirmedEnvironment: value, // stringa custom
-                                confirmedBrand: meta.confirmedBrand,
-                                imgCount: customAnglesCount,
-                                isCustomAnglesOverride: true
-                            })
-                        }).catch(e => console.error(e));
-
-                        await new Promise(r => setTimeout(r, 800));
-                        return NextResponse.json({ ok: true });
-                    }
-                }
-                
-                meta.confirmedEnvironment = value;
-
-            } else if (action === 'run') {
-                // Previene doppi click
-                if (job.status === "processing") {
-                    return NextResponse.json({ ok: true });
-                }
-                // Avvia generazione!
-                const generationCount = parseInt(value || "3");
-                
-                if (totalAvail < generationCount) {
-                     await bot.telegram.sendMessage(chatId, `⚠️ **Immagini Insufficienti**\n\nHai richiesto la generazione di ${generationCount} immagini, ma il tuo piano mensile dispone solo di ${totalAvail} immagini residue.\n\n👉 [Acquista Immagini Extra](https://supernexus.ai/ricarica) per ricaricare subito il tuo monte immagini o attendi il rinnovo automatico.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
-                     return NextResponse.json({ ok: true });
-                }
-
-                const safeGender = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
-                meta.confirmedGender = safeGender; // salva in DB per sicurezza!
-                await (prisma.generationJob as any).update({
-                    where: { id: jobId },
-                    data: { status: "processing", metadata: meta }
-                });
-
-                bot.telegram.sendMessage(chatId, `✨ **La magia dell'IA è in corso!**\n*(Sto preparando l'allestimento fotografico...)*`);
-
-                const protocol = req.headers.get("x-forwarded-proto") || "https";
-                const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
-                const baseUrl = host ? `${protocol}://${host}` : `https://x-super-nexus.vercel.app`;
-                
-                fetch(`${baseUrl}/api/generate`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        jobId: jobId,
-                        fileUrl: meta.fileUrl,
-                        chatId: chatId,
-                        storeId: currentStore.id,
-                        confirmedCategory: meta.confirmedCategory,
-                        confirmedBottom: meta.confirmedBottom,
-                        confirmedGender: safeGender,
-                        confirmedScene: meta.confirmedScene,
-                        confirmedEnvironment: meta.confirmedEnvironment || 'ambientata',
-                        confirmedBrand: meta.confirmedBrand,
-                        imgCount: generationCount
-                    })
-                }).catch(e => console.error(e));
-
-                await new Promise(r => setTimeout(r, 800)); // Safety buffer per Edge Vercel
-                return NextResponse.json({ ok: true });
-            }
-
-            // Verifica se è categoria scarpe
-            let isShoesFeature = meta.isShoesCategory;
-            let catCheckName = meta.confirmedCategory;
-
-            if (meta.confirmedCategory) {
-                if (useModularBuilder) {
-                    catCheckName = meta.confirmedCategory;
-                    if (isShoesFeature === undefined) {
-                        isShoesFeature = meta.confirmedCategory.toLowerCase().includes('scarpe') || meta.confirmedCategory.toLowerCase().includes('calzature');
-                        meta.isShoesCategory = isShoesFeature;
-                    }
-                } else {
-                    try {
-                        const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                        if (catCheck) {
-                            catCheckName = catCheck.name;
-                            if (isShoesFeature === undefined) {
-                                isShoesFeature = catCheck.name.toLowerCase().includes('scarpe') || catCheck.name.toLowerCase().includes('calzature');
-                                meta.isShoesCategory = isShoesFeature;
-                            }
-                        }
-                    } catch(e) {}
-                }
-            }
-
-            // Aggiorna il DB con il blocco confermato
-            await (prisma.generationJob as any).update({
-                where: { id: jobId },
-                data: { metadata: meta }
+        const { data, error } = await supabase.storage
+            .from('telegram-uploads')
+            .upload(fileName, arrayBuffer, {
+                contentType: 'image/jpeg',
+                upsert: true
             });
 
-            // Determina la prossima domanda
-            if (!meta.confirmedTopCategory) {
-                // Recupera SOLTANTO le Categorie Padre (root)
-                const rootCategories = await (prisma as any).category.findMany({
-                   where: { is_active: true, parent_id: null },
-                   orderBy: { sort_order: 'asc' }
-                });
-                
-                const catButtons = [];
-                for (let i = 0; i < rootCategories.length; i++) {
-                    catButtons.push(Markup.button.callback(rootCategories[i].name, `topcat|${jobId}|${rootCategories[i].id}`));
-                }
-
-                await bot.telegram.sendMessage(
-                    chatId,
-                    "🎯 **Scegli la Macrocategoria di questo capo:**",
-                    Markup.inlineKeyboard(catButtons, { columns: 2 })
-                );
-            } else if (!meta.confirmedCategory) {
-                // L'utente ha scelto la Root (es: "Donna"), ora deve scegliere la SubCategory (es: "Catalogo")
-                const subCategories = await (prisma as any).category.findMany({
-                   where: { is_active: true, parent_id: meta.confirmedTopCategory },
-                   orderBy: { sort_order: 'asc' }
-                });
-                
-                if (subCategories.length > 0) {
-                    const subButtons = [];
-                    for (let i = 0; i < subCategories.length; i++) {
-                        subButtons.push(Markup.button.callback(subCategories[i].name, `cat|${jobId}|${subCategories[i].id}`));
-                    }
-                    await bot.telegram.sendMessage(
-                        chatId,
-                        "🌟 **Scegli ora lo Stile / Sottocategoria:**",
-                        Markup.inlineKeyboard(subButtons, { columns: 2 })
-                    );
-                } else {
-                    // Fallback: se non ci sono figli, usa la categoria padre come finale
-                    meta.confirmedCategory = meta.confirmedTopCategory;
-                    await (prisma.generationJob as any).update({
-                        where: { id: jobId },
-                        data: { metadata: meta }
-                    });
-                     await bot.telegram.sendMessage(chatId, `✅ Categoria confermata. Scegli le opzioni finali qui sotto.`, Markup.inlineKeyboard([Markup.button.callback("Avanti ➡️", `next|${jobId}`)]));
-                }
-            } else if (meta.isWoman && meta.needsBottomClarification && !meta.confirmedBottom && !meta.isShoesCategory) {
-               // Chiedi parte inferiore
-               await bot.telegram.sendMessage(
-                    chatId,
-                    `👗 Hai scelto **${catCheckName}**.\n\nUna precisazione importante per le generazioni femminili: è una Gonna o un Pantalone?`,
-                    Markup.inlineKeyboard([
-                        Markup.button.callback("Gonna", `bot|${jobId}|gonna`), 
-                        Markup.button.callback("Pantalone", `bot|${jobId}|pantalone`)
-                    ], { columns: 2 })
-                );
-            } else if (meta.needsGenderClarification && !meta.confirmedGender && !meta.isShoesCategory) {
-                // Chiedi Genere Uomo/Donna (Salto automatico per scarpe)
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `🎯 Hai scelto **${catCheckName}**.\n\nTuttavia, vorrei esserne certo per applicare il giusto modello: **Il capo in foto è per Uomo o per Donna?**`,
-                    Markup.inlineKeyboard([
-                        Markup.button.callback("Uomo", `gen|${jobId}|uomo`), 
-                        Markup.button.callback("Donna", `gen|${jobId}|donna`)
-                    ], { columns: 2 })
-                );
-            } else if (meta.needsBrandClarification && !meta.confirmedBrand && meta.isShoesCategory) {
-                await bot.telegram.sendMessage(
-                    chatId,
-                    "👟 **Dettaglio Custom Rilevato!**\n\nHo notato una scritta, un logo o una targhetta su questo capo e non voglio allucinare parole a caso!\n\n👉 **Per favore, scrivimi qui in chat il testo testuale esatto da stamparci sopra.** (Es. GAËLLE, Guess, ecc.)\n\n*Scrivi il testo nel box qui sotto ed invia.*"
-                );
-            } else if (meta.isShoesCategory && !meta.confirmedShoeTarget) {
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `👟 **Target Demografico:**\n\nPer creare un set coerente e utilizzare il giusto modello del piede, specifica a chi sono destinate queste scarpe:`,
-                    Markup.inlineKeyboard([
-                        [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${jobId}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${jobId}|donna`)],
-                        [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${jobId}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${jobId}|bambina`)]
-                    ])
-                );
-            } else {
-               const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
-               
-               if (meta.isCustomClarification) {
-                    await bot.telegram.sendMessage(
-                        chatId,
-                        `✅ **Tutto Confermato:**\nChiarimento inserito!\n\nScegli quante proposte desideri generare:`,
-                        Markup.inlineKeyboard([
-                            Markup.button.callback("📸 3", `run|${jobId}|3`),
-                            Markup.button.callback("📸 5", `run|${jobId}|5`),
-                            Markup.button.callback("📸 10", `run|${jobId}|10`)
-                        ], { columns: 3 })
-                    );
-               } else {
-                    await bot.telegram.sendMessage(
-                        chatId,
-                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: Automatico (Designazione Categoria Finale)\n\nScegli quante proposte desideri generare:`,
-                        Markup.inlineKeyboard([
-                            Markup.button.callback("📸 3", `run|${jobId}|3`),
-                            Markup.button.callback("📸 5", `run|${jobId}|5`),
-                            Markup.button.callback("📸 10", `run|${jobId}|10`)
-                        ], { columns: 3 })
-                    );
-               }
-            }
+        if (error) {
+            console.error("Supabase Upload Error:", error);
+            await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "❌ Errore durante il caricamento dell'immagine. Crea il bucket `telegram-uploads` su Supabase!");
+            return NextResponse.json({ ok: true });
         }
-        await bot.telegram.answerCbQuery(cbq.id);
-        return NextResponse.json({ ok: true });
-    }
 
-    // 2) GESTIONE IMMAGINE E TESTO LIBERO
-    const incomingText = update.message?.text?.trim() || "";
-    const incomingPhoto = update.message?.photo;
-    const incomingDoc = update.message?.document;
-    const chatId = update.message?.chat?.id;
+        // Recupera le Categorie Attive dal DB per mostrare la pulsantiera
+        const categories = await prisma.category.findMany({ where: { is_active: true }, orderBy: { sort_order: 'asc' } });
+        
+        if (categories.length === 0) {
+             await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "Nessuna macrocategoria configurata. Aggiungine una dal pannello Admin.");
+             return NextResponse.json({ ok: true });
+        }
 
-    if (incomingText.startsWith("/start")) {
-        console.log("==> Rilevato comando START per la chat: ", chatId);
-        try {
-            await (prisma.generationJob as any).updateMany({
-                where: { telegram_chat_id: chatId.toString(), status: "awaiting_input" },
-                data: { status: "cancelled_by_new_image" }
-            });
-        } catch(e) {}
+        const buttons = categories.map(cat => [
+            Markup.button.callback(cat.name, `C_${cat.id}_${timestamp}`)
+        ]);
 
-        await bot.telegram.sendMessage(
-            chatId,
-            "👋 Bentornato su SuperNexus!\n\nSono l'assistente AI avanzato. Ho cancellato eventuali sessioni sospese.\n📸 **Invia direttamente la foto di un abito per iniziare!**"
+        await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, 
+            "📸 **Immagine Archiviata.**\n\nA quale *Macrocategoria* appartiene questo capo?", 
+            { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
         );
         return NextResponse.json({ ok: true });
     }
 
-    if (incomingText && !incomingText.startsWith("/") && !incomingPhoto && !incomingDoc) {
-        // Controlla se c'è un job in sospeso che aspetta il brand o clarification
-        const pendingJob = await (prisma.generationJob as any).findFirst({
-            where: { telegram_chat_id: globalChatId, status: "awaiting_input" },
-            orderBy: { createdAt: 'desc' }
-        });
+    // --- GESTIONE BOTTONI (CALLBACK QUERIES) ---
+    if (update.callback_query && update.callback_query.data) {
+        const action = update.callback_query.data;
+        const msgId = update.callback_query.message.message_id;
 
-        if (pendingJob && pendingJob.metadata) {
-            let meta: any = typeof pendingJob.metadata === 'string' ? JSON.parse(pendingJob.metadata) : pendingJob.metadata;
+        // SCELTA MACRO-CATEGORIA -> MOSTRA SOTTO-CATEGORIE
+        if (action.startsWith('C_')) {
+            const parts = action.split('_');
+            const catId = parts[1];
+            const timestamp = parts[2];
+
+            const subcats = await prisma.subcategory.findMany({ where: { category_id: catId, is_active: true }, orderBy: { sort_order: 'asc' } });
             
-            // Nuova logica: Risoluzione Ambiguità Generale (Step 2.1)
-            if (meta.isCustomClarification) {
-                // Fallback pulito: se manca il type per corruzione dati
-                if (!meta.clarificationType) {
-                    await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { status: "corrupted_state" } });
-                    await bot.telegram.sendMessage(chatId, `⚠️ **Sessione scaduta.**\nPer favore, reinvia la foto per ricominciare l'analisi.`);
-                    return NextResponse.json({ ok: true });
-                }
-
-                meta.clarificationAttempts = (meta.clarificationAttempts || 0) + 1;
-                
-                // Whitelist Control (Gated Validation)
-                let isValid = false;
-                let validOptions: string[] = [];
-                const txt = incomingText.toLowerCase().trim().replace(/[^a-z0-9 ]/g, "");
-
-                switch(meta.clarificationType) {
-                    case 'skirt_or_trousers':
-                        validOptions = ['gonna', 'pantalone', 'pantaloni', 'gonne'];
-                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
-                        break;
-                    case 'top_or_bottom':
-                        validOptions = ['sopra', 'sotto', 'maglia', 'maglietta', 'pantalone', 'gonna'];
-                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
-                        break;
-                    case 'gender_target':
-                        validOptions = ['uomo', 'donna', 'bambino', 'bambina', 'unisex'];
-                        if (validOptions.some(opt => txt.includes(opt))) isValid = true;
-                        break;
-                    case 'focus_item':
-                        // Più aperta, verifichiamo che sia sensata (almeno 3 lettere)
-                        if (txt.length >= 3) isValid = true;
-                        validOptions = ['il dettaglio mostrato'];
-                        break;
-                    default:
-                        isValid = true; // custom fallback pass-through
-                        break;
-                }
-
-                if (!isValid) {
-                    if (meta.clarificationAttempts >= 2) {
-                        console.log(`[CLARIFICATION] Valutazione fallita 2 volte. Sessione abbattuta.`);
-                        await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { status: "failed_clarification" } });
-                        await bot.telegram.sendMessage(chatId, `❌ **Troppi tentativi falliti.**\nL'operazione è stata annullata per sicurezza. Per favore, carica nuovamente la foto e prova ancora.`);
-                        return NextResponse.json({ ok: true });
-                    }
-                    
-                    console.log(`[CLARIFICATION] Valutazione risposta utente: "${txt}" per tipo ${meta.clarificationType}... Esito: RIFIUTATA`);
-                    await bot.telegram.sendMessage(chatId, `❌ **Risposta non valida.**\nPer favore, scrivi chiaramente una di queste opzioni: ${validOptions.join(', ')}`);
-                    
-                    // Salviamo il tentativo incrementato
-                    await (prisma.generationJob as any).update({ where: { id: pendingJob.id }, data: { metadata: meta } });
-                    return NextResponse.json({ ok: true });
-                }
-
-                console.log(`[CLARIFICATION] Risposta ACCETTATA. Contesto iniettato e stato avanzato.`);
-                // SALVO RISPOSTA IN confirmedBottom per passarlo allo Step Generator
-                meta.confirmedBottom = txt; // Normalizzato
-                meta.isCustomClarification = false;
-                
-                await (prisma.generationJob as any).update({
-                    where: { id: pendingJob.id },
-                    data: { metadata: meta }
-                });
-                
-                await bot.telegram.sendMessage(chatId, `✅ Perfetto, ho registrato il dettaglio: "${incomingText}".`);
-                
-                // Ora procediamo con i bottoni delle categorie
-                let recommendedCats = meta.precalculatedCategories || [];
-                let fallbackButtons = [];
-
-                if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-                    const fallbackCats = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).sort((a:any, b:any) => a.order - b.order);
-                    const filteredCats = fallbackCats.filter((c:any) => recommendedCats.includes(c.category_name));
-                    const listToRender = filteredCats.length > 0 ? filteredCats : fallbackCats;
-                    for (let c of listToRender) {
-                        // Passiamo category_name come payload invece di uuid DB
-                        fallbackButtons.push(Markup.button.callback(c.category_name, `cat|${pendingJob.id}|${c.category_name}`));
-                    }
-                } else {
-                    // Legacy DB Category Fallback
-                    const fallbacksFromDB = await (prisma as any).category.findMany({
-                        where: { is_active: true, parent_id: null },
-                        orderBy: { sort_order: 'asc' }
-                    });
-                    const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
-                    const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
-
-                    for (let i = 0; i < listToRender.length; i++) {
-                        fallbackButtons.push(Markup.button.callback(listToRender[i].name, `topcat|${pendingJob.id}|${listToRender[i].id}`));
-                    }
-                }
-
-                await bot.telegram.sendMessage(
-                    chatId,
-                    `🤖 **Continuo il percorso...**\nSeleziona la Categoria corretta: 👇`,
-                    Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
-                );
+            if (subcats.length === 0) {
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "Nessun look configurato per questa categoria.");
                 return NextResponse.json({ ok: true });
             }
-            
-            // Logica legacy Brand: solo se usata in futuro o lasciata compatibile
-            let isShoesFeature = meta.isShoesCategory;
-            if (isShoesFeature === undefined && meta.confirmedCategory) {
-                const catCheck = await (prisma as any).category.findUnique({ where: { id: meta.confirmedCategory } });
-                isShoesFeature = catCheck?.name.toLowerCase().includes('scarpe') || catCheck?.name.toLowerCase().includes('calzature');
-                meta.isShoesCategory = isShoesFeature;
-            }
 
-            if (meta.needsBrandClarification && meta.confirmedCategory && !meta.confirmedBrand && meta.isShoesCategory) {
-                meta.confirmedBrand = incomingText;
-                await (prisma.generationJob as any).update({
-                    where: { id: pendingJob.id },
-                    data: { metadata: meta }
-                });
-                
-                await bot.telegram.sendMessage(chatId, `✅ Salvato! Il brand/testo sarà scolpito come: **${incomingText}**`);
-                
-                // Passa alla prossima domanda
-                if (!meta.confirmedEnvironment) {
-                    let envButtons = [];
-                    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-                        const targetCat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c:any) => c.category_name === meta.confirmedCategory);
-                        const activeScenes = targetCat?.scenarios?.filter((s:any) => s.is_active !== false) || [
-                            { button_label: "📸 In Studio", button_id: "studio" },
-                            { button_label: "🌍 Ambientata", button_id: "ambientata" }
-                        ];
-                        for (let s of activeScenes) {
-                           envButtons.push(Markup.button.callback(s.button_label, `env|${pendingJob.id}|${s.button_id}`));
-                        }
-                    } else {
-                        envButtons = [
-                            Markup.button.callback("🌍 Ambientata", `env|${pendingJob.id}|ambientata`),
-                            Markup.button.callback("📸 In Studio", `env|${pendingJob.id}|studio`)
-                        ];
-                    }
+            const buttons = subcats.map(sub => [
+                Markup.button.callback(sub.name, `S_${sub.id}_${timestamp}`)
+            ]);
 
-                    await bot.telegram.sendMessage(
-                        chatId,
-                        `📸 **Stile Fotografico:**\n\nDesideri che la foto venga inserita in una **Location Reale** o in uno **Studio Fotografico** con sfondo neutro?`,
-                        Markup.inlineKeyboard(envButtons, { columns: 2 })
-                    );
-                } else if (meta.isShoesCategory && meta.confirmedEnvironment !== 'calz_premium' && !meta.confirmedShoeTarget) {
-                    await bot.telegram.sendMessage(
-                        chatId,
-                        `👟 **Target Demografico:**\n\nPer creare un set coerente, specifica a chi sono destinate queste scarpe:`,
-                        Markup.inlineKeyboard([
-                            [Markup.button.callback("👨 Uomo (20-30 anni)", `targ|${pendingJob.id}|uomo`), Markup.button.callback("👩 Donna (20-30 anni)", `targ|${pendingJob.id}|donna`)],
-                            [Markup.button.callback("👦 Bambino (4-10 anni)", `targ|${pendingJob.id}|bambino`), Markup.button.callback("👧 Bambina (4-10 anni)", `targ|${pendingJob.id}|bambina`)]
-                        ])
-                    );
-                } else {
-                   const finalGEnd = meta.confirmedGender || (meta.isWoman ? 'Donna' : 'Uomo');
-                   await bot.telegram.sendMessage(
-                        chatId,
-                        `✅ **Tutto Confermato:**\nGenere: ${finalGEnd}\nStile: ${meta.confirmedEnvironment}\n\nScegli quante proposte desideri generare:`,
-                        Markup.inlineKeyboard([
-                            Markup.button.callback("📸 3", `run|${pendingJob.id}|3`),
-                            Markup.button.callback("📸 5", `run|${pendingJob.id}|5`),
-                            Markup.button.callback("📸 10", `run|${pendingJob.id}|10`)
-                        ], { columns: 3 })
-                    );
-                }
-                return NextResponse.json({ ok: true });
-            } else {
-                return NextResponse.json({ ok: true });
-            }
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                "✨ Perfetto. Ora scegli il **Look Visivo** che vuoi applicare:", 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
+            return NextResponse.json({ ok: true });
         }
-    }
 
-    if (incomingPhoto || incomingDoc) {
-      if (totalAvail <= 0) {
-           await bot.telegram.sendMessage(chatId, `⚠️ **Crediti Mensili Esauriti**\n\nHai esaurito tutto il tuo credito per questo mese. Nessun abito verrà processato.\n\n👉 [Acquista Pacchetto Extra](https://supernexus.ai/ricarica) per continuare a vendere senza limiti.`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
-           return NextResponse.json({ ok: true });
-      }
+        // SCELTA SOTTO-CATEGORIA -> AVVIA GENERAZIONE AI
+        if (action.startsWith('S_')) {
+            const parts = action.split('_');
+            const subId = parts[1];
+            const timestamp = parts[2];
 
-      // Ottimizzazione estrema: usiamo la penultima risoluzione (media) invece della massima
-      // Questo abbassa il tempo di download da 5 secondi a 0.2 secondi e velocizza Gemini del 300%
-      let targetIndex = 0;
-      if (incomingPhoto && incomingPhoto.length > 2) {
-          targetIndex = incomingPhoto.length - 2;
-      } else if (incomingPhoto && incomingPhoto.length > 0) {
-          targetIndex = incomingPhoto.length - 1;
-      }
-      
-      let fileId = incomingPhoto ? incomingPhoto[targetIndex].file_id : incomingDoc.file_id;
-      const fileUrlData = await bot.telegram.getFileLink(fileId);
-      const fileUrl = fileUrlData.toString();
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, "⚡ *Avvio Motore AI...*", { parse_mode: 'Markdown' });
 
-      // Costruiamo le Categorie Dinamiche per Gemini in base all'architettura attiva
-      let activeCatNames: string[] = [];
-      if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-          activeCatNames = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).map((c:any) => c.category_name);
-      } else {
-          const templatesSchemaList = await (prisma as any).category.findMany({ where: { is_active: true } });
-          activeCatNames = templatesSchemaList.map((c:any) => c.name);
-      }
-      
-      const catsJsonArray = JSON.stringify(activeCatNames);
+            // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
+            const subcat = await prisma.subcategory.findUnique({
+                where: { id: subId },
+                include: { prompt_settings: true, category: true }
+            });
 
-      const analysisPrompt = `Sei un esperto ispettore di qualità e analista prodotto. Il capo in foto appartiene a una categoria selezionata.
+            if (!subcat || !subcat.prompt_settings?.base_prompt_prefix) {
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Array generativo non addestrato per questo look. Attiva prima il motore Vision dall'Admin.");
+                return NextResponse.json({ ok: true });
+            }
 
-Analizza l'immagine fornita e restituisci ESATTAMENTE e SOLO un JSON valido, formattato rigorosamente secondo questo schema, senza markdown o testo aggiuntivo fuori dal blocco JSON.
-Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inventare valori. Se l'informazione non è deducibile, usa null.
+            // Ottieni l'URL Pubblico dell'immagine caricata
+            const fileName = `${globalChatId}_${timestamp}.jpg`;
+            const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
 
-REGOLE AGGIUNTIVE TASSATIVE:
-- IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
-- IN 'ambiguity_flags': se individui una calzatura (scarpa) o capo che possiede loghi, scritte o brand visibili ma NON sei in grado di leggerli chiaramente al 100%, setta "unclear_text_or_logo": true. Se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
-- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo.
+            try {
+                // CHIAMATA A GEMINI ================================
+                // Passiamo l'immagine tramite URL, scaricandola al volo per Gemini
+                const response = await fetch(publicUrl);
+                if (!response.ok) throw new Error("Impossibile recuperare l'immagine caricata dal bucket.");
+                const arrayBuffer = await response.arrayBuffer();
+                const base64 = Buffer.from(arrayBuffer).toString('base64');
+                const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
-{
-  "technical_validation": {
-    "is_usable": true,
-    "lighting": "good" | "acceptable" | "poor",
-    "sharpness": "good" | "acceptable" | "poor",
-    "framing": "full" | "partial" | "unclear",
-    "issues": ["too_dark", "blurred", "cluttered_background", "cropped_subject", "low_contrast", "multiple_items", "unclear_focus"] // o array vuoto
-  },
-  "product_classification": {
-    "main_category": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
-    "confidence": 0.95,
-    "is_single_item": true,
-    "gender_presentation": "male" | "female" | "unisex" | "unknown",
-    "front_or_back": "front" | "back" | "unknown"
-  },
-  "preservation_constraints": {
-    "must_preserve_color": true,
-    "must_preserve_shape": true,
-    "must_preserve_fit": true,
-    "must_preserve_print": true,
-    "must_preserve_logo": true,
-    "critical_details": "HYPER-REALISTIC, MANIACAL 1:1 CLONING BLUEPRINT in English. Max 80-120 words. No fluff.",
-    "main_color": "main color or null",
-    "secondary_color": "secondary color or null",
-    "fabric": "fabric material or null",
-    "fit": "slim, loose, oversized, regular or null",
-    "sleeve_length": "short, long, sleeveless, etc or null",
-    "neckline": "v-neck, crew, etc or null",
-    "print_description": "print details or null",
-    "logo_description": "logo details or null",
-    "length": "midi, maxi, cropped, etc or null",
-    "closure_type": "zip, button, lace-up, slip-on, etc or null"
-  },
-  "ambiguity_flags": {
-    "multiple_items_detected": false,
-    "unclear_garment_type": false,
-    "unclear_text_or_logo": false,
-    "requires_user_clarification": false,
-    "clarification_type": "top_or_bottom" | "skirt_or_trousers" | "focus_item" | "gender_target" | "none"
-  },
-  "suggested_ui_options": {
-    "recommended_categories": ${catsJsonArray}, // Scegli al MASSIMO 3 di questi valori testuali esatti se adatti all'immagine.
-    "disabled_categories": ${catsJsonArray}, // Scegli da questa lista se ci sono.
-    "should_ask_question": false,
-    "suggested_question": "stringa domanda breve in italiano o null"
-  },
-  "legacy_creator_data": {
-    "color": "MUST BE IN ENGLISH. Describe color and pattern exactly.",
-    "type": "tshirt" | "shirt" | "dress" | "outfit" | "shoes" | "trousers" | "skirt" | "jacket" | "unknown",
-    "short_description": "MUST BE IN ENGLISH. Short, stable and concise description max 1 line for legacy generative pipeline senza fluff."
-  }
-}`;
-      
-      let inspectorData: any = {};
-      
-      try {
-          /* 
-          // BYPASS TEMPORANEO GEMINI PER EVITARE I TIMEOUT DI VERCEL HOBBY (10S LIMIT)
-          // IN MODO DA RENDERE LA SCELTA CATEGORIE IMMEDIATA (0.5 Secondi)
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 4500);
+                // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
+                const masterStyle = subcat.prompt_settings.base_prompt_prefix;
+                // Richiesta Operativa per fondere l'immagine con lo stile
+                const userPrompt = `Quella che vedi è un'immagine di abbigliamento fornita da un utente (${subcat.category.name}). Voglio che tu RENDERIZZI QUESTA IMMAGINE usando ESATTAMENTE lo stile fotografico e visivo descritto qui di seguito:\n\n[STILE RICHIESTO]: ${masterStyle}\n\nREGOLE: mantieni l'integrità del capo d'abbigliamento principale (forma, taglio, colore), ma genera la nuova fotografia con il mood richiesto.`;
 
-          const apiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                  contents: [{
+                const payload = {
+                    contents: [{
                       role: "user",
                       parts: [
-                          { text: analysisPrompt },
-                          { inlineData: { data: Buffer.from(imgBuffer).toString("base64"), mimeType: "image/jpeg" } }
+                        { text: userPrompt },
+                        { inlineData: { data: base64, mimeType } }
                       ]
-                  }],
-                  generationConfig: { responseMimeType: "application/json" }
-              }),
-              signal: controller.signal
-          });
+                    }],
+                    generationConfig: {
+                      temperature: 0.6,
+                      maxOutputTokens: 800
+                    }
+                };
 
-          clearTimeout(timeoutId);
-          const gData = await apiResp.json();
-          const rawText = gData?.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
-          const cleanedText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-          inspectorData = JSON.parse(cleanedText);
-          */
-          console.log(`[DECISION ENGINE SINTETICO] Bypass Attivo: Categorie Complete`);
-      } catch(e) {
-          console.error("Gemini Scaduto o Fallito (Bypass Attivato)", e);
-      }
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "🧠 *Gemini Sta Elaborando il Capo...*", { parse_mode: 'Markdown' });
 
-      // Creazione JOB in attesa
-      console.log(`[CLARIFICATION] Reset automatico applicato (nuova foto in arrivo cancella code vecchie).`);
-      try {
-          await (prisma.generationJob as any).updateMany({
-              where: { telegram_chat_id: chatId.toString(), status: "awaiting_input" },
-              data: { status: "cancelled_by_new_image" }
-          });
-      } catch (e) {
-          console.error("Cleanup fallito", e);
-      }
+                const aiResp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GOOGLE_AI_STUDIO_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-      // 1) BLOCCO QUALITÀ FOTO
-      if (inspectorData.technical_validation?.is_usable === false) {
-          await bot.telegram.sendMessage(chatId, "❌ **Foto Non Idonea**\n\nLa foto non è abbastanza chiara per lavorare bene. Prova con una foto più luminosa e nitida.");
-          return NextResponse.json({ ok: true });
-      }
+                const aiData = await aiResp.json();
+                
+                if (!aiResp.ok) throw new Error(aiData.error?.message || "Unknown error");
 
-      // 2) GESTIONE AMBIGUITÀ (Soft Block)
-      if (inspectorData.ambiguity_flags?.requires_user_clarification && inspectorData.suggested_ui_options?.suggested_question) {
-          console.log(`[CLARIFICATION] Creato stato di attesa per tipo: ${inspectorData.ambiguity_flags.clarification_type}`);
-          const jobId = "job_" + Date.now() + "_" + Math.floor(Math.random()*1000);
-          const metadataObj = {
-              fileUrl,
-              isCustomClarification: true,
-              clarificationType: inspectorData.ambiguity_flags.clarification_type,
-              clarificationContext: null, // Utente dovrà rispondere con un testo
-              confirmedCategory: null,
-              confirmedBottom: null,
-              confirmedGender: null,
-              confirmedBrand: null,
-              precalculatedCategories: inspectorData.suggested_ui_options?.recommended_categories || []
-          };
-          await (prisma.generationJob as any).create({
-              data: {
-                  id: jobId,
-                  original_image_url: fileUrl,
-                  status: "awaiting_input",
-                  store_id: currentStore.id,
-                  telegram_chat_id: chatId.toString(),
-                  metadata: metadataObj
-              }
-          });
-          await bot.telegram.sendMessage(chatId, `🤔 **Chiarimento Richiesto dall'AI**\n\n${inspectorData.suggested_ui_options.suggested_question}`);
-          return NextResponse.json({ ok: true });
-      }
+                const resultText = aiData.candidates[0].content.parts[0].text;
 
-      // 3) FILTRO CATEGORIE (Tutto Ok, mostra opzioni raccomandate)
-      const recommendedCats = inspectorData.suggested_ui_options?.recommended_categories || [];
-      const genderPres = inspectorData.product_classification?.gender_presentation;
+                // IN UN MONDO REALE: Qui manderesti questi dati a Midjourney/Runway.
+                // Poiché stiamo usando Gemini Flash (MMLM testuale), lui restituirà testo/descrizione.
+                // Se hai accesso a Imagen 3, useremmo Imagen.
+                // Ti rispondo con l'analisi di Gemini per dimostrare l'efficacia del prompt.
 
-      const jobId = "job_" + Date.now() + "_" + Math.floor(Math.random()*1000);
-      const metadataObj = {
-          fileUrl,
-          isWoman: genderPres === "female",
-          needsGenderClarification: genderPres === "unisex" || genderPres === "unknown",
-          needsBottomClarification: false,
-          needsBrandClarification: inspectorData.ambiguity_flags?.unclear_text_or_logo || false,
-          confirmedCategory: null,
-          confirmedBottom: null,
-          confirmedGender: null,
-          confirmedBrand: null
-      };
+                // Registro il Job
+                await prisma.generationJob.create({
+                    data: {
+                        user_id: existingUser.id,
+                        category_id: subcat.category_id,
+                        subcategory_id: subId,
+                        original_product_image_url: publicUrl,
+                        status: "completed",
+                        provider_response: resultText
+                    }
+                });
 
-      await (prisma.generationJob as any).create({
-          data: {
-              id: jobId,
-              original_image_url: fileUrl,
-              status: "awaiting_input",
-              store_id: currentStore.id,
-              telegram_chat_id: chatId.toString(),
-              metadata: metadataObj
-          }
-      });
+                await bot.telegram.sendMessage(globalChatId, `✅ **Generazione Simulata**\n\n*Il motore AI ha fuso il tuo stile di Addestramento con la tua foto, ecco il risultato testuale del suo output (Midjourney / Imagen genererebbe l'immagine 1:1 basandosi su questo output!)*\n\n${resultText}`, { parse_mode: 'Markdown' });
 
-      await bot.telegram.sendMessage(chatId, "⚙️ TRACE: Nuovo job salvato in DB.", { disable_notification: true });
-
-      const fallbackButtons = [];
-      
-      if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-          const fallbackCats = adminConfig.PROMPT_CONFIG_CATEGORIES.filter((c:any) => c.is_active).sort((a:any, b:any) => a.order - b.order);
-          const filteredCats = fallbackCats.filter((c:any) => recommendedCats.includes(c.category_name));
-          const listToRender = filteredCats.length > 0 ? filteredCats : fallbackCats;
-          for (let c of listToRender) {
-              fallbackButtons.push(Markup.button.callback(c.category_name, `cat|${jobId}|${c.category_name}`));
-          }
-      } else {
-          const fallbacksFromDB = await (prisma as any).category.findMany({
-              where: { is_active: true, parent_id: null },
-              orderBy: { sort_order: 'asc' }
-          });
-          const filteredCategories = fallbacksFromDB.filter((c: any) => recommendedCats.includes(c.name));
-          const listToRender = filteredCategories.length > 0 ? filteredCategories : fallbacksFromDB;
-
-          for (let i = 0; i < listToRender.length; i++) {
-              fallbackButtons.push(Markup.button.callback(listToRender[i].name, `topcat|${jobId}|${listToRender[i].id}`));
-          }
-      }
-
-      await bot.telegram.sendMessage(
-          chatId,
-          `👇 **Seleziona o Conferma la Categoria principale dell'abito:**`,
-          Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
-      );
-
-    } else if (incomingText) {
-        // Se scrive ciao o parole a caso ed è già loggato
-        const allJobs = await (prisma.generationJob as any).findMany({
-             where: { telegram_chat_id: globalChatId },
-             orderBy: { createdAt: 'desc' },
-             take: 1
-        });
-        const lastJob = allJobs.length > 0 ? allJobs[0] : null;
-        
-        const debugStr = `DEBUG UNIVERSALE:\nChatID: ${globalChatId}\nTesto Rilevato: ${incomingText}\nUltimo Job ID: ${lastJob ? lastJob.id : 'Nessuno'}\nStatus Ultimo Job: ${lastJob ? lastJob.status : 'N/A'}\nHas Metadata: ${lastJob && lastJob.metadata ? 'Si' : 'No'}`;
-        
-        await bot.telegram.sendMessage(
-          chatId,
-          `👋 Ciao! Ricordati che sono un AI focalizzata sulle immagini.\n\n${debugStr}`
-        );
+            } catch (error: any) {
+                console.error("AI Generation Error", error);
+                await bot.telegram.sendMessage(globalChatId, `❌ **Errore generazione**: ${error.message}`);
+            }
+            return NextResponse.json({ ok: true });
+        }
     }
 
     return NextResponse.json({ ok: true });
   } catch (error: any) {
-    console.error("Errore Webhook Telegram:", error);
-    try {
-       const bodyText = await req.clone().text();
-       const update = JSON.parse(bodyText);
-       const chatId = update?.message?.chat?.id || update?.callback_query?.message?.chat?.id;
-       if (chatId) {
-          const telegrafInfo = require("telegraf");
-          const bot = new telegrafInfo.Telegraf(process.env.TELEGRAM_BOT_TOKEN);
-          await bot.telegram.sendMessage(chatId, `❌ **CRASH INTERNO DEL SERVER:**\n${error?.message}`);
-       }
-    } catch(e){}
-    return NextResponse.json({ error: "Internal Server Error", msg: error?.message }, { status: 500 });
+    console.error("TELEGRAM WEBHOOK ERROR:", error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

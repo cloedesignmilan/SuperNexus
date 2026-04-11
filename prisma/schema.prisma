@@ -7,136 +7,120 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Store {
-  id                  String   @id @default(uuid())
-  name                String
-  slug                String   @unique
-  telegram_bot_token  String?
-  monthly_fee         Float    @default(0)
-  is_active           Boolean  @default(true)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  users               User[]
-  jobs                GenerationJob[]
-  templates           PromptTemplate[]
-  default_template_id String?
-  password            String?
-  default_template    PromptTemplate? @relation("StoreDefaultTemplate", fields: [default_template_id], references: [id])
-  
-  // -- BILLING & GENERATION LIMITS --
-  plan_name              String   @default("STARTER") // e.g. "STARTER", "BOUTIQUE", "ENTERPRISE"
-  generation_limit       Int      @default(50)         // Number of images allowed per month
-  subscription_credits   Int      @default(50)         // Current cycle remaining credits
-  supplementary_credits  Int      @default(0)          // Extra purchased credits that rollover
-  billing_cycle_start    DateTime @default(now())      // Auto-reset anchor date
+model User {
+  id        String   @id @default(uuid())
+  email     String?  @unique
+  password  String?
+  role      String   @default("admin") // admin or staff
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  telegram_configs TelegramConfig[]
+  categories       Category[]
+  jobs             GenerationJob[]
 }
 
-model User {
-  id              String   @id @default(uuid())
-  telegram_id     String?  @unique
-  role            String   @default("user") // admin, user, store_manager
-  store_id        String?
-  store           Store?   @relation(fields: [store_id], references: [id], onDelete: SetNull)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+model TelegramConfig {
+  id                 String   @id @default(uuid())
+  user_id            String
+  telegram_bot_token String
+  telegram_chat_id   String
+  is_active          Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  user_id     String
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  sort_order  Int      @default(0)
+  is_active   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  subcategories Subcategory[]
+  jobs          GenerationJob[]
+}
+
+model Subcategory {
+  id                     String   @id @default(uuid())
+  category_id            String
+  name                   String
+  slug                   String   @unique
+  short_description      String?  @db.Text
+  visual_direction_notes String?  @db.Text
+  sort_order             Int      @default(0)
+  is_active              Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  category         Category                    @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  reference_images SubcategoryReferenceImage[]
+  prompt_settings  PromptTemplateSettings?
+  jobs             GenerationJob[]
+}
+
+model SubcategoryReferenceImage {
+  id             String   @id @default(uuid())
+  subcategory_id String
+  image_url      String
+  storage_path   String?
+  image_order    Int      @default(0)
+  alt_label      String?
+  createdAt      DateTime @default(now())
+
+  subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
+}
+
+model PromptTemplateSettings {
+  id                      String   @id @default(uuid())
+  subcategory_id          String   @unique
+  base_prompt_prefix      String?  @db.Text
+  product_integrity_rules String?  @db.Text
+  negative_prompt         String?  @db.Text
+  output_language         String   @default("it")
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
 }
 
 model GenerationJob {
-  id                  String      @id @default(uuid())
-  original_image_url  String
-  status              String      @default("in lavorazione") // in lavorazione, completato, errore
-  target_template_id  String?
-  results_count       Int         @default(10)
-  store_id            String?
-  store               Store?      @relation(fields: [store_id], references: [id], onDelete: Cascade)
-  telegram_chat_id    String?
-  metadata            Json?
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  images              JobImage[]
-  logs                ErrorLog[]
+  id                            String   @id @default(uuid())
+  user_id                       String
+  category_id                   String
+  subcategory_id                String
+  original_product_image_url    String
+  original_product_storage_path String?
+  status                        String   @default("pending")
+  selected_shot_type            String?
+  custom_notes                  String?  @db.Text
+  prompt_generated              String?  @db.Text
+  provider_name                 String?
+  provider_response             String?  @db.Text
+  error_message                 String?  @db.Text
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime @updatedAt
+
+  user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  category    Category    @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
+  images      JobImage[]
 }
 
 model JobImage {
-  id                  String         @id @default(uuid())
-  job_id              String
-  job                 GenerationJob  @relation(fields: [job_id], references: [id], onDelete: Cascade)
-  image_url           String
-  scene_type          String?
-  createdAt           DateTime       @default(now())
-}
+  id           String   @id @default(uuid())
+  job_id       String
+  image_url    String
+  storage_path String?
+  image_order  Int      @default(0)
+  createdAt    DateTime @default(now())
 
-model PromptTemplate {
-  id          String   @id @default(uuid())
-  name        String
-  category    String
-  base_prompt String   @db.Text
-  rules       String   @db.Text
-  num_images  Int      @default(10)
-  scenes      String   @db.Text // JSON string list of scenes
-  store_id    String?
-  store       Store?   @relation(fields: [store_id], references: [id], onDelete: Cascade)
-  defaultForStores Store[] @relation("StoreDefaultTemplate")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model ErrorLog {
-  id          String         @id @default(uuid())
-  job_id      String?
-  job         GenerationJob? @relation(fields: [job_id], references: [id], onDelete: SetNull)
-  message     String         @db.Text
-  createdAt   DateTime       @default(now())
-}
-
-model Setting {
-  id          String   @id @default(uuid())
-  key         String   @unique
-  value       String   @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// --- NEW MODULAR PROMPT ARCHITECTURE ---
-
-model Category {
-  id               String   @id @default(uuid())
-  parent_id        String?
-  parent           Category?  @relation("SubCategories", fields: [parent_id], references: [id])
-  children         Category[] @relation("SubCategories")
-  name             String
-  description      String?  @db.Text
-  age_range        String?
-  child_age_range  String?
-  is_active        Boolean  @default(true)
-  sort_order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  prompt_master PromptMaster?
-  scenes        Scene[]
-}
-
-model PromptMaster {
-  id             String   @id @default(uuid())
-  category_id    String   @unique
-  category       Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-  title          String
-  prompt_text    String   @db.Text
-  negative_rules String?  @db.Text
-  studio_prompts String?  @db.Text
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-}
-
-model Scene {
-  id          String   @id @default(uuid())
-  category_id String
-  category    Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
-  title       String
-  scene_text  String   @db.Text
-  is_active   Boolean  @default(true)
-  sort_order  Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  job GenerationJob @relation(fields: [job_id], references: [id], onDelete: Cascade)
 }
