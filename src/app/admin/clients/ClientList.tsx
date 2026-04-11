@@ -51,7 +51,9 @@ export default function ClientList({ clients }: { clients: any[] }) {
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                      {client.email || 'Cliente Senza Nome'}
                   </h3>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Membro dal {new Date(client.createdAt).toLocaleDateString()}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                     Membro dal {new Date(client.createdAt).toLocaleDateString('it-IT')}
+                  </div>
                </div>
                
                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
