@@ -39,7 +39,7 @@ export default async function JobsPage() {
                                 <tr key={job.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
                                     <td style={{ padding: '1rem' }}>{new Date(job.createdAt).toLocaleString('it-IT')}</td>
                                     <td style={{ padding: '1rem' }}>
-                                        {job.user?.telegram_id ? job.user.telegram_id.toString() : 'Sconosciuto'}
+                                        {job.user?.email ? job.user.email.replace('telegram_', '').replace('@supernexus.ai', '') : 'Sconosciuto'}
                                     </td>
                                     <td style={{ padding: '1rem' }}>
                                         {job.subcategory?.name || 'VTON Base'} <br/>
