@@ -80,8 +80,8 @@ const CATEGORIES = [
     title: 'Composizioni per Vendita Rapida', 
     desc: 'Trasforma velocemente le eccedenze e gli outlet in post irresistibili per svuotare il magazzino su Amazon, Ebay, Vinted o Depop.',
     imgSrc: '/showcase/invitati/prima.jpg', phoneLabel: 'SCATTO MAGAZZINO', 
-    post1Src: '/showcase/invitati/dopo1.jpg', post1Label: 'MARKETPLACE', 
-    post2Src: '/showcase/invitati/dopo2.jpg', post2Label: 'VETRINA FB', 
+    post1Src: '/showcase/vendita/marketplace.webp', post1Label: 'MARKETPLACE', 
+    post2Src: '/showcase/vendita/vetrina.webp', post2Label: 'VETRINA FB', 
     account: 'outlet_store', likes: '902'
   }
 ];
