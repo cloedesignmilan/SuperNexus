@@ -129,13 +129,33 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         }
 
-        // SCELTA SOTTO-CATEGORIA -> AVVIA GENERAZIONE AI
+        // SCELTA SOTTO-CATEGORIA -> CHIEDI QUANTITÀ
         if (action.startsWith('S_')) {
             const parts = action.split('_');
             const subId = parts[1];
             const timestamp = parts[2];
 
-            await bot.telegram.editMessageText(globalChatId, msgId, undefined, "⚡ *Avvio Motore AI...*", { parse_mode: 'Markdown' });
+            const buttons = [
+                [Markup.button.callback("1 Foto", `Q_1_${subId}_${timestamp}`), Markup.button.callback("3 Foto", `Q_3_${subId}_${timestamp}`)],
+                [Markup.button.callback("5 Foto", `Q_5_${subId}_${timestamp}`), Markup.button.callback("8 Foto", `Q_8_${subId}_${timestamp}`)]
+            ];
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                "✨ Perfetto. Quante foto vuoi generare per questo Book?", 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
+            return NextResponse.json({ ok: true });
+        }
+
+        // SCELTA QUANTITÀ -> AVVIA GENERAZIONE AI
+        if (action.startsWith('Q_')) {
+            const parts = action.split('_');
+            const qtyStr = parts[1];
+            const subId = parts[2];
+            const timestamp = parts[3];
+            const qty = parseInt(qtyStr, 10);
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `⚡ *Avvio Motore AI (Richieste ${qty} immagini)... Attendi fino a 40 secondi!*`, { parse_mode: 'Markdown' });
 
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
             const subcat = await prisma.subcategory.findUnique({
@@ -154,7 +174,6 @@ export async function POST(req: NextRequest) {
 
             try {
                 // CHIAMATA A GEMINI ================================
-                // Passiamo l'immagine tramite URL, scaricandola al volo per Gemini
                 const response = await fetch(publicUrl);
                 if (!response.ok) throw new Error("Impossibile recuperare l'immagine caricata dal bucket.");
                 const arrayBuffer = await response.arrayBuffer();
@@ -163,58 +182,85 @@ export async function POST(req: NextRequest) {
 
                 // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
                 const masterStyle = subcat.prompt_settings.base_prompt_prefix;
-                // Richiesta Operativa Potenziata per rompere la geometria dell'immagine
+                // Richiesta Operativa con forzatura sulle pose
                 const userPrompt = `Questa immagine in input è il capo da analizzare (${subcat.category.name}).
 OBIETTIVO: Devi CREARE UNA FOTOGRAFIA NUOVA in cui questo capo è immerso o INDOSSATO nel seguente stile visivo:
 
 [STILE RICHIESTO]: ${masterStyle}
 
 REGOLE ASSOLUTE:
-1. SE lo "STILE RICHIESTO" descrive una modella, un manichino o una persona, TU DEVI GENERARE LA PERSONA CHE INDOSSA L'ABITO. VIETATO ricreare semplicemente una foto piana/stesa se lo stile dice altrimenti!
-2. Mantieni intatto il design del capo (taglio, colori). Fai una fusione magica.`;
+1. SE lo "STILE RICHIESTO" descrive una modella, un manichino o una persona, TU DEVI GENERARE LA PERSONA CHE INDOSSA L'ABITO COPIANDO RIGOROSAMENTE LE LORO POSE E ATTEGGIAMENTI. VIETATO ricreare semplicemente una foto piana/stesa se lo stile dice altrimenti!
+2. Mantieni intatto il design del capo (taglio, colori). Fai una fusione magica.
+3. Se sto generando un batch, varia le pose umane in modo del tutto realistico riprendendo quegli atteggiamenti specifici dalle foto di addestramento.`;
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "🧠 *Gemini Sta Renderizzando l'Immagine...*", { parse_mode: 'Markdown' });
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *Gemini Sta Renderizzando le Immagini... (Sii paziente)*`, { parse_mode: 'Markdown' });
 
-                const generated = await ai.models.generateContent({
-                    model: 'gemini-3.1-flash-image-preview',
-                    contents: [
-                        {
-                            role: 'user',
-                            parts: [
-                                { inlineData: { data: base64, mimeType } },
-                                { text: userPrompt }
-                            ]
+                const numApiCalls = Math.ceil(qty / 4);
+                const remainder = qty % 4;
+                let generatedBase64s: string[] = [];
+
+                const promises = [];
+                for (let i = 0; i < numApiCalls; i++) {
+                    let currentBatchSize = (i === numApiCalls - 1 && remainder !== 0) ? remainder : 4;
+                    // Prevenire currentBatchSize = 0 o bug
+                    if (currentBatchSize <= 0) currentBatchSize = 4;
+                    
+                    promises.push(ai.models.generateContent({
+                        model: 'gemini-3.1-flash-image-preview',
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [
+                                    { inlineData: { data: base64, mimeType } },
+                                    { text: userPrompt }
+                                ]
+                            }
+                        ],
+                        config: {
+                            // @ts-ignore
+                            imageConfig: { aspectRatio: "3:4", numberOfImages: currentBatchSize }
                         }
-                    ],
-                    config: {
-                        // @ts-ignore
-                        imageConfig: { aspectRatio: "3:4", imageSize: "1K" }
-                    }
-                });
-
-                let generatedBase64 = null;
-                const candidate = generated.candidates?.[0];
-                if (candidate && candidate.content?.parts) {
-                     for (const part of candidate.content.parts) {
-                         if (part.inlineData && part.inlineData.data) {
-                             generatedBase64 = part.inlineData.data;
-                         }
-                     }
+                    }));
                 }
 
-                if (!generatedBase64) {
+                const responses = await Promise.all(promises);
+
+                for (const resp of responses) {
+                    if (resp.candidates && resp.candidates.length > 0) {
+                        const candidate = resp.candidates[0];
+                        if (candidate.content && candidate.content.parts) {
+                            for (const part of candidate.content.parts) {
+                                if (part.inlineData && part.inlineData.data) {
+                                    generatedBase64s.push(part.inlineData.data);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (generatedBase64s.length === 0) {
                      throw new Error("Il modello non ha restituito i byte visivi dell'immagine.");
                 }
 
                 const { Input } = require('telegraf');
-                const mediaSource = Input.fromBuffer(Buffer.from(generatedBase64, 'base64'), `generated_${timestamp}.jpg`);
+                const mediaGroup = generatedBase64s.map((b64, idx) => ({
+                    type: 'photo' as const,
+                    media: Input.fromBuffer(Buffer.from(b64, 'base64'), `generated_${timestamp}_${idx}.jpg`)
+                }));
 
-                await bot.telegram.sendPhoto(globalChatId, mediaSource, {
-                     caption: `✅ **LOOK GENERATO CON SUCCESSO!**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'immagine finale!`,
-                     parse_mode: 'Markdown'
-                });
+                // Se ci sono più di 1 foto inviamo un album
+                if (mediaGroup.length > 1) {
+                     // Taglio l'array al limite max di 10 di MediaGroup
+                     await bot.telegram.sendMediaGroup(globalChatId, mediaGroup.slice(0, 10));
+                     await bot.telegram.sendMessage(globalChatId, `✅ **BOOK GENERATO CON SUCCESSO! (${generatedBase64s.length} Foto)**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'album finale!`, { parse_mode: 'Markdown' });
+                } else {
+                     await bot.telegram.sendPhoto(globalChatId, mediaGroup[0].media, {
+                         caption: `✅ **LOOK GENERATO CON SUCCESSO!**\n\nStile Applicato: *${subcat.name}*\nCategoria: *${subcat.category.name}*\n\nEccoti l'immagine finale!`,
+                         parse_mode: 'Markdown'
+                     });
+                }
 
                 // Registro il Job
                 await prisma.generationJob.create({
@@ -224,7 +270,7 @@ REGOLE ASSOLUTE:
                         subcategory_id: subId,
                         original_product_image_url: publicUrl,
                         status: "completed",
-                        provider_response: "Immagine Base64 Restituita con Successo"
+                        provider_response: `Album di ${generatedBase64s.length} foto in Base64`
                     }
                 });
 
