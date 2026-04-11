@@ -25,6 +25,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <Link href="/admin/subcategories" className="admin-nav-item">
             <span style={{ color: 'var(--color-secondary)' }}>◩</span> Sottocategorie & Asset
           </Link>
+          <Link href="/admin/clients" className="admin-nav-item">
+            <span style={{ color: '#f59e0b' }}>👥</span> CRM & Clienti
+          </Link>
           <Link href="/admin/jobs" className="admin-nav-item">
             <span style={{ color: 'var(--color-success)' }}>⚡</span> Generazioni AI
           </Link>

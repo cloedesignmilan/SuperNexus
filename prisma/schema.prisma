@@ -8,12 +8,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String?  @unique
-  password  String?
-  role      String   @default("admin") // admin or staff
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  email               String?  @unique
+  password            String?
+  role                String   @default("admin") // admin, user, client
+  bot_pin             String?  @unique
+  telegram_chat_id    String?  @unique // Salva il chat ID quando si collega dal bot
+  subscription_active Boolean  @default(true)
+  images_allowance    Int      @default(0) // Limite credito immagini
+  images_generated    Int      @default(0) // Consumo totale
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   telegram_configs TelegramConfig[]
   categories       Category[]

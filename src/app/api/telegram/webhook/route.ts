@@ -34,22 +34,42 @@ export async function POST(req: NextRequest) {
 
     if (!globalChatId) return NextResponse.json({ ok: true });
 
-    // --- AUTENTICAZIONE PASSWORD ---
-    const existingUser = await prisma.user.findFirst({
-        where: { id: "tel_" + globalChatId }
+    // --- AUTENTICAZIONE CRM CLIENTE ---
+    let existingUser = await prisma.user.findFirst({
+        where: {
+            OR: [
+                { telegram_chat_id: globalChatId },
+                { id: "tel_" + globalChatId } // Supporto legacy
+            ]
+        }
     });
 
     if (!existingUser) {
         const incomingText = update?.message?.text?.trim() || "";
-        const adminPass = process.env.ADMIN_PASSWORD;
-        if (incomingText && incomingText === adminPass) {
-             await prisma.user.create({
-                 data: { id: "tel_" + globalChatId, email: globalChatId + "@telegram.bot", role: "user" }
-             });
-             await bot.telegram.sendMessage(globalChatId, `✅ **Accesso Autorizzato!**\n\nBenvenuto nella piattaforma SuperNexus.\nMandami pure la foto del capo d'abbigliamento che vuoi trasformare.`, { parse_mode: 'Markdown' });
-             return NextResponse.json({ ok: true });
+        
+        if (incomingText) {
+            const userWithPin = await prisma.user.findUnique({
+                where: { bot_pin: incomingText }
+            });
+
+            if (userWithPin) {
+                existingUser = await prisma.user.update({
+                    where: { id: userWithPin.id },
+                    data: { telegram_chat_id: globalChatId }
+                });
+
+                const rem = existingUser.images_allowance - existingUser.images_generated;
+                await bot.telegram.sendMessage(globalChatId, `✅ **Account Collegato!**\n\nBenvenuto nella piattaforma aziendale SuperNexus.\nPlafond Immagini: **${rem} rimanenti**.\n\nMandami pure la foto del capo d'abbigliamento che vuoi elaborare.`, { parse_mode: 'Markdown' });
+                return NextResponse.json({ ok: true });
+            }
         }
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato**\n\nScrivi la Master Password aziendale per sbloccare il bot.`, { parse_mode: 'Markdown' });
+        
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato**\n\nQuesto Bot è privato. Per favore, inserisci il tuo PIN personale fornito dall'agenzia per sbloccare la tua area cliente.`, { parse_mode: 'Markdown' });
+        return NextResponse.json({ ok: true });
+    }
+
+    if (!existingUser.subscription_active) {
+        await bot.telegram.sendMessage(globalChatId, `⛔ **Accesso Bloccato**\n\nIl tuo abbonamento risulta disattivato. Contatta l'amministrazione per rinnovarlo.`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
@@ -154,6 +174,15 @@ export async function POST(req: NextRequest) {
             const subId = parts[2];
             const timestamp = parts[3];
             const qty = parseInt(qtyStr, 10);
+
+            // Controllo Crediti Clienti
+            if (existingUser.role !== 'admin') {
+                const remaining = existingUser.images_allowance - existingUser.images_generated;
+                if (qty > remaining) {
+                    await bot.telegram.editMessageText(globalChatId, msgId, undefined, `💳 **Credito Insufficiente**\n\nHai tentato di generare ${qty} immagini, ma ti rimangono solo **${remaining}** crediti disponibili.\nContatta l'admin per ricaricare il tuo plafond.`, { parse_mode: 'Markdown' });
+                    return NextResponse.json({ ok: true });
+                }
+            }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, `⚡ *Avvio Motore AI (Richieste ${qty} immagini)... Attendi fino a 40 secondi!*`, { parse_mode: 'Markdown' });
 
@@ -270,6 +299,12 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                          parse_mode: 'Markdown'
                      });
                 }
+
+                // Gestione Consumo Plafond Clienti
+                await prisma.user.update({
+                    where: { id: existingUser.id },
+                    data: { images_generated: { increment: generatedBase64s.length } }
+                });
 
                 // Registro il Job
                 await prisma.generationJob.create({
