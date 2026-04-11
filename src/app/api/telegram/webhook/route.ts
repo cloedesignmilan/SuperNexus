@@ -198,7 +198,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini Individuali... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini ... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
 
                 let generatedBase64s: string[] = [];
                 const promises = [];
