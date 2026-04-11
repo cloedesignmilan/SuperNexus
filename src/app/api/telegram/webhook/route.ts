@@ -179,7 +179,14 @@ export async function POST(req: NextRequest) {
             if (existingUser.role !== 'admin') {
                 const remaining = existingUser.images_allowance - existingUser.images_generated;
                 if (qty > remaining) {
-                    await bot.telegram.editMessageText(globalChatId, msgId, undefined, `💳 **Credito Insufficiente**\n\nHai tentato di generare ${qty} immagini, ma ti rimangono solo **${remaining}** crediti disponibili.\nContatta l'admin per ricaricare il tuo plafond.`, { parse_mode: 'Markdown' });
+                    const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://supernexus.vercel.app";
+                    await bot.telegram.editMessageText(
+                        globalChatId, 
+                        msgId, 
+                        undefined, 
+                        `💳 **Credito Esaurito**\n\nHai richiesto ${qty} immagini, ma ti rimangono solo **${remaining}** crediti disponibili nel tuo account aziendale.\n\n⚡️ **Puoi acquistare istantaneamente un pacchetto di Ricarica per sbloccare nuove generazioni:**\n👉 [Clicca qui per Ricaricare Online](${hostUrl}/ricarica)\n\n*(Il tuo PIN Segreto in caso ti venga richiesto è: \`${existingUser.bot_pin}\`)*`,
+                        { parse_mode: 'Markdown', disable_web_page_preview: true }
+                    );
                     return NextResponse.json({ ok: true });
                 }
             }
