@@ -654,7 +654,8 @@ export async function POST(req: NextRequest) {
       const fileUrl = fileUrlData.toString();
 
       // Scarichiamo per Gemini Rapido
-      let imgBuffer;
+      let imgBuffer = null;
+      /*
       try {
           const res = await fetch(fileUrl);
           imgBuffer = await res.arrayBuffer();
@@ -662,6 +663,7 @@ export async function POST(req: NextRequest) {
           await bot.telegram.sendMessage(chatId, "Errore di download temporaneo.");
           return NextResponse.json({ ok: true });
       }
+      */
 
       // Costruiamo le Categorie Dinamiche per Gemini in base all'architettura attiva
       let activeCatNames: string[] = [];
