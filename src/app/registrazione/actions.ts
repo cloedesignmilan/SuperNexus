@@ -30,6 +30,7 @@ export async function processRegistrationFrontend(email: string, planName: strin
                 role: 'client',
                 bot_pin: pin,
                 images_allowance: imagesAllowance,
+                base_allowance: imagesAllowance,
                 subscription_active: true,
                 paypal_subscription_id: subscriptionId || null,
                 subscription_status: 'active',

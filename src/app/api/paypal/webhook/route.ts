@@ -20,18 +20,32 @@ export async function POST(req: Request) {
             const subscriptionId = event.resource.billing_agreement_id;
             
             if (subscriptionId) {
-                // Aggiorniamo di 30 giorni la scadenza (+1 mese)
-                const newExpires = new Date();
-                newExpires.setDate(newExpires.getDate() + 30);
-                
-                await prisma.user.updateMany({
-                    where: { paypal_subscription_id: subscriptionId },
-                    data: {
-                        subscription_status: 'active',
-                        subscription_expires_at: newExpires
-                    }
+                // Troviamo l'utente
+                const user = await prisma.user.findUnique({
+                    where: { paypal_subscription_id: subscriptionId }
                 });
-                console.log(`[PayPal Webhook] Abbonamento ${subscriptionId} rinnovato con successo nel database.`);
+
+                if (user) {
+                    // Calcolo riporto crediti: i crediti extra (top-up) non usati si conservano,
+                    // quelli del piano base si azzerano.
+                    const leftover = user.images_allowance - user.images_generated;
+                    const extraRemaining = Math.max(0, leftover - user.base_allowance);
+                    const newAllowance = user.base_allowance + extraRemaining;
+
+                    const newExpires = new Date();
+                    newExpires.setDate(newExpires.getDate() + 30);
+                    
+                    await prisma.user.update({
+                        where: { id: user.id },
+                        data: {
+                            subscription_status: 'active',
+                            subscription_expires_at: newExpires,
+                            images_allowance: newAllowance,
+                            images_generated: 0
+                        }
+                    });
+                    console.log(`[PayPal Webhook] Abbonamento ${subscriptionId} rinnovato. Crediti Ricalibrati a ${newAllowance}`);
+                }
             }
         } 
         else if (event.event_type === 'BILLING.SUBSCRIPTION.CANCELLED' || event.event_type === 'BILLING.SUBSCRIPTION.SUSPENDED') {
