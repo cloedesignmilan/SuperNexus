@@ -10,10 +10,7 @@ function generateSecurePassword(storeName: string): string {
     return pin.toString();
 }
 
-export async function processRegistration(formData: FormData) {
-    const storeName = formData.get('storeName') as string;
-    const planName = formData.get('planName') as string;
-    
+export async function processRegistrationFrontend(storeName: string, planName: string) {
     let genLimit = 0;
     let monthlyFee = 0.0;
     
@@ -21,32 +18,24 @@ export async function processRegistration(formData: FormData) {
     if (planName === 'starter') {
         genLimit = 150;
         monthlyFee = 29.90;
-    } else if (planName === 'pro') {
+    } else if (planName === 'retail') {
         genLimit = 500;
         monthlyFee = 69.90;
-    } else if (planName === 'enterprise') {
+    } else if (planName === 'retail_annual') {
         genLimit = 1500;
         monthlyFee = 149.90;
     }
 
-    // Crea un nuovo cliente nel Database
+    // Crea un nuovo cliente nel Database usando il modello User
     const password = generateSecurePassword(storeName);
 
-    // Genera slug univoco basato su nome e numeri random per evitare conflitti Prisma
-    const baseSlug = storeName.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const finalSlug = baseSlug + '-' + Math.floor(100 + Math.random() * 900);
-
-    const newStore = await (prisma as any).store.create({
+    const newUser = await prisma.user.create({
         data: {
-            name: storeName,
-            slug: finalSlug,
-            password: password,
-            plan_name: planName.toUpperCase(),
-            monthly_fee: monthlyFee,
-            generation_limit: genLimit,
-            subscription_credits: genLimit, // Prima carica inclusa istantanea
-            supplementary_credits: 0,
-            is_active: true
+            email: storeName, // Salviamo in email il valore inserito
+            role: "client",
+            bot_pin: password, // Il password qua lo usiamo cone bot_pin simulato
+            images_allowance: genLimit,
+            subscription_active: true
         }
     });
 

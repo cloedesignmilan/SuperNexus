@@ -1,10 +1,14 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { processRegistration } from './actions';
 import { ArrowLeft, CheckCircle2, Zap, Gem } from 'lucide-react';
-import styles from '../admin/page.module.css'; // Possiamo riusare lo stesso CSS dark
+import PayPalCheckout from './PayPalCheckout';
 
 export default function RegistrazionePage() {
+    const [email, setEmail] = useState("");
+    const [planName, setPlanName] = useState("starter");
+
     return (
         <div style={{minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: '40px 20px', fontFamily: 'Inter, sans-serif'}}>
             <div style={{maxWidth: '800px', margin: '0 auto'}}>
@@ -17,21 +21,24 @@ export default function RegistrazionePage() {
                     <p style={{color: '#a0a0a0', fontSize: '1.1rem'}}>Seleziona il piano più adatto al tuo volume di vendite e inizia subito a vendere.</p>
                 </div>
 
-                <form action={processRegistration} style={{background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '40px'}}>
+                <div style={{background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '40px'}}>
                     
                     <div style={{marginBottom: '30px'}}>
-                        <label style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem', fontWeight: 600}}>Nome del tuo Negozio / Boutique</label>
-                        <input type="text" name="storeName" required placeholder="Es. Armani Milano, Magazzini Emilio..."
+                        <label style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem', fontWeight: 600}}>Indirizzo Email / Nome Negozio</label>
+                        <input type="text" name="storeName" required placeholder="Es. info@mioufficio.it"
+                               value={email}
+                               onChange={(e) => setEmail(e.target.value)}
                                style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
-                        <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>Questo nome verrà usato per configurare il tuo cruscotto aziendale e generare le tue chiavi di sicurezza.</p>
+                        <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>Questa email riceverà i report generazionali e servirà per recuperare il tuo accesso.</p>
                     </div>
 
-                    <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ffffff'}}>Seleziona il tuo abbonamento mensile o annuale</h3>
+                    <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ffffff'}}>Seleziona il tuo abbonamento</h3>
                     
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
                         {/* STARTER */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
-                            <input type="radio" name="planName" value="starter" className="peer" style={{display: 'none'}} defaultChecked />
+                            <input type="radio" name="planName" value="starter" className="peer" style={{display: 'none'}} 
+                                   checked={planName === 'starter'} onChange={(e) => setPlanName(e.target.value)} />
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
@@ -41,15 +48,14 @@ export default function RegistrazionePage() {
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> 50 generazioni / mese</li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Accesso Bot Telegram</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Setup veloce</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
 
                         {/* RETAIL */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
-                            <input type="radio" name="planName" value="retail" className="peer" style={{display: 'none'}} />
+                            <input type="radio" name="planName" value="retail" className="peer" style={{display: 'none'}} 
+                                   checked={planName === 'retail'} onChange={(e) => setPlanName(e.target.value)} />
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
                                  className="radio-card retail-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
@@ -58,16 +64,15 @@ export default function RegistrazionePage() {
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> <strong>300 generazioni / mese</strong></li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Fedeltà assoluta Nano Pro</li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Priorità Bot GPU Ultra</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Tutte le nicchie sbloccate</li>
                                 </ul>
                             </div>
                         </label>
 
                         {/* RETAIL ANNUALE */}
                         <label style={{cursor: 'pointer', display: 'block', gridColumn: '1 / -1'}}>
-                            <input type="radio" name="planName" value="retail_annual" className="peer" style={{display: 'none'}} />
+                            <input type="radio" name="planName" value="retail_annual" className="peer" style={{display: 'none'}} 
+                                   checked={planName === 'retail_annual'} onChange={(e) => setPlanName(e.target.value)} />
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', position: 'relative', height: '100%', display: 'flex', flexDirection: 'column'}}
                                  className="radio-card annual-card">
                                 <span style={{position: 'absolute', top: '-12px', right: '10px', background: '#ccff00', color: '#000', fontSize: '0.65rem', fontWeight: 'bold', padding: '4px 8px', borderRadius: '10px', textTransform: 'uppercase'}}>Offerta Speciale</span>
@@ -81,26 +86,23 @@ export default function RegistrazionePage() {
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#e0e0e0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> <strong>Tutto il piano Retail</strong></li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Risparmi 360€ all'anno</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Supporto prioritario</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Prezzo bloccato 12 Mesi</li>
                                 </ul>
                             </div>
                         </label>
                     </div>
 
                     <div style={{borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px', textAlign: 'center'}}>
-                        <button type="submit" disabled style={{background: 'linear-gradient(135deg, #333 0%, #444 100%)', color: '#888', border: 'none', padding: '18px 40px', fontSize: '1.2rem', fontWeight: 'bold', borderRadius: '30px', cursor: 'not-allowed', width: '100%', maxWidth: '400px', boxShadow: 'none'}}>
-                            Sistemi di Pagamento in Aggiornamento
-                        </button>
+                        <PayPalCheckout email={email} planName={planName} />
+                        
                         <p style={{color: '#666', fontSize: '0.8rem', marginTop: '15px'}}>
-                            Cliccando accetti i Terms of Service. L'addebito simulato configurerà istantaneamente il tuo negozio.
+                            Verrai reindirizzato sul circuito sicuro PayPal. Dopo il pagamento il tuo account sarà attivo.
                         </p>
                         <p style={{color: '#888', fontSize: '0.9rem', marginTop: '15px', fontWeight: '500'}}>
-                            <span style={{color: '#03dac6', marginRight: '5px'}}>✓</span> Puoi disdire in qualsiasi momento. Il piano resterà attivo fino alla scadenza o fino all’utilizzo completo delle immagini.
+                            <span style={{color: '#03dac6', marginRight: '5px'}}>✓</span> Puoi disdire l'abbonamento in qualsiasi momento direttamente dal tuo conto PayPal.
                         </p>
                     </div>
 
-                </form>
+                </div>
             </div>
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `

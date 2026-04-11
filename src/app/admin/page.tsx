@@ -28,66 +28,81 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div style={{ marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Visore Centrale</h1>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Visore Centrale</h1>
         <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
       </div>
 
-      <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Database Nodi</h3>
-            <span style={{ color: '#c084fc', background: 'rgba(168,85,247,0.1)', padding: '0.5rem', borderRadius: '10px' }}>❖</span>
+      <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+        
+        {/* Gradient Card Purple */}
+        <div className="admin-card card-gradient-purple" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, opacity: 0.9 }}>Database Nodi</h3>
+            <span style={{ color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.1)', padding: '0.5rem', borderRadius: '10px' }}>❖</span>
           </div>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+          <div style={{ display: 'flex', gap: '2rem' }}>
             <div>
-              <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>Macro</p>
-              <p style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>{categoriesCount}</p>
+              <p style={{ fontSize: '0.8rem', opacity: 0.8, margin: 0 }}>Macro</p>
+              <p style={{ fontSize: '2.2rem', fontWeight: '800', margin: 0 }}>{categoriesCount}</p>
             </div>
             <div>
-               <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>Reference</p>
-               <p style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0 }}>{subcatsCount}</p>
+               <p style={{ fontSize: '0.8rem', opacity: 0.8, margin: 0 }}>Reference</p>
+               <p style={{ fontSize: '1.5rem', fontWeight: '600', margin: 'auto 0 0 0', display: 'flex', alignItems: 'flex-end', height: '100%', paddingBottom: '4px' }}>{subcatsCount}</p>
             </div>
           </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Generazioni Oggi</h3>
-            <span style={{ color: 'var(--color-success)', background: 'rgba(16,185,129,0.1)', padding: '0.5rem', borderRadius: '10px' }}>⚡</span>
+        {/* Gradient Card Cyan */}
+        <div className="admin-card card-gradient-cyan" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, opacity: 0.9 }}>Generazioni Oggi</h3>
+            <span style={{ color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.1)', padding: '0.5rem', borderRadius: '10px' }}>⚡</span>
           </div>
-          <p className="stat-value">{imagesTodayCount}</p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>Job totali in vita: {jobsCount}</p>
+          <div>
+             <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, textShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>{imagesTodayCount}</p>
+             <p style={{ fontSize: '0.85rem', opacity: 0.9, margin: '0.5rem 0 0 0' }}>Job totali in vita: {jobsCount}</p>
+          </div>
         </div>
 
-        <div className="glass-panel" style={{ padding: '2rem', background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
+        {/* Dark Card */}
+        <div className="admin-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#38bdf8', margin: 0 }}>Spesa Odierna API</h3>
-            <span style={{ color: '#38bdf8', background: 'rgba(56, 189, 248, 0.1)', padding: '0.5rem', borderRadius: '10px' }}>€</span>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)', margin: 0 }}>Spesa Odierna API</h3>
+            <span style={{ color: 'var(--color-primary)', background: 'rgba(230, 46, 191, 0.1)', padding: '0.5rem', borderRadius: '10px' }}>€</span>
           </div>
-          <p className="stat-value" style={{ color: '#e0f2fe' }}>€{costToday.toFixed(3)}</p>
-          <p style={{ fontSize: '0.8rem', color: '#7dd3fc', margin: '0.5rem 0 0 0' }}>{visionTodayCount} Analisi Vision + {imagesTodayCount} Foto</p>
+          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costToday.toFixed(3)}</p>
+          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>{visionTodayCount} Analisi Vision + {imagesTodayCount} Foto</p>
         </div>
 
-        <div className="glass-panel" style={{ padding: '2rem' }}>
+        {/* Dark Card */}
+        <div className="admin-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Spesa Totale Vita</h3>
             <span style={{ color: 'var(--color-text-muted)', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '10px' }}>📈</span>
           </div>
-          <p className="stat-value" style={{ fontSize: '2rem' }}>€{costTotal.toFixed(2)}</p>
+          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costTotal.toFixed(2)}</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>Da inizio progetto</p>
         </div>
       </div>
       
-      <div className="glass-panel" style={{ marginTop: '3rem', padding: '2rem' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span style={{ color: 'var(--color-primary)' }}>●</span> Stato Motore AI
+      {/* Bot Status */}
+      <div className="admin-card" style={{ marginTop: '3rem' }}>
+        <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          Stato Motore AI
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>Provider Gemini 2.5 Flash</span>
-          <span style={{ color: 'var(--color-success)', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-success)', boxShadow: '0 0 10px var(--color-success)' }}></div>
-            Operativo
-          </span>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '15px 20px', borderRadius: '12px' }}>
+           <div>
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'block', marginBottom: '4px' }}>Provider Visione</span>
+              <span style={{ color: 'white', fontWeight: 600 }}>Gemini 2.5 Flash</span>
+           </div>
+           <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)', height: '30px' }}></div>
+           <div>
+              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'block', marginBottom: '4px' }}>Connection Status</span>
+              <span style={{ color: 'var(--color-success)', fontSize: '0.9rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-success)', boxShadow: '0 0 10px var(--color-success)' }}></div>
+                 Operativo
+              </span>
+           </div>
         </div>
       </div>
     </div>

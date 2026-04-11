@@ -162,7 +162,7 @@ export default function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               Ricarica Extra: <strong>+100 immagini a 19€</strong>
             </div>
-            <button disabled className="btn-secondary" style={{ opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
+            <Link href="/registrazione" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff5e00', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Inizia Ora</Link>
           </div>
 
           {/* Retail */}
@@ -179,7 +179,7 @@ export default function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               Ricarica Extra: <strong>+300 immagini a 49€</strong>
             </div>
-            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', opacity: 0.5, cursor: 'not-allowed', width: '100%', border: '1px solid rgba(255,255,255,0.1)' }}>In Aggiornamento</button>
+            <Link href="/registrazione" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Scegli Retail</Link>
           </div>
 
           {/* Retail Annuale */}
@@ -198,7 +198,7 @@ export default function LandingPage() {
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Supporto prioritario</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Accesso ricariche extra (49€)</li>
             </ul>
-            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#333', color: '#888', border: 'none', opacity: 0.5, cursor: 'not-allowed', width: '100%' }}>In Aggiornamento</button>
+            <Link href="/registrazione" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Approfitta dell'Offerta</Link>
           </div>
 
         </div>

@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --color-bg-main: #09090b; /* zinc-950 */
-  --color-text-main: #f4f4f5; /* zinc-100 */
-  --color-text-muted: #a1a1aa; /* zinc-400 */
-  
-  --color-card-bg: rgba(24, 24, 27, 0.5); /* zinc-900/50 */
-  --color-card-border: rgba(255, 255, 255, 0.05);
+  --color-bg-main: #131422; /* Deep Navy Slaty CRM Background */
+  --color-sidebar: #191b2c; /* Sidebar color */
+  --color-card-bg: #1c1d31; /* Card background color */
+  --color-card-border: rgba(255, 255, 255, 0.03);
 
-  --color-primary: #a855f7; /* purple-500 */
-  --color-primary-glow: rgba(168, 85, 247, 0.4);
+  --color-text-main: #f4f4f5;
+  --color-text-muted: #6e7395; /* Bluish tint for muted text */
   
-  --color-secondary: #ec4899; /* pink-500 */
-  --color-success: #10b981; /* emerald-500 */
-  --color-danger: #ef4444; /* red-500 */
-
+  --color-primary: #e62ebf; /* Magenta CRM pop */
+  --color-primary-glow: rgba(230, 46, 191, 0.4);
+  
+  --color-secondary: #00d2ff; /* Cyan pop */
+  --color-success: #00e08f; /* Mint green */
+  --color-danger: #ff4d6d;
+  
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
@@ -27,43 +28,36 @@ body {
 }
 
 /* --- AMBIENT GLOWS --- */
+/* Disabilitati nel nuovo design CRM più piatto e opaco ma manteniamo i div invisibili per evitare errori. */
 .ambient-glow-1, .ambient-glow-2 {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  z-index: -1;
-}
-.ambient-glow-1 {
-  top: -20%;
-  left: -10%;
-  width: 50vw;
-  height: 50vh;
-  background: rgba(79, 70, 229, 0.15); /* indigo */
-}
-.ambient-glow-2 {
-  bottom: -20%;
-  right: -10%;
-  width: 50vw;
-  height: 50vh;
-  background: rgba(168, 85, 247, 0.15); /* purple */
+  display: none;
 }
 
-/* --- UTILITIES --- */
-.glass-panel {
+/* --- UTILITIES & CARDS --- */
+.admin-card, .glass-panel {
   background: var(--color-card-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-card-border);
-  border-radius: 24px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  padding: 2rem;
+  border-radius: 16px;
+  padding: 1.5rem;
   transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
 
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-  background: rgba(24, 24, 27, 0.7);
+.admin-card:hover, .glass-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.card-gradient-purple {
+  background: linear-gradient(135deg, #d361fa 0%, #ff6beb 100%);
+  border: none;
+  color: white;
+}
+
+.card-gradient-cyan {
+  background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+  border: none;
+  color: white;
 }
 
 .title-gradient {
@@ -343,4 +337,46 @@ body {
 }
 .upload-box:hover .upload-box-text {
   color: var(--color-secondary);
+}
+
+/* --- PREMIUM INPUTS (SaaS Dark) --- */
+.admin-input-premium {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.admin-input-premium:focus {
+  border-color: var(--color-primary) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 0 10px rgba(230, 46, 191, 0.2);
+}
+
+.admin-btn-premium {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, var(--color-primary), #00d2ff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  height: fit-content;
+  box-shadow: 0 4px 15px rgba(230, 46, 191, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.admin-btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(230, 46, 191, 0.4);
 }

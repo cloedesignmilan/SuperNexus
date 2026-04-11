@@ -28,7 +28,7 @@ export default async function SubcategoriesPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(0, 2fr)', gap: '2rem' }}>
         {/* Form Creazione */}
         <div>
-          <div className="glass-panel" style={{ position: 'sticky', top: '2rem' }}>
+          <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Look (Sub-cat)</h2>
             <form action={createSubcategory} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
@@ -56,12 +56,12 @@ export default async function SubcategoriesPage() {
         {/* Griglia Sottocategorie */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {subcats.length === 0 ? (
-            <div className="glass-panel" style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>
+            <div className="admin-card" style={{ textAlign: 'center', padding: '4rem', color: 'var(--color-text-muted)' }}>
               Nessuno stile d'addestramento trovato.
             </div>
           ) : (
             subcats.map((sub: any) => (
-              <div key={sub.id} className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
+              <div key={sub.id} className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
                 <div style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--color-card-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div style={{ flex: 1, minWidth: '250px' }}>
                     <span style={{ display: 'inline-block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', padding: '0.2rem 0.5rem', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', marginBottom: '0.5rem' }}>

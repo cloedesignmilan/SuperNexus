@@ -22,7 +22,7 @@ export default async function CategoriesPage() {
         
         {/* Form Categoria */}
         <div>
-          <div className="glass-panel" style={{ position: 'sticky', top: '2rem' }}>
+          <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Nodo</h2>
             <form action={createCategory} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
@@ -53,7 +53,7 @@ export default async function CategoriesPage() {
 
         {/* Lista Categorie */}
         <div>
-          <div className="glass-panel" style={{ padding: '0', overflow: 'hidden' }}>
+          <div className="admin-card" style={{ padding: '0', overflow: 'hidden' }}>
             <table className="glass-table">
               <thead style={{ background: 'rgba(0,0,0,0.2)' }}>
                 <tr>

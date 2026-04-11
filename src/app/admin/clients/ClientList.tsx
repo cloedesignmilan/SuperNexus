@@ -37,111 +37,116 @@ export default function ClientList({ clients }: { clients: any[] }) {
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
       {clients.map(client => {
         const isExhausted = client.images_generated >= client.images_allowance;
         const progressPercentage = Math.min((client.images_generated / (client.images_allowance || 1)) * 100, 100);
         
         return (
-          <div key={client.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', gap: '15px', position: 'relative', overflow: 'hidden' }}>
+          <div key={client.id} className="admin-card" style={{ display: 'flex', flexDirection: 'column', padding: '1.5rem', position: 'relative', overflow: 'hidden' }}>
             
-            {/* INTESTAZIONE CARD */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            {/* Header: Email e Stato */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
                <div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                     {client.email || 'Cliente Senza Nome'}
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'white', margin: '0 0 6px 0' }}>
+                     {client.email || 'Cliente Guest'}
                   </h3>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                     Membro dal {new Date(client.createdAt).toLocaleDateString('it-IT')}
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                     Da {new Date(client.createdAt).toLocaleDateString('it-IT')}
+                     {client.subscription_active ? (
+                        <span style={{ color: '#34d399', fontWeight: 600 }}>• Attivo</span>
+                     ) : (
+                        <span style={{ color: '#f87171', fontWeight: 600 }}>• Sospeso</span>
+                     )}
                   </div>
                </div>
-               
-               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                 <div style={{ 
-                    padding: '4px 8px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold', 
-                    background: client.subscription_active ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-                    color: client.subscription_active ? '#22c55e' : '#ef4444',
-                    border: `1px solid ${client.subscription_active ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
-                 }}>
-                   {client.subscription_active ? 'ATTIVO' : 'SOSPESO'}
-                 </div>
-               </div>
             </div>
 
-            {/* SEZIONE CHIAVE ACCESSO */}
-            <div style={{ background: 'rgba(0,0,0,0.3)', borderRadius: '8px', padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid rgba(255,255,255,0.05)' }}>
-               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>PIN Segreto Bot</div>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ccff00', letterSpacing: '2px', fontWeight: 'bold', fontSize: '1.1rem' }}>
-                 <Key size={16} /> {client.bot_pin || '---'}
+            {/* SEZIONE PROGRESSO AL TOP */}
+            <div style={{ marginBottom: '1.5rem', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '12px' }}>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', marginBottom: '8px', color: 'var(--color-text-muted)', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  <span>Plafond Utilizzato</span>
+                  <span style={{ color: isExhausted ? '#f87171' : 'white' }}>{Math.round(progressPercentage)}%</span>
                </div>
-            </div>
-
-            {/* PROGRESSO PLAFOND */}
-            <div style={{ marginTop: '5px' }}>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px', color: 'var(--text-muted)' }}>
-                  <span>Consumo Crediti (<strong style={{color: 'white'}}>{client.images_generated}</strong> di <strong style={{color: 'white'}}>{client.images_allowance}</strong>)</span>
-                  <span style={{ color: isExhausted ? '#ef4444' : 'var(--color-primary)' }}>{Math.round(progressPercentage)}%</span>
-               </div>
-               <div style={{ height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+               <div style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
                  <div style={{ 
                    height: '100%', 
                    width: `${progressPercentage}%`,
-                   background: isExhausted ? '#ef4444' : 'var(--color-primary)',
+                   background: isExhausted ? 'linear-gradient(90deg, #f87171, #ef4444)' : 'linear-gradient(90deg, #e62ebf, #00d2ff)',
+                   boxShadow: isExhausted ? '0 0 10px rgba(239, 68, 68, 0.5)' : 'none',
                    transition: 'width 0.5s ease-out'
                  }}></div>
                </div>
-               {isExhausted && <div style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '6px', fontWeight: 'bold' }}>⚠️ Plafond Completamente Esaurito</div>}
-            </div>
-
-            {/* BOX STATISTICHE GENERAZIONI */}
-            <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
-                <div style={{ flex: 1, background: 'rgba(34, 197, 94, 0.05)', borderRadius: '8px', padding: '10px', textAlign: 'center', border: '1px solid rgba(34, 197, 94, 0.1)' }}>
-                   <CheckCircle size={20} color="#22c55e" style={{ margin: '0 auto 4px auto' }} />
-                   <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{client.successfulJobs}</div>
-                   <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Riuscite</div>
-                </div>
-                <div style={{ flex: 1, background: 'rgba(239, 68, 68, 0.05)', borderRadius: '8px', padding: '10px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.1)' }}>
-                   <XCircle size={20} color="#ef4444" style={{ margin: '0 auto 4px auto' }} />
-                   <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{client.failedJobs}</div>
-                   <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Fallite</div>
-                </div>
-            </div>
-
-            <hr style={{ borderColor: 'rgba(255,255,255,0.05)', margin: '5px 0' }} />
-
-            {/* AZIONI E RICARICA */}
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'center' }}>
-               
-               <div style={{ display: 'flex', gap: '8px' }}>
-                  <button 
-                    onClick={() => handleToggle(client.id, client.subscription_active)} 
-                    className={`action-btn ${client.subscription_active ? 'delete' : 'success'}`}
-                    title={client.subscription_active ? "Sospendi Abbonamento" : "Riattiva Abbonamento"}
-                    style={{ padding: '8px', borderRadius: '8px' }}
-                  >
-                     {client.subscription_active ? <PowerOff size={18} /> : <Power size={18} />}
-                  </button>
-                  <button onClick={() => handleDelete(client.id)} className="action-btn delete" title="Elimina Permanentemente" style={{ padding: '8px', borderRadius: '8px' }}>
-                     <Trash2 size={18} />
-                  </button>
+               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '8px', color: 'white' }}>
+                  <span style={{ fontWeight: 600 }}>{client.images_generated} <span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>immagini</span></span>
+                  <span style={{ fontWeight: 600 }}>{client.images_allowance} <span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>max</span></span>
                </div>
+               {isExhausted && <div style={{ fontSize: '0.75rem', color: '#f87171', marginTop: '8px', fontWeight: 600 }}>⚠️ Ricarica necessaria per continuare sbloccare il bot.</div>}
+            </div>
 
-               {/* COMPONENTE RICARICA RAPIDA */}
-               <div style={{ display: 'flex', background: 'rgba(0,0,0,0.5)', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ padding: '0 8px', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}>+</div>
+            {/* BOX STATISTICHE GENERAZIONI & PIN */}
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '1.5rem' }}>
+                <div style={{ flex: 1, background: 'rgba(52, 211, 153, 0.05)', borderRadius: '8px', padding: '12px', border: '1px solid rgba(52, 211, 153, 0.1)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                   <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(52, 211, 153, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#34d399' }}>
+                     <CheckCircle size={16} />
+                   </div>
+                   <div>
+                       <div style={{ fontSize: '1rem', fontWeight: 800, color: 'white' }}>{client.successfulJobs}</div>
+                       <div style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Riuscite</div>
+                   </div>
+                </div>
+                
+                <div style={{ flex: 1, background: 'rgba(67, 56, 202, 0.1)', borderRadius: '8px', padding: '12px', border: '1px solid rgba(67, 56, 202, 0.2)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                   <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: 'rgba(67, 56, 202, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#818cf8' }}>
+                     <Key size={16} />
+                   </div>
+                   <div>
+                       <div style={{ fontSize: '1rem', fontWeight: 800, color: '#e0e7ff', letterSpacing: '1px' }}>{client.bot_pin || '---'}</div>
+                       <div style={{ fontSize: '0.65rem', color: 'var(--color-text-muted)', textTransform: 'uppercase' }}>Codice PIN</div>
+                   </div>
+                </div>
+            </div>
+
+            {/* CONTROLLI INFERIORI ALLINEATI */}
+            <div style={{ marginTop: 'auto', display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+               
+               {/* MODULO RICARICA */}
+               <div style={{ display: 'flex', flex: 1, background: 'rgba(0,0,0,0.3)', borderRadius: '8px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <input 
                      type="number" 
-                     placeholder="Q.tà" 
-                     style={{ width: '45px', background: 'transparent', border: 'none', color: 'white', fontSize: '0.85rem', outline: 'none' }}
+                     placeholder="+ Q.tà" 
+                     style={{ flex: 1, minWidth: '40px', padding: '8px 10px', background: 'transparent', border: 'none', color: 'white', fontSize: '0.85rem', outline: 'none' }}
                      value={topupAmount[client.id] || ""}
                      onChange={e => setTopupAmount(prev => ({ ...prev, [client.id]: e.target.value }))}
                   />
                   <button 
                     onClick={() => handleTopup(client.id)}
-                    style={{ background: 'var(--color-primary)', color: 'black', border: 'none', padding: '0 12px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    title="Aggiungi Credito"
+                    style={{ background: 'var(--color-primary)', color: 'white', border: 'none', padding: '0 12px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center' }}
+                    title="Aggiungi Crediti e Ricarica"
                   >
-                    <BatteryCharging size={14} /> Add
+                    Add
+                  </button>
+               </div>
+
+               {/* BOTTONI SYSTEM */}
+               <div style={{ display: 'flex', gap: '6px' }}>
+                  <button 
+                    onClick={() => handleToggle(client.id, client.subscription_active)} 
+                    style={{ 
+                       padding: '8px', borderRadius: '8px', cursor: 'pointer', border: 'none',
+                       background: client.subscription_active ? 'rgba(255,255,255,0.05)' : 'rgba(52, 211, 153, 0.1)',
+                       color: client.subscription_active ? 'var(--color-text-muted)' : '#34d399'
+                    }}
+                    title={client.subscription_active ? "Sospendi Abbonamento" : "Riattiva Abbonamento"}
+                  >
+                     {client.subscription_active ? <PowerOff size={16} /> : <Power size={16} />}
+                  </button>
+                  <button 
+                     onClick={() => handleDelete(client.id)} 
+                     style={{ padding: '8px', borderRadius: '8px', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#f87171' }} 
+                     title="Elimina Utente"
+                  >
+                     <Trash2 size={16} />
                   </button>
                </div>
             </div>
