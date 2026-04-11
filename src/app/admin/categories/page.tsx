@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma";
 import { createCategory, deleteCategory, toggleCategoryStatus, updateCategory } from "./actions";
 
 export default async function CategoriesPage() {
