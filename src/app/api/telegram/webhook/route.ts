@@ -644,29 +644,14 @@ export async function POST(req: NextRequest) {
       // Questo abbassa il tempo di download da 5 secondi a 0.2 secondi e velocizza Gemini del 300%
       let targetIndex = 0;
       if (incomingPhoto && incomingPhoto.length > 2) {
-          targetIndex = incomingPhoto.length - 2; // Prende la risoluzione media (es. 800x800 invece di 1280x1280)
+          targetIndex = incomingPhoto.length - 2;
       } else if (incomingPhoto && incomingPhoto.length > 0) {
-          targetIndex = incomingPhoto.length - 1; // Se c'è solo una, prendi quella
+          targetIndex = incomingPhoto.length - 1;
       }
       
       let fileId = incomingPhoto ? incomingPhoto[targetIndex].file_id : incomingDoc.file_id;
       const fileUrlData = await bot.telegram.getFileLink(fileId);
       const fileUrl = fileUrlData.toString();
-
-      // Controllo Anti-Spam visivo: se Telegram sta facendo un "Retry" invisibile per colpa di un timeout,
-      // non stampiamo di nuovo "AI sta analizzando" per non spammare l'utente.
-      let isRetry = false;
-      if (update.update_id) {
-          if (seenUpdates.has(update.update_id)) {
-              isRetry = true;
-          } else {
-              seenUpdates.add(update.update_id);
-          }
-      }
-
-      if (!isRetry) {
-          await bot.telegram.sendMessage(chatId, "⏳ *AI sta analizzando la tua immagine...*", { parse_mode: 'Markdown' });
-      }
 
       // Scarichiamo per Gemini Rapido
       let imgBuffer;
@@ -886,7 +871,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
       await bot.telegram.sendMessage(
           chatId,
-          `🤖 **Analisi Completata!**\n\nSeleziona la categoria corretta: 👇`,
+          `👇 **Seleziona o Conferma la Categoria principale dell'abito:**`,
           Markup.inlineKeyboard(fallbackButtons, { columns: 2 })
       );
 
