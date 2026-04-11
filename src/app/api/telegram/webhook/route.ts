@@ -232,11 +232,13 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 
                 for (const resp of responses) {
                     if (resp.candidates && resp.candidates.length > 0) {
-                        const candidate = resp.candidates[0];
-                        if (candidate.content && candidate.content.parts) {
-                            for (const part of candidate.content.parts) {
-                                if (part.inlineData && part.inlineData.data) {
-                                    generatedBase64s.push(part.inlineData.data);
+                        // Google Gemini restituisce N candidati se numberOfImages è N!
+                        for (const candidate of resp.candidates) {
+                            if (candidate.content && candidate.content.parts) {
+                                for (const part of candidate.content.parts) {
+                                    if (part.inlineData && part.inlineData.data) {
+                                        generatedBase64s.push(part.inlineData.data);
+                                    }
                                 }
                             }
                         }
