@@ -4,13 +4,18 @@ export default async function AdminDashboard() {
   const categoriesCount = await prisma.category.count();
   const subcatsCount = await prisma.subcategory.count();
   const jobsCount = await prisma.generationJob.count();
-  const totalImagesCount = await prisma.jobImage.count();
+  const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
+  const totalImagesCount = totalImagesAggr._sum.results_count || 0;
   const totalVisionCount = await prisma.promptTemplateSettings.count();
 
   // Calcoli odierni
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const imagesTodayCount = await prisma.jobImage.count({ where: { createdAt: { gte: today } } });
+  const imagesTodayAggr = await prisma.generationJob.aggregate({ 
+     where: { createdAt: { gte: today } },
+     _sum: { results_count: true }
+  });
+  const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
   const visionTodayCount = await prisma.promptTemplateSettings.count({ where: { updatedAt: { gte: today } } });
 
   // Costi Hardcoded in base al tariffario (modificabili qui)

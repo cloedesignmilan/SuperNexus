@@ -277,6 +277,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
                         subcategory_id: subId,
                         original_product_image_url: publicUrl,
                         status: "completed",
+                        results_count: generatedBase64s.length,
                         provider_response: `Album di ${generatedBase64s.length} foto in Base64`
                     }
                 });

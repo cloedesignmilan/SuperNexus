@@ -105,6 +105,7 @@ model GenerationJob {
   provider_name                 String?
   provider_response             String?  @db.Text
   error_message                 String?  @db.Text
+  results_count                 Int      @default(0)
   createdAt                     DateTime @default(now())
   updatedAt                     DateTime @updatedAt
 
