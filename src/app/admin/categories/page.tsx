@@ -70,7 +70,7 @@ export default async function CategoriesPage() {
                     </td>
                   </tr>
                 ) : (
-                  categories.map((cat) => (
+                  categories.map((cat: any) => (
                     <tr key={cat.id}>
                       <td>
                         <details style={{ background: 'transparent' }}>
