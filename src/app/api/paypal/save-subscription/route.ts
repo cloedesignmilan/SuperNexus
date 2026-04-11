@@ -2,14 +2,12 @@ import { NextResponse } from 'next/server';
 
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test';
 const PAYPAL_SECRET = process.env.PAYPAL_SECRET || 'test';
-// Usa "live" quando vuoi farti pagare per davvero, usa sandbox o omettilo mentre testi coi soldi finti
 const base = process.env.PAYPAL_ENVIRONMENT === "live" 
     ? "https://api-m.paypal.com" 
     : "https://api-m.sandbox.paypal.com";
 
 async function generateAccessToken() {
     if (!PAYPAL_CLIENT_ID || !PAYPAL_SECRET || PAYPAL_CLIENT_ID === 'test_client_id_placeholder') {
-        console.warn("MOCK PAYPAL TOKEN GENERATED (Replace with real credentials)");
         return "mock_access_token";
     }
     const auth = Buffer.from(PAYPAL_CLIENT_ID + ":" + PAYPAL_SECRET).toString("base64");
@@ -22,7 +20,6 @@ async function generateAccessToken() {
     });
     const data = await response.json();
     if (data.error) {
-        console.error("PayPal OAuth Error:", data);
         throw new Error(`Auth Failed in env [${process.env.PAYPAL_ENVIRONMENT || 'sandbox'}]: ${data.error_description || data.error}`);
     }
     return data.access_token;
@@ -30,52 +27,40 @@ async function generateAccessToken() {
 
 export async function POST(req: Request) {
     try {
-        const { planName } = await req.json();
+        const { subscriptionID, email, planName } = await req.json();
 
-        let value = "29.90"; // starter
-        if (planName === "retail") value = "79.90";
-        if (planName === "retail_annual") value = "588.00"; // 49 * 12
+        if (!subscriptionID) {
+            return NextResponse.json({ error: "No subscription ID provided." }, { status: 400 });
+        }
 
         const accessToken = await generateAccessToken();
 
-        // MOCK MODE if not configured
         if (accessToken === "mock_access_token") {
-            const mockOrderId = "MOCK_ORDER_" + Math.floor(Math.random() * 1000000);
-            return NextResponse.json({ id: mockOrderId });
+            return NextResponse.json({ success: true, status: "MOCK_ACTIVE" });
         }
 
-        const url = `${base}/v2/checkout/orders`;
-        const payload = {
-            intent: "CAPTURE",
-            purchase_units: [
-                {
-                    amount: {
-                        currency_code: "EUR",
-                        value: value,
-                    },
-                },
-            ],
-        };
-
+        // Recuperiamo i dettagli della subscription da PayPal
+        const url = `${base}/v1/billing/subscriptions/${subscriptionID}`;
         const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${accessToken}`,
             },
-            method: "POST",
-            body: JSON.stringify(payload),
+            method: "GET",
         });
 
         const data = await response.json();
-        
-        if (!data.id) {
-            console.error("PAYPAL_API_ERROR_NO_ID:", data);
-            return NextResponse.json({ id: null, details: data, error: "DEBUG_ME: " + JSON.stringify(data) }, { status: 400 });
+
+        if (data.status === "ACTIVE" || data.status === "APPROVAL_PENDING") {
+             // APPROVAL_PENDING si trasforma in ACTIVE in pochi istanti. ACTIVE è lo stato ideale.
+             return NextResponse.json({ success: true, status: data.status });
+        } else {
+             console.error("PAYPAL_SUBSCRIPTION_NOT_ACTIVE:", data);
+             return NextResponse.json({ success: false, status: data.status, details: data }, { status: 400 });
         }
 
-        return NextResponse.json(data);
     } catch (error) {
-        console.error("Failed to create order:", error);
-        return NextResponse.json({ error: "Failed to create order." }, { status: 500 });
+        console.error("Failed to verify subscription:", error);
+        return NextResponse.json({ error: "Failed to verify subscription." }, { status: 500 });
     }
 }
