@@ -108,10 +108,10 @@ export default function RicaricaPage() {
                                 <input type="radio" name="package" value="topup_150" checked={selectedPackage === 'topup_150'} onChange={() => setSelectedPackage("topup_150")} className="sr-only" />
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="font-bold text-white">Booster 150 <span className="text-xs text-cyan-400 bg-cyan-400/20 px-2 py-0.5 rounded-full ml-2">Standard</span></p>
-                                        <p className="text-xs text-gray-400 mt-1">150 Immagini extra immediate</p>
+                                        <p className="font-bold text-white">Booster 100 <span className="text-xs text-cyan-400 bg-cyan-400/20 px-2 py-0.5 rounded-full ml-2">Standard</span></p>
+                                        <p className="text-xs text-gray-400 mt-1">100 Immagini extra immediate</p>
                                     </div>
-                                    <p className="font-bold">€ 9,90</p>
+                                    <p className="font-bold">€ 19,00</p>
                                 </div>
                             </label>
 
@@ -119,10 +119,10 @@ export default function RicaricaPage() {
                                 <input type="radio" name="package" value="topup_500" checked={selectedPackage === 'topup_500'} onChange={() => setSelectedPackage("topup_500")} className="sr-only" />
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="font-bold text-white">Booster 500</p>
-                                        <p className="text-xs text-gray-400 mt-1">500 Immagini extra immediate</p>
+                                        <p className="font-bold text-white">Booster 300</p>
+                                        <p className="text-xs text-gray-400 mt-1">300 Immagini extra immediate</p>
                                     </div>
-                                    <p className="font-bold">€ 19,90</p>
+                                    <p className="font-bold">€ 39,00</p>
                                 </div>
                             </label>
                         </div>

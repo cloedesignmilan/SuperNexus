@@ -33,8 +33,8 @@ export async function POST(req: Request) {
         }
 
         // Determina quanti crediti attribuire
-        let creditsToAdd = 150;
-        if (packageId === "topup_500") creditsToAdd = 500;
+        let creditsToAdd = 100;
+        if (packageId === "topup_500") creditsToAdd = 300;
 
         const accessToken = await generateAccessToken();
 

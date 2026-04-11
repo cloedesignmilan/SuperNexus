@@ -33,8 +33,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "No PIN provided" }, { status: 400 });
         }
 
-        let value = "9.90"; // default 150 pics
-        if (packageId === "topup_500") value = "19.90";
+        let value = "19.00"; // default 100 pics
+        if (packageId === "topup_500") value = "39.00";
 
         const accessToken = await generateAccessToken();
 
