@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { Telegraf, Markup } from "telegraf";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@supabase/supabase-js";
@@ -172,19 +172,22 @@ export async function POST(req: NextRequest) {
             const fileName = `${globalChatId}_${timestamp}.jpg`;
             const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
 
-            try {
-                // CHIAMATA A GEMINI ================================
-                const response = await fetch(publicUrl);
-                if (!response.ok) throw new Error("Impossibile recuperare l'immagine caricata dal bucket.");
-                const arrayBuffer = await response.arrayBuffer();
-                const base64 = Buffer.from(arrayBuffer).toString('base64');
-                const mimeType = response.headers.get('content-type') || 'image/jpeg';
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini ... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
 
-                // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
-                const masterStyle = subcat.prompt_settings.base_prompt_prefix;
-                // Richiesta Operativa con forzatura sulle pose
-                // Richiesta Operativa Estrema per "Virtual Try-On" Rigoroso
-                const userPrompt = `[CLINICAL VIRTUAL TRY-ON OPERATION] 
+            after(async () => {
+                try {
+                    // CHIAMATA A GEMINI ================================
+                    const response = await fetch(publicUrl);
+                    if (!response.ok) throw new Error("Impossibile recuperare l'immagine caricata dal bucket.");
+                    const arrayBuffer = await response.arrayBuffer();
+                    const base64 = Buffer.from(arrayBuffer).toString('base64');
+                    const mimeType = response.headers.get('content-type') || 'image/jpeg';
+
+                    // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
+                    const masterStyle = subcat.prompt_settings.base_prompt_prefix;
+                    // Richiesta Operativa con forzatura sulle pose
+                    // Richiesta Operativa Estrema per "Virtual Try-On" Rigoroso
+                    const userPrompt = `[CLINICAL VIRTUAL TRY-ON OPERATION] 
 L'immagine allegata NON È UNA ISPIRAZIONE, è il SOGGETTO DEL RITRATTO (${subcat.category.name}). 
 Devi vestire un modello o adattare l'ambiente a questa precisa veste nello STILE richiesto:
 
@@ -193,22 +196,20 @@ Devi vestire un modello o adattare l'ambiente a questa precisa veste nello STILE
 REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 1. PRESERVAZIONE STRUTTURALE AL 100%: E' SEVERAMENTE VIETATO modificare o immaginare diversamente la scollatura, le cuciture, i dettagli, la lunghezza dell'abito o delle maniche, cinture e bottoni. Il capo deve essere perfettamente identico.
 2. PRESERVAZIONE MATERIALE AL 100%: Il colore ESATTO, il tipo di tessuto (seta, lana, cotone pesante, ecc) e la texturizzazione visiva devono essere identici all'originale. Non aggiungere pizzi, stampe, o increspature che non esistono nella foto.
-3. ADATTAMENTO CORPOREO E VOLTI: Se lo stile richiede una modella/o, la persona DEVE aere un VISO e OCCHI A FUOCO, NITIDI (NO BLUR, NO BOKEH EXTREME SUL VISO). 
-4. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
-${subcat.target_age ? `5. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo e ha priorità assoluta sull'ambiente.` : ''}`;
+3. ADATTAMENTO CORPOREO E VOLTI: Se lo stile richiede una modella/o, la persona DEVE avere un VISO e OCCHI A FUOCO, NITIDI. 
+4. RIMOZIONE CARTELLINI: Se l'immagine originale contiene un cartellino del negozio, etichette o talloncini con il prezzo appesi al capo d'abbigliamento, essi DEVONO essere categoricamente ignorati ed eliminati nell'immagine generata.
+5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
+6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
+${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo.` : ''}`;
 
-                const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-                
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini ... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
+                    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
+                    let generatedBase64s: string[] = [];
+                    const promises = [];
 
-                let generatedBase64s: string[] = [];
-                const promises = [];
-
-                // Esegue esattamente 'qty' richieste individuali per aggirare il limite interno
-                for (let i = 0; i < qty; i++) {
-                    const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
-                    promises.push(
-                        ai.models.generateContent({
+                    for (let i = 0; i < qty; i++) {
+                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
+                        promises.push(
+                            ai.models.generateContent({
                             model: 'gemini-3-pro-image-preview',
                             contents: [
                                 {
@@ -287,6 +288,8 @@ ${subcat.target_age ? `5. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                 console.error("AI Generation Error", error);
                 await bot.telegram.sendMessage(globalChatId, `❌ **Errore generazione**: ${error.message}`);
             }
+            });
+
             return NextResponse.json({ ok: true });
         }
     }
