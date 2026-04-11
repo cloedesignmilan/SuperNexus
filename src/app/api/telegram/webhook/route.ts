@@ -163,8 +163,15 @@ export async function POST(req: NextRequest) {
 
                 // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
                 const masterStyle = subcat.prompt_settings.base_prompt_prefix;
-                // Richiesta Operativa per fondere l'immagine con lo stile
-                const userPrompt = `Quella che vedi è un'immagine di abbigliamento fornita da un utente (${subcat.category.name}). Voglio che tu RENDERIZZI QUESTA IMMAGINE usando ESATTAMENTE lo stile fotografico e visivo descritto qui di seguito:\n\n[STILE RICHIESTO]: ${masterStyle}\n\nREGOLE: mantieni l'integrità del capo d'abbigliamento principale (forma, taglio, colore), ma genera la nuova fotografia con il mood richiesto.`;
+                // Richiesta Operativa Potenziata per rompere la geometria dell'immagine
+                const userPrompt = `Questa immagine in input è il capo da analizzare (${subcat.category.name}).
+OBIETTIVO: Devi CREARE UNA FOTOGRAFIA NUOVA in cui questo capo è immerso o INDOSSATO nel seguente stile visivo:
+
+[STILE RICHIESTO]: ${masterStyle}
+
+REGOLE ASSOLUTE:
+1. SE lo "STILE RICHIESTO" descrive una modella, un manichino o una persona, TU DEVI GENERARE LA PERSONA CHE INDOSSA L'ABITO. VIETATO ricreare semplicemente una foto piana/stesa se lo stile dice altrimenti!
+2. Mantieni intatto il design del capo (taglio, colori). Fai una fusione magica.`;
 
                 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                 
