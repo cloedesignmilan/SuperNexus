@@ -68,6 +68,12 @@ export async function POST(req: Request) {
         });
 
         const data = await response.json();
+        
+        if (!data.id) {
+            console.error("PAYPAL_API_ERROR_NO_ID:", data);
+            return NextResponse.json({ id: null, details: data, error: "DEBUG_ME: " + JSON.stringify(data) }, { status: 400 });
+        }
+
         return NextResponse.json(data);
     } catch (error) {
         console.error("Failed to create order:", error);

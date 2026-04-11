@@ -29,11 +29,11 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
             if (orderData.id) {
                 return orderData.id;
             } else {
-                throw new Error("Unable to create order");
+                throw new Error("Unable to create order: " + (orderData.error || JSON.stringify(orderData)));
             }
         } catch (err) {
             console.error(err);
-            setError("Impossibile contattare PayPal per creare l'ordine. " + err);
+            setError("Errore Backend: " + err);
             return null;
         }
     };
