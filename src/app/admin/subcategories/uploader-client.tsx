@@ -16,20 +16,25 @@ export function UploaderBase({ subcategoryId, images }: { subcategoryId: string,
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
     
-    if (images.length >= 10) {
+    const maxFiles = 10 - images.length;
+    if (maxFiles <= 0) {
       alert("Massimo 10 reference consentite. Rimuovine qualcuna per aggiungerne di nuove.");
       return;
     }
+    
+    // Select only up to maxFiles
+    const filesToUpload = Array.from(e.target.files).slice(0, maxFiles);
 
     setIsUploading(true);
     
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("subcategory_id", subcategoryId);
-
     try {
-      await uploadReferenceImage(formData);
+      const uploadPromises = filesToUpload.map(file => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("subcategory_id", subcategoryId);
+        return uploadReferenceImage(formData);
+      });
+      await Promise.all(uploadPromises);
     } catch (err: any) {
       alert(err.message);
     } finally {
@@ -82,7 +87,7 @@ export function UploaderBase({ subcategoryId, images }: { subcategoryId: string,
             <span className="upload-box-text">
               {isUploading ? "Uploading..." : "Aggiungi"}
             </span>
-            <input type="file" style={{ display: 'none' }} accept="image/*" onChange={handleFileChange} disabled={isUploading} />
+            <input type="file" style={{ display: 'none' }} accept="image/*" multiple onChange={handleFileChange} disabled={isUploading} />
           </label>
         )}
       </div>

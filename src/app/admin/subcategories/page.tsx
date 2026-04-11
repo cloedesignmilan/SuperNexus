@@ -106,6 +106,7 @@ export default async function SubcategoriesPage() {
                              <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399', boxShadow: '0 0 10px #34d399' }}></div> 
                              Modello Addestrato
                           </span>
+                          <AnalyzeButton subcategoryId={sub.id} isUpdate={true} />
                        </div>
                        <p style={{ fontSize: '0.8rem', color: 'rgba(52,211,153,0.8)', fontStyle: 'italic', borderLeft: '2px solid rgba(52,211,153,0.5)', paddingLeft: '0.5rem', margin: 0, lineHeight: 1.5 }}>
                          "{sub.prompt_settings.base_prompt_prefix.substring(0, 150)}..."
