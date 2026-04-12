@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
             if (existingUser.role !== 'admin') {
                 const remaining = existingUser.images_allowance - existingUser.images_generated;
                 if (qty > remaining) {
-                    const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://supernexus.vercel.app";
+                    const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.supernexusai.com";
                     if (existingUser.paypal_subscription_id === "free_trial") {
                         await bot.telegram.editMessageText(
                             globalChatId, 
