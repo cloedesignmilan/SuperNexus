@@ -58,6 +58,9 @@ export default function ClientList({ clients }: { clients: any[] }) {
                      ) : (
                         <span style={{ color: '#f87171', fontWeight: 600 }}>• Sospeso</span>
                      )}
+                     <span style={{ marginLeft: '10px', background: 'rgba(255, 255, 255, 0.1)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
+                        {client.base_allowance === 100 ? 'Starter' : client.base_allowance === 300 ? 'Retail' : `Custom ${client.base_allowance}`}
+                     </span>
                      <span style={{ marginLeft: '10px', background: 'rgba(230, 46, 191, 0.1)', color: 'var(--color-primary)', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
                         Spesa: €{client.totalCost?.toFixed(4) || '0.000'}
                      </span>
