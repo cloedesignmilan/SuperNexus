@@ -312,8 +312,15 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     media: Input.fromBuffer(Buffer.from(b64, 'base64'), `generated_${timestamp}_${idx}.jpg`)
                 }));
 
-                const remainingImagesCount = Math.max(0, existingUser.images_allowance - existingUser.images_generated - generatedBase64s.length);
-                const completeMsg = `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:\n_Ti restano **${remainingImagesCount}** immagini dal piano scelto._`;
+                const totalGenAfterThis = existingUser.images_generated + generatedBase64s.length;
+                const baseAllowance = existingUser.base_allowance;
+                const extraCreditsOwned = Math.max(0, existingUser.images_allowance - baseAllowance);
+
+                const remainingMonthly = Math.max(0, baseAllowance - totalGenAfterThis);
+                const extraCreditsConsumed = Math.max(0, totalGenAfterThis - baseAllowance);
+                const remainingExtra = Math.max(0, extraCreditsOwned - extraCreditsConsumed);
+
+                const completeMsg = `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:\n_Ti restano **${remainingMonthly}** immagini dal piano mensile e **${remainingExtra}** immagini dai crediti extra._`;
 
                 // Se ci sono più di 1 foto inviamo un album
                 if (mediaGroup.length > 1) {
