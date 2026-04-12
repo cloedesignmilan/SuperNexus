@@ -312,14 +312,17 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     media: Input.fromBuffer(Buffer.from(b64, 'base64'), `generated_${timestamp}_${idx}.jpg`)
                 }));
 
+                const remainingImagesCount = Math.max(0, existingUser.images_allowance - existingUser.images_generated - generatedBase64s.length);
+                const completeMsg = `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:\n_Ti restano **${remainingImagesCount}** immagini dal piano scelto._`;
+
                 // Se ci sono più di 1 foto inviamo un album
                 if (mediaGroup.length > 1) {
                      // Taglio l'array al limite max di 10 di MediaGroup
                      await bot.telegram.sendMediaGroup(globalChatId, mediaGroup.slice(0, 10));
-                     await bot.telegram.sendMessage(globalChatId, `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:`, { parse_mode: 'Markdown' });
+                     await bot.telegram.sendMessage(globalChatId, completeMsg, { parse_mode: 'Markdown' });
                 } else {
                      await bot.telegram.sendPhoto(globalChatId, mediaGroup[0].media, {
-                         caption: `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:`,
+                         caption: completeMsg,
                          parse_mode: 'Markdown'
                      });
                 }
