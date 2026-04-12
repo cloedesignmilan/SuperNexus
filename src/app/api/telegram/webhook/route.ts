@@ -156,8 +156,8 @@ export async function POST(req: NextRequest) {
             const timestamp = parts[2];
 
             const buttons = [
-                [Markup.button.callback("1 Foto", `Q_1_${subId}_${timestamp}`), Markup.button.callback("3 Foto", `Q_3_${subId}_${timestamp}`)],
-                [Markup.button.callback("5 Foto", `Q_5_${subId}_${timestamp}`), Markup.button.callback("8 Foto", `Q_8_${subId}_${timestamp}`)]
+                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}`)],
+                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}`)]
             ];
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
