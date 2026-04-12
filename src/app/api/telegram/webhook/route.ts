@@ -139,6 +139,12 @@ export async function POST(req: NextRequest) {
         const action = update.callback_query.data;
         const msgId = update.callback_query.message.message_id;
 
+        // GESTIONE BOTTONI BLOCCATI
+        if (action === 'UPSELL') {
+            await bot.telegram.answerCbQuery(update.callback_query.id, "💎 Premium Feature!\n\nGenerating multiple photos at once is reserved for PRO Plans. Please subscribe on the main site to unlock this feature.", { show_alert: true });
+            return NextResponse.json({ ok: true });
+        }
+
         // SCELTA MACRO-CATEGORIA -> MOSTRA SOTTO-CATEGORIE
         if (action.startsWith('C_')) {
             const parts = action.split('_');
@@ -224,7 +230,10 @@ export async function POST(req: NextRequest) {
             ];
 
             if (existingUser.paypal_subscription_id === "free_trial") {
-                buttons = [[Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`)]];
+                buttons = [
+                    [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`)],
+                    [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                ];
             }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -247,7 +256,10 @@ export async function POST(req: NextRequest) {
             ];
 
             if (existingUser.paypal_subscription_id === "free_trial") {
-                buttons = [[Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`)]];
+                buttons = [
+                    [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`)],
+                    [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                ];
             }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
