@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/prisma";
+import { getActiveAiModel } from "./actions";
+import ModelToggle from "./ModelToggle";
 
 export default async function AdminDashboard() {
   const categoriesCount = await prisma.category.count();
@@ -33,9 +35,14 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <div style={{ marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Visore Centrale</h1>
-        <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
+      <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Visore Centrale</h1>
+          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
+        </div>
+        <div>
+          <ModelToggle initialModel={await getActiveAiModel()} />
+        </div>
       </div>
 
       <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>

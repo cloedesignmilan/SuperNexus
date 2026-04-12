@@ -238,6 +238,9 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo.` : ''}`;
 
+                    const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
+                    const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
+                    
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     let generatedBase64s: string[] = [];
                     const promises = [];
@@ -246,7 +249,7 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                         const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
                         promises.push(
                             ai.models.generateContent({
-                            model: 'gemini-3.1-flash-image-preview',
+                            model: generationModel,
                             contents: [
                                 {
                                     role: 'user',
@@ -295,7 +298,7 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                 }
 
                 if (totalTokensIn > 0 || totalTokensOut > 0) {
-                    await logApiCost("telegram_generation", "gemini-3.1-flash-image-preview", totalTokensIn, totalTokensOut, existingUser.id);
+                    await logApiCost("telegram_generation", generationModel, totalTokensIn, totalTokensOut, existingUser.id);
                 }
 
                 if (generatedBase64s.length === 0) {

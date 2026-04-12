@@ -337,11 +337,14 @@ REGOLE AGGIUNTIVE TASSATIVE:
         ageBracket = "20-30"; // Default for Donna or general female
     }
 
+    const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
+    const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
+
     let auditPrompts: string[] = [];
     let totalPromptsAttempted = 0;
     
     // LOG ESPLICITO LOOP GENERAZIONE
-    console.log(`[GENERATION] Inizio loop richieste Gemini 3.1 Flash per ${targetScenes.length} scene.`);
+    console.log(`[GENERATION] Inizio loop richieste ${generationModel} per ${targetScenes.length} scene.`);
 
     const results = await Promise.allSettled(
         targetScenes.map(async (sceneText: string, idx: number) => {
@@ -377,7 +380,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
             try {
                 generated = await ai.models.generateContent({
-                    model: 'gemini-3.1-flash-image-preview',
+                    model: generationModel,
                     contents: [
                         {
                             role: 'user',
@@ -402,7 +405,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
                 });
 
                 if (generated && generated.usageMetadata) {
-                    await logApiCost("frontend_generation", "gemini-3.1-flash-image-preview", generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null);
+                    await logApiCost("frontend_generation", generationModel, generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null);
                 }
             } catch (err: any) {
                 console.error(`[GENERATION][Scene ${idx+1}] Eccezione diretta durante la chiamata al modello:`, err?.message || err);
