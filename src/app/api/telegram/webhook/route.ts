@@ -229,6 +229,24 @@ export async function POST(req: NextRequest) {
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini altamente differenziate... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
 
             after(async () => {
+                
+                // Creiamo subitissimo il Job nello storico mettendo lo stato in "pending"
+                let pendingJobId: string | null = null;
+                try {
+                    const newJob = await (prisma as any).generationJob.create({
+                        data: {
+                            user_id: existingUser.id,
+                            category_id: subcat.category_id,
+                            subcategory_id: subId,
+                            original_product_image_url: publicUrl,
+                            status: "pending",
+                            total_cost_eur: 0,
+                            results_count: 0
+                        }
+                    });
+                    pendingJobId = newJob.id;
+                } catch(e) { console.error("Impossibile creare pending job", e); }
+
                 try {
                     // CHIAMATA A GEMINI ================================
                     const response = await fetch(publicUrl);
@@ -392,22 +410,47 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     data: { images_generated: { increment: generatedBase64s.length } }
                 });
 
-                // Registro il Job come 'any' per spegnere l'errore TypeScript temporaneo in IDE
-                const newJob = await (prisma as any).generationJob.create({
-                    data: {
-                        user_id: existingUser.id,
-                        category_id: subcat.category_id,
-                        subcategory_id: subId,
-                        original_product_image_url: publicUrl,
-                        status: "completed",
-                        total_cost_eur: jobCost,
-                        results_count: generatedBase64s.length,
-                        provider_response: `Album di ${generatedBase64s.length} foto in Base64`
-                    }
-                });
+                if (pendingJobId) {
+                    await (prisma as any).generationJob.update({
+                        where: { id: pendingJobId },
+                        data: {
+                            status: "completed",
+                            total_cost_eur: jobCost,
+                            results_count: generatedBase64s.length,
+                            provider_response: `Album di ${generatedBase64s.length} foto in Base64`
+                        }
+                    });
+                } else {
+                    await (prisma as any).generationJob.create({
+                        data: {
+                            user_id: existingUser.id,
+                            category_id: subcat.category_id,
+                            subcategory_id: subId,
+                            original_product_image_url: publicUrl,
+                            status: "completed",
+                            total_cost_eur: jobCost,
+                            results_count: generatedBase64s.length,
+                            provider_response: `Album di ${generatedBase64s.length} foto in Base64`
+                        }
+                    });
+                }
 
             } catch (error: any) {
                 console.error("AI Generation Error", error);
+                
+                if (pendingJobId) {
+                    try {
+                        await (prisma as any).generationJob.update({
+                            where: { id: pendingJobId },
+                            data: {
+                                status: "failed",
+                                error_message: error.message,
+                                provider_response: `Generazione fallita: ${error.message}`
+                            }
+                        });
+                    } catch(e) {}
+                }
+
                 await bot.telegram.sendMessage(globalChatId, `❌ **Errore generazione**: ${error.message}`);
             }
             });
