@@ -288,6 +288,25 @@ REGOLE AGGIUNTIVE TASSATIVE:
         "Slight close-up portrait, focusing on the upper chest and face"
     ];
 
+    const poseModifiers = [
+        "walking confidently towards the camera with dynamic movement",
+        "standing straight with a high-fashion editorial pose",
+        "looking slightly away gracefully, elegant side profile posture",
+        "relaxed but confident posture, subtle and natural demeanor",
+        "in mid-motion, dynamic atmospheric fashion model pose"
+    ];
+
+    const lightingModifiers = [
+        "Golden hour sunset lighting, warm tones, beautiful edge rim light",
+        "Moody overcast weather, soft diffused editorial light, cinematic feel",
+        "High-contrast dramatic lighting, deep shadows, striking visual impact",
+        "Bright crisp daylight, sharp distinct shadows, vibrant atmosphere",
+        "Ethereal soft lighting, gentle shadows, highly aesthetic photography"
+    ];
+
+    const shuffledPoses = poseModifiers.sort(() => Math.random() - 0.5);
+    const shuffledLighting = lightingModifiers.sort(() => Math.random() - 0.5);
+
     const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
 
     if (customCameraAngles) {
@@ -351,6 +370,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
         targetScenes.map(async (sceneText: string, idx: number) => {
             totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
+            const currentPose = shuffledPoses[idx % shuffledPoses.length];
+            const currentLighting = shuffledLighting[idx % shuffledLighting.length];
 
             const modifiers = {
                 gender: genderStr === "FEMALE" ? `stunningly beautiful high-end fashion female top model (${ageBracket} years old), flawless photorealistic skin, vogue photoshoot` :
@@ -359,7 +380,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
                         genderStr === "GIRL (CHILD)" ? `beautiful young girl child model (${ageBracket} years old), photorealistic natural smile, gorgeous` : "stunningly attractive photorealistic high-end model",
                 bottomType: confirmedBottom || null,
                 customBrand: confirmedBrand || null,
-                cameraAngle: currentAngle
+                cameraAngle: currentAngle,
+                pose: isShoesCategory ? undefined : currentPose,
+                lighting: isShoesCategory ? undefined : currentLighting
             };
 
             const finalPrompt = buildCreatorPrompt(

@@ -1,7 +1,7 @@
 export function buildCreatorPrompt(
   inspectorData: any,
   categoryName: string,
-  modifiers: { gender?: string, bottomType?: string | null, customBrand?: string | null, cameraAngle?: string },
+  modifiers: { gender?: string, bottomType?: string | null, customBrand?: string | null, cameraAngle?: string, pose?: string, lighting?: string },
   dbMasterPrompt: string,
   dbSceneText: string,
   dbNegativeRules: string,
@@ -47,9 +47,14 @@ export function buildCreatorPrompt(
   if (isShoes) {
      mods += `- STRICT NEGATIVE: No humans, no legs, no feet unless naturally implied by the composition. If lifestyle, keep extremely minimal.\n`;
   } else {
-     mods += `- Model Description: An attractive ${modifiers.gender || 'model'} posing naturally.\n`;
+     mods += `- Model Description: An attractive ${modifiers.gender || 'model'} ${modifiers.pose ? modifiers.pose : 'posing naturally'}.\n`;
   }
   if (modifiers.bottomType) mods += `- Paired Bottom: ${modifiers.bottomType} (keep it matching, elegant and neutral, do not let it steal focus from the main garment)\n`;
+  
+  if (modifiers.lighting) {
+     mods += `- Lighting & Atmosphere: ${modifiers.lighting}\n`;
+  }
+  
   blocks.push(mods);
 
   // 6. BRAND RULES
