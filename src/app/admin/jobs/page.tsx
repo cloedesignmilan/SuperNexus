@@ -71,15 +71,15 @@ export default async function JobsPage() {
                                                 fontSize: '0.7rem',
                                                 fontWeight: 'bold',
                                                 letterSpacing: '0.05em',
-                                                color: job.status === 'completed' ? '#34d399' : '#f87171',
-                                                background: job.status === 'completed' ? 'rgba(52, 211, 153, 0.1)' : 'rgba(248, 113, 113, 0.1)',
-                                                border: `1px solid ${job.status === 'completed' ? 'rgba(52, 211, 153, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
+                                                color: job.status === 'completed' ? '#34d399' : job.status === 'pending' ? '#fbbf24' : '#f87171',
+                                                background: job.status === 'completed' ? 'rgba(52, 211, 153, 0.1)' : job.status === 'pending' ? 'rgba(251, 191, 36, 0.1)' : 'rgba(248, 113, 113, 0.1)',
+                                                border: `1px solid ${job.status === 'completed' ? 'rgba(52, 211, 153, 0.2)' : job.status === 'pending' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
                                                 width: 'fit-content'
                                             }}>
-                                                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: job.status === 'completed' ? '#34d399' : '#f87171' }}></div>
-                                                {job.status === 'completed' ? 'SUCCESS' : 'FAILED'}
+                                                <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: job.status === 'completed' ? '#34d399' : job.status === 'pending' ? '#fbbf24' : '#f87171' }}></div>
+                                                {job.status === 'completed' ? 'SUCCESS' : job.status === 'pending' ? 'IN CORSO...' : 'FAILED'}
                                             </span>
-                                            {job.status !== 'completed' && job.provider_response && (
+                                            {job.status !== 'completed' && job.status !== 'pending' && job.provider_response && (
                                               <span style={{ fontSize: '0.7rem', color: '#fca5a5', maxWidth: '280px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={job.provider_response}>
                                                   {job.provider_response}
                                               </span>
