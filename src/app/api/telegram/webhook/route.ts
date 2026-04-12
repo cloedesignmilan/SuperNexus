@@ -55,7 +55,9 @@ export async function POST(req: NextRequest) {
             });
 
             if (existingBound && existingBound.id !== userToBind.id && isTargetFreeTrial) {
-                await bot.telegram.sendMessage(globalChatId, `🛑 **Security Alert**\n\nYour Telegram account is already associated with SuperNexus.\n\nOur system prevents activating multiple Free Trials from the same device. To continue generating, please upgrade to a Pro Plan.`, { parse_mode: 'Markdown' });
+                const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.supernexusai.com";
+                const upgradeLink = `${hostUrl}/registrazione?upgrade=true`;
+                await bot.telegram.sendMessage(globalChatId, `🛑 **Security Alert**\n\nYour Telegram account is already associated with SuperNexus.\n\nOur system prevents activating multiple Free Trials from the same device. To continue generating, please upgrade to a Pro Plan:\n👉 [Subscribe to a Pro Plan](${upgradeLink})`, { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } });
                 return NextResponse.json({ ok: true });
             }
 
