@@ -3,6 +3,8 @@ import { Users, Plus } from "lucide-react";
 import ClientList from "./ClientList";
 import { createClient } from "./actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ClientsPage() {
   const users = await prisma.user.findMany({
     where: { role: { not: "admin" } },
@@ -14,10 +16,16 @@ export default async function ClientsPage() {
     }
   });
 
+  const costAggregate = await prisma.apiCostLog.groupBy({
+    by: ['user_id'],
+    _sum: { cost_eur: true }
+  });
+
   const enrichedClients = users.map(user => {
     const successfulJobs = user.jobs.filter(j => j.status === 'completed').length;
     const failedJobs = user.jobs.filter(j => j.status === 'failed' || j.status === 'error').length;
-    return { ...user, successfulJobs, failedJobs };
+    const userCost = costAggregate.find(c => c.user_id === user.id)?._sum.cost_eur || 0;
+    return { ...user, successfulJobs, failedJobs, totalCost: userCost };
   });
 
   return (

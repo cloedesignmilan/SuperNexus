@@ -116,6 +116,7 @@ model GenerationJob {
   provider_response             String?  @db.Text
   error_message                 String?  @db.Text
   results_count                 Int      @default(0)
+  total_cost_eur                Float    @default(0.0)
   createdAt                     DateTime @default(now())
   updatedAt                     DateTime @updatedAt
 

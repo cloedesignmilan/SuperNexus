@@ -7,7 +7,7 @@ export async function toggleAiModel(modelName: string) {
         throw new Error("Invalid model name");
     }
 
-    await prisma.setting.upsert({
+    await (prisma as any).setting.upsert({
         where: { key: 'ACTIVE_GENERATION_MODEL' },
         update: { value: modelName },
         create: { key: 'ACTIVE_GENERATION_MODEL', value: modelName }
@@ -17,7 +17,7 @@ export async function toggleAiModel(modelName: string) {
 }
 
 export async function getActiveAiModel() {
-    const setting = await prisma.setting.findUnique({
+    const setting = await (prisma as any).setting.findUnique({
         where: { key: 'ACTIVE_GENERATION_MODEL' }
     });
     return setting?.value || "gemini-3.1-flash-image-preview";

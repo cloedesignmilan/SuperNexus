@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
   const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
   let gJobId = null, gChatId = null, gStoreId = null;
+  let totalJobCost = 0;
 
   try {
     const jsonBody = await req.json();
@@ -102,7 +103,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     });
 
     if (visionResult.usageMetadata) {
-        await logApiCost("frontend_vision", "gemini-2.5-flash", visionResult.usageMetadata.promptTokenCount || 0, visionResult.usageMetadata.candidatesTokenCount || 0, null);
+        totalJobCost += await logApiCost("frontend_vision", "gemini-2.5-flash", visionResult.usageMetadata.promptTokenCount || 0, visionResult.usageMetadata.candidatesTokenCount || 0, null);
     }
 
     interface InspectorData {
@@ -405,7 +406,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
                 });
 
                 if (generated && generated.usageMetadata) {
-                    await logApiCost("frontend_generation", generationModel, generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null);
+                    totalJobCost += await logApiCost("frontend_generation", generationModel, generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null, 1);
                 }
             } catch (err: any) {
                 console.error(`[GENERATION][Scene ${idx+1}] Eccezione diretta durante la chiamata al modello:`, err?.message || err);
@@ -518,6 +519,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         where: { id: jobId },
         data: { 
              status: "completato",
+             total_cost_eur: totalJobCost,
              metadata: metaMerge
         }
     });

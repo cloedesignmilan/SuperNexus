@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { getActiveAiModel } from "./actions";
 import ModelToggle from "./ModelToggle";
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   const categoriesCount = await prisma.category.count();
   const subcatsCount = await prisma.subcategory.count();
@@ -21,12 +23,12 @@ export default async function AdminDashboard() {
   const visionTodayCount = await prisma.promptTemplateSettings.count({ where: { updatedAt: { gte: today } } });
 
   // Calcolo Spesa API Reale in base al DB
-  const costsTodayAggr = await prisma.apiCostLog.aggregate({
+  const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
       where: { createdAt: { gte: today } },
       _sum: { cost_eur: true }
   });
   
-  const costsTotalAggr = await prisma.apiCostLog.aggregate({
+  const costsTotalAggr = await (prisma as any).apiCostLog.aggregate({
       _sum: { cost_eur: true }
   });
 
@@ -93,7 +95,7 @@ export default async function AdminDashboard() {
             <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Spesa Totale Vita</h3>
             <span style={{ color: 'var(--color-text-muted)', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '10px' }}>📈</span>
           </div>
-          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costTotal.toFixed(2)}</p>
+          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costTotal.toFixed(4)}</p>
           <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>Da inizio progetto</p>
         </div>
       </div>

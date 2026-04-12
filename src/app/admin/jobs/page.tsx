@@ -29,6 +29,7 @@ export default async function JobsPage() {
                                 <th style={{ padding: '1.25rem 1.5rem', fontWeight: 600 }}>Utente CRM</th>
                                 <th style={{ padding: '1.25rem 1.5rem', fontWeight: 600 }}>Modello Allenato</th>
                                 <th style={{ padding: '1.25rem 1.5rem', fontWeight: 600 }}>Esito Task</th>
+                                <th style={{ padding: '1.25rem 1.5rem', fontWeight: 600 }}>Costo</th>
                                 <th style={{ padding: '1.25rem 1.5rem', fontWeight: 600, textAlign: 'right' }}>Asset</th>
                             </tr>
                         </thead>
@@ -84,6 +85,11 @@ export default async function JobsPage() {
                                               </span>
                                             )}
                                         </div>
+                                    </td>
+                                    
+                                    {/* COSTO */}
+                                    <td style={{ padding: '1.25rem 1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
+                                        € {(job as any).total_cost_eur?.toFixed(4) || '0.000'}
                                     </td>
                                     
                                     {/* ASSET */}

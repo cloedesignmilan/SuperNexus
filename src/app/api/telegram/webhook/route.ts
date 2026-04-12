@@ -297,8 +297,9 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     }
                 }
 
+                let jobCost = 0;
                 if (totalTokensIn > 0 || totalTokensOut > 0) {
-                    await logApiCost("telegram_generation", generationModel, totalTokensIn, totalTokensOut, existingUser.id);
+                    jobCost = await logApiCost("telegram_generation", generationModel, totalTokensIn, totalTokensOut, existingUser.id, generatedBase64s.length);
                 }
 
                 if (generatedBase64s.length === 0) {
@@ -329,14 +330,15 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     data: { images_generated: { increment: generatedBase64s.length } }
                 });
 
-                // Registro il Job
-                await prisma.generationJob.create({
+                // Registro il Job come 'any' per spegnere l'errore TypeScript temporaneo in IDE
+                const newJob = await (prisma as any).generationJob.create({
                     data: {
                         user_id: existingUser.id,
                         category_id: subcat.category_id,
                         subcategory_id: subId,
                         original_product_image_url: publicUrl,
                         status: "completed",
+                        total_cost_eur: jobCost,
                         results_count: generatedBase64s.length,
                         provider_response: `Album di ${generatedBase64s.length} foto in Base64`
                     }
