@@ -69,9 +69,16 @@ export default function TopupCheckout({ pin, packageId, onSuccess }: TopupChecko
         return <div style={{ padding: "20px", color: "var(--cyan-500)", fontWeight: "bold", textAlign: "center" }}>⚡ Erogazione Crediti in Corso... Attendi...</div>;
     }
 
+    const initialOptions = {
+        clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID && process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID !== 'test_client_id_placeholder' 
+            ? process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID 
+            : "test",
+        currency: "EUR"
+    };
+
     return (
         <div style={{ marginTop: "20px" }}>
-            <PayPalScriptProvider options={{ "clientId": clientId, currency: "EUR" }}>
+            <PayPalScriptProvider options={initialOptions}>
                 <PayPalButtons 
                     createOrder={createOrder} 
                     onApprove={onApprove} 

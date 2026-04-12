@@ -71,8 +71,15 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
         return <div style={{ padding: "20px", color: "var(--cyan-500)", fontWeight: "bold" }}>Elaborazione Abbonamento in Corso... Attivazione Profilo...</div>;
     }
 
+    const initialOptions = {
+        clientId: clientId,
+        currency: "EUR",
+        vault: true,
+        intent: "subscription"
+    };
+
     return (
-        <PayPalScriptProvider options={{ "clientId": clientId, currency: "EUR", vault: true, intent: "subscription" }}>
+        <PayPalScriptProvider options={initialOptions}>
             <PayPalButtons 
                 createSubscription={createSubscription} 
                 onApprove={onApprove} 
