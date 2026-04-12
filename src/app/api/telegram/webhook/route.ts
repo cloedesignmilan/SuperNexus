@@ -49,6 +49,16 @@ export async function POST(req: NextRequest) {
         });
         
         if (userToBind) {
+            const isTargetFreeTrial = userToBind.paypal_subscription_id?.startsWith('free_trial');
+            const existingBound = await prisma.user.findFirst({
+                where: { telegram_chat_id: globalChatId }
+            });
+
+            if (existingBound && existingBound.id !== userToBind.id && isTargetFreeTrial) {
+                await bot.telegram.sendMessage(globalChatId, `🛑 **Security Alert**\n\nYour Telegram account is already associated with SuperNexus.\n\nOur system prevents activating multiple Free Trials from the same device. To continue generating, please upgrade to a Pro Plan.`, { parse_mode: 'Markdown' });
+                return NextResponse.json({ ok: true });
+            }
+
             // Sgancia da eventuali account precedenti
             await prisma.user.updateMany({
                 where: { telegram_chat_id: globalChatId },
