@@ -44,8 +44,8 @@ export default async function BenvenutoPage({ searchParams }: { searchParams: Pr
                             </div>
                         </div>
 
-                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#ff3333', fontSize: '0.85rem', marginTop: '20px', background: 'rgba(255, 51, 51, 0.05)', padding: '10px', borderRadius: '8px'}}>
-                            <AlertTriangle size={16} /> <strong>Warning:</strong> Take a screenshot. This PIN will not be shown again. You will need it to link your Telegram account with the Bot.
+                        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#ffffff', fontSize: '0.85rem', marginTop: '20px', background: 'rgba(255, 51, 51, 0.05)', padding: '10px', borderRadius: '8px'}}>
+                            <AlertTriangle size={16} color="#ff3333" /> <strong style={{ color: '#ff3333' }}>Warning:</strong> <span style={{ opacity: 0.9 }}>Take a screenshot. This PIN will not be shown again. You will need it to link your Telegram account with the Bot.</span>
                         </div>
                     </div>
 
