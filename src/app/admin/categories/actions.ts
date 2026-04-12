@@ -46,11 +46,13 @@ export async function createCategory(formData: FormData) {
   });
 
   revalidatePath("/admin/categories");
+  revalidatePath("/admin/subcategories");
 }
 
 export async function deleteCategory(id: string) {
   await prisma.category.delete({ where: { id } });
   revalidatePath("/admin/categories");
+  revalidatePath("/admin/subcategories");
 }
 
 export async function updateCategory(id: string, formData: FormData) {
@@ -64,6 +66,7 @@ export async function updateCategory(id: string, formData: FormData) {
     data: { name, description }
   });
   revalidatePath("/admin/categories");
+  revalidatePath("/admin/subcategories");
 }
 
 export async function toggleCategoryStatus(id: string, currentStatus: boolean) {
@@ -72,6 +75,7 @@ export async function toggleCategoryStatus(id: string, currentStatus: boolean) {
     data: { is_active: !currentStatus }
   });
   revalidatePath("/admin/categories");
+  revalidatePath("/admin/subcategories");
 }
 
 export async function updateCategoryOrder(items: { id: string, sort_order: number }[]) {

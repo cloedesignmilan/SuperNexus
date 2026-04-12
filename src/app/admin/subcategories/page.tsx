@@ -3,6 +3,8 @@ import { createSubcategory, deleteSubcategory, toggleSubcategoryStatus, updateSu
 import { UploaderBase } from "./uploader-client";
 import { AnalyzeButton } from "./analyze-btn";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SubcategoriesPage() {
   const categories = await prisma.category.findMany({
     orderBy: { sort_order: 'asc' },

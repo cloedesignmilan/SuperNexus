@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { createCategory, deleteCategory, toggleCategoryStatus, updateCategory } from "./actions";
 
+export const dynamic = 'force-dynamic';
+
 export default async function CategoriesPage() {
   const categories = await prisma.category.findMany({
     orderBy: { sort_order: 'asc' },
