@@ -196,7 +196,7 @@ export async function POST(req: NextRequest) {
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
             const subcat = await prisma.subcategory.findUnique({
                 where: { id: subId },
-                include: { prompt_settings: true, category: true }
+                include: { prompt_settings: true, category: true, reference_images: true }
             });
 
             if (!subcat || !subcat.prompt_settings?.base_prompt_prefix) {
@@ -208,7 +208,25 @@ export async function POST(req: NextRequest) {
             const fileName = `${globalChatId}_${timestamp}.jpg`;
             const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
 
-            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini ... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
+            const referenceImages = subcat.reference_images || [];
+            let referenceBuffers: { data: string, mimeType: string }[] = [];
+            
+            if (referenceImages.length > 0) {
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI sta pre-caricando ${referenceImages.length} Ispirazioni Visive... (attendi)*`, { parse_mode: 'Markdown' });
+                for (const ref of referenceImages.slice(0, 10)) {
+                     try {
+                         const rRes = await fetch(ref.image_url);
+                         if(rRes.ok) {
+                             const rBuf = await rRes.arrayBuffer();
+                             const rB64 = Buffer.from(rBuf).toString('base64');
+                             const rMime = rRes.headers.get('content-type') || 'image/jpeg';
+                             referenceBuffers.push({ data: rB64, mimeType: rMime });
+                         }
+                     } catch(e) {}
+                }
+            }
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini altamente differenziate... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
 
             after(async () => {
                 try {
@@ -245,18 +263,52 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     let generatedBase64s: string[] = [];
                     const promises = [];
 
+                    const poseModifiers = [
+                        "walking confidently towards the camera with dynamic movement",
+                        "standing straight with a high-fashion editorial pose",
+                        "looking slightly away gracefully, elegant side profile posture",
+                        "relaxed but confident posture, subtle and natural demeanor",
+                        "in mid-motion, dynamic atmospheric fashion model pose"
+                    ];
+
+                    const lightingModifiers = [
+                        "Golden hour sunset lighting, warm tones, beautiful edge rim light",
+                        "Moody overcast weather, soft diffused editorial light, cinematic feel",
+                        "High-contrast dramatic lighting, deep shadows, striking visual impact",
+                        "Bright crisp daylight, sharp distinct shadows, vibrant atmosphere",
+                        "Ethereal soft lighting, gentle shadows, highly aesthetic photography"
+                    ];
+
+                    const shuffledPoses = poseModifiers.sort(() => Math.random() - 0.5);
+                    const shuffledLighting = lightingModifiers.sort(() => Math.random() - 0.5);
+
                     for (let i = 0; i < qty; i++) {
-                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
+                        const currentPose = shuffledPoses[i % shuffledPoses.length];
+                        const currentLighting = shuffledLighting[i % shuffledLighting.length];
+                        
+                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO.]`;
+                        
+                        let currentRefInline = null;
+                        if (referenceBuffers.length > 0) {
+                            currentRefInline = referenceBuffers[i % referenceBuffers.length];
+                        }
+                        
+                        const aiParts = [];
+                        aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                        aiParts.push({ inlineData: { data: base64, mimeType } });
+                        if (currentRefInline) {
+                            aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting, pose, and background aesthetic. DO NOT copy the clothes from this image):" });
+                            aiParts.push({ inlineData: currentRefInline });
+                        }
+                        aiParts.push({ text: variantPrompt });
+
                         promises.push(
                             ai.models.generateContent({
                             model: generationModel,
                             contents: [
                                 {
                                     role: 'user',
-                                    parts: [
-                                        { inlineData: { data: base64, mimeType } },
-                                        { text: variantPrompt }
-                                    ]
+                                    parts: aiParts
                                 }
                             ],
                             config: {
