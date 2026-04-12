@@ -68,7 +68,7 @@ const CATEGORIES = [
     icon: <Footprints size={28} strokeWidth={1.5} />, 
     title: 'Calzature & Sneaker', 
     desc: 'Eliminazione totale di difetti, mani o sfondi rovinati. I tuoi scatti in magazzino diventano still-life perfetti, pronti per lo store.',
-    imgSrc: '/showcase/scarpe/prima.webp', phoneLabel: 'PRIMA (NEGOZIO)', 
+    imgSrc: '/showcase/scarpe/prima.png', phoneLabel: 'PRIMA (NEGOZIO)', 
     post1Src: '/showcase/scarpe/dopo1.jpg', post1Label: 'E-COMMERCE', 
     post2Src: '/showcase/scarpe/dopo2.jpg', post2Label: 'IG POST', 
     account: 'calzature_boutique', likes: '1.240'
