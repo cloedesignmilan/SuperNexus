@@ -78,15 +78,17 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
         intent: "subscription"
     };
 
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email?.trim() || "");
+
     return (
         <PayPalScriptProvider options={initialOptions}>
             <PayPalButtons 
                 createSubscription={createSubscription} 
                 onApprove={onApprove} 
                 style={{ layout: "vertical", color: "gold", shape: "pill" }}
-                disabled={!email || email.trim().length < 5}
+                disabled={!isEmailValid}
             />
-            {(!email || email.trim().length < 5) && (
+            {!isEmailValid && (
                 <p style={{ color: "#ff5e00", fontSize: "0.85rem", marginTop: "10px" }}>Inserisci un indirizzo Email valido in alto per sbloccare il bottone.</p>
             )}
         </PayPalScriptProvider>
