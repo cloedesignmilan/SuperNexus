@@ -149,19 +149,87 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         }
 
-        // SCELTA SOTTO-CATEGORIA -> CHIEDI QUANTITÀ
+        // SCELTA SOTTO-CATEGORIA -> CHECK AMBIGUITÀ O CHIEDI QUANTITÀ
         if (action.startsWith('S_')) {
             const parts = action.split('_');
             const subId = parts[1];
             const timestamp = parts[2];
 
+            // Feedback immediato loading e pre-analisi IA
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analisi della geometria del capo in corso...*", { parse_mode: "Markdown" });
+
+            const fileName = `${globalChatId}_${timestamp}.jpg`;
+            const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
+
+            try {
+                const response = await fetch(publicUrl);
+                if (response.ok) {
+                    const arrayBuffer = await response.arrayBuffer();
+                    const base64 = Buffer.from(arrayBuffer).toString('base64');
+                    const mimeType = response.headers.get('content-type') || 'image/jpeg';
+
+                    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
+                    const prompt = "Guarda questo capo di abbigliamento. La parte inferiore è chiaramente un 'PANTALONE', o una 'GONNA', o non ha bisogno di pezzo di sotto? Se a causa dell'inquadratura tagliata o dell'angolazione è IMPOSSIBILE capirlo con assoluta certezza, devi rispondere ESATTAMENTE la parola 'AMBIGUO'. Se invece sei ragionevolmente sicuro, rispondi 'SICURO'. Rispondi SOLO con una di queste due parole, senza punteggiatura.";
+                    
+                    const result = await ai.models.generateContent({
+                       model: "gemini-3.1-flash",
+                       contents: [
+                          {
+                              role: 'user',
+                              parts: [
+                                  { text: prompt },
+                                  { inlineData: { data: base64, mimeType } }
+                              ]
+                          }
+                       ]
+                    });
+                    
+                    const answer = result.text?.trim().toUpperCase() || "";
+
+                    if (answer.includes("AMBIGUO")) {
+                        const buttons = [
+                            [Markup.button.callback("Gonna / Vestito Unico 👗", `B_G_${subId}_${timestamp}`)],
+                            [Markup.button.callback("Pantaloni / Jeans 👖", `B_P_${subId}_${timestamp}`)],
+                            [Markup.button.callback("Ignora (Invisibile / Top) 👀", `B_X_${subId}_${timestamp}`)]
+                        ];
+                        await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                            "💡 *L'Intelligenza Artificiale ha un dubbio sull'inquadratura!*\n\nAiutami a non generare vestiti sbagliati: la parte inferiore in questa foto qual è?", 
+                            { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+                        );
+                        return NextResponse.json({ ok: true });
+                    }
+                }
+            } catch(e) {
+                console.error("Errore analisi ambiguità flash:", e);
+            }
+
+            // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
             const buttons = [
-                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}`)],
-                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}`)]
+                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}_X`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}_X`)],
+                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}_X`)]
             ];
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Ottimo. Quante foto vuoi generare?", 
+                "✨ Perfetto. Quante foto vuoi generare?", 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
+            return NextResponse.json({ ok: true });
+        }
+
+        // SCELTA DISAMBIGUAZIONE -> CHIEDI QUANTITÀ
+        if (action.startsWith('B_')) {
+            const parts = action.split('_');
+            const bottom = parts[1]; // 'G', 'P', 'X'
+            const subId = parts[2];
+            const timestamp = parts[3];
+
+            const buttons = [
+                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}_${bottom}`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}_${bottom}`)],
+                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
+            ];
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                "✨ Ottima specifica. Quante foto vuoi generare?", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -173,6 +241,7 @@ export async function POST(req: NextRequest) {
             const qtyStr = parts[1];
             const subId = parts[2];
             const timestamp = parts[3];
+            const bottomMarker = parts[4] || 'X';
             const qty = parseInt(qtyStr, 10);
 
             // Controllo Crediti Clienti
@@ -273,7 +342,8 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${subcat.target_age ? `8. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo.` : ''}`;
+${subcat.target_age ? `8. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo.` : ''}
+${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA GONNA O UN VESTITO. NON GENERARE PANTALONI, LEGGINGS O SHORTS SOTTO IL CAPO SUPERIORE.' : bottomMarker === 'P' ? '9. VINCOLO PANTALONI: LA MODELLA INDOSSA ASSOLUTAMENTE DEI PANTALONI O JEANS. NON GENERARE GONNE O VESTITI INTERI.' : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
                     const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
