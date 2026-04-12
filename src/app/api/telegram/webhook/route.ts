@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { createClient } from "@supabase/supabase-js";
 import { GoogleGenAI } from "@google/genai";
 import { logApiCost } from "@/lib/gemini-cost";
+import { getRandomSceneForSubcategory } from "./sceneDictionary";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Max timeout for Vercel
 
@@ -429,11 +430,23 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     const shuffledPoses = poseModifiers.sort(() => Math.random() - 0.5);
                     const shuffledLighting = lightingModifiers.sort(() => Math.random() - 0.5);
 
+                    // --- INJECTION MAGIC SCENE ---
+                    let varianceEnabled = false;
+                    try {
+                        const varianceSetting = await (prisma as any).setting.findUnique({ where: { key: 'AI_SCENE_VARIANCE_ENABLED' }});
+                        varianceEnabled = varianceSetting?.value === 'true';
+                    } catch(e) {}
+
                     for (let i = 0; i < qty; i++) {
                         const currentPose = shuffledPoses[i % shuffledPoses.length];
-                        const currentLighting = shuffledLighting[i % shuffledLighting.length];
+                        let currentLighting = shuffledLighting[i % shuffledLighting.length];
+
+                        if (varianceEnabled) {
+                            const magicalScene = getRandomSceneForSubcategory(subcat.category.slug + " " + subcat.slug);
+                            currentLighting += magicalScene;
+                        }
                         
-                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO.]`;
+                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING/SCENE SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO e USA un NEGATIVE PROMPT SERVER SIDE per sfavorire: "(plastic skin:1.5), perfect symmetry, heavily airbrushed, fake AI look".]`;
                         
                         let currentRefInline = null;
                         if (referenceBuffers.length > 0) {

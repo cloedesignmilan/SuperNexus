@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { getActiveAiModel } from "./actions";
+import { getActiveAiModel, getAiSceneVariance } from "./actions";
 import ModelToggle from "./ModelToggle";
+import AiSceneToggle from "./AiSceneToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -42,8 +43,9 @@ export default async function AdminDashboard() {
           <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Visore Centrale</h1>
           <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
         </div>
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' }}>
           <ModelToggle initialModel={await getActiveAiModel()} />
+          <AiSceneToggle initialEnabled={await getAiSceneVariance()} />
         </div>
       </div>
 

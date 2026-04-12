@@ -22,3 +22,19 @@ export async function getActiveAiModel() {
     });
     return setting?.value || "gemini-3.1-flash-image-preview";
 }
+
+export async function toggleAiSceneVariance(enabled: boolean) {
+    await (prisma as any).setting.upsert({
+        where: { key: 'AI_SCENE_VARIANCE_ENABLED' },
+        update: { value: enabled ? "true" : "false" },
+        create: { key: 'AI_SCENE_VARIANCE_ENABLED', value: enabled ? "true" : "false" }
+    });
+    revalidatePath('/admin');
+}
+
+export async function getAiSceneVariance() {
+    const setting = await (prisma as any).setting.findUnique({
+        where: { key: 'AI_SCENE_VARIANCE_ENABLED' }
+    });
+    return setting?.value === "true";
+}
