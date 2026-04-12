@@ -34,7 +34,40 @@ export async function POST(req: NextRequest) {
 
     if (!globalChatId) return NextResponse.json({ ok: true });
 
-    // --- AUTENTICAZIONE CRM CLIENTE ---
+    // --- AUTENTICAZIONE CRM CLIENTE E CAMBIO ACCOUNT DINAMICO ---
+    const incomingText = update?.message?.text?.trim() || "";
+    
+    // Controlla se il messaggio in ingresso è un PIN valido per il cambio account (o il primo bind)
+    let possiblePin = incomingText;
+    if (incomingText.startsWith('/start ')) {
+        possiblePin = incomingText.split(' ')[1].trim();
+    }
+
+    if (possiblePin && possiblePin.length === 6 && possiblePin.toUpperCase() === possiblePin) {
+        const userToBind = await prisma.user.findUnique({
+            where: { bot_pin: possiblePin }
+        });
+        
+        if (userToBind) {
+            // Sgancia da eventuali account precedenti
+            await prisma.user.updateMany({
+                where: { telegram_chat_id: globalChatId },
+                data: { telegram_chat_id: null }
+            });
+            
+            // Aggancia al nuovo utente
+            const newlyBindedUser = await prisma.user.update({
+                where: { id: userToBind.id },
+                data: { telegram_chat_id: globalChatId }
+            });
+            
+            const rem = newlyBindedUser.images_allowance - newlyBindedUser.images_generated;
+            let roleContext = newlyBindedUser.paypal_subscription_id === "free_trial" ? "Free Trial" : "Enterprise";
+            await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus ${roleContext} platform.\nImage Quota: **${rem} remaining**.\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
+            return NextResponse.json({ ok: true });
+        }
+    }
+
     let existingUser = await prisma.user.findFirst({
         where: {
             OR: [
@@ -45,26 +78,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!existingUser) {
-        const incomingText = update?.message?.text?.trim() || "";
-        
-        if (incomingText) {
-            const userWithPin = await prisma.user.findUnique({
-                where: { bot_pin: incomingText }
-            });
-
-            if (userWithPin) {
-                existingUser = await prisma.user.update({
-                    where: { id: userWithPin.id },
-                    data: { telegram_chat_id: globalChatId }
-                });
-
-                const rem = existingUser.images_allowance - existingUser.images_generated;
-                await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus enterprise platform.\nImage Quota: **${rem} remaining**.\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
-                return NextResponse.json({ ok: true });
-            }
-        }
-        
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal PIN provided by the agency to unlock your client area.`, { parse_mode: 'Markdown' });
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal 6-character PIN provided by the agency to unlock your client area.`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
