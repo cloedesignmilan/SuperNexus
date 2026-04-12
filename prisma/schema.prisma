@@ -135,3 +135,14 @@ model JobImage {
 
   job GenerationJob @relation(fields: [job_id], references: [id], onDelete: Cascade)
 }
+
+model ApiCostLog {
+  id          String   @id @default(uuid())
+  user_id     String?
+  action_type String
+  model_used  String
+  tokens_in   Int      @default(0)
+  tokens_out  Int      @default(0)
+  cost_eur    Float    @default(0.0)
+  createdAt   DateTime @default(now())
+}

@@ -18,12 +18,18 @@ export default async function AdminDashboard() {
   const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
   const visionTodayCount = await prisma.promptTemplateSettings.count({ where: { updatedAt: { gte: today } } });
 
-  // Costi Hardcoded in base al tariffario (modificabili qui)
-  const COST_PER_VISION_ANALYSIS = 0.005; // ~0.005€ per chiamata a Gemini Pro
-  const COST_PER_IMAGE_GENERATION = 0.03; // ~0.03€ per immagine da Imagen 3
+  // Calcolo Spesa API Reale in base al DB
+  const costsTodayAggr = await prisma.apiCostLog.aggregate({
+      where: { createdAt: { gte: today } },
+      _sum: { cost_eur: true }
+  });
+  
+  const costsTotalAggr = await prisma.apiCostLog.aggregate({
+      _sum: { cost_eur: true }
+  });
 
-  const costToday = (imagesTodayCount * COST_PER_IMAGE_GENERATION) + (visionTodayCount * COST_PER_VISION_ANALYSIS);
-  const costTotal = (totalImagesCount * COST_PER_IMAGE_GENERATION) + (totalVisionCount * COST_PER_VISION_ANALYSIS);
+  const costToday = costsTodayAggr._sum.cost_eur || 0.000;
+  const costTotal = costsTotalAggr._sum.cost_eur || 0.000;
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
-
+import { logApiCost } from "@/lib/gemini-cost";
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
 const SYSTEM_PROMPT = `Sei l’assistente ufficiale di SuperNexus AI.
@@ -247,6 +247,10 @@ export async function POST(req: Request) {
             ...formattedMessages
         ]
     });
+
+    if (response.usageMetadata) {
+        await logApiCost("landing_chat", "gemini-2.5-flash", response.usageMetadata.promptTokenCount || 0, response.usageMetadata.candidatesTokenCount || 0, null);
+    }
 
     return NextResponse.json({ reply: response.text });
   } catch (error: any) {

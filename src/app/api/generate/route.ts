@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { GoogleGenAI } from "@google/genai";
 import { Telegraf } from "telegraf";
 import { buildCreatorPrompt } from "@/lib/promptBuilder";
-
+import { logApiCost } from "@/lib/gemini-cost";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // Allows up to 5 mins on Vercel Pro
 export async function POST(req: NextRequest) {
@@ -100,6 +100,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
         ]}
       ]
     });
+
+    if (visionResult.usageMetadata) {
+        await logApiCost("frontend_vision", "gemini-2.5-flash", visionResult.usageMetadata.promptTokenCount || 0, visionResult.usageMetadata.candidatesTokenCount || 0, null);
+    }
 
     interface InspectorData {
         technical_validation?: { is_usable: boolean; };
@@ -396,6 +400,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
                         }
                     }
                 });
+
+                if (generated && generated.usageMetadata) {
+                    await logApiCost("frontend_generation", "gemini-3.1-flash-image-preview", generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null);
+                }
             } catch (err: any) {
                 console.error(`[GENERATION][Scene ${idx+1}] Eccezione diretta durante la chiamata al modello:`, err?.message || err);
                 throw new Error(`Modello API Fault: ${err?.message}`);

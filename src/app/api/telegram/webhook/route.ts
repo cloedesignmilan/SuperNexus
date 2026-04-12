@@ -3,7 +3,7 @@ import { Telegraf, Markup } from "telegraf";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@supabase/supabase-js";
 import { GoogleGenAI } from "@google/genai";
-
+import { logApiCost } from "@/lib/gemini-cost";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Max timeout for Vercel
 
@@ -246,7 +246,7 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                         const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}. Modifica la posizione delle braccia e l'atteggiamento, ma tieni il VISO PERFETTAMENTE A FUOCO.]`;
                         promises.push(
                             ai.models.generateContent({
-                            model: 'gemini-3-pro-image-preview',
+                            model: 'gemini-3.1-flash-image-preview',
                             contents: [
                                 {
                                     role: 'user',
@@ -265,10 +265,19 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                 }
 
                 const responses = await Promise.allSettled(promises);
+                let totalTokensIn = 0;
+                let totalTokensOut = 0;
 
                 for (const outcome of responses) {
                     if (outcome.status === 'fulfilled') {
                         const resp = outcome.value;
+                        
+                        // Accumula i token
+                        if (resp.usageMetadata) {
+                            totalTokensIn += resp.usageMetadata.promptTokenCount || 0;
+                            totalTokensOut += resp.usageMetadata.candidatesTokenCount || 0;
+                        }
+
                         if (resp.candidates && resp.candidates.length > 0) {
                             for (const candidate of resp.candidates) {
                                 if (candidate.content && candidate.content.parts) {
@@ -283,6 +292,10 @@ ${subcat.target_age ? `7. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obb
                     } else {
                         console.error('Una delle generazioni multiple ha fallito:', outcome.reason);
                     }
+                }
+
+                if (totalTokensIn > 0 || totalTokensOut > 0) {
+                    await logApiCost("telegram_generation", "gemini-3.1-flash-image-preview", totalTokensIn, totalTokensOut, existingUser.id);
                 }
 
                 if (generatedBase64s.length === 0) {
