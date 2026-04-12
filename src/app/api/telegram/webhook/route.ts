@@ -272,11 +272,13 @@ export async function POST(req: NextRequest) {
                 if (qty > remaining) {
                     const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.supernexusai.com";
                     if (existingUser.paypal_subscription_id === "free_trial") {
+                        const encodedEmail = encodeURIComponent(existingUser.email || "");
+                        const upgradeLink = `${hostUrl}/registrazione?email=${encodedEmail}&upgrade=true`;
                         await bot.telegram.editMessageText(
                             globalChatId, 
                             msgId, 
                             undefined, 
-                            `💳 **Free Trial Exhausted**\n\nYour 10 free trial images have been used up.\n\n⚡️ **To unlock unlimited possibilities and priority GPU, please subscribe to a Pro Plan:**\n👉 [Click here to Subscribe / Log in](${hostUrl}/registrazione)\n\n*(Your Secret PIN to bind is: \`${existingUser.bot_pin}\`)*`,
+                            `💳 **Free Trial Exhausted**\n\nYour 10 free trial images have been used up.\n\n⚡️ **To unlock unlimited possibilities and priority GPU, please subscribe to a Pro Plan:**\n👉 [Click here to Subscribe / Log in](${upgradeLink})\n\n*(Your Secret PIN to bind is: \`${existingUser.bot_pin}\`)*`,
                             { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                         );
                     } else {

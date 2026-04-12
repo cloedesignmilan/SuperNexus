@@ -8,6 +8,20 @@ import PayPalCheckout from './PayPalCheckout';
 export default function RegistrazionePage() {
     const [email, setEmail] = useState("");
     const [planName, setPlanName] = useState("starter");
+    const [isUpgrade, setIsUpgrade] = useState(false);
+
+    React.useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const urlEmail = params.get('email');
+            const urlUpgrade = params.get('upgrade');
+            if (urlEmail) setEmail(urlEmail);
+            if (urlUpgrade === 'true') {
+                setIsUpgrade(true);
+                setPlanName('starter'); // Default to starter on upgrade
+            }
+        }
+    }, []);
 
     return (
         <div style={{minHeight: '100vh', background: '#0a0a0a', color: '#fff', padding: '40px 20px', fontFamily: 'Inter, sans-serif'}}>
@@ -28,7 +42,9 @@ export default function RegistrazionePage() {
                         <input type="email" name="email" required placeholder="E.g. info@myoffice.com"
                                value={email}
                                onChange={(e) => setEmail(e.target.value)}
-                               style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
+                               readOnly={isUpgrade}
+                               disabled={isUpgrade}
+                               style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: isUpgrade ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.5)', color: isUpgrade ? '#888' : '#fff', fontSize: '1.1rem'}} />
                         <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>We will use this email to send you login details in case you need to recover them.</p>
                     </div>
 
@@ -36,22 +52,24 @@ export default function RegistrazionePage() {
                     
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
                         {/* FREE TRIAL */}
-                        <label style={{cursor: 'pointer', display: 'block'}}>
-                            <input type="radio" name="planName" value="free_trial" className="peer" style={{display: 'none'}} 
-                                   checked={planName === 'free_trial'} onChange={(e) => setPlanName(e.target.value)} />
-                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
-                                 className="radio-card trial-card">
-                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Free Trial</h4>
-                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$0</span>
+                        {!isUpgrade && (
+                            <label style={{cursor: 'pointer', display: 'block'}}>
+                                <input type="radio" name="planName" value="free_trial" className="peer" style={{display: 'none'}} 
+                                       checked={planName === 'free_trial'} onChange={(e) => setPlanName(e.target.value)} />
+                                <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
+                                     className="radio-card trial-card">
+                                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
+                                        <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Free Trial</h4>
+                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$0</span>
+                                    </div>
+                                    <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
+                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
+                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
+                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
+                                    </ul>
                                 </div>
-                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
-                                </ul>
-                            </div>
-                        </label>
+                            </label>
+                        )}
 
                         {/* STARTER */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
