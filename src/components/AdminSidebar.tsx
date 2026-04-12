@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Copyright, Users, Box, Zap, Share2 } from "lucide-react";
+import { Copyright, Users, Box, Zap, Share2, LogOut } from "lucide-react";
+import { adminLogout } from "@/app/login/actions";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -58,6 +59,24 @@ export default function AdminSidebar() {
             )
           })}
         </nav>
+
+        <div style={{ padding: '1rem', marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+          <form action={adminLogout}>
+            <button 
+              type="submit"
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', 
+                width: '100%', background: 'transparent', border: 'none', 
+                color: 'var(--color-text-muted)', cursor: 'pointer', borderRadius: '8px',
+                fontSize: '0.85rem', fontWeight: 600, transition: 'all 0.2s', textAlign: 'left'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.color = '#ff3333'; e.currentTarget.style.background = 'rgba(255,51,51,0.1)' }}
+              onMouseOut={(e) => { e.currentTarget.style.color = 'var(--color-text-muted)'; e.currentTarget.style.background = 'transparent' }}
+            >
+              <LogOut size={16} /> Disconnettiti
+            </button>
+          </form>
+        </div>
     </aside>
   );
 }

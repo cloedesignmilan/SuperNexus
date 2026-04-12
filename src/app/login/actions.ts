@@ -16,5 +16,9 @@ export async function attemptLogin(formData: FormData) {
     redirect("/admin");
   } else {
     redirect("/login?error=true");
-  }
+}
+
+export async function adminLogout() {
+  (await cookies()).delete("supernexus_admin_auth");
+  redirect("/login");
 }
