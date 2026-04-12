@@ -42,9 +42,7 @@ export default function RegistrazionePage() {
                         <input type="email" name="email" required placeholder="E.g. info@myoffice.com"
                                value={email}
                                onChange={(e) => setEmail(e.target.value)}
-                               readOnly={isUpgrade}
-                               disabled={isUpgrade}
-                               style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: isUpgrade ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.5)', color: isUpgrade ? '#888' : '#fff', fontSize: '1.1rem'}} />
+                               style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
                         <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>We will use this email to send you login details in case you need to recover them.</p>
                     </div>
 
