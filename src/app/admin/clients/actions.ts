@@ -10,7 +10,8 @@ function generatePIN() {
 
 export async function createClient(formData: FormData) {
   const email = formData.get("email") as string;
-  const initialAllowance = parseInt(formData.get("allowance") as string, 10) || 0;
+  const planAllowance = parseInt(formData.get("plan") as string, 10) || 100;
+  const extraCredits = parseInt(formData.get("extra") as string, 10) || 0;
   
   const bot_pin = generatePIN();
 
@@ -19,7 +20,8 @@ export async function createClient(formData: FormData) {
       email,
       role: "user",
       bot_pin,
-      images_allowance: initialAllowance,
+      base_allowance: planAllowance,
+      images_allowance: planAllowance + extraCredits,
       subscription_active: true
     }
   });

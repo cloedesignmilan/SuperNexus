@@ -50,10 +50,21 @@ export default async function ClientsPage() {
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Crediti Iniziali</label>
+              <label style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Piano Mensile</label>
               <div style={{ position: 'relative' }}>
-                <input type="number" name="allowance" required placeholder="100" defaultValue="100" style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.5rem', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: 'white', fontSize: '0.9rem', outline: 'none' }} className="admin-input-premium" />
+                <select name="plan" required style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.5rem', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: 'white', fontSize: '0.9rem', outline: 'none', appearance: 'none' }} className="admin-input-premium">
+                   <option value="100">Starter Pack (100 Immagini)</option>
+                   <option value="300">Retail Pack (300 Immagini)</option>
+                </select>
                 <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-secondary)', fontSize: '1rem', fontWeight: 'bold' }}>✦</span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Extra Omaggiati</label>
+              <div style={{ position: 'relative' }}>
+                <input type="number" name="extra" required placeholder="0" defaultValue="0" style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.5rem', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: 'white', fontSize: '0.9rem', outline: 'none' }} className="admin-input-premium" />
+                <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-secondary)', fontSize: '1rem', fontWeight: 'bold' }}>+</span>
               </div>
             </div>
             
