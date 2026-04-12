@@ -5,7 +5,7 @@ import { MessageCircle, X, Send } from 'lucide-react';
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', content: string}[]>([
-    { role: 'model', content: 'Ciao! 👋 Hai domande su SuperNexus o sui nostri piani in aggiornamento?' }
+    { role: 'model', content: 'Hi! 👋 Do you have any questions about SuperNexus or our plans?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,10 +35,10 @@ export default function ChatBot() {
       if (data.reply) {
          setMessages(prev => [...prev, { role: 'model', content: data.reply }]);
       } else {
-         setMessages(prev => [...prev, { role: 'model', content: 'Errore API: ' + data.error }]);
+         setMessages(prev => [...prev, { role: 'model', content: 'API Error: ' + data.error }]);
       }
     } catch (err) {
-       setMessages(prev => [...prev, { role: 'model', content: 'Errore di rete temporaneo.' }]);
+       setMessages(prev => [...prev, { role: 'model', content: 'Temporary network error.' }]);
     }
     
     setIsLoading(false);
@@ -75,7 +75,7 @@ export default function ChatBot() {
             <div style={{ background: '#0a0a0a', padding: '16px 20px', borderBottom: '1px solid #333', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h4 style={{ margin: 0, color: '#fff', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ width: '10px', height: '10px', background: '#03dac6', borderRadius: '50%', display: 'inline-block' }}></span>
-                    Assistente AI
+                    AI Assistant
                 </h4>
                 <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', display: 'flex', padding: 0 }}>
                     <X size={20} />
@@ -103,7 +103,7 @@ export default function ChatBot() {
                 {isLoading && (
                     <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                         <div style={{ padding: '12px 16px', borderRadius: '16px', background: '#222', color: '#888', fontStyle: 'italic', fontSize: '0.9rem' }}>
-                            Sta scrivendo...
+                            Typing...
                         </div>
                     </div>
                 )}
@@ -118,7 +118,7 @@ export default function ChatBot() {
                         type="text" 
                         value={input} 
                         onChange={(e) => setInput(e.target.value)} 
-                        placeholder="Chiedimi qualcosa..." 
+                        placeholder="Ask me anything..." 
                         style={{ flex: 1, background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '20px', padding: '10px 16px', outline: 'none', fontSize: '16px' }}
                         disabled={isLoading}
                     />

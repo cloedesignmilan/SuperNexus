@@ -8,80 +8,80 @@ import SocialPostMockup from './SocialPostMockup';
 const CATEGORIES = [
   { 
     id: 'donna', 
-    label: 'Donna', 
+    label: 'Women', 
     icon: <Shirt size={28} strokeWidth={1.5} />, 
-    title: 'Abbigliamento Donna', 
-    desc: 'Basta grucce tristi! Fai indossare i tuoi capi a modelle digitali dal look iper-reale. Esponi la tua collezione al suo massimo potenziale.',
-    imgSrc: '/showcase/donna/prima.webp', phoneLabel: 'PRIMA (NEGOZIO)', 
+    title: 'Women\'s Apparel', 
+    desc: 'No more sad hangers! Have your garments worn by hyper-realistic digital models. Showcase your collection at its maximum potential.',
+    imgSrc: '/showcase/donna/prima.webp', phoneLabel: 'BEFORE (STORE)', 
     post1Src: '/showcase/donna/1.webp', post1Label: 'LIFESTYLE', 
     post2Src: '/showcase/donna/2.webp', post2Label: 'REEL COVER', 
     account: 'donna_fashion', likes: '3.400'
   },
   { 
     id: 'uomo', 
-    label: 'Uomo', 
+    label: 'Men', 
     icon: <Briefcase size={28} strokeWidth={1.5} />, 
-    title: 'Abbigliamento Uomo & Business', 
-    desc: 'Mostra i tuoi completi nel loro habitat naturale: uffici di lusso, strade metropolitane o eventi mondani. Eleva istantaneamente il valore dei tuoi abiti.',
-    imgSrc: '/showcase/uomo/prima.jpg', phoneLabel: 'PRIMA (VETRINA)', 
-    post1Src: '/showcase/uomo/1.webp', post1Label: 'LOOKBOOK CITY', 
+    title: 'Men\'s Apparel & Business', 
+    desc: 'Showcase your suits in their natural habitat: luxury offices, metropolitan streets, or social events. Instantly elevate the value of your menswear.',
+    imgSrc: '/showcase/uomo/prima.jpg', phoneLabel: 'BEFORE (WINDOW)', 
+    post1Src: '/showcase/uomo/1.webp', post1Label: 'CITY LOOKBOOK', 
     post2Src: '/showcase/uomo/2.webp', post2Label: 'STREET ADS', 
     account: 'uomo_style', likes: '2.100'
   },
   { 
     id: 'tshirt', 
-    label: 'T-Shirt', 
+    label: 'T-Shirts', 
     isNew: true,
     icon: <Scissors size={28} strokeWidth={1.5} />, 
-    title: 'T-Shirt & Maglieria', 
-    desc: 'Basta scatti su manichini rigidi! Le tue t-shirt prenderanno vita su modelli dinamici, creando un look in stile street super accattivante.',
-    imgSrc: '/showcase/tshirt/prima.webp', phoneLabel: 'PRIMA (TAVOLO)', 
+    title: 'T-Shirts & Knitwear', 
+    desc: 'Stop shooting on rigid mannequins! Your t-shirts will come to life on dynamic models, creating super catchy street-style looks.',
+    imgSrc: '/showcase/tshirt/prima.webp', phoneLabel: 'BEFORE (FLAT)', 
     post1Src: '/showcase/tshirt/1.webp', post1Label: 'STREETWEAR', 
-    post2Src: '/showcase/tshirt/2.webp', post2Label: 'CATALOGO', 
+    post2Src: '/showcase/tshirt/2.webp', post2Label: 'CATALOG', 
     account: 'street_apparel', likes: '5.200'
   },
   { 
     id: 'cerimonia', 
-    label: 'Cerimonia', 
+    label: 'Ceremony', 
     icon: <Heart size={28} strokeWidth={1.5} />, 
-    title: 'Abiti da Cerimonia & Sposi', 
-    desc: 'Dall\'abito anonimo appeso nell\'armadio dell\'Atelier a cataloghi sontuosi, palazzi antichi e navate storiche che incantano i clienti.',
-    imgSrc: '/showcase/cerimonia/sposa-prima.webp', phoneLabel: 'PRIMA (ATELIER)', 
-    post1Src: '/showcase/cerimonia/sposa-dopo.webp', post1Label: 'SPOSA', 
-    post2Src: '/showcase/cerimonia/sposo-dopo.webp', post2Label: 'SPOSO', 
+    title: 'Formal Wear & Bridal', 
+    desc: 'Transform an anonymous dress hanging in the Atelier into sumptuous catalogs, ancient palaces, and historic aisles that enchant customers.',
+    imgSrc: '/showcase/cerimonia/sposa-prima.webp', phoneLabel: 'BEFORE (ATELIER)', 
+    post1Src: '/showcase/cerimonia/sposa-dopo.webp', post1Label: 'BRIDE', 
+    post2Src: '/showcase/cerimonia/sposo-dopo.webp', post2Label: 'GROOM', 
     account: 'atelier_cerimonia', likes: '8.450'
   },
   { 
     id: 'festa', 
-    label: 'Feste & 18°', 
+    label: 'Parties', 
     icon: <PartyPopper size={28} strokeWidth={1.5} />, 
-    title: 'Festa 18° e Abiti da Sera', 
-    desc: 'Mostra l\'attrazione ipnotica dei tuoi capi serali con sfondi di locali chic e luci vibranti notturne. Le tue Stories schizzeranno al vertice.',
-    imgSrc: '/showcase/festa/prima.jpg', phoneLabel: 'PRIMA (NEGOZIO)', 
+    title: '18th Birthday & Evening Gowns', 
+    desc: 'Show the hypnotic attraction of your evening wear against backgrounds of chic clubs and vibrant night lights. Your Stories will skyrocket.',
+    imgSrc: '/showcase/festa/prima.jpg', phoneLabel: 'BEFORE (STORE)', 
     post1Src: '/showcase/festa/dopo1.jpg', post1Label: 'IG STORY', 
     post2Src: '/showcase/festa/dopo2.jpg', post2Label: 'TIKTOK COVER', 
     account: 'party_dress_store', likes: '6.890'
   },
   { 
     id: 'calzature', 
-    label: 'Calzature', 
+    label: 'Footwear', 
     icon: <Footprints size={28} strokeWidth={1.5} />, 
-    title: 'Calzature & Sneaker', 
-    desc: 'Eliminazione totale di difetti, mani o sfondi rovinati. I tuoi scatti in magazzino diventano still-life perfetti, pronti per lo store.',
-    imgSrc: '/showcase/scarpe/prima.jpg', phoneLabel: 'PRIMA (NEGOZIO)', 
+    title: 'Footwear & Sneakers', 
+    desc: 'Total elimination of defects, hands, or ruined backgrounds. Your warehouse shots become perfect still-lifes, ready for the store.',
+    imgSrc: '/showcase/scarpe/prima.jpg', phoneLabel: 'BEFORE (STORE)', 
     post1Src: '/showcase/scarpe/negozio.jpg', post1Label: 'E-COMMERCE', 
     post2Src: '/showcase/scarpe/indossata.jpg', post2Label: 'IG POST', 
-    account: 'calzature_boutique', likes: '1.240'
+    account: 'footwear_boutique', likes: '1.240'
   },
   { 
     id: 'vendita', 
-    label: 'Vendita Online', 
+    label: 'Clearance', 
     icon: <Smartphone size={28} strokeWidth={1.5} />, 
-    title: 'Composizioni per Vendita Rapida', 
-    desc: 'Trasforma velocemente le eccedenze e gli outlet in post irresistibili per svuotare il magazzino su Amazon, Ebay, Vinted o Depop.',
-    imgSrc: '/showcase/invitati/prima.jpg', phoneLabel: 'SCATTO MAGAZZINO', 
+    title: 'Compositions for Quick Sales', 
+    desc: 'Quickly transform surplus and outlet items into irresistible posts to clear out inventory on Amazon, eBay, Vinted, or Depop.',
+    imgSrc: '/showcase/invitati/prima.jpg', phoneLabel: 'WAREHOUSE SHOT', 
     post1Src: '/showcase/vendita/marketplace.webp', post1Label: 'MARKETPLACE', 
-    post2Src: '/showcase/vendita/vetrina.webp', post2Label: 'VETRINA FB', 
+    post2Src: '/showcase/vendita/vetrina.webp', post2Label: 'FB SHOP', 
     account: 'outlet_store', likes: '902'
   }
 ];
@@ -153,7 +153,7 @@ export default function ShowcaseTabs() {
       {/* FRECCIA STICKY PREMIUM SU MOBILE (In flow nativo per supporto Safari/iOS) */}
       <div className="hand-drawn-arrow-wrapper">
         <div className={`hand-drawn-arrow ${showArrow ? 'visible' : 'hidden'}`}>
-          <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '1rem', fontWeight: 'bold', marginBottom: '-5px', transform: 'rotate(-5deg)', color: '#ccff00' }}>Scorri</span>
+          <span style={{ fontFamily: 'var(--font-primary), sans-serif', fontSize: '1rem', fontWeight: 'bold', marginBottom: '-5px', transform: 'rotate(-5deg)', color: '#ccff00' }}>Swipe</span>
           <svg style={{ flexShrink: 0, minHeight: '30px' }} width="60" height="30" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 20 Q 50 10, 100 20" stroke="#ccff00" strokeWidth="3" strokeLinecap="round" fill="none"/>
             <path d="M85 10 L 105 20 L 85 30" stroke="#ccff00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
@@ -226,11 +226,11 @@ export default function ShowcaseTabs() {
                <h3>{activeCategory.title}</h3>
                <p>{activeCategory.desc}</p>
                <ul className="mac-features">
-                 <li><ChevronRight size={16} /> Ottimizzato per Social Ads</li>
-                 <li><ChevronRight size={16} /> Set da 3, 5 o 10 scatti simultanei</li>
-                 <li><ChevronRight size={16} /> Check IA preventivo sui dettagli del capo</li>
-                 <li><ChevronRight size={16} /> Ultra-realismo garantito</li>
-                 <li><ChevronRight size={16} /> Pronto in soli 30 secondi</li>
+                 <li><ChevronRight size={16} /> Optimized for Social Ads</li>
+                 <li><ChevronRight size={16} /> Set of 3, 5, or 10 simultaneous shots</li>
+                 <li><ChevronRight size={16} /> AI pre-check on garment details</li>
+                 <li><ChevronRight size={16} /> Hyper-realism guaranteed</li>
+                 <li><ChevronRight size={16} /> Ready in just 30 seconds</li>
                </ul>
             </div>
             

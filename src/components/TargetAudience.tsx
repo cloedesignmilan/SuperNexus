@@ -4,26 +4,26 @@ import { Store, ShoppingBag, Globe, Camera, CheckCircle2 } from 'lucide-react';
 export default function TargetAudience() {
   const audiences = [
     {
-      title: "Negozi di abbigliamento",
-      description: "Carica l'intera nuova collezione sul tuo sito in una frazione del tempo e azzera i costi della sala di posa.",
+      title: "Clothing Stores",
+      description: "Upload your entire new collection to your website in a fraction of the time and eliminate studio photography costs.",
       icon: <Store size={32} />,
       color: "#ccff00" // Neon Yellow
     },
     {
-      title: "Negozi Outlet, Ebay, Etsy, Amazon",
-      description: "Smaltisci le giacenze velocemente risultando iper-professionale anche come venditore su Amazon, Ebay o Etsy.",
+      title: "Outlet Stores, eBay, Etsy, Amazon",
+      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on Amazon, eBay, or Etsy.",
       icon: <ShoppingBag size={32} />,
       color: "#ff5470" // Neon Pink
     },
     {
-      title: "Ecommerce di Moda",
-      description: "Aumenta vertiginosamente il conversion rate con immagini coerenti, premium e brandizzate.",
+      title: "Fashion E-commerce",
+      description: "Skyrocket your conversion rates with consistent, premium, and fully-branded imagery.",
       icon: <Globe size={32} />,
       color: "#03dac6" // Neon Cyan
     },
     {
-      title: "Vendita su Instagram",
-      description: "Ferma lo scroll dei tuoi follower con scatti editoriali bellissimi che ispirano l'acquisto immediato.",
+      title: "Instagram Sellers",
+      description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate purchases.",
       icon: <Camera size={32} />,
       color: "#bb86fc" // Neon Purple
     }
@@ -34,10 +34,10 @@ export default function TargetAudience() {
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <h2 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1rem', color: '#111' }}>
-            Perfetto per:
+            Perfect for:
           </h2>
           <p style={{ fontSize: '1.2rem', color: '#666', maxWidth: '600px', margin: '0 auto' }}>
-            Pensato su misura per imprenditori e professionisti della moda che vogliono scalare le vendite online, senza agenzie esterne.
+            Tailor-made for fashion entrepreneurs and professionals who want to scale their online sales without expensive external agencies.
           </p>
         </div>
 

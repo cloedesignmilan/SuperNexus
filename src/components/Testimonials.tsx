@@ -4,19 +4,19 @@ import './testimonials.css';
 import { Star } from 'lucide-react';
 
 const testimonialsRow1 = [
-  { text: "Un game changer assoluto. Prima spendevo migliaia di euro l'anno per fotografi e modelle. Adesso il budget va tutto in pubblicità.", author: "Martina V.", role: "Titolare Boutique Donna" },
-  { text: "Incredibile come rispetti la trama dei tessuti. Le vendite generate dalle storie Instagram sono oggettivamente raddoppiate in due mesi.", author: "Davide S.", role: "E-Commerce Fashion" },
-  { text: "Appena caricato il catalogo generato con SuperNexus abbiamo fatto sold-out dei capi di punta. Sembrano scatti rubati in passerella.", author: "Giulia L.", role: "Store Manager" },
-  { text: "Le mie clienti credono che abbia ingaggiato un'agenzia prestigiosa da Milano. Nessuno sa che faccio tutto dal retro del negozio su Telegram.", author: "Francesca G.", role: "Proprietaria Concept Store" },
-  { text: "Risparmio 3 ore a settimana di shooting. Scatto sul manichino e pubblico foto editoriali. Non tornerei MAI indietro.", author: "Lorenzo M.", role: "Outlet Abbigliamento" },
+  { text: "An absolute game changer. I used to spend thousands of dollars a year on photographers and models. Now the entire budget goes into ads.", author: "Martina V.", role: "Women's Boutique Owner" },
+  { text: "Incredible how it respects the fabric texture. Sales generated from Instagram stories have objectively doubled in two months.", author: "David S.", role: "Fashion E-Commerce" },
+  { text: "As soon as we uploaded the catalog generated with SuperNexus, our flagship items sold out. They look like stolen catwalk shots.", author: "Julia L.", role: "Store Manager" },
+  { text: "My clients think I hired a prestigious agency from Milan. No one knows I do everything from the back of the store on Telegram.", author: "Francesca G.", role: "Concept Store Owner" },
+  { text: "I save 3 hours a week on shooting. I take a picture of the mannequin and publish editorial photos. I would NEVER go back.", author: "Lorenzo M.", role: "Clothing Outlet" },
 ];
 
 const testimonialsRow2 = [
-  { text: "Avevo forti dubbi sugli abiti da cerimonia. Invece l'Intelligenza Artificiale riesce a definire i pizzi e i tulle perfettamente.", author: "Elena R.", role: "Atelier Sposa & Cerimonia" },
-  { text: "Mai più problemi di taglie o vestibilità. L'IA indossa il capo e lo modella sui manichini digitali proporzionandolo al meglio.", author: "Sara D.", role: "Boutique Curvy" },
-  { text: "La funzione per i capi da uomo ha una qualità visiva pazzesca. Adesso usiamo queste immagini direttamente per fare le Ads su Facebook.", author: "Marco P.", role: "Negozio Uomo" },
-  { text: "Ci ha permesso di lanciare capsule collection settimanali senza dover organizzare mini-shooting ogni venerdì. Innovativo.", author: "Valentina F.", role: "Multi-Brand Store" },
-  { text: "È così intuitivo che l'hanno iniziato ad usare le commesse. Ora creano loro stesse i contenuti social per il negozio nei momenti morti.", author: "Roberto T.", role: "Imprenditore Retail" },
+  { text: "I had strong doubts about formal wear. Instead, Artificial Intelligence manages to define lace and tulle perfectly.", author: "Elena R.", role: "Bridal Atelier & Ceremony" },
+  { text: "No more sizing or fit problems. The AI wears the garment and models it on digital mannequins, proportioning it to the best.", author: "Sarah D.", role: "Curvy Boutique" },
+  { text: "The feature for menswear has crazy visual quality. Now we use these images directly to run Facebook Ads.", author: "Mark P.", role: "Menswear Store" },
+  { text: "It allowed us to launch weekly capsule collections without having to organize mini-shoots every Friday. Innovative.", author: "Valentina F.", role: "Multi-Brand Store" },
+  { text: "It's so intuitive that the sales assistants started using it. They now create the social media content for the store during downtime.", author: "Robert T.", role: "Retail Entrepreneur" },
 ];
 
 const TestimonialCard = ({ item }: { item: any }) => (
@@ -43,8 +43,8 @@ export default function Testimonials() {
   return (
     <section className="testimonials-section" id="testimonials">
       <div className="testimonials-header">
-        <h2 className="section-title">Più di 100 negozianti<br/>hanno già svoltato.</h2>
-        <p>Scopri cosa dicono i pionieri dell'Intelligenza Artificiale applicata al retail.</p>
+        <h2 className="section-title">Over 100 shop owners<br/>have already made the switch.</h2>
+        <p>Discover what the pioneers of AI applied to retail are saying.</p>
       </div>
 
       <div className="marquee-container">

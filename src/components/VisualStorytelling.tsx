@@ -34,10 +34,10 @@ export default function VisualStorytelling() {
               <Sparkles size={28} />
             </div>
             <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em', color: '#111' }}>
-              Come funziona?
+              How it works?
             </h2>
             <p style={{ fontSize: '1.15rem', color: '#555', margin: '0', lineHeight: '1.5' }}>
-              Il trucco per vendere di più online non è abbassare i prezzi,<br /> ma alzare la qualità visiva.
+              The trick to selling more online is not lowering prices,<br /> but raising visual quality.
             </p>
           </div>
 
@@ -59,10 +59,10 @@ export default function VisualStorytelling() {
               <Smartphone size={28} />
             </div>
             <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '1rem', letterSpacing: '-0.02em', color: '#111' }}>
-              Cosa serve?
+              What do you need?
             </h2>
             <p style={{ fontSize: '1.15rem', color: '#555', margin: '0', lineHeight: '1.5' }}>
-              Solo un semplice cellulare con installato Telegram.
+              Just a simple smartphone with Telegram installed.
             </p>
           </div>
         </div>
@@ -78,8 +78,8 @@ export default function VisualStorytelling() {
             <div className="story-img-container" style={{ overflow: 'hidden', borderRadius: '16px', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
               <img src="/story-1.jpg" alt="Scatti foto" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} className="story-img" />
             </div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>Scatti foto così?</h3>
-            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Foto reali… ma non vendono.</p>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>Take pictures like this?</h3>
+            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Real photos... but they don't sell.</p>
             <ArrowRight className="story-arrow" style={{ position: 'absolute', right: '-1.8rem', top: '35%', color: '#ccc', width: '24px', height: '24px' }} />
           </div>
 
@@ -88,8 +88,8 @@ export default function VisualStorytelling() {
             <div className="story-img-container" style={{ overflow: 'hidden', borderRadius: '16px', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
               <img src="/story-2.jpg" alt="L'AI le trasforma" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} className="story-img" />
             </div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>L’AI le trasforma</h3>
-            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Stesso prodotto. Risultato completamente diverso.</p>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>AI transforms them</h3>
+            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Same product. Completely different result.</p>
             <ArrowRight className="story-arrow" style={{ position: 'absolute', right: '-1.8rem', top: '35%', color: '#ccc', width: '24px', height: '24px' }} />
           </div>
 
@@ -98,8 +98,8 @@ export default function VisualStorytelling() {
             <div className="story-img-container" style={{ overflow: 'hidden', borderRadius: '16px', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
               <img src="/story-3.jpg" alt="Pubblica in un attimo" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} className="story-img" />
             </div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>Pubblica in un attimo</h3>
-            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Pronto per Instagram e il tuo shop.</p>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>Publish in a snap</h3>
+            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Ready for Instagram and your shop.</p>
             <ArrowRight className="story-arrow" style={{ position: 'absolute', right: '-1.8rem', top: '35%', color: '#ccc', width: '24px', height: '24px' }} />
           </div>
 
@@ -108,8 +108,8 @@ export default function VisualStorytelling() {
             <div className="story-img-container" style={{ overflow: 'hidden', borderRadius: '16px', marginBottom: '1.5rem', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
               <img src="/story-4.jpg" alt="E i clienti comprano" style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', display: 'block', transition: 'transform 0.4s ease' }} className="story-img" />
             </div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>E i clienti comprano</h3>
-            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>Da foto a vendita, in pochi secondi.</p>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.3rem' }}>And customers buy</h3>
+            <p style={{ fontSize: '1rem', color: '#555', margin: 0 }}>From photo to sale, in seconds.</p>
           </div>
         </div>
 

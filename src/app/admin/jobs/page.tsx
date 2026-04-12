@@ -63,7 +63,7 @@ export default async function JobsPage() {
                                     <td style={{ padding: '1.25rem 1.5rem' }}>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                                             {(() => {
-                                                const isTimeout = job.status === 'pending' && (new Date().getTime() - new Date(job.created_at).getTime() > 120 * 1000);
+                                                const isTimeout = job.status === 'pending' && (new Date().getTime() - new Date(job.createdAt).getTime() > 120 * 1000);
                                                 const displayStatus = isTimeout ? 'timeout' : job.status;
                                                 
                                                 return (
@@ -82,7 +82,7 @@ export default async function JobsPage() {
                                                         width: 'fit-content'
                                                     }}>
                                                         <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: displayStatus === 'completed' ? '#34d399' : displayStatus === 'pending' ? '#fbbf24' : '#f87171' }}></div>
-                                                        {displayStatus === 'completed' ? 'SUCCESS' : displayStatus === 'pending' ? 'IN CORSO...' : displayStatus === 'timeout' ? 'TIMEOUT (0 Addebiti)' : 'FAILED'}
+                                                        {displayStatus === 'completed' ? 'SUCCESS' : displayStatus === 'pending' ? 'PENDING...' : displayStatus === 'timeout' ? 'TIMEOUT (0 Addebiti)' : 'FAILED'}
                                                     </span>
                                                 );
                                             })()}

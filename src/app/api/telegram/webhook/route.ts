@@ -59,17 +59,17 @@ export async function POST(req: NextRequest) {
                 });
 
                 const rem = existingUser.images_allowance - existingUser.images_generated;
-                await bot.telegram.sendMessage(globalChatId, `✅ **Account Collegato!**\n\nBenvenuto nella piattaforma aziendale SuperNexus.\nPlafond Immagini: **${rem} rimanenti**.\n\nMandami pure la foto del capo d'abbigliamento che vuoi elaborare.`, { parse_mode: 'Markdown' });
+                await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus enterprise platform.\nImage Quota: **${rem} remaining**.\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
                 return NextResponse.json({ ok: true });
             }
         }
         
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Accesso Riservato**\n\nQuesto Bot è privato. Per favore, inserisci il tuo PIN personale fornito dall'agenzia per sbloccare la tua area cliente.`, { parse_mode: 'Markdown' });
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal PIN provided by the agency to unlock your client area.`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
     if (!existingUser.subscription_active) {
-        await bot.telegram.sendMessage(globalChatId, `⛔ **Accesso Bloccato**\n\nIl tuo abbonamento risulta disattivato. Contatta l'amministrazione per rinnovarlo.`, { parse_mode: 'Markdown' });
+        await bot.telegram.sendMessage(globalChatId, `⛔ **Access Blocked**\n\nYour subscription is deactivated. Please contact administration to renew it.`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
         // L'utente ha mandato una foto!
         const photo = update.message.photo[update.message.photo.length - 1]; // Risoluzione più alta
         
-        const loadingMsg = await bot.telegram.sendMessage(globalChatId, "⏳ *Scaricamento immagine in corso...*", { parse_mode: 'Markdown' });
+        const loadingMsg = await bot.telegram.sendMessage(globalChatId, "⏳ *Downloading image...*", { parse_mode: 'Markdown' });
 
         // Scarica e Carica su Supabase
         const fileUrl = await bot.telegram.getFileLink(photo.file_id);
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
         if (error) {
             console.error("Supabase Upload Error:", error);
-            await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "❌ Errore durante il caricamento dell'immagine. Crea il bucket `telegram-uploads` su Supabase!");
+            await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "❌ Error uploading image. Create the bucket `telegram-uploads` on Supabase!");
             return NextResponse.json({ ok: true });
         }
 
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
         const categories = await prisma.category.findMany({ where: { is_active: true }, orderBy: { sort_order: 'asc' } });
         
         if (categories.length === 0) {
-             await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "Nessuna macrocategoria configurata. Aggiungine una dal pannello Admin.");
+             await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "No macro-category configured. Add one from the Admin panel.");
              return NextResponse.json({ ok: true });
         }
 
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
         ]);
 
         await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, 
-            "📸 **Immagine Archiviata.**\n\nGrazie! Scegli la Categoria di questo capo:", 
+            "📸 **Image Archived.**\n\nThank you! Choose the Category for this item:", 
             { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
         );
         return NextResponse.json({ ok: true });
@@ -134,7 +134,7 @@ export async function POST(req: NextRequest) {
             const subcats = await prisma.subcategory.findMany({ where: { category_id: catId, is_active: true }, orderBy: { sort_order: 'asc' } });
             
             if (subcats.length === 0) {
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "Nessun look configurato per questa categoria.");
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "No looks configured for this category.");
                 return NextResponse.json({ ok: true });
             }
 
@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Perfetto. Scegli lo Stile:", 
+                "✨ Perfect. Choose the Style:", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -156,7 +156,7 @@ export async function POST(req: NextRequest) {
             const timestamp = parts[2];
 
             // Feedback immediato loading e pre-analisi IA
-            await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analisi della geometria del capo in corso...*", { parse_mode: "Markdown" });
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analyzing garment geometry...*", { parse_mode: "Markdown" });
 
             const fileName = `${globalChatId}_${timestamp}.jpg`;
             const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
@@ -188,12 +188,12 @@ export async function POST(req: NextRequest) {
 
                     if (answer.includes("AMBIGUO")) {
                         const buttons = [
-                            [Markup.button.callback("Gonna / Vestito Unico 👗", `B_G_${subId}_${timestamp}`)],
-                            [Markup.button.callback("Pantaloni / Jeans 👖", `B_P_${subId}_${timestamp}`)],
-                            [Markup.button.callback("Ignora (Invisibile / Top) 👀", `B_X_${subId}_${timestamp}`)]
+                            [Markup.button.callback("Skirt / One-piece Dress 👗", `B_G_${subId}_${timestamp}`)],
+                            [Markup.button.callback("Pants / Jeans 👖", `B_P_${subId}_${timestamp}`)],
+                            [Markup.button.callback("Ignore (Invisible / Top) 👀", `B_X_${subId}_${timestamp}`)]
                         ];
                         await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                            "💡 *L'Intelligenza Artificiale ha un dubbio sull'inquadratura!*\n\nAiutami a non generare vestiti sbagliati: la parte inferiore in questa foto qual è?", 
+                            "💡 *Artificial Intelligence is in doubt about the shot!*\n\nHelp me avoid generating the wrong clothes: what is the lower part in this photo?", 
                             { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
                         );
                         return NextResponse.json({ ok: true });
@@ -205,12 +205,12 @@ export async function POST(req: NextRequest) {
 
             // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
             const buttons = [
-                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}_X`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}_X`)],
-                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}_X`)]
+                [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_X`)],
+                [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_X`)]
             ];
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Perfetto. Quante foto vuoi generare?", 
+                "✨ Perfect. How many photos do you want to generate?", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -224,12 +224,12 @@ export async function POST(req: NextRequest) {
             const timestamp = parts[3];
 
             const buttons = [
-                [Markup.button.callback("1 Foto ⚡", `Q_1_${subId}_${timestamp}_${bottom}`), Markup.button.callback("3 Foto 🔥", `Q_3_${subId}_${timestamp}_${bottom}`)],
-                [Markup.button.callback("5 Foto 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
+                [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_${bottom}`)],
+                [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
             ];
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Ottima specifica. Quante foto vuoi generare?", 
+                "✨ Great specification. How many photos do you want to generate?", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -253,14 +253,14 @@ export async function POST(req: NextRequest) {
                         globalChatId, 
                         msgId, 
                         undefined, 
-                        `💳 **Credito Esaurito**\n\nHai richiesto ${qty} immagini, ma ti rimangono solo **${remaining}** crediti disponibili nel tuo account aziendale.\n\n⚡️ **Puoi acquistare istantaneamente un pacchetto di Ricarica per sbloccare nuove generazioni:**\n👉 [Clicca qui per Ricaricare Online](${hostUrl}/ricarica)\n\n*(Il tuo PIN Segreto in caso ti venga richiesto è: \`${existingUser.bot_pin}\`)*`,
+                        `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available in your enterprise account.\n\n⚡️ **You can instantly purchase a Top-up package to unlock new generations:**\n👉 [Click here to Top-up Online](${hostUrl}/ricarica)\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
                         { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                     );
                     return NextResponse.json({ ok: true });
                 }
             }
 
-            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `⚡ *Avvio Motore AI (Richieste ${qty} immagini)... Attendi fino a 40 secondi!*`, { parse_mode: 'Markdown' });
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `⚡ *Starting AI Engine (Requested ${qty} images)... Please wait up to 40 seconds!*`, { parse_mode: 'Markdown' });
 
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
             const subcat = await prisma.subcategory.findUnique({
@@ -269,7 +269,7 @@ export async function POST(req: NextRequest) {
             });
 
             if (!subcat || !subcat.prompt_settings?.base_prompt_prefix) {
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Array generativo non addestrato per questo look. Attiva prima il motore Vision dall'Admin.");
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Generative array not trained for this look. Activate the Vision engine from Admin first.");
                 return NextResponse.json({ ok: true });
             }
 
@@ -281,7 +281,7 @@ export async function POST(req: NextRequest) {
             let referenceBuffers: { data: string, mimeType: string }[] = [];
             
             if (referenceImages.length > 0) {
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI sta pre-caricando ${referenceImages.length} Ispirazioni Visive... (attendi)*`, { parse_mode: 'Markdown' });
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI is pre-loading ${referenceImages.length} Visual Inspirations... (please wait)*`, { parse_mode: 'Markdown' });
                 for (const ref of referenceImages.slice(0, 10)) {
                      try {
                          const rRes = await fetch(ref.image_url);
@@ -295,7 +295,7 @@ export async function POST(req: NextRequest) {
                 }
             }
 
-            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI Sta generando ${qty} Immagini altamente differenziate... (attendi per cortesia ❤️)*`, { parse_mode: 'Markdown' });
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, `🧠 *SuperNexus AI is generating ${qty} highly differentiated images... (please hold on ❤️)*`, { parse_mode: 'Markdown' });
 
             after(async () => {
                 
@@ -444,7 +444,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                 }
 
                 if (generatedBase64s.length === 0) {
-                     throw new Error("Tutte le chiamate API sono fallite. Riprova con una quantità minore.");
+                     throw new Error("All API calls failed. Please try again with a smaller amount.");
                 }
 
                 const { Input } = require('telegraf');
@@ -461,7 +461,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                 const extraCreditsConsumed = Math.max(0, totalGenAfterThis - baseAllowance);
                 const remainingExtra = Math.max(0, extraCreditsOwned - extraCreditsConsumed);
 
-                const completeMsg = `✅ **Generazione Ultimata!**\n\nEcco le fotografie del capo d'abbigliamento nello stile richiesto:\n_Ti restano **${remainingMonthly}** immagini dal piano mensile e **${remainingExtra}** immagini dai crediti extra._`;
+                const completeMsg = `✅ **Generation Complete!**\n\nHere are the photographs of the clothing item in the requested style:\n_You have **${remainingMonthly}** images left from your monthly plan and **${remainingExtra}** images from extra credits._`;
 
                 // Se ci sono più di 1 foto inviamo un album
                 if (mediaGroup.length > 1) {
@@ -488,7 +488,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                             status: "completed",
                             total_cost_eur: jobCost,
                             results_count: generatedBase64s.length,
-                            provider_response: `Album di ${generatedBase64s.length} foto in Base64`
+                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`
                         }
                     });
                 } else {
@@ -501,7 +501,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                             status: "completed",
                             total_cost_eur: jobCost,
                             results_count: generatedBase64s.length,
-                            provider_response: `Album di ${generatedBase64s.length} foto in Base64`
+                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`
                         }
                     });
                 }
@@ -516,13 +516,13 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                             data: {
                                 status: "failed",
                                 error_message: error.message,
-                                provider_response: `Generazione fallita: ${error.message}`
+                                provider_response: `Generation failed: ${error.message}`
                             }
                         });
                     } catch(e) {}
                 }
 
-                await bot.telegram.sendMessage(globalChatId, `❌ **Errore generazione**: ${error.message}`);
+                await bot.telegram.sendMessage(globalChatId, `❌ **Generation Error**: ${error.message}`);
             }
             });
 
