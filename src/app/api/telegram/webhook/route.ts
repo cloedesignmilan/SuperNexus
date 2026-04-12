@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
             });
             
             const rem = newlyBindedUser.images_allowance - newlyBindedUser.images_generated;
-            let roleContext = newlyBindedUser.paypal_subscription_id === "free_trial" ? "Free Trial" : "Enterprise";
+            let roleContext = newlyBindedUser.paypal_subscription_id?.startsWith("free_trial") ? "Free Trial" : "Enterprise";
             await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus ${roleContext} platform.\nImage Quota: **${rem} remaining**.\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
             return NextResponse.json({ ok: true });
         }
@@ -229,7 +229,7 @@ export async function POST(req: NextRequest) {
                 [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_X`)]
             ];
 
-            if (existingUser.paypal_subscription_id === "free_trial") {
+            if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
                     [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
@@ -255,7 +255,7 @@ export async function POST(req: NextRequest) {
                 [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
             ];
 
-            if (existingUser.paypal_subscription_id === "free_trial") {
+            if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
                     [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
@@ -283,7 +283,7 @@ export async function POST(req: NextRequest) {
                 const remaining = existingUser.images_allowance - existingUser.images_generated;
                 if (qty > remaining) {
                     const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.supernexusai.com";
-                    if (existingUser.paypal_subscription_id === "free_trial") {
+                    if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                         const encodedEmail = encodeURIComponent(existingUser.email || "");
                         const upgradeLink = `${hostUrl}/registrazione?email=${encodedEmail}&upgrade=true`;
                         await bot.telegram.editMessageText(

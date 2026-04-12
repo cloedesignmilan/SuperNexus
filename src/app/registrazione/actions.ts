@@ -64,7 +64,7 @@ export async function createFreeTrial(email: string) {
                 images_allowance: 10,
                 base_allowance: 10,
                 subscription_active: true,
-                paypal_subscription_id: 'free_trial',
+                paypal_subscription_id: 'free_trial_' + Date.now().toString(),
                 subscription_status: 'active',
                 subscription_expires_at: expiresAt,
             }
