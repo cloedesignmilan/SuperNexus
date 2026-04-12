@@ -29,7 +29,7 @@ export default function RegistrazionePage() {
                                value={email}
                                onChange={(e) => setEmail(e.target.value)}
                                style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
-                        <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>Questa email riceverà i report generazionali e servirà per recuperare il tuo accesso.</p>
+                        <p style={{color: '#666', fontSize: '0.85rem', marginTop: '8px'}}>Useremo questa email per inviarti i dati di accesso in caso tu dovessi recuperarli.</p>
                     </div>
 
                     <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ffffff'}}>Seleziona il tuo abbonamento</h3>
