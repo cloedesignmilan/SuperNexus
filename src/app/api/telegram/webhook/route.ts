@@ -185,7 +185,7 @@ export async function POST(req: NextRequest) {
                         msgId, 
                         undefined, 
                         `💳 **Credito Esaurito**\n\nHai richiesto ${qty} immagini, ma ti rimangono solo **${remaining}** crediti disponibili nel tuo account aziendale.\n\n⚡️ **Puoi acquistare istantaneamente un pacchetto di Ricarica per sbloccare nuove generazioni:**\n👉 [Clicca qui per Ricaricare Online](${hostUrl}/ricarica)\n\n*(Il tuo PIN Segreto in caso ti venga richiesto è: \`${existingUser.bot_pin}\`)*`,
-                        { parse_mode: 'Markdown', disable_web_page_preview: true }
+                        { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                     );
                     return NextResponse.json({ ok: true });
                 }

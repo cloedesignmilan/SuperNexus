@@ -24,8 +24,8 @@ export default function RegistrazionePage() {
                 <div style={{background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '40px'}}>
                     
                     <div style={{marginBottom: '30px'}}>
-                        <label style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem', fontWeight: 600}}>Indirizzo Email / Nome Negozio</label>
-                        <input type="text" name="storeName" required placeholder="Es. info@mioufficio.it"
+                        <label style={{display: 'block', marginBottom: '10px', fontSize: '1.1rem', fontWeight: 600}}>Indirizzo Email</label>
+                        <input type="email" name="email" required placeholder="Es. info@mioufficio.it"
                                value={email}
                                onChange={(e) => setEmail(e.target.value)}
                                style={{width: '100%', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.5)', color: '#fff', fontSize: '1.1rem'}} />
