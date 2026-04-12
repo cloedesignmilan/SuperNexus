@@ -56,11 +56,11 @@ export default function LandingPage() {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <a href="#showcase" className="btn-primary">
+            <Link href="/registrazione" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800' }}>
+              Start 10-Image Free Trial
+            </Link>
+            <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000' }}>
               See the Results
-            </a>
-            <a href="#pricing" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF' }}>
-              Discover Plans
             </a>
           </div>
         </div>
@@ -148,21 +148,52 @@ export default function LandingPage() {
         <h2 className="section-title">Start converting today.</h2>
         <div className="pricing-grid">
           
+          {/* FREE TRIAL HORIZONTAL BANNERR */}
+          <div className="pricing-card" style={{ 
+            gridColumn: '1 / -1', 
+            border: '2px solid #ff0ab3', 
+            background: 'linear-gradient(135deg, rgba(255,10,179,0.08) 0%, rgba(0,0,0,0) 100%)',
+            boxShadow: '0 0 20px rgba(255,10,179,0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            padding: '3rem',
+            marginBottom: '1rem',
+            borderRadius: '16px'
+          }}>
+            <div style={{ flex: '1 1 300px' }}>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Start for <span style={{ color: '#ff0ab3', textShadow: '0 0 10px rgba(255,10,179,0.2)' }}>Free</span></h3>
+                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Experience the magic risk-free for 14 days. Instant setup, no credit card required.</p>
+            </div>
+            
+            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
+              <li><CheckCircle2 size={24} color="#ff0ab3" /> <strong style={{ fontSize: '1.1rem' }}>10 Free AI Generations</strong></li>
+              <li><CheckCircle2 size={24} color="#ff0ab3" /> <span>1-Click Telegram Setup</span></li>
+            </ul>
+
+            <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
+                <Link href="/registrazione" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,10,179,0.4)', borderRadius: '12px' }}>Start Free Trial Now</Link>
+            </div>
+          </div>
+          
           {/* Starter */}
           <div className="pricing-card">
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0' }}>STARTER</h3>
             <p style={{ color: '#888', marginBottom: '2rem' }}>Perfect for testing the first sales.</p>
             <div className="pricing-price">$29<span>/month</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li><CheckCircle2 size={20} color="#ff5e00" /> <strong>100 images / month</strong></li>
-              <li><CheckCircle2 size={20} color="#ff5e00" /> Telegram Bot Access</li>
-              <li><CheckCircle2 size={20} color="#ff5e00" /> Instant Setup</li>
-              <li><CheckCircle2 size={20} color="#ff5e00" /> All niches unlocked</li>
+              <li><CheckCircle2 size={20} color="#ff0ab3" /> <strong>100 images / month</strong></li>
+              <li><CheckCircle2 size={20} color="#ff0ab3" /> Telegram Bot Access</li>
+              <li><CheckCircle2 size={20} color="#ff0ab3" /> Instant Setup</li>
+              <li><CheckCircle2 size={20} color="#ff0ab3" /> All niches unlocked</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               Extra Top-up: <strong>+100 images for $19</strong>
             </div>
-            <Link href="/registrazione" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff5e00', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Started</Link>
+            <Link href="/registrazione" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Started</Link>
           </div>
 
           {/* Retail */}
@@ -209,7 +240,7 @@ export default function LandingPage() {
       </section>
       
       <footer style={{ textAlign: 'center', padding: '3rem', color: '#888', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Support and Assistance: <a href="mailto:info@supernexusai.com" style={{ color: '#03dac6', textDecoration: 'none', fontWeight: 'bold' }}>info@supernexusai.com</a></p>
+        <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Support and Assistance: <a href="mailto:info@supernexusai.com" style={{ color: '#ff0ab3', textDecoration: 'none', fontWeight: 'bold' }}>info@supernexusai.com</a></p>
         <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
           © 2026 SuperNexus AI. All rights reserved.
         </div>

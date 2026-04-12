@@ -35,6 +35,24 @@ export default function RegistrazionePage() {
                     <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ffffff'}}>Select your subscription</h3>
                     
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
+                        {/* FREE TRIAL */}
+                        <label style={{cursor: 'pointer', display: 'block'}}>
+                            <input type="radio" name="planName" value="free_trial" className="peer" style={{display: 'none'}} 
+                                   checked={planName === 'free_trial'} onChange={(e) => setPlanName(e.target.value)} />
+                            <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
+                                 className="radio-card trial-card">
+                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Free Trial</h4>
+                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$0</span>
+                                </div>
+                                <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
+                                </ul>
+                            </div>
+                        </label>
+
                         {/* STARTER */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
                             <input type="radio" name="planName" value="starter" className="peer" style={{display: 'none'}} 
@@ -42,12 +60,12 @@ export default function RegistrazionePage() {
                             <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
-                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff5e00" /> Starter</h4>
+                                    <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Starter</h4>
                                     <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$29<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> 50 generations / month</li>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff5e00"/> Telegram Bot Access</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 100 generations / month</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> Telegram Bot Access</li>
                                 </ul>
                             </div>
                         </label>
@@ -92,14 +110,36 @@ export default function RegistrazionePage() {
                     </div>
 
                     <div style={{borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '30px', textAlign: 'center'}}>
-                        <PayPalCheckout email={email} planName={planName} />
+                        {planName === 'free_trial' ? (
+                            <button 
+                                onClick={async () => {
+                                    if (!email || !email.includes('@')) {
+                                        alert("Please enter a valid email address first.");
+                                        return;
+                                    }
+                                    const { createFreeTrial } = await import('./actions');
+                                    const res = await createFreeTrial(email);
+                                    if (res.error) {
+                                        alert(res.error);
+                                    } else if (res.success && res.redirectUrl) {
+                                        window.location.href = res.redirectUrl;
+                                    }
+                                }}
+                                style={{width: '100%', padding: '16px', background: '#ff0ab3', color: '#000', fontWeight: '900', borderRadius: '12px', fontSize: '1.2rem', cursor: 'pointer', border: 'none', boxShadow: '0 4px 15px rgba(255,10,179,0.4)', transition: 'all 0.2s'}}>
+                                Start Free Trial Now
+                            </button>
+                        ) : (
+                            <PayPalCheckout email={email} planName={planName} />
+                        )}
                         
                         <p style={{color: '#666', fontSize: '0.8rem', marginTop: '15px'}}>
-                            You will be redirected to the secure PayPal circuit. After payment, your account will be active.
+                            {planName === 'free_trial' ? 'A welcome PIN will be shown instantly on the next page.' : 'You will be redirected to the secure PayPal circuit. After payment, your account will be active.'}
                         </p>
-                        <p style={{color: '#888', fontSize: '0.9rem', marginTop: '15px', fontWeight: '500'}}>
-                            <span style={{color: '#03dac6', marginRight: '5px'}}>✓</span> You can cancel your subscription at any time directly from your PayPal account.
-                        </p>
+                        {planName !== 'free_trial' && (
+                            <p style={{color: '#888', fontSize: '0.9rem', marginTop: '15px', fontWeight: '500'}}>
+                                <span style={{color: '#03dac6', marginRight: '5px'}}>✓</span> You can cancel your subscription at any time directly from your PayPal account.
+                            </p>
+                        )}
                     </div>
 
                 </div>
@@ -107,7 +147,8 @@ export default function RegistrazionePage() {
             {/* CSS GLOBALE PER LE RADIO */}
             <style dangerouslySetInnerHTML={{__html: `
                 .radio-card { border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
-                input[value="starter"]:checked + .radio-card { border-color: #ff5e00 !important; background: rgba(255,94,0,0.05) !important; }
+                input[value="free_trial"]:checked + .radio-card { border-color: #ff0ab3 !important; background: rgba(255,10,179,0.05) !important; box-shadow: 0 0 15px rgba(255,10,179,0.2); }
+                input[value="starter"]:checked + .radio-card { border-color: #ff0ab3 !important; background: rgba(255,10,179,0.05) !important; }
                 input[value="retail"]:checked + .radio-card { border-color: #00ffff !important; background: rgba(0,255,255,0.05) !important; }
                 input[value="retail_annual"]:checked + .radio-card { border-color: #ccff00 !important; background: rgba(204,255,0,0.05) !important; }
             `}} />

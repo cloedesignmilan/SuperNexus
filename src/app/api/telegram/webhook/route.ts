@@ -204,10 +204,14 @@ export async function POST(req: NextRequest) {
             }
 
             // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
-            const buttons = [
+            let buttons = [
                 [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_X`)],
                 [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_X`)]
             ];
+
+            if (existingUser.paypal_subscription_id === "free_trial") {
+                buttons = [[Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`)]];
+            }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
                 "✨ Perfect. How many photos do you want to generate?", 
@@ -223,10 +227,14 @@ export async function POST(req: NextRequest) {
             const subId = parts[2];
             const timestamp = parts[3];
 
-            const buttons = [
+            let buttons = [
                 [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_${bottom}`)],
                 [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
             ];
+
+            if (existingUser.paypal_subscription_id === "free_trial") {
+                buttons = [[Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`)]];
+            }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
                 "✨ Great specification. How many photos do you want to generate?", 
@@ -249,13 +257,23 @@ export async function POST(req: NextRequest) {
                 const remaining = existingUser.images_allowance - existingUser.images_generated;
                 if (qty > remaining) {
                     const hostUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://supernexus.vercel.app";
-                    await bot.telegram.editMessageText(
-                        globalChatId, 
-                        msgId, 
-                        undefined, 
-                        `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available in your enterprise account.\n\n⚡️ **You can instantly purchase a Top-up package to unlock new generations:**\n👉 [Click here to Top-up Online](${hostUrl}/ricarica)\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
-                        { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
-                    );
+                    if (existingUser.paypal_subscription_id === "free_trial") {
+                        await bot.telegram.editMessageText(
+                            globalChatId, 
+                            msgId, 
+                            undefined, 
+                            `💳 **Free Trial Exhausted**\n\nYour 10 free trial images have been used up.\n\n⚡️ **To unlock unlimited possibilities and priority GPU, please subscribe to a Pro Plan:**\n👉 [Click here to Subscribe / Log in](${hostUrl}/registrazione)\n\n*(Your Secret PIN to bind is: \`${existingUser.bot_pin}\`)*`,
+                            { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
+                        );
+                    } else {
+                        await bot.telegram.editMessageText(
+                            globalChatId, 
+                            msgId, 
+                            undefined, 
+                            `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available in your enterprise account.\n\n⚡️ **You can instantly purchase a Top-up package to unlock new generations:**\n👉 [Click here to Top-up Online](${hostUrl}/ricarica)\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
+                            { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
+                        );
+                    }
                     return NextResponse.json({ ok: true });
                 }
             }

@@ -3,13 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-function generateSecurePassword(storeName: string): string {
-    // Genera un PIN univoco a 6 o 7 cifre (più rassicurante e rapido per l'utente, e sicuro matematicamente).
-    const pin = Math.floor(100000 + Math.random() * 900000); // Ritorna un numero tra 100000 e 999999
-    
-    return pin.toString();
-}
-
 export async function processRegistrationFrontend(email: string, planName: string, subscriptionId?: string) {
     let imagesAllowance = 150;
     if (planName === "retail") imagesAllowance = 600;
@@ -47,5 +40,40 @@ export async function processRegistrationFrontend(email: string, planName: strin
         console.error("Errore durante la registrazione:", error);
         throw new Error("Impossibile completare la registrazione.");
     }
+}
 
+export async function createFreeTrial(email: string) {
+    const existingEmail = await prisma.user.findUnique({
+        where: { email }
+    });
+
+    if (existingEmail) {
+        return { error: "This email is already registered." };
+    }
+
+    const pin = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 14); // 14 giorni di scadenza
+
+    try {
+        await prisma.user.create({
+            data: {
+                email,
+                role: 'client',
+                bot_pin: pin,
+                images_allowance: 10,
+                base_allowance: 10,
+                subscription_active: true,
+                paypal_subscription_id: 'free_trial',
+                subscription_status: 'active',
+                subscription_expires_at: expiresAt,
+            }
+        });
+
+        const welcomeData = Buffer.from(JSON.stringify({ name: email, psw: pin, plan: 'free_trial' })).toString('base64');
+        return { success: true, redirectUrl: `/benvenuto?d=${welcomeData}` };
+    } catch (error) {
+        console.error("Errore durante free trial:", error);
+        return { error: "Failed to create free trial account." };
+    }
 }
