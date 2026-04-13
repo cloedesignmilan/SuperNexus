@@ -9,9 +9,12 @@ export function AnalyzeButton({ subcategoryId, isUpdate = false }: { subcategory
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
     try {
-      await runVisionAnalysis(subcategoryId);
+      const result = await runVisionAnalysis(subcategoryId);
+      if (result && !result.success) {
+         alert(`Errore Analisi: ${result.error}`);
+      }
     } catch (err: any) {
-      alert(`Errore Analisi: ${err.message}`);
+      alert(`Errore di connessione: ${err.message}`);
     } finally {
       setIsAnalyzing(false);
     }

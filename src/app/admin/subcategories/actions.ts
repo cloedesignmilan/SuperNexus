@@ -141,14 +141,15 @@ export async function deleteReferenceImage(id: string, storagePath: string) {
 }
 
 export async function runVisionAnalysis(subcategoryId: string) {
-  const subcat = await prisma.subcategory.findUnique({
-    where: { id: subcategoryId },
-    include: { reference_images: true }
-  });
+  try {
+    const subcat = await prisma.subcategory.findUnique({
+      where: { id: subcategoryId },
+      include: { reference_images: true }
+    });
 
-  if (!subcat || subcat.reference_images.length === 0) {
-    throw new Error("Nessuna immagine fornita.");
-  }
+    if (!subcat || subcat.reference_images.length === 0) {
+      return { success: false, error: "Nessuna immagine fornita." };
+    }
 
   // 1. Download images to buffer and convert to base64
   const inlineDataImages = await Promise.all(
@@ -204,35 +205,40 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
     body: JSON.stringify(payload)
   });
 
-  const aiData = await aiResp.json();
-  
-  if (!aiResp.ok) {
-    console.error(aiData);
-    throw new Error("Errore Gemini: " + (aiData.error?.message || "Unknown error"));
-  }
-
-  if (!aiData.candidates || !aiData.candidates[0]) {
-    console.error("Gemini Response Data:", JSON.stringify(aiData, null, 2));
-    throw new Error(`Risposta AI Anomala o Blocco Sicurezza: ${JSON.stringify(aiData)}`);
-  }
-
-  const generatedPrompt = aiData.candidates[0].content?.parts?.[0]?.text?.trim() || "";
-  if (!generatedPrompt) {
-     console.error("Generazione VUOTA. Dati completi:", JSON.stringify(aiData, null, 2));
-     throw new Error(`Generazione Vuota. FinishReason: ${aiData.candidates[0].finishReason}. Dati: ${JSON.stringify(aiData)}`);
-  }
-
-  // 3. Salva nel PromptTemplateSettings
-  await prisma.promptTemplateSettings.upsert({
-    where: { subcategory_id: subcategoryId },
-    create: {
-      subcategory_id: subcategoryId,
-      base_prompt_prefix: generatedPrompt,
-    },
-    update: {
-      base_prompt_prefix: generatedPrompt
+    const aiData = await aiResp.json();
+    
+    if (!aiResp.ok) {
+      console.error(aiData);
+      return { success: false, error: "Errore API Gemini: " + (aiData.error?.message || "Unknown error") };
     }
-  });
 
-  revalidatePath("/admin/subcategories");
+    if (!aiData.candidates || !aiData.candidates[0]) {
+      console.error("Gemini Response Data:", JSON.stringify(aiData, null, 2));
+      return { success: false, error: `Risposta AI Anomala o Blocco Sicurezza: ${JSON.stringify(aiData)}` };
+    }
+
+    const generatedPrompt = aiData.candidates[0].content?.parts?.[0]?.text?.trim() || "";
+    if (!generatedPrompt) {
+       console.error("Generazione VUOTA. Dati completi:", JSON.stringify(aiData, null, 2));
+       return { success: false, error: `Generazione Vuota. FinishReason: ${aiData.candidates[0].finishReason}` };
+    }
+
+    // 3. Salva nel PromptTemplateSettings
+    await prisma.promptTemplateSettings.upsert({
+      where: { subcategory_id: subcategoryId },
+      create: {
+        subcategory_id: subcategoryId,
+        base_prompt_prefix: generatedPrompt,
+      },
+      update: {
+        base_prompt_prefix: generatedPrompt
+      }
+    });
+
+    revalidatePath("/admin/subcategories");
+    return { success: true };
+  } catch(error: any) {
+    console.error("Critical runVisionAnalysis error", error);
+    return { success: false, error: error.message };
+  }
 }
