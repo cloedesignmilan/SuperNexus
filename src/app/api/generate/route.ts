@@ -369,11 +369,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
     // LOG ESPLICITO LOOP GENERAZIONE
     console.log(`[GENERATION] Inizio loop richieste ${generationModel} per ${targetScenes.length} scene.`);
 
-    const results = await Promise.allSettled(
-        targetScenes.map(async (sceneText: string, idx: number) => {
-            // Sfasa leggermente le chiamate AI per non intasare le quote Gemini
-            await new Promise(r => setTimeout(r, idx * 1000));
-            
+    const results = [];
+    for (let idx = 0; idx < targetScenes.length; idx++) {
+        const sceneText = targetScenes[idx];
             totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
             const currentPose = shuffledPoses[idx % shuffledPoses.length];
@@ -466,11 +464,11 @@ REGOLE AGGIUNTIVE TASSATIVE:
             }
 
             if (base64Image) {
-                return base64Image; 
+                results.push({ status: 'fulfilled', value: base64Image });
+            } else {
+                results.push({ status: 'rejected', reason: `Generazione abortita. Nessun 'inlineData' utile nel payload di risposta per la Scena ${idx+1}.` });
             }
-            throw new Error(`Generazione abortita. Nessun 'inlineData' utile nel payload di risposta per la Scena ${idx+1}.`);
-        })
-    );
+        }
 
     const generatedUrls = results
         .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
