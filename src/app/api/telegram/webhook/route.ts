@@ -463,20 +463,24 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                         aiParts.push({ text: variantPrompt });
 
                         promises.push(
-                            ai.models.generateContent({
-                            model: generationModel,
-                            contents: [
-                                {
-                                    role: 'user',
-                                    parts: aiParts
-                                }
-                            ],
-                            config: {
-                                // @ts-ignore
-                                imageConfig: { aspectRatio: "3:4" }
-                            }
-                        })
-                    );
+                            (async () => {
+                                // Sfasa le chiamate di 1 secondo per non intasare le quote Google Gemini
+                                await new Promise(r => setTimeout(r, i * 1000));
+                                return ai.models.generateContent({
+                                    model: generationModel,
+                                    contents: [
+                                        {
+                                            role: 'user',
+                                            parts: aiParts
+                                        }
+                                    ],
+                                    config: {
+                                        // @ts-ignore
+                                        imageConfig: { aspectRatio: "3:4" }
+                                    }
+                                });
+                            })()
+                        );
                 }
 
                 const responses = await Promise.allSettled(promises);

@@ -247,6 +247,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
                      "Still life product photography, pair of shoes, back heel view, centered composition, pure white background (#FFFFFF)",
                      "Still life product photography, single shoe, side profile view, centered, pure white background (#FFFFFF)"
                  ];
+                 while (targetScenes.length < count) {
+                     targetScenes.push(targetScenes[targetScenes.length - 1]);
+                 }
              }
         } else if (confirmedEnvironment === 'studio') {
             // Hardcode di scene neutre professionali per lo studio
@@ -368,6 +371,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const results = await Promise.allSettled(
         targetScenes.map(async (sceneText: string, idx: number) => {
+            // Sfasa leggermente le chiamate AI per non intasare le quote Gemini
+            await new Promise(r => setTimeout(r, idx * 1000));
+            
             totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
             const currentPose = shuffledPoses[idx % shuffledPoses.length];
