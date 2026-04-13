@@ -409,8 +409,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     let generatedBase64s: string[] = [];
-                    let totalTokensIn = 0;
-                    let totalTokensOut = 0;
+                    const promises = [];
 
                     const poseModifiers = [
                         "walking confidently towards the camera with dynamic movement",
@@ -463,41 +462,68 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                         }
                         aiParts.push({ text: variantPrompt });
 
-                        try {
-                            const result = await ai.models.generateContent({
-                                model: generationModel,
-                                contents: [
-                                    {
-                                        role: 'user',
-                                        parts: aiParts
-                                    }
-                                ],
-                                config: {
-                                    // @ts-ignore
-                                    imageConfig: { aspectRatio: "3:4" }
-                                }
-                            });
-                            
-                            // Accumula token
-                            if (result.usageMetadata) {
-                                totalTokensIn += result.usageMetadata.promptTokenCount || 0;
-                                totalTokensOut += result.usageMetadata.candidatesTokenCount || 0;
-                            }
+                        promises.push(
+                            (async () => {
+                                // Sfasa le chiamate di 12 secondi per evitare i 429 di Google
+                                await new Promise(r => setTimeout(r, i * 12000));
+                                
+                                let attempt = 0;
+                                let success = false;
+                                let retryResult: any = null;
 
-                            if (result.candidates && result.candidates.length > 0) {
-                                for (const candidate of result.candidates) {
-                                    if (candidate.content && candidate.content.parts) {
-                                        for (const part of candidate.content.parts) {
-                                            if (part.inlineData && part.inlineData.data) {
-                                                generatedBase64s.push(part.inlineData.data);
+                                while (!success && attempt < 3) {
+                                    attempt++;
+                                    try {
+                                        retryResult = await ai.models.generateContent({
+                                            model: generationModel,
+                                            contents: [
+                                                {
+                                                    role: 'user',
+                                                    parts: aiParts
+                                                }
+                                            ],
+                                            config: {
+                                                // @ts-ignore
+                                                imageConfig: { aspectRatio: "3:4" }
                                             }
+                                        });
+                                        success = true;
+                                    } catch (err: any) {
+                                        console.error(`Tentativo ${attempt} Telegram fallito (Scena ${i+1}):`, err?.message);
+                                        if (attempt >= 3) throw err;
+                                        await new Promise(r => setTimeout(r, 6000)); // Retry backoff
+                                    }
+                                }
+                                return retryResult;
+                            })()
+                        );
+                }
+
+                const responses = await Promise.allSettled(promises);
+                let totalTokensIn = 0;
+                let totalTokensOut = 0;
+
+                for (const outcome of responses) {
+                    if (outcome.status === 'fulfilled') {
+                        const result = outcome.value;
+                        if (result?.usageMetadata) {
+                            totalTokensIn += result.usageMetadata.promptTokenCount || 0;
+                            totalTokensOut += result.usageMetadata.candidatesTokenCount || 0;
+                        }
+                        if (result?.candidates && result.candidates.length > 0) {
+                            for (const candidate of result.candidates) {
+                                if (candidate.content && candidate.content.parts) {
+                                    for (const part of candidate.content.parts) {
+                                        if (part.inlineData && part.inlineData.data) {
+                                            generatedBase64s.push(part.inlineData.data);
                                         }
                                     }
                                 }
                             }
-                        } catch (e: any) {
-                            console.error('Una delle generazioni multiple ha fallito:', e);
                         }
+                    } else {
+                        console.error('Una delle generazioni multiple ha fallito definitivamente:', outcome.reason);
+                    }
                 }
 
                 let jobCost = 0;

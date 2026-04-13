@@ -372,10 +372,12 @@ REGOLE AGGIUNTIVE TASSATIVE:
     // LOG ESPLICITO LOOP GENERAZIONE
     console.log(`[GENERATION] Inizio loop richieste ${generationModel} per ${targetScenes.length} scene.`);
 
-    const results = [];
-    for (let idx = 0; idx < targetScenes.length; idx++) {
-        const sceneText = targetScenes[idx];
-        totalPromptsAttempted++;
+    const results = await Promise.allSettled(
+        targetScenes.map(async (sceneText: string, idx: number) => {
+            // Sfasa le chiamate di 12 secondi per spalmare il carico ed evitare 429 concurrent
+            await new Promise(r => setTimeout(r, idx * 12000));
+            
+            totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
             const currentPose = shuffledPoses[idx % shuffledPoses.length];
             const currentLighting = shuffledLighting[idx % shuffledLighting.length];
@@ -408,39 +410,48 @@ REGOLE AGGIUNTIVE TASSATIVE:
             console.log(`[GENERATION][Scene ${idx+1}] Invio prompt a Gemini... Prompt preview: ${finalPrompt.slice(0, 100)}...`);
             const timestampStart = Date.now();
             let generated;
+            let success = false;
+            let attempt = 0;
 
-            try {
-                generated = await ai.models.generateContent({
-                    model: generationModel,
-                    contents: [
-                        {
-                            role: 'user',
-                            parts: [
-                                {
-                                    inlineData: {
-                                       data: imageBuffer.toString("base64"),
-                                       mimeType: "image/jpeg"
-                                    }
-                                },
-                                { text: finalPrompt }
-                            ]
+            while (!success && attempt < 3) {
+                attempt++;
+                try {
+                    generated = await ai.models.generateContent({
+                        model: generationModel,
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [
+                                    {
+                                        inlineData: {
+                                           data: imageBuffer.toString("base64"),
+                                           mimeType: "image/jpeg"
+                                        }
+                                    },
+                                    { text: finalPrompt }
+                                ]
+                            }
+                        ],
+                        config: {
+                            // @ts-ignore
+                            imageConfig: {
+                                aspectRatio: "3:4",
+                                imageSize: "1K"
+                            }
                         }
-                    ],
-                    config: {
-                        // @ts-ignore
-                        imageConfig: {
-                            aspectRatio: "3:4",
-                            imageSize: "1K"
-                        }
+                    });
+
+                    if (generated && generated.usageMetadata) {
+                        totalJobCost += await logApiCost("frontend_generation", generationModel, generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null, 1);
                     }
-                });
-
-                if (generated && generated.usageMetadata) {
-                    totalJobCost += await logApiCost("frontend_generation", generationModel, generated.usageMetadata.promptTokenCount || 0, generated.usageMetadata.candidatesTokenCount || 0, null, 1);
+                    success = true;
+                } catch (err: any) {
+                    console.error(`[GENERATION][Scene ${idx+1}] Tentativo ${attempt} fallito:`, err?.message || err);
+                    if (attempt >= 3) {
+                        throw new Error(`Modello API Fault dopo 3 tentativi: ${err?.message}`);
+                    }
+                    await new Promise(r => setTimeout(r, 6000)); // Attendi 6s al retry
                 }
-            } catch (err: any) {
-                console.error(`[GENERATION][Scene ${idx+1}] Eccezione diretta durante la chiamata al modello:`, err?.message || err);
-                throw new Error(`Modello API Fault: ${err?.message}`);
             }
 
             const timestampEnd = Date.now();
@@ -467,11 +478,11 @@ REGOLE AGGIUNTIVE TASSATIVE:
             }
 
             if (base64Image) {
-                results.push({ status: 'fulfilled', value: base64Image });
-            } else {
-                results.push({ status: 'rejected', reason: `Generazione abortita. Nessun 'inlineData' utile nel payload di risposta per la Scena ${idx+1}.` });
+                return base64Image;
             }
-        }
+            throw new Error(`Generazione abortita. Nessun 'inlineData' utile nel payload di risposta per la Scena ${idx+1}.`);
+        })
+    );
 
     const generatedUrls = results
         .filter((r): r is PromiseFulfilledResult<string> => r.status === 'fulfilled')
