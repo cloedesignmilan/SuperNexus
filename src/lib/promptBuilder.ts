@@ -35,6 +35,8 @@ export function buildCreatorPrompt(
   if (cons.fit) preservation += `- Fit: ${cons.fit}\n`;
   if (cons.neckline) preservation += `- Neckline: ${cons.neckline}\n`;
   if (cons.closure_type) preservation += `- Closure: ${cons.closure_type}\n`;
+  if (cons.lapel_style) preservation += `- Collar/Lapel Style: ${cons.lapel_style}\n`;
+  if (cons.pattern) preservation += `- Pattern: ${cons.pattern}\n`;
   blocks.push(preservation);
 
   // 4. STYLE / CATEGORY FOCUS

@@ -38,7 +38,7 @@ Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inve
 REGOLE AGGIUNTIVE TASSATIVE:
 - IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
 - IN 'ambiguity_flags': se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
-- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-120 parole. Nessuna introduzione inutile, includi SOLO dettagli concreti, clonabili e visivi del capo, niente "This is an image of...".
+- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-150 parole. Sii MANIACALE E CHIRURGICO. Se analizzi giacche, abiti da sposo o cerimonia, DEVI specificare i rever/baveri (peak lapels/punte, notch, shawl), tipo di abbottonatura (doppiopetto, monopetto, numero bottoni), tasche, cinture e taglio. Includi SOLO descrizioni fisiche concrete, niente "This is an image of...".
 
 {
   "technical_validation": {
@@ -71,7 +71,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
     "print_description": "print details or null",
     "logo_description": "logo details or null",
     "length": "midi, maxi, cropped, etc or null",
-    "closure_type": "zip, button, lace-up, slip-on, etc or null"
+    "closure_type": "zip, button, single-breasted, double-breasted, slip-on, etc or null",
+    "lapel_style": "peak lapels, notch lapels, shawl collar, mandarin collar, etc or null",
+    "pattern": "solid, pinstripe, checked, floral, geometric, etc or null"
   },
   "ambiguity_flags": {
     "multiple_items_detected": false,
