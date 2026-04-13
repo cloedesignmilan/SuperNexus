@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
     try {
         const BUCKETS = ['telegram-uploads', 'telegram-outputs'];
-        const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
+        const FORTY_EIGHT_HOURS_MS = 24 * 60 * 60 * 1000;
         const now = new Date().getTime();
         
         let totalDeleted = 0;
@@ -84,7 +84,7 @@ export async function GET(request: Request) {
                 }
             }
 
-            console.log(`[STORAGE-CLEANUP] Rimossi ${deletedInBucket} file vecchi di oltre 48h dal bucket ${bucketName}.`);
+            console.log(`[STORAGE-CLEANUP] Rimossi ${deletedInBucket} file vecchi di oltre 24h dal bucket ${bucketName}.`);
             totalDeleted += deletedInBucket;
         }
 

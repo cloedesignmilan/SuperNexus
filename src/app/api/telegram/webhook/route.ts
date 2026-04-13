@@ -430,11 +430,15 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     const shuffledPoses = poseModifiers.sort(() => Math.random() - 0.5);
                     const shuffledLighting = lightingModifiers.sort(() => Math.random() - 0.5);
 
-                    // --- INJECTION MAGIC SCENE ---
+                    // --- INJECTION MAGIC SCENE E BACKUP SETTINGS ---
                     let varianceEnabled = false;
+                    let backupOutputsEnabled = false;
                     try {
                         const varianceSetting = await (prisma as any).setting.findUnique({ where: { key: 'AI_SCENE_VARIANCE_ENABLED' }});
                         varianceEnabled = varianceSetting?.value === 'true';
+                        
+                        const backupSetting = await (prisma as any).setting.findUnique({ where: { key: 'SAVE_GENERATION_OUTPUTS_ENABLED' }});
+                        backupOutputsEnabled = backupSetting?.value !== 'false'; // default true
                     } catch(e) {}
 
                     for (let i = 0; i < qty; i++) {
@@ -537,26 +541,30 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
 
                 const { Input } = require('telegraf');
                 
-                // BACKUP CLOUD DEGLI OUTPUT (in PARALLELO per eliminare ritardi al cliente)
-                const uploadPromises = generatedBase64s.map(async (b64, idx) => {
-                    const buffer = Buffer.from(b64, 'base64');
-                    const oFileName = `${globalChatId}_out_${timestamp}_${idx}.jpg`;
-                    const { error: upErr } = await supabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
-                        contentType: 'image/jpeg',
-                        upsert: true
+                // BACKUP CLOUD DEGLI OUTPUT O OPZIONE DISABILITATA
+                let outputUrls: {url: string, path: string}[] = [];
+                
+                if (backupOutputsEnabled) {
+                    const uploadPromises = generatedBase64s.map(async (b64, idx) => {
+                        const buffer = Buffer.from(b64, 'base64');
+                        const oFileName = `${globalChatId}_out_${timestamp}_${idx}.jpg`;
+                        const { error: upErr } = await supabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
+                            contentType: 'image/jpeg',
+                            upsert: true
+                        });
+                        
+                        if (!upErr) {
+                            const { data: { publicUrl } } = supabase.storage.from('telegram-outputs').getPublicUrl(oFileName);
+                            return { url: publicUrl, path: oFileName };
+                        } else {
+                            console.error("[CLOUD] Errore upload output su Supabase:", upErr);
+                            return null;
+                        }
                     });
-                    
-                    if (!upErr) {
-                        const { data: { publicUrl } } = supabase.storage.from('telegram-outputs').getPublicUrl(oFileName);
-                        return { url: publicUrl, path: oFileName };
-                    } else {
-                        console.error("[CLOUD] Errore upload output su Supabase:", upErr);
-                        return null; // fallisce silenziosamente per questa foto
-                    }
-                });
 
-                const uploadResults = await Promise.all(uploadPromises);
-                const outputUrls = uploadResults.filter((res): res is {url: string, path: string} => res !== null);
+                    const uploadResults = await Promise.all(uploadPromises);
+                    outputUrls = uploadResults.filter((res): res is {url: string, path: string} => res !== null);
+                }
 
                 // INOLTRO A TELEGRAM
                 const mediaGroup = generatedBase64s.map((b64, idx) => ({
