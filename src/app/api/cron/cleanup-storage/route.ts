@@ -16,75 +16,82 @@ export async function GET(request: Request) {
     }
 
     try {
-        const BUCKET_NAME = 'telegram-uploads';
+        const BUCKETS = ['telegram-uploads', 'telegram-outputs'];
         const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
         const now = new Date().getTime();
         
-        let allFiles: any[] = [];
-        let hasMore = true;
-        let cOffset = 0;
-        
-        // RECUPERA TUTTI I FILE NEL BUCKET (Paginazione a blocchi di 500)
-        while (hasMore) {
-            const { data, error } = await supabaseAdmin.storage
-                .from(BUCKET_NAME)
-                .list('', {
-                    limit: 500,
-                    offset: cOffset,
-                    sortBy: { column: 'created_at', order: 'asc' },
-                });
-
-            if (error) {
-                console.error("Errore fetch file Supabase:", error);
-                throw new Error("Impossibile recuperare i file dal DB");
-            }
-
-            if (!data || data.length === 0) {
-                hasMore = false;
-            } else {
-                allFiles.push(...data);
-                cOffset += data.length;
-                if (data.length < 500) hasMore = false;
-            }
-        }
-
-        const filesToDelete: string[] = [];
-
-        for (const file of allFiles) {
-             // Escludi file di sistema e presunte cartelle
-             if (file.name === '.emptyFolderPlaceholder') continue;
-             if (!file.metadata) continue; 
-
-             const fileDate = new Date(file.created_at).getTime();
-             if (now - fileDate > FORTY_EIGHT_HOURS_MS) {
-                 filesToDelete.push(file.name);
-             }
-        }
-
-        if (filesToDelete.length === 0) {
-            return NextResponse.json({ message: 'Nessun file obsoleto (>48h) trovato.', deleted_count: 0 });
-        }
-
-        // CANCELLA I FILE IN BATCH DI 100 ALLA VOLTA
-        const chunkSize = 100;
         let totalDeleted = 0;
-        
-        for (let i = 0; i < filesToDelete.length; i += chunkSize) {
-            const chunk = filesToDelete.slice(i, i + chunkSize);
-            const { data, error } = await supabaseAdmin.storage.from(BUCKET_NAME).remove(chunk);
-            if (error) {
-                console.error(`Errore cancellazione blocco (file: ${chunk[0]}):`, error);
-            } else {
-                totalDeleted += data?.length || 0;
-            }
-        }
+        let totalScanned = 0;
 
-        console.log(`[STORAGE-CLEANUP] Rimossi ${totalDeleted} file vecchi di oltre 48h dal bucket ${BUCKET_NAME}.`);
+        for (const bucketName of BUCKETS) {
+            let allFiles: any[] = [];
+            let hasMore = true;
+            let cOffset = 0;
+            
+            // RECUPERA TUTTI I FILE NEL BUCKET
+            while (hasMore) {
+                const { data, error } = await supabaseAdmin.storage
+                    .from(bucketName)
+                    .list('', {
+                        limit: 500,
+                        offset: cOffset,
+                        sortBy: { column: 'created_at', order: 'asc' },
+                    });
+
+                if (error || !data) {
+                    console.error(`Errore fetch file dal bucket ${bucketName}:`, error);
+                    break;
+                }
+
+                if (data.length === 0) {
+                    hasMore = false;
+                } else {
+                    allFiles.push(...data);
+                    cOffset += data.length;
+                    if (data.length < 500) hasMore = false;
+                }
+            }
+
+            totalScanned += allFiles.length;
+            const filesToDelete: string[] = [];
+
+            for (const file of allFiles) {
+                 if (file.name === '.emptyFolderPlaceholder') continue;
+                 if (!file.metadata) continue; 
+
+                 const fileDate = new Date(file.created_at).getTime();
+                 if (now - fileDate > FORTY_EIGHT_HOURS_MS) {
+                     filesToDelete.push(file.name);
+                 }
+            }
+
+            if (filesToDelete.length === 0) {
+                console.log(`[STORAGE-CLEANUP] Nessun file da pulire nel secchio ${bucketName}.`);
+                continue;
+            }
+
+            // CANCELLA I FILE IN BATCH DI 100 ALLA VOLTA
+            const chunkSize = 100;
+            let deletedInBucket = 0;
+            
+            for (let i = 0; i < filesToDelete.length; i += chunkSize) {
+                const chunk = filesToDelete.slice(i, i + chunkSize);
+                const { data, error } = await supabaseAdmin.storage.from(bucketName).remove(chunk);
+                if (error) {
+                    console.error(`Errore cancellazione blocco in ${bucketName} (file: ${chunk[0]}):`, error);
+                } else {
+                    deletedInBucket += data?.length || 0;
+                }
+            }
+
+            console.log(`[STORAGE-CLEANUP] Rimossi ${deletedInBucket} file vecchi di oltre 48h dal bucket ${bucketName}.`);
+            totalDeleted += deletedInBucket;
+        }
 
         return NextResponse.json({ 
-            message: `Pulizia conclusa con successo.`, 
+            message: `Pulizia di entrambi i bucket conclusa.`, 
             deleted_count: totalDeleted,
-            target_scanned: allFiles.length 
+            target_scanned: totalScanned 
         });
 
     } catch (error: any) {

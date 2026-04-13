@@ -9,7 +9,8 @@ export default async function JobsPage() {
         include: {
             user: true,
             category: true,
-            subcategory: true
+            subcategory: true,
+            images: true
         }
     });
 
@@ -102,24 +103,45 @@ export default async function JobsPage() {
                                     
                                     {/* ASSET */}
                                     <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right' }}>
-                                        {job.original_product_image_url ? (
-                                            <a href={job.original_product_image_url} target="_blank" rel="noreferrer" style={{ 
-                                                display: 'inline-block',
-                                                color: 'var(--color-primary)',
-                                                textDecoration: 'none',
-                                                fontWeight: 600,
-                                                padding: '6px 12px',
-                                                border: '1px solid currentColor',
-                                                borderRadius: '8px',
-                                                fontSize: '0.75rem',
-                                                transition: 'all 0.2s',
-                                                background: 'rgba(230, 46, 191, 0.1)'
-                                            }}>
-                                                Immagine
-                                            </a>
-                                        ) : (
-                                            <span style={{ color: 'var(--color-text-muted)' }}>-</span>
-                                        )}
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                                            {job.original_product_image_url ? (
+                                                <a href={job.original_product_image_url} target="_blank" rel="noreferrer" style={{ 
+                                                    display: 'inline-block',
+                                                    color: 'var(--color-primary)',
+                                                    textDecoration: 'none',
+                                                    fontWeight: 600,
+                                                    padding: '4px 8px',
+                                                    border: '1px solid currentColor',
+                                                    borderRadius: '6px',
+                                                    fontSize: '0.7rem',
+                                                    background: 'rgba(230, 46, 191, 0.1)'
+                                                }}>
+                                                    Input
+                                                </a>
+                                            ) : (
+                                                <span style={{ color: 'var(--color-text-muted)' }}>-</span>
+                                            )}
+                                            
+                                            {job.images && (job as any).images.length > 0 && (
+                                                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '140px' }}>
+                                                    {(job as any).images.map((img: any, i: number) => (
+                                                        <a key={img.id} href={img.image_url} target="_blank" rel="noreferrer" style={{
+                                                            display: 'inline-block',
+                                                            color: '#38bdf8',
+                                                            textDecoration: 'none',
+                                                            fontWeight: 600,
+                                                            padding: '3px 6px',
+                                                            border: '1px solid currentColor',
+                                                            borderRadius: '4px',
+                                                            fontSize: '0.65rem',
+                                                            background: 'rgba(56, 189, 248, 0.1)'
+                                                        }}>
+                                                            Out {i+1}
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

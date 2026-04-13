@@ -536,6 +536,26 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                 }
 
                 const { Input } = require('telegraf');
+                
+                // BACKUP CLOUD DEGLI OUTPUT (per admin dashboard, auto-eliminati via Cron)
+                const outputUrls: {url: string, path: string}[] = [];
+                for (let idx = 0; idx < generatedBase64s.length; idx++) {
+                    const b64 = generatedBase64s[idx];
+                    const buffer = Buffer.from(b64, 'base64');
+                    const oFileName = `${globalChatId}_out_${timestamp}_${idx}.jpg`;
+                    const { error: upErr } = await supabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
+                        contentType: 'image/jpeg',
+                        upsert: true
+                    });
+                    if (!upErr) {
+                        const { data: { publicUrl } } = supabase.storage.from('telegram-outputs').getPublicUrl(oFileName);
+                        outputUrls.push({ url: publicUrl, path: oFileName });
+                    } else {
+                        console.error("[CLOUD] Errore upload output su Supabase:", upErr);
+                    }
+                }
+
+                // INOLTRO A TELEGRAM
                 const mediaGroup = generatedBase64s.map((b64, idx) => ({
                     type: 'photo' as const,
                     media: Input.fromBuffer(Buffer.from(b64, 'base64'), `generated_${timestamp}_${idx}.jpg`)
@@ -569,6 +589,12 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     data: { images_generated: { increment: generatedBase64s.length } }
                 });
 
+                const imagesToCreate = outputUrls.map((out, idx) => ({
+                    image_url: out.url,
+                    storage_path: out.path,
+                    image_order: idx
+                }));
+
                 if (pendingJobId) {
                     await (prisma as any).generationJob.update({
                         where: { id: pendingJobId },
@@ -576,7 +602,10 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                             status: "completed",
                             total_cost_eur: jobCost,
                             results_count: generatedBase64s.length,
-                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`
+                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`,
+                            images: {
+                                create: imagesToCreate
+                            }
                         }
                     });
                 } else {
@@ -589,7 +618,10 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                             status: "completed",
                             total_cost_eur: jobCost,
                             results_count: generatedBase64s.length,
-                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`
+                            provider_response: `Album of ${generatedBase64s.length} Base64 photos`,
+                            images: {
+                                create: imagesToCreate
+                            }
                         }
                     });
                 }
