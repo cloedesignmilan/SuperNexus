@@ -537,23 +537,26 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
 
                 const { Input } = require('telegraf');
                 
-                // BACKUP CLOUD DEGLI OUTPUT (per admin dashboard, auto-eliminati via Cron)
-                const outputUrls: {url: string, path: string}[] = [];
-                for (let idx = 0; idx < generatedBase64s.length; idx++) {
-                    const b64 = generatedBase64s[idx];
+                // BACKUP CLOUD DEGLI OUTPUT (in PARALLELO per eliminare ritardi al cliente)
+                const uploadPromises = generatedBase64s.map(async (b64, idx) => {
                     const buffer = Buffer.from(b64, 'base64');
                     const oFileName = `${globalChatId}_out_${timestamp}_${idx}.jpg`;
                     const { error: upErr } = await supabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
                         contentType: 'image/jpeg',
                         upsert: true
                     });
+                    
                     if (!upErr) {
                         const { data: { publicUrl } } = supabase.storage.from('telegram-outputs').getPublicUrl(oFileName);
-                        outputUrls.push({ url: publicUrl, path: oFileName });
+                        return { url: publicUrl, path: oFileName };
                     } else {
                         console.error("[CLOUD] Errore upload output su Supabase:", upErr);
+                        return null; // fallisce silenziosamente per questa foto
                     }
-                }
+                });
+
+                const uploadResults = await Promise.all(uploadPromises);
+                const outputUrls = uploadResults.filter((res): res is {url: string, path: string} => res !== null);
 
                 // INOLTRO A TELEGRAM
                 const mediaGroup = generatedBase64s.map((b64, idx) => ({
