@@ -37,6 +37,7 @@ export function buildCreatorPrompt(
   if (cons.closure_type) preservation += `- Closure: ${cons.closure_type}\n`;
   if (cons.lapel_style) preservation += `- Collar/Lapel Style: ${cons.lapel_style}\n`;
   if (cons.pattern) preservation += `- Pattern: ${cons.pattern}\n`;
+  if (cons.accessories) preservation += `- Accessories to Clone: MUST INCLUDE EXACTLY ${cons.accessories}\n`;
   blocks.push(preservation);
 
   // 4. STYLE / CATEGORY FOCUS
