@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import SaveOutputsToggle from "./SaveOutputsToggle";
+import JobTableRow from "./JobTableRow";
 
 export const dynamic = 'force-dynamic';
 
@@ -43,114 +44,7 @@ export default async function JobsPage() {
                         </thead>
                         <tbody>
                             {jobs.map((job) => (
-                                <tr key={job.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.02)' }}>
-                                    
-                                    {/* DATA */}
-                                    <td style={{ padding: '1.25rem 1.5rem', color: 'var(--color-text-muted)', fontFamily: 'monospace' }}>
-                                        <div style={{ color: 'white', marginBottom: '4px' }}>{job.id.split('-')[0]}</div>
-                                        <div style={{ fontSize: '0.75rem' }}>{new Date(job.createdAt).toLocaleString('it-IT')}</div>
-                                    </td>
-                                    
-                                    {/* UTENTE */}
-                                    <td style={{ padding: '1.25rem 1.5rem' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                           <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 'bold' }}>
-                                              {job.user?.email ? job.user.email.charAt(0).toUpperCase() : '?'}
-                                           </div>
-                                           <span style={{ fontWeight: 500, color: '#e2e8f0' }}>{job.user?.email ? job.user.email.replace('telegram_', '').replace('@supernexus.ai', '') : 'Guest'}</span>
-                                        </div>
-                                    </td>
-                                    
-                                    {/* STILE */}
-                                    <td style={{ padding: '1.25rem 1.5rem' }}>
-                                        <div style={{ fontWeight: 600, color: 'var(--color-secondary)' }}>{job.subcategory?.name || 'VTON Engine Engine'}</div>
-                                        <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>{job.category?.name || 'Base'}</div>
-                                    </td>
-                                    
-                                    {/* ESITO */}
-                                    <td style={{ padding: '1.25rem 1.5rem' }}>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                            {(() => {
-                                                const isTimeout = job.status === 'pending' && (new Date().getTime() - new Date(job.createdAt).getTime() > 120 * 1000);
-                                                const displayStatus = isTimeout ? 'timeout' : job.status;
-                                                
-                                                return (
-                                                    <span style={{ 
-                                                        display: 'inline-flex',
-                                                        alignItems: 'center',
-                                                        gap: '6px',
-                                                        padding: '4px 10px',
-                                                        borderRadius: '20px',
-                                                        fontSize: '0.7rem',
-                                                        fontWeight: 'bold',
-                                                        letterSpacing: '0.05em',
-                                                        color: displayStatus === 'completed' ? '#34d399' : displayStatus === 'pending' ? '#fbbf24' : '#f87171',
-                                                        background: displayStatus === 'completed' ? 'rgba(52, 211, 153, 0.1)' : displayStatus === 'pending' ? 'rgba(251, 191, 36, 0.1)' : 'rgba(248, 113, 113, 0.1)',
-                                                        border: `1px solid ${displayStatus === 'completed' ? 'rgba(52, 211, 153, 0.2)' : displayStatus === 'pending' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
-                                                        width: 'fit-content'
-                                                    }}>
-                                                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: displayStatus === 'completed' ? '#34d399' : displayStatus === 'pending' ? '#fbbf24' : '#f87171' }}></div>
-                                                        {displayStatus === 'completed' ? 'SUCCESS' : displayStatus === 'pending' ? 'PENDING...' : displayStatus === 'timeout' ? 'TIMEOUT (0 Addebiti)' : 'FAILED'}
-                                                    </span>
-                                                );
-                                            })()}
-                                            
-                                            {job.status !== 'completed' && job.status !== 'pending' && job.provider_response && (
-                                              <span style={{ fontSize: '0.7rem', color: '#fca5a5', maxWidth: '280px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={job.provider_response}>
-                                                  {job.provider_response}
-                                              </span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    
-                                    {/* COSTO */}
-                                    <td style={{ padding: '1.25rem 1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
-                                        € {(job as any).total_cost_eur?.toFixed(4) || '0.000'}
-                                    </td>
-                                    
-                                    {/* ASSET */}
-                                    <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right' }}>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
-                                            {job.original_product_image_url ? (
-                                                <a href={job.original_product_image_url} target="_blank" rel="noreferrer" style={{ 
-                                                    display: 'inline-block',
-                                                    color: 'var(--color-primary)',
-                                                    textDecoration: 'none',
-                                                    fontWeight: 600,
-                                                    padding: '4px 8px',
-                                                    border: '1px solid currentColor',
-                                                    borderRadius: '6px',
-                                                    fontSize: '0.7rem',
-                                                    background: 'rgba(230, 46, 191, 0.1)'
-                                                }}>
-                                                    Input
-                                                </a>
-                                            ) : (
-                                                <span style={{ color: 'var(--color-text-muted)' }}>-</span>
-                                            )}
-                                            
-                                            {job.images && (job as any).images.length > 0 && (
-                                                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'flex-end', maxWidth: '140px' }}>
-                                                    {(job as any).images.map((img: any, i: number) => (
-                                                        <a key={img.id} href={img.image_url} target="_blank" rel="noreferrer" style={{
-                                                            display: 'inline-block',
-                                                            color: '#38bdf8',
-                                                            textDecoration: 'none',
-                                                            fontWeight: 600,
-                                                            padding: '3px 6px',
-                                                            border: '1px solid currentColor',
-                                                            borderRadius: '4px',
-                                                            fontSize: '0.65rem',
-                                                            background: 'rgba(56, 189, 248, 0.1)'
-                                                        }}>
-                                                            Out {i+1}
-                                                        </a>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </td>
-                                </tr>
+                                <JobTableRow key={job.id} job={job} />
                             ))}
                             {jobs.length === 0 && (
                                 <tr>
