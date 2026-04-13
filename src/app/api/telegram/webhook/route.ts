@@ -409,7 +409,8 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     let generatedBase64s: string[] = [];
-                    const promises = [];
+                    let totalTokensIn = 0;
+                    let totalTokensOut = 0;
 
                     const poseModifiers = [
                         "walking confidently towards the camera with dynamic movement",
@@ -462,55 +463,41 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                         }
                         aiParts.push({ text: variantPrompt });
 
-                        promises.push(
-                            (async () => {
-                                // Sfasa le chiamate di mezzo secondo per addolcire i picchi in parallelo
-                                await new Promise(r => setTimeout(r, i * 500));
-                                return ai.models.generateContent({
-                                    model: generationModel,
-                                    contents: [
-                                        {
-                                            role: 'user',
-                                            parts: aiParts
-                                        }
-                                    ],
-                                    config: {
-                                        // @ts-ignore
-                                        imageConfig: { aspectRatio: "3:4" }
+                        try {
+                            const result = await ai.models.generateContent({
+                                model: generationModel,
+                                contents: [
+                                    {
+                                        role: 'user',
+                                        parts: aiParts
                                     }
-                                });
-                            })()
-                        );
-                }
+                                ],
+                                config: {
+                                    // @ts-ignore
+                                    imageConfig: { aspectRatio: "3:4" }
+                                }
+                            });
+                            
+                            // Accumula token
+                            if (result.usageMetadata) {
+                                totalTokensIn += result.usageMetadata.promptTokenCount || 0;
+                                totalTokensOut += result.usageMetadata.candidatesTokenCount || 0;
+                            }
 
-                const responses = await Promise.allSettled(promises);
-                let totalTokensIn = 0;
-                let totalTokensOut = 0;
-
-                for (const outcome of responses) {
-                    if (outcome.status === 'fulfilled') {
-                        const resp = outcome.value;
-                        
-                        // Accumula i token
-                        if (resp.usageMetadata) {
-                            totalTokensIn += resp.usageMetadata.promptTokenCount || 0;
-                            totalTokensOut += resp.usageMetadata.candidatesTokenCount || 0;
-                        }
-
-                        if (resp.candidates && resp.candidates.length > 0) {
-                            for (const candidate of resp.candidates) {
-                                if (candidate.content && candidate.content.parts) {
-                                    for (const part of candidate.content.parts) {
-                                        if (part.inlineData && part.inlineData.data) {
-                                            generatedBase64s.push(part.inlineData.data);
+                            if (result.candidates && result.candidates.length > 0) {
+                                for (const candidate of result.candidates) {
+                                    if (candidate.content && candidate.content.parts) {
+                                        for (const part of candidate.content.parts) {
+                                            if (part.inlineData && part.inlineData.data) {
+                                                generatedBase64s.push(part.inlineData.data);
+                                            }
                                         }
                                     }
                                 }
                             }
+                        } catch (e: any) {
+                            console.error('Una delle generazioni multiple ha fallito:', e);
                         }
-                    } else {
-                        console.error('Una delle generazioni multiple ha fallito:', outcome.reason);
-                    }
                 }
 
                 let jobCost = 0;
