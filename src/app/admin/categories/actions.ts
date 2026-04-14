@@ -10,6 +10,7 @@ const ADMIN_USER_ID = "admin-user-id";
 export async function createCategory(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
+  const cover_image = formData.get("cover_image") as string;
   
   if (!name) throw new Error("Il nome della categoria è obbligatorio");
 
@@ -40,6 +41,7 @@ export async function createCategory(formData: FormData) {
       name,
       slug: uniqueSlug,
       description,
+      cover_image,
       sort_order: nextOrder,
       user_id: user.id
     }
@@ -58,12 +60,13 @@ export async function deleteCategory(id: string) {
 export async function updateCategory(id: string, formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
+  const cover_image = formData.get("cover_image") as string;
   
   if (!name) throw new Error("Il nome della categoria è obbligatorio");
 
   await prisma.category.update({
     where: { id },
-    data: { name, description }
+    data: { name, description, cover_image }
   });
   revalidatePath("/admin/categories");
   revalidatePath("/admin/subcategories");

@@ -8,7 +8,7 @@ export default async function CategoriesPage() {
     orderBy: { sort_order: 'asc' },
     include: {
       _count: {
-        select: { subcategories: true }
+        select: { business_modes: true }
       }
     }
   });
@@ -46,6 +46,15 @@ export default async function CategoriesPage() {
                   style={{ resize: 'vertical' }}
                 ></textarea>
               </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Cover Image URL (Opzionale)</label>
+                <input 
+                  type="text" 
+                  name="cover_image" 
+                  placeholder="/images/example.jpg"
+                  className="input-glass"
+                />
+              </div>
               <button type="submit" className="btn-primary btn-action-purple" style={{ marginTop: '0.5rem' }}>
                 Crea Macrocategoria
               </button>
@@ -53,69 +62,74 @@ export default async function CategoriesPage() {
           </div>
         </div>
 
-        {/* Lista Categorie */}
-        <div>
-          <div className="admin-card" style={{ padding: '0', overflow: 'hidden' }}>
-            <table className="glass-table">
-              <thead style={{ background: 'rgba(0,0,0,0.2)' }}>
-                <tr>
-                  <th>Identificativo</th>
-                  <th>Figli</th>
-                  <th>Rete</th>
-                  <th style={{ textAlign: 'right' }}>Azioni</th>
-                </tr>
-              </thead>
-              <tbody>
-                {categories.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>
-                      Nessun nodo registrato. Inizia creandolo da sinistra.
-                    </td>
-                  </tr>
-                ) : (
-                  categories.map((cat: any) => (
-                    <tr key={cat.id}>
-                      <td>
-                        <details style={{ background: 'transparent' }}>
-                          <summary style={{ cursor: 'pointer', fontWeight: 700, outline: 'none' }}>
-                            {cat.name} ✏️
-                          </summary>
-                          <div style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                             <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                               <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
-                               <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={2}></textarea>
-                               <button type="submit" className="btn-action-amber" style={{ padding: '0.3rem', fontSize: '0.7rem' }}>Salva Modifiche</button>
-                             </form>
-                          </div>
-                        </details>
-                        {cat.description && <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>{cat.description}</div>}
-                      </td>
-                      <td style={{ color: 'var(--color-text-muted)', fontFamily: 'monospace' }}>
-                        {cat._count.subcategories} refs
-                      </td>
-                      <td>
-                        <form action={toggleCategoryStatus.bind(null, cat.id, cat.is_active)}>
-                          <button type="submit" className={`badge ${cat.is_active ? 'badge-online' : 'badge-offline'}`} style={{ cursor: 'pointer' }}>
-                            {cat.is_active ? 'Online' : 'Offline'}
-                          </button>
+        {/* Lista Categorie Visuale */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem', alignContent: 'start' }}>
+          {categories.length === 0 ? (
+            <div className="admin-card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', gridColumn: '1 / -1' }}>
+              Nessun nodo registrato. Inizia creandolo dal form di lato.
+            </div>
+          ) : (
+            categories.map((cat: any) => (
+              <div key={cat.id} className="admin-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                
+                {/* Cover Image */}
+                <div style={{ height: '140px', background: 'var(--color-bg)', position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  {cat.cover_image ? (
+                    <img src={cat.cover_image} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '2rem' }}>
+                      🖼️
+                    </div>
+                  )}
+                  {/* Badge Stato Overlay */}
+                  <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                    <form action={toggleCategoryStatus.bind(null, cat.id, cat.is_active)}>
+                      <button type="submit" className={`badge ${cat.is_active ? 'badge-online' : 'badge-offline'}`} style={{ cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.5)' }}>
+                        {cat.is_active ? 'Online' : 'Offline'}
+                      </button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'var(--color-text)' }}>{cat.name}</h3>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                    {cat._count.business_modes} Business Modes
+                  </div>
+                  
+                  {cat.description && (
+                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0 0 1rem 0', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {cat.description}
+                    </p>
+                  )}
+
+                  <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}>
+                    {/* Pulsante Modifica a tendina */}
+                    <details style={{ flex: 1, position: 'relative' }}>
+                      <summary className="btn-action-amber" style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none' }}>
+                        ✏️ Edit
+                      </summary>
+                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1e293b', padding: '1rem', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
+                          <input type="text" name="cover_image" defaultValue={cat.cover_image || ''} placeholder="URL Immagine" className="input-glass" />
+                          <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={3}></textarea>
+                          <button type="submit" className="btn-action-emerald" style={{ padding: '0.5rem', fontSize: '0.75rem' }}>Salva</button>
                         </form>
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <form action={deleteCategory.bind(null, cat.id)}>
-                          <button 
-                            type="submit" 
-                            style={{ background: 'none', border: 'none', color: 'var(--color-danger)', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                          >
-                            Purge
-                          </button>
-                        </form>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </details>
+                    
+                    <form action={deleteCategory.bind(null, cat.id)} style={{ flex: 1 }}>
+                      <button type="submit" className="btn-action-amber" style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                        🗑️ Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
