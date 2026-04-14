@@ -1,10 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 async function main() {
-    await prisma.user.updateMany({
-        where: { paypal_subscription_id: 'free_trial' },
-        data: { images_generated: 10 }
+    const categories = await prisma.category.findMany({
+        include: { subcategories: true }
     });
-    console.log("Crediti esauriti per i Free Trial!");
+    for (const cat of categories) {
+        console.log(`\n=== Categoria: ${cat.name} ===`);
+        if (cat.subcategories.length === 0) {
+            console.log("  Nessuna sottocategoria.");
+        }
+        for (const sub of cat.subcategories) {
+            console.log(`  - [${sub.is_active ? 'ATTIVA' : 'SPENTA'}] ${sub.name} (Slug: ${sub.slug})`);
+        }
+    }
 }
-main().catch(console.error).finally(() => prisma.$disconnect());
+main().catch(e => console.error(e)).finally(() => prisma.$disconnect());
