@@ -473,26 +473,41 @@ ${bottomMarker === 'G' ? '8. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                         const currentPose = shuffledPoses[i % shuffledPoses.length];
                         let currentLighting = shuffledLighting[i % shuffledLighting.length];
 
-                        if (varianceEnabled) {
-                            const magicalScene = getRandomSceneForSubcategory(subcat.business_mode.category.slug + " " + subcat.business_mode.slug + " " + subcat.slug);
-                            currentLighting += magicalScene;
-                        }
-                        
-                        const variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING/SCENE SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO e USA un NEGATIVE PROMPT SERVER SIDE per sfavorire: "(plastic skin:1.5), perfect symmetry, heavily airbrushed, fake AI look".]`;
+                        let variantPrompt = "";
+                        let aiParts = [];
                         
                         let currentRefInline = null;
                         if (referenceBuffers.length > 0) {
                             currentRefInline = referenceBuffers[i % referenceBuffers.length];
                         }
                         
-                        const aiParts = [];
-                        aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
-                        aiParts.push({ inlineData: { data: base64, mimeType } });
-                        if (currentRefInline) {
-                            aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting, pose, and background aesthetic. DO NOT copy the clothes from this image):" });
-                            aiParts.push({ inlineData: currentRefInline });
+                        // Strict vs Dynamic Branching
+                        if (subcat.strict_reference_mode) {
+                            variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
+                            
+                            aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                            aiParts.push({ inlineData: { data: base64, mimeType } });
+                            if (currentRefInline) {
+                                aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
+                                aiParts.push({ inlineData: currentRefInline });
+                            }
+                            aiParts.push({ text: variantPrompt });
+                        } else {
+                            if (varianceEnabled) {
+                                const magicalScene = getRandomSceneForSubcategory(subcat.business_mode.category.slug + " " + subcat.business_mode.slug + " " + subcat.slug);
+                                currentLighting += magicalScene;
+                            }
+                            
+                            variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING/SCENE SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO e USA un NEGATIVE PROMPT SERVER SIDE per sfavorire: "(plastic skin:1.5), perfect symmetry, heavily airbrushed, fake AI look".]`;
+                            
+                            aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                            aiParts.push({ inlineData: { data: base64, mimeType } });
+                            if (currentRefInline) {
+                                aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting, pose, and background aesthetic. DO NOT copy the clothes from this image):" });
+                                aiParts.push({ inlineData: currentRefInline });
+                            }
+                            aiParts.push({ text: variantPrompt });
                         }
-                        aiParts.push({ text: variantPrompt });
 
                         promises.push(
                             (async () => {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { UploaderBase } from "../uploader-client";
 import { AnalyzeButton } from "../analyze-btn";
 import { ValidationCheckCard } from "../ValidationCheckCard";
+import StrictReferenceToggle from "../StrictReferenceToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -104,6 +105,7 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
                <span style={{ color: 'var(--color-primary)' }}>◩</span> Reference Images Gallery ({subcat.reference_images.length})
              </h2>
              <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0 0 1.5rem 0' }}>La IA analizzerà queste foto per generare il Master Prompt.</p>
+             <StrictReferenceToggle subcategoryId={subcat.id} currentStatus={subcat.strict_reference_mode} />
              <UploaderBase subcategoryId={subcat.id} images={subcat.reference_images} />
           </div>
 

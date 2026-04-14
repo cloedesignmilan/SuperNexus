@@ -92,6 +92,14 @@ export async function toggleSubcategoryStatus(id: string, currentStatus: boolean
   revalidatePath("/admin/subcategories");
 }
 
+export async function toggleStrictReferenceMode(id: string, currentStatus: boolean) {
+  await prisma.subcategory.update({
+    where: { id },
+    data: { strict_reference_mode: !currentStatus }
+  });
+  revalidatePath(`/admin/subcategories/${id}`);
+}
+
 /* 
  * Server Action for Image Uploads (up to 4.5MB limit per file via Vercel payload) 
  * Bypasses need for public ANON keys by using Service Role Key.
