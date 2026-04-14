@@ -150,7 +150,7 @@ export default async function SubcategoryDetailPage({ params }: { params: { id: 
                               Verificato il: {new Date(check.last_checked_at).toLocaleString()}
                             </div>
                          </div>
-                         <div style={{ background: \`\${statusColor}22\`, border: \`1px solid \${statusColor}\`, color: statusColor, padding: '0.5rem 1.5rem', borderRadius: '30px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', alignSelf: 'center' }}>
+                         <div style={{ background: `${statusColor}22`, border: `1px solid ${statusColor}`, color: statusColor, padding: '0.5rem 1.5rem', borderRadius: '30px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', alignSelf: 'center' }}>
                             {check.comparison_status}
                          </div>
                        </div>

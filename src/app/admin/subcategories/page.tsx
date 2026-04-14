@@ -104,7 +104,7 @@ export default async function SubcategoriesPage() {
                   )}
                   {/* Badge Status Validation */}
                   {latestCheck && (
-                    <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.8)', padding: '5px 10px', borderRadius: '20px', border: \`1px solid \${statusColor}\`, display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
+                    <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.8)', padding: '5px 10px', borderRadius: '20px', border: `1px solid ${statusColor}`, display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
                       <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusColor, display: 'inline-block' }}></span>
                       {latestCheck.comparison_status}
                     </div>
