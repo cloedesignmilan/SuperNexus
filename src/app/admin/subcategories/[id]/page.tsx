@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { UploaderBase } from "../uploader-client";
 import { AnalyzeButton } from "../analyze-btn";
+import { ValidationCheckCard } from "../ValidationCheckCard";
 
 export const dynamic = 'force-dynamic';
 
@@ -119,44 +120,9 @@ export default async function SubcategoryDetailPage({ params }: { params: { id: 
                    Nessun Check Log presente sulla rete.
                  </div>
                ) : (
-                 subcat.validation_checks.map(check => {
-                    const statusColor = check.comparison_status === 'match' ? '#10b981' : check.comparison_status === 'incorrect' ? '#ef4444' : check.comparison_status === 'partial' ? '#f59e0b' : 'gray';
-                    return (
-                     <div key={check.id} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', overflow: 'hidden' }}>
-                       <div style={{ display: 'flex' }}>
-                         {/* Split Compare Side-by-Side */}
-                         <div style={{ flex: 1, borderRight: '1px solid rgba(255,255,255,0.05)' }}>
-                           <div style={{ fontSize: '0.65rem', textAlign: 'center', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Target (Reference)</div>
-                           <div style={{ height: '200px' }}>
-                             <img src={check.reference_image_url} alt="Reference" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }} />
-                           </div>
-                         </div>
-                         <div style={{ flex: 1 }}>
-                           <div style={{ fontSize: '0.65rem', textAlign: 'center', padding: '0.5rem', background: 'rgba(0,0,0,0.2)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Output (Generato)</div>
-                           <div style={{ height: '200px' }}>
-                             <img src={check.generated_sample_image} alt="Generated" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#000' }} />
-                           </div>
-                         </div>
-                       </div>
-                       
-                       {/* Box Risultato */}
-                       <div style={{ padding: '1.25rem', background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
-                         <div style={{ flex: 1 }}>
-                            <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Review Notes</div>
-                            <p style={{ margin: 0, fontSize: '0.9rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.9)' }}>
-                              "{check.review_notes || "Nessuna nota aggiunta."}"
-                            </p>
-                            <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', marginTop: '0.75rem' }}>
-                              Verificato il: {new Date(check.last_checked_at).toLocaleString()}
-                            </div>
-                         </div>
-                         <div style={{ background: `${statusColor}22`, border: `1px solid ${statusColor}`, color: statusColor, padding: '0.5rem 1.5rem', borderRadius: '30px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', alignSelf: 'center' }}>
-                            {check.comparison_status}
-                         </div>
-                       </div>
-                     </div>
-                    );
-                 })
+                 subcat.validation_checks.map((check, index) => (
+                   <ValidationCheckCard key={check.id} check={check} index={index} />
+                 ))
                )}
              </div>
           </div>

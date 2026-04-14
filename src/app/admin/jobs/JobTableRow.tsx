@@ -1,17 +1,54 @@
 "use client"
 
 import { useState } from 'react';
+import { getSubcategoryReferences, createValidationCheck } from './actions';
 
 export default function JobTableRow({ job }: { job: any }) {
     const [isExpanded, setIsExpanded] = useState(false);
+    
+    // Modal state
+    const [promotingImg, setPromotingImg] = useState<string | null>(null);
+    const [references, setReferences] = useState<any[]>([]);
+    const [isLoadingRefs, setIsLoadingRefs] = useState(false);
+    const [selectedRef, setSelectedRef] = useState<string>('');
 
     const isTimeout = job.status === 'pending' && (new Date().getTime() - new Date(job.createdAt).getTime() > 120 * 1000);
     const displayStatus = isTimeout ? 'timeout' : job.status;
     const hasOutputs = job.images && job.images.length > 0;
     const hasInput = !!job.original_product_image_url;
     
-    // Mostriamo bottone se abbiamo input o output
     const canExpand = hasInput || hasOutputs;
+
+    const handlePromoteClick = async (imgUrl: string) => {
+        if (!job.subcategory_id) {
+            alert("No subcategory linked to this job.");
+            return;
+        }
+        setPromotingImg(imgUrl);
+        setIsLoadingRefs(true);
+        const res = await getSubcategoryReferences(job.subcategory_id);
+        if (res.success && res.references) {
+            setReferences(res.references);
+        } else {
+            alert("Errore nel caricamento delle references");
+        }
+        setIsLoadingRefs(false);
+    };
+
+    const submitPromotion = async () => {
+        if (!promotingImg || !selectedRef) return;
+        const res = await createValidationCheck({
+            subcategory_id: job.subcategory_id,
+            generated_sample_image: promotingImg,
+            reference_image_url: selectedRef
+        });
+        if (res.success) {
+            alert("Salvato in Output Check Module!");
+            setPromotingImg(null);
+        } else {
+            alert("Errore nel salvataggio: " + res.error);
+        }
+    };
 
     return (
         <>
@@ -34,7 +71,7 @@ export default function JobTableRow({ job }: { job: any }) {
                 
                 {/* STILE */}
                 <td style={{ padding: '1.25rem 1.5rem' }}>
-                    <div style={{ fontWeight: 600, color: 'var(--color-secondary)' }}>{job.subcategory?.name || 'VTON Engine Engine'}</div>
+                    <div style={{ fontWeight: 600, color: 'var(--color-secondary)' }}>{job.subcategory?.name || 'VTON Engine'}</div>
                     <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', marginTop: '2px' }}>{job.category?.name || 'Base'}</div>
                 </td>
                 
@@ -136,7 +173,6 @@ export default function JobTableRow({ job }: { job: any }) {
                                 </div>
                             )}
 
-                            {/* DIVIDER se ci sono entrambi */}
                             {hasInput && hasOutputs && (
                                 <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)', margin: '0 8px' }}></div>
                             )}
@@ -147,7 +183,7 @@ export default function JobTableRow({ job }: { job: any }) {
                                     <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#38bdf8', letterSpacing: '0.05em' }}>OUTPUT GENERATI ({job.images.length})</div>
                                     <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                         {job.images.map((img: any, idx: number) => (
-                                            <div key={img.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                                            <div key={img.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                                                 <a href={img.image_url} target="_blank" rel="noreferrer" style={{ display: 'block' }}>
                                                     <img 
                                                         src={img.image_url} 
@@ -164,12 +200,68 @@ export default function JobTableRow({ job }: { job: any }) {
                                                         onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
                                                     />
                                                 </a>
-                                                <span style={{ fontSize: '0.6rem', color: 'var(--color-text-muted)' }}>Out {idx+1}</span>
+                                                
+                                                <button 
+                                                    onClick={() => handlePromoteClick(img.image_url)}
+                                                    style={{ 
+                                                        fontSize: '0.65rem', 
+                                                        padding: '4px 8px', 
+                                                        background: 'rgba(56,189,248,0.1)', 
+                                                        color: '#38bdf8', 
+                                                        border: '1px solid rgba(56,189,248,0.3)',
+                                                        borderRadius: '6px',
+                                                        cursor: 'pointer'
+                                                    }}>
+                                                    Test Qualità
+                                                </button>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </td>
+                </tr>
+            )}
+
+            {/* MODALE DI PROMOZIONE */}
+            {promotingImg && (
+                <tr style={{ background: 'rgba(0,0,0,0.5)' }}>
+                    <td colSpan={6} style={{ padding: '2rem' }}>
+                        <div style={{ background: 'var(--color-bg)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--color-primary)', maxWidth: '600px', margin: '0 auto' }}>
+                            <h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'white' }}>Invia a Expected Output Check</h3>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
+                                Seleziona l'immagine Reference (Target) che questa generazione intendeva replicare.
+                            </p>
+                            
+                            {isLoadingRefs ? (
+                                <div>Caricamento references...</div>
+                            ) : references.length === 0 ? (
+                                <div style={{ color: '#ef4444', marginBottom: '1rem' }}>Questa sottocategoria non ha immagini reference.</div>
+                            ) : (
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '10px', marginBottom: '1.5rem', maxHeight: '200px', overflowY: 'auto' }}>
+                                    {references.map(ref => (
+                                        <div 
+                                            key={ref.id} 
+                                            onClick={() => setSelectedRef(ref.image_url)}
+                                            style={{ 
+                                                border: selectedRef === ref.image_url ? '2px solid var(--color-primary)' : '2px solid transparent', 
+                                                borderRadius: '8px', 
+                                                cursor: 'pointer',
+                                                overflow: 'hidden',
+                                                opacity: selectedRef && selectedRef !== ref.image_url ? 0.5 : 1
+                                            }}
+                                        >
+                                            <img src={ref.image_url} style={{ width: '100%', height: '80px', objectFit: 'cover' }} alt="Ref" />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+                                <button onClick={() => setPromotingImg(null)} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>Annulla</button>
+                                <button onClick={submitPromotion} disabled={!selectedRef} className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem', opacity: !selectedRef ? 0.5 : 1 }}>Conferma Salvataggio</button>
+                            </div>
                         </div>
                     </td>
                 </tr>

@@ -137,7 +137,7 @@ export async function POST(req: NextRequest) {
         }
 
         const buttons = categories.map(cat => [
-            Markup.button.callback(cat.name, `C_${cat.id}_${timestamp}`)
+            Markup.button.callback(cat.name, `C|${cat.id}|${timestamp}`)
         ]);
 
         await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, 
@@ -159,8 +159,8 @@ export async function POST(req: NextRequest) {
         }
 
         // SCELTA MACRO-CATEGORIA -> MOSTRA BUSINESS MODES
-        if (action.startsWith('C_')) {
-            const parts = action.split('_');
+        if (action.startsWith('C|')) {
+            const parts = action.split('|');
             const catId = parts[1];
             const timestamp = parts[2];
 
@@ -172,7 +172,7 @@ export async function POST(req: NextRequest) {
             }
 
             const buttons = modes.map(mode => [
-                Markup.button.callback(mode.name, `M_${mode.id}_${timestamp}`)
+                Markup.button.callback(mode.name, `M|${mode.id}|${timestamp}`)
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -183,8 +183,8 @@ export async function POST(req: NextRequest) {
         }
 
         // SCELTA BUSINESS MODE -> MOSTRA SOTTO-CATEGORIE
-        if (action.startsWith('M_')) {
-            const parts = action.split('_');
+        if (action.startsWith('M|')) {
+            const parts = action.split('|');
             const modeId = parts[1];
             const timestamp = parts[2];
 
@@ -196,7 +196,7 @@ export async function POST(req: NextRequest) {
             }
 
             const buttons = subcats.map(sub => [
-                Markup.button.callback(sub.name, `S_${sub.id}_${timestamp}`)
+                Markup.button.callback(sub.name, `S|${sub.id}|${timestamp}`)
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -207,8 +207,8 @@ export async function POST(req: NextRequest) {
         }
 
         // SCELTA SOTTO-CATEGORIA -> CHECK AMBIGUITÀ O CHIEDI QUANTITÀ
-        if (action.startsWith('S_')) {
-            const parts = action.split('_');
+        if (action.startsWith('S|')) {
+            const parts = action.split('|');
             const subId = parts[1];
             const timestamp = parts[2];
 
@@ -245,9 +245,9 @@ export async function POST(req: NextRequest) {
 
                     if (answer.includes("AMBIGUO")) {
                         const buttons = [
-                            [Markup.button.callback("Skirt / One-piece Dress 👗", `B_G_${subId}_${timestamp}`)],
-                            [Markup.button.callback("Pants / Jeans 👖", `B_P_${subId}_${timestamp}`)],
-                            [Markup.button.callback("Ignore (Invisible / Top) 👀", `B_X_${subId}_${timestamp}`)]
+                            [Markup.button.callback("Skirt / One-piece Dress 👗", `B|G|${subId}|${timestamp}`)],
+                            [Markup.button.callback("Pants / Jeans 👖", `B|P|${subId}|${timestamp}`)],
+                            [Markup.button.callback("Ignore (Invisible / Top) 👀", `B|X|${subId}|${timestamp}`)]
                         ];
                         await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
                             "💡 *Artificial Intelligence is in doubt about the shot!*\n\nHelp me avoid generating the wrong clothes: what is the lower part in this photo?", 
@@ -262,13 +262,13 @@ export async function POST(req: NextRequest) {
 
             // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_X`)],
-                [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_X`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|X`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|X`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_X`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|X`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -281,20 +281,20 @@ export async function POST(req: NextRequest) {
         }
 
         // SCELTA DISAMBIGUAZIONE -> CHIEDI QUANTITÀ
-        if (action.startsWith('B_')) {
-            const parts = action.split('_');
+        if (action.startsWith('B|')) {
+            const parts = action.split('|');
             const bottom = parts[1]; // 'G', 'P', 'X'
             const subId = parts[2];
             const timestamp = parts[3];
 
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`), Markup.button.callback("3 Photos 🔥", `Q_3_${subId}_${timestamp}_${bottom}`)],
-                [Markup.button.callback("5 Photos 🚀", `Q_5_${subId}_${timestamp}_${bottom}`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${bottom}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|${bottom}`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|${bottom}`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q_1_${subId}_${timestamp}_${bottom}`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${bottom}`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -307,8 +307,8 @@ export async function POST(req: NextRequest) {
         }
 
         // SCELTA QUANTITÀ -> AVVIA GENERAZIONE AI
-        if (action.startsWith('Q_')) {
-            const parts = action.split('_');
+        if (action.startsWith('Q|')) {
+            const parts = action.split('|');
             const qtyStr = parts[1];
             const subId = parts[2];
             const timestamp = parts[3];

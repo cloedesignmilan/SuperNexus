@@ -262,3 +262,19 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
     return { success: false, error: error.message };
   }
 }
+
+export async function updateValidationStatus(id: string, status: string) {
+  await prisma.outputValidationCheck.update({
+    where: { id },
+    data: { comparison_status: status, last_checked_at: new Date() }
+  });
+  revalidatePath("/admin/subcategories");
+}
+
+export async function updateValidationNotes(id: string, notes: string) {
+  await prisma.outputValidationCheck.update({
+    where: { id },
+    data: { review_notes: notes }
+  });
+  revalidatePath("/admin/subcategories");
+}
