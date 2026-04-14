@@ -158,16 +158,40 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         }
 
-        // SCELTA MACRO-CATEGORIA -> MOSTRA SOTTO-CATEGORIE
+        // SCELTA MACRO-CATEGORIA -> MOSTRA BUSINESS MODES
         if (action.startsWith('C_')) {
             const parts = action.split('_');
             const catId = parts[1];
             const timestamp = parts[2];
 
-            const subcats = await prisma.subcategory.findMany({ where: { category_id: catId, is_active: true }, orderBy: { sort_order: 'asc' } });
+            const modes = await prisma.businessMode.findMany({ where: { category_id: catId, is_active: true }, orderBy: { sort_order: 'asc' } });
+            
+            if (modes.length === 0) {
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "No business modes configured for this category.");
+                return NextResponse.json({ ok: true });
+            }
+
+            const buttons = modes.map(mode => [
+                Markup.button.callback(mode.name, `M_${mode.id}_${timestamp}`)
+            ]);
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                "✨ Perfect. Choose the Business Mode:", 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
+            return NextResponse.json({ ok: true });
+        }
+
+        // SCELTA BUSINESS MODE -> MOSTRA SOTTO-CATEGORIE
+        if (action.startsWith('M_')) {
+            const parts = action.split('_');
+            const modeId = parts[1];
+            const timestamp = parts[2];
+
+            const subcats = await prisma.subcategory.findMany({ where: { business_mode_id: modeId, is_active: true }, orderBy: { sort_order: 'asc' } });
             
             if (subcats.length === 0) {
-                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "No looks configured for this category.");
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "No looks configured for this mode.");
                 return NextResponse.json({ ok: true });
             }
 
@@ -176,7 +200,7 @@ export async function POST(req: NextRequest) {
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                "✨ Perfect. Choose the Style:", 
+                "✨ Excellent. Choose the Output Style:", 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
@@ -324,7 +348,7 @@ export async function POST(req: NextRequest) {
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
             const subcat = await prisma.subcategory.findUnique({
                 where: { id: subId },
-                include: { prompt_settings: true, category: true, reference_images: true }
+                include: { prompt_settings: true, business_mode: { include: { category: true } }, reference_images: true }
             });
 
             if (!subcat || !subcat.prompt_settings?.base_prompt_prefix) {
@@ -364,7 +388,8 @@ export async function POST(req: NextRequest) {
                     const newJob = await (prisma as any).generationJob.create({
                         data: {
                             user_id: existingUser.id,
-                            category_id: subcat.category_id,
+                            category_id: subcat.business_mode.category_id,
+                            business_mode_id: subcat.business_mode_id,
                             subcategory_id: subId,
                             original_product_image_url: publicUrl,
                             status: "pending",
@@ -384,11 +409,15 @@ export async function POST(req: NextRequest) {
                     const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
                     // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
-                    const masterStyle = subcat.prompt_settings!.base_prompt_prefix;
-                    // Richiesta Operativa con forzatura sulle pose
+                    const basePrompt = subcat.prompt_settings!.base_prompt_prefix;
+                    const bContext = subcat.business_context ? `\n[BUSINESS CONTEXT: ${subcat.business_context}]` : "";
+                    const mStyle = subcat.style_type ? `\n[STYLE TYPE: ${subcat.style_type}]` : "";
+                    const oGoal = subcat.output_goal ? `\n[OUTPUT GOAL: ${subcat.output_goal}]` : "";
+                    const masterStyle = `${bContext}${mStyle}${oGoal}\n${basePrompt}`.trim();
+
                     // Richiesta Operativa Estrema per "Virtual Try-On" Rigoroso
                     const userPrompt = `[CLINICAL VIRTUAL TRY-ON OPERATION] 
-L'immagine allegata NON È UNA ISPIRAZIONE, è il SOGGETTO DEL RITRATTO (${subcat.category.name}). 
+L'immagine allegata NON È UNA ISPIRAZIONE, è il SOGGETTO DEL RITRATTO (${subcat.business_mode.category.name}). 
 Devi vestire un modello o adattare l'ambiente a questa precisa veste nello STILE richiesto:
 
 [STILE RICHIESTO]: ${masterStyle}
@@ -446,7 +475,7 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                         let currentLighting = shuffledLighting[i % shuffledLighting.length];
 
                         if (varianceEnabled) {
-                            const magicalScene = getRandomSceneForSubcategory(subcat.category.slug + " " + subcat.slug);
+                            const magicalScene = getRandomSceneForSubcategory(subcat.business_mode.category.slug + " " + subcat.business_mode.slug + " " + subcat.slug);
                             currentLighting += magicalScene;
                         }
                         
