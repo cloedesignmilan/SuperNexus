@@ -73,6 +73,11 @@ export default async function SubcategoriesPage() {
                 <input type="text" name="business_context" placeholder="Es. boutique-women" className="input-glass" />
               </div>
 
+              <div>
+                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)', marginBottom: '0.5rem' }}>Note Interne (Direttive AI)</label>
+                <textarea name="internal_notes" placeholder="Es. Sfondo bianco puro #FFFFFF. Nessuna ombra netta." className="input-glass" style={{ width: '100%', minHeight: '60px', resize: 'vertical' }}></textarea>
+              </div>
+
               <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', background: 'rgba(236, 72, 153, 0.1)', color: 'var(--color-secondary)', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
                 Inizializza Stile
               </button>
@@ -145,6 +150,7 @@ export default async function SubcategoriesPage() {
                           <input type="text" name="name" defaultValue={sub.name} required className="input-glass" />
                           <input type="text" name="preview_image" defaultValue={sub.preview_image || ''} placeholder="URL Immagine Preview" className="input-glass" />
                           <input type="text" name="style_type" defaultValue={sub.style_type || ''} placeholder="Style Type" className="input-glass" />
+                          <textarea name="internal_notes" defaultValue={sub.internal_notes || ''} placeholder="Note Interne / Direttive AI" className="input-glass" style={{ minHeight: '50px', resize: 'vertical' }}></textarea>
                           <button type="submit" className="btn-action-emerald" style={{ padding: '0.5rem', fontSize: '0.75rem' }}>Salva</button>
                         </form>
                       </div>

@@ -6,9 +6,10 @@ import { ValidationCheckCard } from "../ValidationCheckCard";
 
 export const dynamic = 'force-dynamic';
 
-export default async function SubcategoryDetailPage({ params }: { params: { id: string } }) {
+export default async function SubcategoryDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const subcat = await prisma.subcategory.findUnique({
-    where: { id: params.id },
+    where: { id: resolvedParams.id },
     include: {
       business_mode: { include: { category: true } },
       reference_images: { orderBy: { image_order: 'asc' } },
