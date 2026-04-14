@@ -6,11 +6,17 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 export async function createSubcategory(formData: FormData) {
   const name = formData.get("name") as string;
-  const category_id = formData.get("category_id") as string;
-  const short_description = formData.get("short_description") as string;
-  const visual_direction_notes = formData.get("visual_direction_notes") as string;
+  const business_mode_id = formData.get("business_mode_id") as string;
+  const description = formData.get("description") as string;
+  const internal_notes = formData.get("internal_notes") as string;
+  const preview_image = formData.get("preview_image") as string;
+  const max_images_allowed = parseInt(formData.get("max_images_allowed") as string) || 10;
+  const style_type = formData.get("style_type") as string;
+  const output_goal = formData.get("output_goal") as string;
+  const business_context = formData.get("business_context") as string;
+  const visual_priority = parseInt(formData.get("visual_priority") as string) || 0;
   
-  if (!name || !category_id) throw new Error("Il nome e la macrocategoria sono obbligatori");
+  if (!name || !business_mode_id) throw new Error("Il nome e la macrocategoria (Business Mode) sono obbligatori");
 
   // Basic slugification
   let slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
@@ -24,7 +30,7 @@ export async function createSubcategory(formData: FormData) {
   }
 
   const highestPriority = await prisma.subcategory.findFirst({
-    where: { category_id },
+    where: { business_mode_id },
     orderBy: { sort_order: 'desc' }
   });
   const nextOrder = highestPriority ? highestPriority.sort_order + 1 : 0;
@@ -33,9 +39,15 @@ export async function createSubcategory(formData: FormData) {
     data: {
       name,
       slug: uniqueSlug,
-      category_id,
-      short_description,
-      visual_direction_notes,
+      business_mode_id,
+      description,
+      internal_notes,
+      preview_image,
+      max_images_allowed,
+      style_type,
+      output_goal,
+      business_context,
+      visual_priority,
       sort_order: nextOrder
     }
   });
@@ -50,16 +62,24 @@ export async function deleteSubcategory(id: string) {
 
 export async function updateSubcategory(id: string, formData: FormData) {
   const name = formData.get("name") as string;
-  const category_id = formData.get("category_id") as string;
-  const short_description = formData.get("short_description") as string;
-  const visual_direction_notes = formData.get("visual_direction_notes") as string;
-  const target_age = formData.get("target_age") as string || null;
+  const business_mode_id = formData.get("business_mode_id") as string;
+  const description = formData.get("description") as string;
+  const internal_notes = formData.get("internal_notes") as string;
+  const preview_image = formData.get("preview_image") as string;
+  const max_images_allowed = parseInt(formData.get("max_images_allowed") as string) || 10;
+  const style_type = formData.get("style_type") as string;
+  const output_goal = formData.get("output_goal") as string;
+  const business_context = formData.get("business_context") as string;
+  const visual_priority = parseInt(formData.get("visual_priority") as string) || 0;
   
-  if (!name || !category_id) throw new Error("Nome e categoria sono obbligatori");
+  if (!name || !business_mode_id) throw new Error("Nome e genitore sono obbligatori");
 
   await prisma.subcategory.update({
     where: { id },
-    data: { name, category_id, short_description, visual_direction_notes, target_age }
+    data: { 
+      name, business_mode_id, description, internal_notes, preview_image, 
+      max_images_allowed, style_type, output_goal, business_context, visual_priority 
+    }
   });
   revalidatePath("/admin/subcategories");
 }
