@@ -197,7 +197,7 @@ Il tuo prompt DEVE incorporare queste 4 dimensioni e amalgamarle in un testo des
 4. Styling Mood: Le texture dominanti (seta, pelle, materiali industriali) per supportare il mood.
 ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo narrativo ricchissimo in inglese (max 120 parole). Sii specifico, non generalizzare. L'output deve essere composto SOLO ED ESCLUSIVAMENTE dal testo per il prompt, nessuna parola introduttiva.`;
 
-  const visualDirection = subcat.visual_direction_notes ? `\nDIRETTIVA CATEGORICA DELL'AMMINISTRATORE (Deve avere assoluta priorità sull'estrazione): ${subcat.visual_direction_notes}\n` : "";
+  const visualDirection = subcat.internal_notes ? `\nDIRETTIVA CATEGORICA DELL'AMMINISTRATORE (Deve avere assoluta priorità sull'estrazione): ${subcat.internal_notes}\n` : "";
 
   const payload = {
     contents: [{

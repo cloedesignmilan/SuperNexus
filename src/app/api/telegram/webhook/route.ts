@@ -430,8 +430,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${subcat.target_age ? `8. VINCOLO DI ETA' ASSOLUTO: La persona ritratta deve obbligatoriamente dimostrare l'età descritta qui: [${subcat.target_age}]. Questo vincolo è imperativo.` : ''}
-${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA GONNA O UN VESTITO. NON GENERARE PANTALONI, LEGGINGS O SHORTS SOTTO IL CAPO SUPERIORE.' : bottomMarker === 'P' ? '9. VINCOLO PANTALONI: LA MODELLA INDOSSA ASSOLUTAMENTE DEI PANTALONI O JEANS. NON GENERARE GONNE O VESTITI INTERI.' : ''}`;
+${bottomMarker === 'G' ? '8. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA GONNA O UN VESTITO. NON GENERARE PANTALONI, LEGGINGS O SHORTS SOTTO IL CAPO SUPERIORE.' : bottomMarker === 'P' ? '8. VINCOLO PANTALONI: LA MODELLA INDOSSA ASSOLUTAMENTE DEI PANTALONI O JEANS. NON GENERARE GONNE O VESTITI INTERI.' : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
                     const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
@@ -652,7 +651,8 @@ ${bottomMarker === 'G' ? '9. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA
                     await (prisma as any).generationJob.create({
                         data: {
                             user_id: existingUser.id,
-                            category_id: subcat.category_id,
+                            category_id: subcat.business_mode.category_id,
+                            business_mode_id: subcat.business_mode_id,
                             subcategory_id: subId,
                             original_product_image_url: publicUrl,
                             status: "completed",

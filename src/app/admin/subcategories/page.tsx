@@ -165,8 +165,9 @@ export default async function SubcategoriesPage() {
 
                 </div>
               </div>
-            )})}
-          )}
+            );
+          })
+        )}
         </div>
       </div>
     </div>
