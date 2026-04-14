@@ -47,43 +47,85 @@ model Category {
   name        String
   slug        String   @unique
   description String?  @db.Text
+  cover_image String?
   sort_order  Int      @default(0)
   is_active   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  user          User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  business_modes BusinessMode[]
+  jobs           GenerationJob[]
+}
+
+model BusinessMode {
+  id                  String   @id @default(uuid())
+  category_id         String
+  name                String
+  slug                String   @unique
+  description         String?  @db.Text
+  cover_image         String?
+  default_image_count Int      @default(4)
+  sort_order          Int      @default(0)
+  is_active           Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  category      Category        @relation(fields: [category_id], references: [id], onDelete: Cascade)
   subcategories Subcategory[]
   jobs          GenerationJob[]
 }
 
 model Subcategory {
   id                     String   @id @default(uuid())
-  category_id            String
+  business_mode_id       String
   name                   String
   slug                   String   @unique
-  short_description      String?  @db.Text
-  visual_direction_notes String?  @db.Text
-  target_age             String?
+  description            String?  @db.Text
+  preview_image          String?
+  max_images_allowed     Int      @default(10)
+  style_type             String?
+  output_goal            String?
+  business_context       String?
+  visual_priority        Int      @default(0)
+  internal_notes         String?  @db.Text
   sort_order             Int      @default(0)
   is_active              Boolean  @default(true)
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
-  category         Category                    @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  business_mode    BusinessMode                @relation(fields: [business_mode_id], references: [id], onDelete: Cascade)
   reference_images SubcategoryReferenceImage[]
   prompt_settings  PromptTemplateSettings?
   jobs             GenerationJob[]
+  validation_checks OutputValidationCheck[]
 }
 
 model SubcategoryReferenceImage {
   id             String   @id @default(uuid())
   subcategory_id String
   image_url      String
+  title          String?
+  caption        String?  @db.Text
   storage_path   String?
   image_order    Int      @default(0)
-  alt_label      String?
+  is_active      Boolean  @default(true)
   createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
+}
+
+model OutputValidationCheck {
+  id                       String   @id @default(uuid())
+  subcategory_id           String
+  reference_image_url      String
+  generated_sample_image   String
+  comparison_status        String   @default("pending") // match, partial, incorrect
+  review_notes             String?  @db.Text
+  last_checked_at          DateTime @default(now())
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 
   subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
 }
@@ -105,6 +147,7 @@ model GenerationJob {
   id                            String   @id @default(uuid())
   user_id                       String
   category_id                   String
+  business_mode_id              String
   subcategory_id                String
   original_product_image_url    String
   original_product_storage_path String?
@@ -120,10 +163,11 @@ model GenerationJob {
   createdAt                     DateTime @default(now())
   updatedAt                     DateTime @updatedAt
 
-  user        User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  category    Category    @relation(fields: [category_id], references: [id], onDelete: Cascade)
-  subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
-  images      JobImage[]
+  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  category     Category     @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  business_mode BusinessMode @relation(fields: [business_mode_id], references: [id], onDelete: Cascade)
+  subcategory  Subcategory  @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
+  images       JobImage[]
 }
 
 model JobImage {
