@@ -11,7 +11,9 @@ export async function GET() {
           include: {
             subcategories: {
               include: {
-                prompt_settings: true
+                variations: {
+                  orderBy: { sort_order: 'asc' }
+                }
               }
             }
           }
@@ -20,10 +22,11 @@ export async function GET() {
     });
 
     const headers = [
-      'Category_ID', 'Category_Name', 'Category_Slug', 
-      'BusinessMode_ID', 'BusinessMode_Name', 'BusinessMode_Slug',
-      'Subcategory_ID', 'Subcategory_Name', 'Subcategory_Slug',
-      'Output_Language', 'Base_Prompt_Prefix', 'Product_Integrity_Rules', 'Negative_Prompt'
+      'Category_Slug', 'Category_Name',
+      'BusinessMode_Slug', 'BusinessMode_Name',
+      'Subcategory_Slug', 'Subcategory_Name',
+      'Output_Language', 'Base_Prompt_Prefix', 'Product_Integrity_Rules', 'Negative_Prompt',
+      'Variation_Code', 'Variation_Name', 'Variation_Prompt', 'Variation_Sort_Order'
     ];
 
     const rows: string[][] = [];
@@ -31,9 +34,10 @@ export async function GET() {
     for (const cat of categories) {
       if (cat.business_modes.length === 0) {
         rows.push([
-          cat.id, cat.name, cat.slug,
-          '', '', '',
-          '', '', '',
+          cat.slug, cat.name,
+          '', '',
+          '', '',
+          '', '', '', '',
           '', '', '', ''
         ]);
       }
@@ -41,24 +45,44 @@ export async function GET() {
       for (const bm of cat.business_modes) {
         if (bm.subcategories.length === 0) {
            rows.push([
-            cat.id, cat.name, cat.slug,
-            bm.id, bm.name, bm.slug,
-            '', '', '',
+            cat.slug, cat.name,
+            bm.slug, bm.name,
+            '', '',
+            '', '', '', '',
             '', '', '', ''
           ]);
         }
 
         for (const sub of bm.subcategories) {
-          const prompt = sub.prompt_settings;
-          rows.push([
-            cat.id, cat.name, cat.slug,
-            bm.id, bm.name, bm.slug,
-            sub.id, sub.name, sub.slug,
-            prompt?.output_language || 'it',
-            prompt?.base_prompt_prefix || '',
-            prompt?.product_integrity_rules || '',
-            prompt?.negative_prompt || ''
-          ]);
+          if (sub.variations.length === 0) {
+             // Subcategory exists but no variations
+             rows.push([
+              cat.slug, cat.name,
+              bm.slug, bm.name,
+              sub.slug, sub.name,
+              sub.output_language || 'it',
+              sub.base_prompt_prefix || '',
+              sub.product_integrity_rules || '',
+              sub.negative_prompt || '',
+              '', '', '', ''
+            ]);
+          } else {
+             for (const variation of sub.variations) {
+               rows.push([
+                cat.slug, cat.name,
+                bm.slug, bm.name,
+                sub.slug, sub.name,
+                sub.output_language || 'it',
+                sub.base_prompt_prefix || '',
+                sub.product_integrity_rules || '',
+                sub.negative_prompt || '',
+                variation.variation_code || '',
+                variation.variation_name || '',
+                variation.variation_prompt || '',
+                variation.sort_order.toString()
+               ]);
+             }
+          }
         }
       }
     }

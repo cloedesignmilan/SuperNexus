@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     gChatId = jsonBody.chatId;
     gStoreId = jsonBody.storeId;
     
-    const { jobId, fileUrl, chatId, storeId, confirmedCategory, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = jsonBody;
+    const { jobId, fileUrl, chatId, storeId, confirmedCategory, subcategory_id, confirmedBottom, confirmedGender, confirmedScene, confirmedEnvironment, confirmedBrand, imgCount } = jsonBody;
 
     if (!jobId || !fileUrl || !storeId) {
       return NextResponse.json({ error: "jobId, fileUrl, and storeId are required" }, { status: 400 });
@@ -144,143 +144,41 @@ REGOLE AGGIUNTIVE TASSATIVE:
         garmentDetails = { description: "elegant high quality outfit", type: "outfit", color: "original" };
     }
 
-    // FASE 2: Carica Prompt Master e Scene (Nuova Architettura Modulare)
+    // FASE 2: Carica Sottocategoria e Variazioni (Nuova Architettura)
     const storeObj = await (prisma as any).store.findUnique({ where: { id: storeId } });
 
-    // --- CARICAMENTO ADMIN MODULAR PROMPT ---
-    let adminConfig: any = null;
-    try {
-        const settingsBlob = await (prisma as any).setting.findMany({
-            where: { key: { in: ['PROMPT_CONFIG_SETTINGS', 'PROMPT_CONFIG_MASTER', 'PROMPT_CONFIG_NEGATIVES', 'PROMPT_CONFIG_SCENARIOS', 'PROMPT_CONFIG_CATEGORIES'] } }
-        });
-        adminConfig = {};
-        for (const s of settingsBlob) {
-            adminConfig[s.key] = JSON.parse(s.value);
-        }
-    } catch (e) {
-        console.error("Failed to load Modular Prompt UI config, switching to DB legacy.", e);
+    // Cerca la sottocategoria passata dal frontend
+    const targetSubcategoryId = subcategory_id || confirmedCategory; // Fallback temporaneo se il front passa l'id nel campo sbagliato
+
+    const subcategoryObj = await prisma.subcategory.findUnique({
+         where: { id: targetSubcategoryId },
+         include: { variations: { where: { is_active: true }, orderBy: { sort_order: 'asc' } } }
+    });
+
+    if (!subcategoryObj) {
+         console.error(`[CRITICO] Sottocategoria non trovata nel DB: ${targetSubcategoryId}`);
+         throw new Error(`Architettura Prompt mancante per la Sottocategoria: ${targetSubcategoryId}`);
     }
 
-    const useModularBuilder = adminConfig?.PROMPT_CONFIG_SETTINGS?.use_modular_builder === true;
+    const masterPromptText = subcategoryObj.base_prompt_prefix || 'Modella fotorealistica e professionale.';
+    const negativeRulesText = subcategoryObj.negative_prompt || 'No modifiche al capo, no tagli';
+    const integrityRules = subcategoryObj.product_integrity_rules || '';
+    const categoryFocusName = subcategoryObj.name || 'Outfit';
 
-    let categoryObj = null;
-    try {
-        categoryObj = await (prisma as any).category.findUnique({
-             where: { id: confirmedCategory },
-             include: { prompt_master: true }
-        });
-    } catch(e) {
-        // Ignorato. Se l'ID non è un UUID (caso MODULAR BUILDER in cui passa un nome testo es: 'Donna'), Prisma fallisce giustamente. Il fallback modulare bypasserà il DB interamente.
-    }
-        
-    if (!useModularBuilder && (!categoryObj || !categoryObj.prompt_master)) {
-         console.error(`[CRITICO] Categoria Master non trovata nel DB: ${confirmedCategory}`);
-         throw new Error(`Architettura Prompt Master mancante per l'ID: ${confirmedCategory}`);
-    }
+    let targetScenes: string[] = [];
+    let customVariationPrompts: string[] = [];
 
-    const masterPromptText = (useModularBuilder && adminConfig?.PROMPT_CONFIG_MASTER?.is_active) 
-        ? adminConfig.PROMPT_CONFIG_MASTER.prompt_text 
-        : (categoryObj?.prompt_master?.prompt_text || 'Modella fotorealistica e professionale.');
-
-    const negativeRulesText = (useModularBuilder && adminConfig?.PROMPT_CONFIG_NEGATIVES?.is_active)
-        ? adminConfig.PROMPT_CONFIG_NEGATIVES.global_rules
-        : (categoryObj?.prompt_master?.negative_rules || 'No modifiche al capo, no tagli');
-
-    let categoryFocusName = categoryObj?.name || confirmedCategory || 'Outfit';
-    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-        const catOverride = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === categoryFocusName && c.is_active);
-        if (catOverride) {
-            categoryFocusName = catOverride.prompt_text; // Iniettiamo tutto l'override testuale al posto del nome
-        }
-    }
-
-    let targetScenes: any[] = [];
-    const count = imgCount ? parseInt(imgCount) : 3;
-
-    let customCameraAngles: any[] | null = null;
-    if (useModularBuilder && adminConfig?.PROMPT_CONFIG_CATEGORIES) {
-         const cat = adminConfig.PROMPT_CONFIG_CATEGORIES.find((c: any) => c.category_name === confirmedCategory);
-         if (cat && cat.scenarios) {
-             const sc = cat.scenarios.find((s: any) => s.button_id === confirmedEnvironment);
-             if (sc) {
-                 targetScenes = [];
-                 if (sc.scene_text) {
-                     for(let i=0; i<count; i++) {
-                         targetScenes.push(sc.scene_text);
-                     }
-                 }
-                 if (sc.camera_angles && sc.camera_angles.trim() !== '') {
-                     const parsedAngles = sc.camera_angles.split('\n').filter((l: string) => l.trim() !== '');
-                     if (parsedAngles.length > 0) {
-                         customCameraAngles = parsedAngles;
-                     }
-                 }
-             }
+    if (subcategoryObj.variations && subcategoryObj.variations.length > 0) {
+         // Uso le variazioni dal DB
+         for (const variation of subcategoryObj.variations) {
+             // Il targetScene qui è il variation_prompt
+             targetScenes.push(variation.variation_name); // Lo usiamo solo come label di log/scene (potremmo usare un campo vuoto)
+             customVariationPrompts.push(variation.variation_prompt);
          }
-    }
-
-    if (targetScenes.length === 0 && confirmedScene && confirmedScene !== 'random') {
-        const specificScene = await (prisma as any).scene.findUnique({
-             where: { id: confirmedScene }
-        });
-        if (specificScene) {
-            targetScenes = Array(count).fill(specificScene.scene_text);
-        }
-    }
-
-    if (targetScenes.length === 0) {
-        if (confirmedEnvironment === 'studio_calzature') {
-             // 4 Specific angles for strictly product shoes
-             const adminCustomPrompts = categoryObj?.prompt_master?.studio_prompts;
-             if (adminCustomPrompts && adminCustomPrompts.trim() !== '') {
-                 const lines = adminCustomPrompts.split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
-                 if (lines.length > 0) {
-                     targetScenes = lines.slice(0, count);
-                     // Riempie in caso l'admin ne abbia scritte di meno
-                     while (targetScenes.length < count) {
-                         targetScenes.push(targetScenes[targetScenes.length - 1]);
-                     }
-                 }
-             }
-
-             if (targetScenes.length === 0) {
-                 targetScenes = [
-                     "Still life product photography, pair of shoes, angled 3/4 front view, symmetrical placement, pure white studio background (#FFFFFF)",
-                     "Still life product photography, pair of shoes, straight top-down flat lay, perfectly aligned, pure white background (#FFFFFF)",
-                     "Still life product photography, pair of shoes, back heel view, centered composition, pure white background (#FFFFFF)",
-                     "Still life product photography, single shoe, side profile view, centered, pure white background (#FFFFFF)"
-                 ];
-                 while (targetScenes.length < count) {
-                     targetScenes.push(targetScenes[targetScenes.length - 1]);
-                 }
-             }
-        } else if (confirmedEnvironment === 'studio') {
-            // Hardcode di scene neutre professionali per lo studio
-             const studioScenes = [
-                 "Pure bright white cyclorama studio background, professional high-end fashion lighting.",
-                 "Soft minimalist light-grey seamless paper background, editorial studio flash.",
-                 "Elegant charcoal dark-grey studio background with dramatic chiaroscuro cinematic lighting."
-             ];
-             targetScenes = [];
-             for(let i=0; i<count; i++) {
-                 targetScenes.push(studioScenes[i % studioScenes.length]);
-             }
-        } else {
-            // Fallback Random Scena da DB (Ambientata)
-            const allScenes = await (prisma as any).scene.findMany({
-                 where: { category_id: confirmedCategory, is_active: true }
-            });
-            if (allScenes.length === 0) {
-                allScenes.push({ scene_text: "Walking in the city", title: "Default" } as any);
-            }
-            
-            const shuffledScenes = allScenes.sort(() => Math.random() - 0.5);
-            targetScenes = shuffledScenes.slice(0, count).map((s: any) => s.scene_text);
-            // Se chiedono 3 generate ma ci sono solo 2 scene, ripetiamo
-            while (targetScenes.length < count) {
-                 targetScenes.push(targetScenes[targetScenes.length - 1]);
-            }
-        }
+    } else {
+         // Fallback se la sottocategoria non ha variazioni, ne simuliamo una
+         targetScenes.push("Default Variation");
+         customVariationPrompts.push("Standard photorealistic composition.");
     }
     
     // PERSONA LOCK GENERATOR (Coerenza facciale del Batch)
@@ -346,7 +244,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
     }
 
-    let ageBracket = categoryObj?.age_range || "20-35";
+    let ageBracket = "20-35";
     let genderStr = "FEMALE";
     
     const lowerGender = confirmedGender?.toLowerCase() || '';
@@ -374,8 +272,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const results = await Promise.allSettled(
         targetScenes.map(async (sceneText: string, idx: number) => {
-            // Sfasa le chiamate di 12 secondi per spalmare il carico ed evitare 429 concurrent
-            await new Promise(r => setTimeout(r, idx * 12000));
+            // Sfasa le chiamate di 4 secondi per spalmare il carico ed evitare 429 concurrent
+            await new Promise(r => setTimeout(r, idx * 4000));
             
             totalPromptsAttempted++;
             const currentAngle = cameraAngles[idx % cameraAngles.length];
@@ -394,16 +292,25 @@ REGOLE AGGIUNTIVE TASSATIVE:
                 lighting: isShoesCategory ? undefined : currentLighting
             };
 
-            const finalPrompt = buildCreatorPrompt(
+            const variationSpecificPrompt = customVariationPrompts[idx];
+            
+            // Override with exact formula: base_prompt + variation_prompt + integrity_rules + negative_prompt
+            // Using the builder but appending the explicit logic to the end or replacing entirely.
+            // Since buildCreatorPrompt exists, we should probably append the explicit fields so we don't break JSON formatting for Gemini.
+            
+            let finalPrompt = buildCreatorPrompt(
                 inspectorData,
                 categoryFocusName,
                 modifiers,
                 masterPromptText,
-                sceneText,
+                variationSpecificPrompt, // Usiamo la variazione al posto della sceneText
                 negativeRulesText,
                 brandRule,
                 negativeBrandRule
             );
+            
+            // Forza l'integrazione di integrityRules
+            finalPrompt += `\n\nPRODUCT INTEGRITY RULES:\n${integrityRules}`;
             
             auditPrompts.push(finalPrompt);
 
@@ -600,7 +507,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
         }
  
         try {
-            const safeCategory = (categoryObj as any)?.name ? (categoryObj as any).name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
+            const safeCategory = subcategoryObj.name ? subcategoryObj.name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Categoria Sconosciuta';
             const safeBottom = confirmedBottom ? confirmedBottom.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : 'Dato non richiesto';
             
             await bot.telegram.sendMessage(chatId, `🎉 <b>PROCESSO COMPLETATO!</b>\n\n- Categoria: ${safeCategory}\n- Taglieria: ${safeBottom}\n- Immagini Rimanenti Mensili: <b>${totalRimasti}</b>${warningStrHTML}\n\nEcco le magiche scene esclusive create per te:`, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } } as any);

@@ -30,8 +30,6 @@ export async function POST(req: Request) {
 
     const rows = result.data as any[];
 
-    // Assuming a user_id for categories, we'll just pick the first admin user
-    // or we might need to get it from auth. For this script, we'll find an admin.
     const adminUser = await prisma.user.findFirst({ where: { role: 'admin' } });
     if (!adminUser) throw new Error("No admin user found to assign categories");
 
@@ -77,40 +75,69 @@ export async function POST(req: Request) {
       if (!subName) continue;
 
       const subSlug = row.Subcategory_Slug?.trim() || generateSlug(subName);
-
-      const subcategory = await prisma.subcategory.upsert({
-        where: { slug: subSlug },
-        update: { name: subName, business_mode_id: businessMode.id },
-        create: {
-          name: subName,
-          slug: subSlug,
-          business_mode_id: businessMode.id,
-          is_active: true
-        }
-      });
-
-      // 4. Upsert Prompt Settings
+      
       const outputLang = row.Output_Language?.trim() || 'it';
       const basePrompt = row.Base_Prompt_Prefix?.trim() || '';
       const integrityRules = row.Product_Integrity_Rules?.trim() || '';
       const negativePrompt = row.Negative_Prompt?.trim() || '';
 
-      await prisma.promptTemplateSettings.upsert({
-        where: { subcategory_id: subcategory.id },
-        update: {
-          output_language: outputLang,
-          base_prompt_prefix: basePrompt,
-          product_integrity_rules: integrityRules,
-          negative_prompt: negativePrompt
+      const subcategory = await prisma.subcategory.upsert({
+        where: { slug: subSlug },
+        update: { 
+            name: subName, 
+            business_mode_id: businessMode.id,
+            output_language: outputLang,
+            base_prompt_prefix: basePrompt,
+            product_integrity_rules: integrityRules,
+            negative_prompt: negativePrompt
         },
         create: {
-          subcategory_id: subcategory.id,
-          output_language: outputLang,
-          base_prompt_prefix: basePrompt,
-          product_integrity_rules: integrityRules,
-          negative_prompt: negativePrompt
+            name: subName,
+            slug: subSlug,
+            business_mode_id: businessMode.id,
+            is_active: true,
+            output_language: outputLang,
+            base_prompt_prefix: basePrompt,
+            product_integrity_rules: integrityRules,
+            negative_prompt: negativePrompt
         }
       });
+
+      // 4. Upsert Variation (if specified)
+      const varCode = row.Variation_Code?.trim();
+      if (varCode) {
+          const varName = row.Variation_Name?.trim() || varCode;
+          const varPrompt = row.Variation_Prompt?.trim() || '';
+          const varSort = parseInt(row.Variation_Sort_Order) || 0;
+
+          // Per l'upsert ci serve un identificatore unico, ma non abbiamo un field unico sul DB per Variation_Code.
+          // Troviamo la variazione usando findFirst, poi facciamo update o create.
+          const existingVar = await prisma.subcategoryVariation.findFirst({
+              where: { subcategory_id: subcategory.id, variation_code: varCode }
+          });
+
+          if (existingVar) {
+              await prisma.subcategoryVariation.update({
+                  where: { id: existingVar.id },
+                  data: {
+                      variation_name: varName,
+                      variation_prompt: varPrompt,
+                      sort_order: varSort
+                  }
+              });
+          } else {
+              await prisma.subcategoryVariation.create({
+                  data: {
+                      subcategory_id: subcategory.id,
+                      variation_code: varCode,
+                      variation_name: varName,
+                      variation_prompt: varPrompt,
+                      sort_order: varSort,
+                      is_active: true
+                  }
+              });
+          }
+      }
 
       updatedCount++;
     }

@@ -92,12 +92,19 @@ model Subcategory {
   sort_order             Int      @default(0)
   is_active              Boolean  @default(true)
   strict_reference_mode  Boolean  @default(false)
+  
+  // Campi integrati da ex PromptTemplateSettings
+  base_prompt_prefix      String?  @db.Text
+  product_integrity_rules String?  @db.Text
+  negative_prompt         String?  @db.Text
+  output_language         String   @default("it")
+
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
   business_mode    BusinessMode                @relation(fields: [business_mode_id], references: [id], onDelete: Cascade)
   reference_images SubcategoryReferenceImage[]
-  prompt_settings  PromptTemplateSettings?
+  variations       SubcategoryVariation[]
   jobs             GenerationJob[]
   validation_checks OutputValidationCheck[]
 }
@@ -131,15 +138,16 @@ model OutputValidationCheck {
   subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
 }
 
-model PromptTemplateSettings {
-  id                      String   @id @default(uuid())
-  subcategory_id          String   @unique
-  base_prompt_prefix      String?  @db.Text
-  product_integrity_rules String?  @db.Text
-  negative_prompt         String?  @db.Text
-  output_language         String   @default("it")
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
+model SubcategoryVariation {
+  id               String   @id @default(uuid())
+  subcategory_id   String
+  variation_code   String
+  variation_name   String
+  variation_prompt String   @db.Text
+  sort_order       Int      @default(0)
+  is_active        Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   subcategory Subcategory @relation(fields: [subcategory_id], references: [id], onDelete: Cascade)
 }
