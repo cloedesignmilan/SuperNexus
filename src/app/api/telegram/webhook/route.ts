@@ -227,9 +227,11 @@ export async function POST(req: NextRequest) {
 
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     const prompt = `Sei un ispettore IA pre-generazione. Analizza il capo d'abbigliamento nella foto.
-Se l'immagine è perfettamente chiara e non hai alcun dubbio sulla sua struttura (es. capisci chiaramente se è un pantalone, una gonna, un abito intero, o di che colore è), rispondi ESATTAMENTE con questo JSON: {"ask": false}
+L'obiettivo primario è capire la struttura del capo: se vedi un top/maglia/camicia tagliato a metà, DEVI OBBLIGATORIAMENTE CHIEDERTI: "sotto c'è una gonna o un pantalone?". Se l'inquadratura non lo mostra con assoluta certezza, DEVI CHIEDERE AL CLIENTE.
 
-Se invece c'è un'ambiguità CRITICA e fondamentale che ti impedirebbe di generare un'immagine corretta (es. la foto è tagliata a metà e non sai se finisce con una gonna o un pantalone, oppure il capo è un groviglio incomprensibile), sei AUTORIZZATO a fare una domanda al cliente.
+Se l'immagine è perfettamente chiara (es. vedi tutto il capo intero, oppure è palesemente solo un maglione e non c'è bisogno di gonna/pantalone, o se sai con certezza di che capo si tratta), rispondi ESATTAMENTE con questo JSON: {"ask": false}
+
+Se invece l'inquadratura è tagliata e non sai se l'abito prosegue come gonna o pantalone, oppure c'è un'altra ambiguità CRITICA, sei OBBLIGATO a fare una domanda.
 In questo caso, rispondi con un JSON di questo tipo:
 {"ask": true, "question": "La parte inferiore tagliata dalla foto è una gonna o un pantalone?", "options": ["È una gonna", "È un pantalone", "È un abito intero"]}
 
