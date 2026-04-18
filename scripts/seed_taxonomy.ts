@@ -332,6 +332,22 @@ const TAXONOMY = [
                         ]
                     }
                 ]
+            },
+            {
+                name: "Unisex (Product Focus)", slug: "shoes-unisex", sort_order: 30,
+                subcategories: [
+                    {
+                        name: "Product Clean", slug: "sh-uni-clean",
+                        base_prompt: PHOTO_STUDIO + "Focus entirely on the FOOTWEAR. The image shows the provided shoe isolated in a clean, high-end studio setting. Neutral minimalist background, perfect crisp lighting. NO human elements, NO legs, NO people. Just the product displayed beautifully like a premium e-commerce shot.",
+                        variations: [
+                            v("sh-cln-side", "Lateral Profile", "Shot straight from the side, showing the exact lateral profile of the shoe on a clean surface.", 10),
+                            v("sh-cln-45", "45 Degree Angle", "Classic e-commerce 45-degree angle shot, showing the toe box and the side.", 20),
+                            v("sh-cln-pair", "Pair Together", "Both the left and right shoe placed elegantly next to each other.", 30),
+                            v("sh-cln-top", "Top-Down View", "Looking straight down at the shoe to show the toe box and laces/design.", 40),
+                            v("sh-cln-back", "Heel Detail", "Shot from the back, showing the heel tab and rear construction.", 50)
+                        ]
+                    }
+                ]
             }
         ]
     }
