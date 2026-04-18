@@ -45,10 +45,13 @@ export function buildCreatorPrompt(
 
   // 5. MODIFIERS (Humans & Details)
   const isShoes = categoryName.toLowerCase().includes("scarpe") || categoryName.toLowerCase().includes("calzature");
+  const isMannequin = dbSceneText.toLowerCase().includes("mannequin") || dbMasterPrompt.toLowerCase().includes("mannequin") || dbSceneText.toLowerCase().includes("manichino");
   
   let mods = "SPECIFIC MODIFIERS:\n";
   if (isShoes) {
      mods += `- STRICT NEGATIVE: No humans, no legs, no feet unless naturally implied by the composition. If lifestyle, keep extremely minimal.\n`;
+  } else if (isMannequin) {
+     mods += `- STRICT NEGATIVE FOR MANNEQUIN: ABSOLUTELY NO HUMANS, NO FACES, NO BODY PARTS. The garment MUST be displayed on an invisible ghost mannequin or standalone. Do not generate women, men, or any human presence in the image.\n`;
   } else {
      mods += `- Model Description: An attractive ${modifiers.gender || 'model'} ${modifiers.pose ? modifiers.pose : 'posing naturally'}.\n`;
   }
