@@ -154,19 +154,27 @@ export async function POST(req: NextRequest) {
         // Recupera le Categorie Attive dal DB per mostrare la pulsantiera
         const categories = await prisma.category.findMany({ where: { is_active: true }, orderBy: { sort_order: 'asc' } });
         
-        if (categories.length === 0) {
-             if (loadingMsgId) await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, "No macro-category configured. Add one from the Admin panel.");
-             return NextResponse.json({ ok: true });
-        }
-
-        const buttons = categories.map(cat => [
-            // Passiamo basePrefix invece di timestamp per tracciare il mediaGroup
-            Markup.button.callback(cat.name, `C|${cat.id}|${basePrefix}`)
-        ]);
-
         const textStr = mediaGroupId 
-            ? "📸 **Outfit Coordination Registered.**\n\nI received multiple items! Choose the Category for this Look:" 
+            ? "📸 **Outfit Coordination Registered.**\n\nI received multiple items! Who is this outfit for?" 
             : "📸 **Image Archived.**\n\nThank you! Choose the Category for this item:";
+
+        let buttons;
+        if (mediaGroupId) {
+            // Fast-track per Outfit Coordination
+            buttons = [
+                [Markup.button.callback("Man 👨", `OUTFIT|MAN|${basePrefix}`)],
+                [Markup.button.callback("Woman 👩", `OUTFIT|WOMAN|${basePrefix}`)]
+            ];
+        } else {
+            // Normale flusso per immagine singola
+            if (categories.length === 0) {
+                if (loadingMsgId) await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, "No macro-category configured. Add one from the Admin panel.");
+                return NextResponse.json({ ok: true });
+            }
+            buttons = categories.map(cat => [
+                Markup.button.callback(cat.name, `C|${cat.id}|${basePrefix}`)
+            ]);
+        }
 
         if (loadingMsgId) {
             await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, textStr, { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) });
@@ -182,6 +190,31 @@ export async function POST(req: NextRequest) {
         // GESTIONE BOTTONI BLOCCATI
         if (action === 'UPSELL') {
             await bot.telegram.answerCbQuery(update.callback_query.id, "💎 Premium Feature!\n\nGenerating multiple photos at once is reserved for PRO Plans. Please subscribe on the main site to unlock this feature.", { show_alert: true });
+            return NextResponse.json({ ok: true });
+        }
+
+        // SCELTA OUTFIT GENDER -> CHIEDI QUANTITA'
+        if (action.startsWith('OUTFIT|')) {
+            const parts = action.split('|');
+            const gender = parts[1]; // MAN or WOMAN
+            const basePrefix = parts[2];
+            
+            let buttons = [
+                [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${basePrefix}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|OUTFIT_${gender}|${basePrefix}|X`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|OUTFIT_${gender}|${basePrefix}|X`)]
+            ];
+
+            if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
+                buttons = [
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${basePrefix}|X`)],
+                    [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                ];
+            }
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                `✨ Perfect. A **${gender.toLowerCase()}**'s outfit.\nHow many photos do you want to generate?`, 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
             return NextResponse.json({ ok: true });
         }
 
@@ -402,10 +435,38 @@ REGOLE TASSATIVE:
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, `⚡ *Starting AI Engine (Requested ${qty} images)... Please wait up to 40 seconds!*`, { parse_mode: 'Markdown' });
 
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
-            const subcat = await prisma.subcategory.findUnique({
-                where: { id: subId },
-                include: { variations: { orderBy: { sort_order: 'asc' } }, business_mode: { include: { category: true } }, reference_images: true }
-            });
+            let subcat: any = null;
+            let dbCatId = "fake";
+            let dbModeId = "fake";
+            
+            if (subId.startsWith('OUTFIT_')) {
+                // Generazione Multi-Immagine Diretta
+                const gender = subId.split('_')[1]; // MAN o WOMAN
+                const modelStr = gender === 'MAN' ? 'handsome, natural, extremely realistic man' : 'beautiful, natural, extremely realistic woman';
+                
+                // Recuperiamo una categoria a caso per soddisfare le foreign key del Job
+                const randomSub = await prisma.subcategory.findFirst({ include: { business_mode: { include: { category: true } } } });
+                dbCatId = randomSub?.business_mode.category_id || "fake";
+                dbModeId = randomSub?.business_mode_id || "fake";
+                
+                subcat = {
+                    id: subId,
+                    base_prompt_prefix: `Create a breathtaking, ultra-realistic fashion editorial or lifestyle shot featuring a complete OUTFIT COORDINATION. The model is a ${modelStr}. The setting, lighting, and pose must be perfectly adapted to the style of the provided clothes (e.g., streetwear in an urban setting, elegant wear in a luxury or classic setting, sportswear in an athletic setting). MAKE IT LOOK INCREDIBLY REALISTIC AND COHESIVE.`,
+                    strict_reference_mode: false,
+                    business_context: "Outfit Coordination Fashion Shoot",
+                    business_mode: { category_id: dbCatId, category: { name: 'Outfit', slug: 'outfit' }, slug: 'outfit' },
+                    business_mode_id: dbModeId,
+                    slug: 'outfit',
+                    reference_images: []
+                };
+            } else {
+                subcat = await prisma.subcategory.findUnique({
+                    where: { id: subId },
+                    include: { variations: { orderBy: { sort_order: 'asc' } }, business_mode: { include: { category: true } }, reference_images: true }
+                });
+                dbCatId = subcat?.business_mode.category_id || "fake";
+                dbModeId = subcat?.business_mode_id || "fake";
+            }
 
             if (!subcat || !subcat.base_prompt_prefix) {
                 await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Generative array not trained for this look. Activate the Vision engine from Admin first.");
@@ -451,9 +512,9 @@ REGOLE TASSATIVE:
                     const newJob = await (prisma as any).generationJob.create({
                         data: {
                             user_id: existingUser.id,
-                            category_id: subcat.business_mode.category_id,
-                            business_mode_id: subcat.business_mode_id,
-                            subcategory_id: subId,
+                            category_id: dbCatId,
+                            business_mode_id: dbModeId,
+                            subcategory_id: subId.startsWith('OUTFIT_') ? (await prisma.subcategory.findFirst())?.id || "fake" : subId,
                             original_product_image_url: firstPublicUrl,
                             status: "pending",
                             total_cost_eur: 0,
@@ -750,9 +811,9 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                     await (prisma as any).generationJob.create({
                         data: {
                             user_id: existingUser.id,
-                            category_id: subcat.business_mode.category_id,
-                            business_mode_id: subcat.business_mode_id,
-                            subcategory_id: subId,
+                            category_id: dbCatId,
+                            business_mode_id: dbModeId,
+                            subcategory_id: subId.startsWith('OUTFIT_') ? (await prisma.subcategory.findFirst())?.id || "fake" : subId,
                             original_product_image_url: firstPublicUrl,
                             status: "completed",
                             total_cost_eur: jobCost,
