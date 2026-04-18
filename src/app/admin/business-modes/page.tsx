@@ -1,10 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import { createBusinessMode, deleteBusinessMode, toggleBusinessModeStatus, updateBusinessMode } from "./actions";
 
+import Link from "next/link";
+
 export const dynamic = 'force-dynamic';
 
-export default async function BusinessModesPage() {
+export default async function BusinessModesPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const resolvedParams = await searchParams;
+  const filterCat = resolvedParams.category;
+  const filterWhere = filterCat ? { category_id: filterCat } : {};
+
   const modes = await prisma.businessMode.findMany({
+    where: filterWhere,
     orderBy: { sort_order: 'asc' },
     include: {
       category: true,
@@ -20,9 +27,19 @@ export default async function BusinessModesPage() {
 
   return (
     <div>
-      <div style={{ marginBottom: '3rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Business Modes</h1>
         <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Gestione dei contesti di business (es. Boutique, Brand eCommerce, Negozio Vetrina).</p>
+      </div>
+
+      {/* FILTRI MACROCATEGORIA */}
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
+        <Link href="?" style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: !filterCat ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: !filterCat ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: 600 }}>Tutte</Link>
+        {categories.map(c => (
+          <Link key={c.id} href={`?category=${c.id}`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterCat === c.id ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: filterCat === c.id ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterCat === c.id ? 600 : 400 }}>
+            {c.name}
+          </Link>
+        ))}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) minmax(0, 2fr)', gap: '2rem' }}>
