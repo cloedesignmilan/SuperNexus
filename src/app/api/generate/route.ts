@@ -38,7 +38,7 @@ Devi utilizzare ESCLUSIVAMENTE i valori consentiti indicati negli enum. Non inve
 REGOLE AGGIUNTIVE TASSATIVE:
 - IN 'suggested_ui_options': una categoria non può mai comparire sia in recommended_categories che in disabled_categories. recommended_categories può avere max 3 elementi. disabled_categories può avere max 4 elementi.
 - IN 'ambiguity_flags': se 'requires_user_clarification' è false OPPURE 'clarification_type' è "none", 'suggested_question' in 'suggested_ui_options' DEVE ESSERE null. Se è true, 'suggested_question' deve essere una domanda breve coerente (in italiano).
-- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-150 parole. Sii MANIACALE E CHIRURGICO. Se analizzi giacche, abiti da sposo o cerimonia, DEVI specificare i rever/baveri (peak lapels/punte, notch, shawl), tipo di abbottonatura (doppiopetto, monopetto, numero bottoni), tasche, cinture e taglio. DEVI obbligatoriamente estrarre e descrivere al millimetro ogni singolo accessorio per il collo o taschino (cravatte esatte, maglia/raso, foulard, papillon, pochette). Includi SOLO descrizioni fisiche concrete, niente "This is an image of...".
+- IN 'preservation_constraints.critical_details': Scrivi IN INGLESE. Usa MASSIMO 80-150 parole. Sii MANIACALE E CHIRURGICO. Se analizzi giacche, abiti da sposo o cerimonia, DEVI specificare i rever/baveri (peak lapels/punte, notch, shawl), tipo di abbottonatura (doppiopetto, monopetto, numero bottoni), tasche, cinture e taglio. DEVI obbligatoriamente estrarre e descrivere al millimetro ogni singolo accessorio per il collo o taschino (cravatte esatte, maglia/raso, foulard, papillon, pochette). SE ANALIZZI SCARPE/CALZATURE: Sii IPER-DETTAGLIATO. Descrivi l'altezza esatta della suola, il materiale esatto (pelle liscia, camoscio, tela, vernice), lacci o chiusure, loghi visibili, cuciture laterali, texture, forma della punta (squadrata, arrotondata, a punta) e spessore/forma del tacco. Includi SOLO descrizioni fisiche concrete, niente "This is an image of...".
 
 {
   "technical_validation": {
@@ -167,6 +167,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     let targetScenes: string[] = [];
     let customVariationPrompts: string[] = [];
+    let targetVariationCodes: string[] = [];
 
     if (subcategoryObj.variations && subcategoryObj.variations.length > 0) {
          // Uso le variazioni dal DB
@@ -174,11 +175,13 @@ REGOLE AGGIUNTIVE TASSATIVE:
              // Il targetScene qui è il variation_prompt
              targetScenes.push(variation.variation_name); // Lo usiamo solo come label di log/scene (potremmo usare un campo vuoto)
              customVariationPrompts.push(variation.variation_prompt);
+             targetVariationCodes.push(variation.variation_code);
          }
     } else {
          // Fallback se la sottocategoria non ha variazioni, ne simuliamo una
          targetScenes.push("Default Variation");
          customVariationPrompts.push("Standard photorealistic composition.");
+         targetVariationCodes.push("default_var");
     }
     
     // PERSONA LOCK GENERATOR (Coerenza facciale del Batch)
@@ -315,8 +318,16 @@ REGOLE AGGIUNTIVE TASSATIVE:
             finalPrompt += `\n\nPRODUCT INTEGRITY RULES:\n${integrityRules}`;
             
             auditPrompts.push(finalPrompt);
+            const currentVarCode = targetVariationCodes[idx] || `var_${idx+1}`;
 
-            console.log(`[GENERATION][Scene ${idx+1}] Invio prompt a Gemini... Prompt preview: ${finalPrompt.slice(0, 100)}...`);
+            console.log(`\n=============================================================`);
+            console.log(`[GENERATION START] Variation Code: ${currentVarCode}`);
+            console.log(`[PROMPT ASSEMBLY]:`);
+            console.log(`BASE: ${masterPromptText}`);
+            console.log(`VARIATION: ${variationSpecificPrompt}`);
+            console.log(`INTEGRITY: ${integrityRules}`);
+            console.log(`NEGATIVE: ${negativeRulesText}`);
+            console.log(`=============================================================\n`);
             const timestampStart = Date.now();
             let generated;
             let success = false;
