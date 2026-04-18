@@ -14,7 +14,7 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
     include: {
       business_mode: { include: { category: true } },
       reference_images: { orderBy: { image_order: 'asc' } },
-      prompt_settings: true,
+      variations: true,
       validation_checks: { orderBy: { last_checked_at: 'desc' }, include: { subcategory: true } }
     }
   });
@@ -73,13 +73,13 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
 
           <div className="admin-card">
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>Semaforo Addestramento AI</h3>
-            {subcat.reference_images.length > 0 && !subcat.prompt_settings?.base_prompt_prefix && (
+            {subcat.reference_images.length > 0 && !subcat.base_prompt_prefix && (
                 <div style={{ padding: '1rem', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.85rem', color: '#fbbf24', fontWeight: 500 }}>⚠️ Array generativo non addestrato.</span>
                   <AnalyzeButton subcategoryId={subcat.id} />
                 </div>
             )}
-            {subcat.prompt_settings?.base_prompt_prefix && (
+            {subcat.base_prompt_prefix && (
                 <div style={{ padding: '1rem', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{ fontSize: '0.85rem', color: '#34d399', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -89,7 +89,7 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
                       <AnalyzeButton subcategoryId={subcat.id} isUpdate={true} />
                   </div>
                   <p style={{ fontSize: '0.8rem', color: 'rgba(52,211,153,0.8)', fontStyle: 'italic', borderLeft: '2px solid rgba(52,211,153,0.5)', paddingLeft: '0.5rem', margin: '0.5rem 0 0 0', lineHeight: 1.5, maxHeight: '100px', overflowY: 'auto' }}>
-                    "{subcat.prompt_settings.base_prompt_prefix}"
+                    "{subcat.base_prompt_prefix}"
                   </p>
                 </div>
             )}

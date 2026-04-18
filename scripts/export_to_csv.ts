@@ -14,7 +14,7 @@ async function main() {
         include: {
           subcategories: {
             include: {
-              prompt_settings: true
+              variations: true
             }
           }
         }
@@ -61,15 +61,15 @@ async function main() {
       }
 
       for (const sub of bm.subcategories) {
-        const prompt = sub.prompt_settings;
+        const varPrompt = sub.variations?.[0]?.variation_prompt || '';
         rows.push([
           cat.id, cat.name, cat.slug,
           bm.id, bm.name, bm.slug,
           sub.id, sub.name, sub.slug,
-          prompt?.output_language || 'it',
-          prompt?.base_prompt_prefix || '',
-          prompt?.product_integrity_rules || '',
-          prompt?.negative_prompt || ''
+          sub.output_language || 'it',
+          sub.base_prompt_prefix || '',
+          sub.product_integrity_rules || '',
+          sub.negative_prompt || ''
         ]);
       }
     }

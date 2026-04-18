@@ -251,14 +251,10 @@ ATTENZIONE MASSIMA: Non fare una lista puntata. Genera UN UNICO blocco di testo 
        return { success: false, error: `Generazione Vuota. FinishReason: ${aiData.candidates[0].finishReason}` };
     }
 
-    // 3. Salva nel PromptTemplateSettings
-    await prisma.promptTemplateSettings.upsert({
-      where: { subcategory_id: subcategoryId },
-      create: {
-        subcategory_id: subcategoryId,
-        base_prompt_prefix: generatedPrompt,
-      },
-      update: {
+    // 3. Salva nella Subcategory
+    await prisma.subcategory.update({
+      where: { id: subcategoryId },
+      data: {
         base_prompt_prefix: generatedPrompt
       }
     });

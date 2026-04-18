@@ -213,6 +213,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
 
     const isShoesCategory = categoryFocusName.toLowerCase().includes('scarpe') || categoryFocusName.toLowerCase().includes('calzature');
 
+    let customCameraAngles: any[] | null = null;
+
     if (customCameraAngles) {
         cameraAngles = customCameraAngles;
     } else if (isShoesCategory) {
@@ -410,10 +412,6 @@ REGOLE AGGIUNTIVE TASSATIVE:
     metaMerge.total_prompts_attempted = totalPromptsAttempted;
     metaMerge.total_images_generated = generatedUrls.length;
     metaMerge.total_images_saved = generatedUrls.length;
-
-    if (useModularBuilder) {
-        metaMerge.adminConfigSnapshot = adminConfig;
-    }
 
     // HARD FAIL CONTROL
     if (generatedUrls.length === 0) {

@@ -6,29 +6,47 @@ import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
-export default async function SubcategoriesPage() {
+export default async function SubcategoriesPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const resolvedParams = await searchParams;
+  const filterCat = resolvedParams.category;
+
+  const categories = await prisma.category.findMany({ orderBy: { sort_order: 'asc' } });
+
   const modes = await prisma.businessMode.findMany({
     orderBy: { sort_order: 'asc' },
     include: { category: true }
   });
 
+  const filterWhere = filterCat ? { business_mode: { category_id: filterCat } } : {};
+
   const subcats = await prisma.subcategory.findMany({
+    where: filterWhere,
     orderBy: [{ business_mode_id: 'asc' }, { sort_order: 'asc' }],
     include: {
       business_mode: { include: { category: true } },
       reference_images: { orderBy: { image_order: 'asc' } },
-      prompt_settings: true,
+      variations: true,
       validation_checks: { orderBy: { last_checked_at: 'desc' }, take: 1 }
     }
   });
 
   return (
     <div style={{ paddingBottom: '5rem' }}>
-      <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Sottocategorie (Variazioni)</h1>
           <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Gestione dei Look finali e validazione del sistema fotografico.</p>
         </div>
+      </div>
+
+      {/* FILTRI MACROCATEGORIA */}
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
+        <Link href="?" style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: !filterCat ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: !filterCat ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: 600 }}>Tutte</Link>
+        {categories.map(c => (
+          <Link key={c.id} href={`?category=${c.id}`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterCat === c.id ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: filterCat === c.id ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterCat === c.id ? 600 : 400 }}>
+            {c.name}
+          </Link>
+        ))}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(330px, 1fr) minmax(0, 2fr)', gap: '2rem' }}>

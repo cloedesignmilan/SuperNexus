@@ -348,10 +348,10 @@ export async function POST(req: NextRequest) {
             // Recupera la Sottocategoria, le sue Impostazioni (Prompt)
             const subcat = await prisma.subcategory.findUnique({
                 where: { id: subId },
-                include: { prompt_settings: true, business_mode: { include: { category: true } }, reference_images: true }
+                include: { variations: { orderBy: { sort_order: 'asc' } }, business_mode: { include: { category: true } }, reference_images: true }
             });
 
-            if (!subcat || !subcat.prompt_settings?.base_prompt_prefix) {
+            if (!subcat || !subcat.base_prompt_prefix) {
                 await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Generative array not trained for this look. Activate the Vision engine from Admin first.");
                 return NextResponse.json({ ok: true });
             }
@@ -409,7 +409,7 @@ export async function POST(req: NextRequest) {
                     const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
                     // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
-                    const basePrompt = subcat.prompt_settings!.base_prompt_prefix;
+                    const basePrompt = subcat.base_prompt_prefix;
                     const bContext = subcat.business_context ? `\n[BUSINESS CONTEXT: ${subcat.business_context}]` : "";
                     const mStyle = subcat.style_type ? `\n[STYLE TYPE: ${subcat.style_type}]` : "";
                     const oGoal = subcat.output_goal ? `\n[OUTPUT GOAL: ${subcat.output_goal}]` : "";

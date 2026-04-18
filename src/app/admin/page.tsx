@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
   const jobsCount = await prisma.generationJob.count();
   const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
   const totalImagesCount = totalImagesAggr._sum.results_count || 0;
-  const totalVisionCount = await prisma.promptTemplateSettings.count();
+  const totalVisionCount = await prisma.subcategory.count({ where: { base_prompt_prefix: { not: null } } });
 
   // Calcoli odierni
   const today = new Date();
@@ -21,7 +21,7 @@ export default async function AdminDashboard() {
      _sum: { results_count: true }
   });
   const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
-  const visionTodayCount = await prisma.promptTemplateSettings.count({ where: { updatedAt: { gte: today } } });
+  const visionTodayCount = await prisma.subcategory.count({ where: { updatedAt: { gte: today }, base_prompt_prefix: { not: null } } });
 
   // Calcolo Spesa API Reale in base al DB
   const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
