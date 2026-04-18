@@ -105,15 +105,33 @@ export async function POST(req: NextRequest) {
         // L'utente ha mandato una foto!
         const photo = update.message.photo[update.message.photo.length - 1]; // Risoluzione più alta
         
-        const loadingMsg = await bot.telegram.sendMessage(globalChatId, "⏳ *Downloading image...*", { parse_mode: 'Markdown' });
+        const mediaGroupId = update.message.media_group_id || null;
+        const timestamp = Date.now().toString();
+        const basePrefix = mediaGroupId ? `${globalChatId}_mg_${mediaGroupId}` : `${globalChatId}_single_${timestamp}`;
+        const fileName = mediaGroupId ? `${basePrefix}_${timestamp}.jpg` : `${basePrefix}.jpg`;
 
-        // Scarica e Carica su Supabase
+        let shouldSendMenu = true;
+        let loadingMsgId: number | null = null;
+
+        if (mediaGroupId) {
+            try {
+                await (prisma as any).setting.create({ data: { key: `lock_mg_${mediaGroupId}`, value: 'locked' } });
+                const m = await bot.telegram.sendMessage(globalChatId, "⏳ *Downloading Outfit Coordination Images...*", { parse_mode: 'Markdown' });
+                loadingMsgId = m.message_id;
+                // Aspetta 3 secondi per dare il tempo alle altre Lambda di caricare i restanti file del gruppo
+                await new Promise(r => setTimeout(r, 3000));
+            } catch(e) {
+                // Lock occupato, io sono l'immagine 2 o 3. Carico ed esco.
+                shouldSendMenu = false;
+            }
+        } else {
+            const m = await bot.telegram.sendMessage(globalChatId, "⏳ *Downloading image...*", { parse_mode: 'Markdown' });
+            loadingMsgId = m.message_id;
+        }
+
         const fileUrl = await bot.telegram.getFileLink(photo.file_id);
         const response = await fetch(fileUrl.href);
         const arrayBuffer = await response.arrayBuffer();
-        
-        const timestamp = Date.now().toString();
-        const fileName = `${globalChatId}_${timestamp}.jpg`;
 
         const { data, error } = await supabase.storage
             .from('telegram-uploads')
@@ -124,7 +142,12 @@ export async function POST(req: NextRequest) {
 
         if (error) {
             console.error("Supabase Upload Error:", error);
-            await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "❌ Error uploading image. Create the bucket `telegram-uploads` on Supabase!");
+            if (loadingMsgId) await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, "❌ Error uploading image.");
+            return NextResponse.json({ ok: true });
+        }
+
+        if (!shouldSendMenu) {
+            // Sono un processo worker per la seconda immagine dell'outfit. Muoio qui.
             return NextResponse.json({ ok: true });
         }
 
@@ -132,18 +155,22 @@ export async function POST(req: NextRequest) {
         const categories = await prisma.category.findMany({ where: { is_active: true }, orderBy: { sort_order: 'asc' } });
         
         if (categories.length === 0) {
-             await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, "No macro-category configured. Add one from the Admin panel.");
+             if (loadingMsgId) await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, "No macro-category configured. Add one from the Admin panel.");
              return NextResponse.json({ ok: true });
         }
 
         const buttons = categories.map(cat => [
-            Markup.button.callback(cat.name, `C|${cat.id}|${timestamp}`)
+            // Passiamo basePrefix invece di timestamp per tracciare il mediaGroup
+            Markup.button.callback(cat.name, `C|${cat.id}|${basePrefix}`)
         ]);
 
-        await bot.telegram.editMessageText(globalChatId, loadingMsg.message_id, undefined, 
-            "📸 **Image Archived.**\n\nThank you! Choose the Category for this item:", 
-            { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
-        );
+        const textStr = mediaGroupId 
+            ? "📸 **Outfit Coordination Registered.**\n\nI received multiple items! Choose the Category for this Look:" 
+            : "📸 **Image Archived.**\n\nThank you! Choose the Category for this item:";
+
+        if (loadingMsgId) {
+            await bot.telegram.editMessageText(globalChatId, loadingMsgId, undefined, textStr, { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) });
+        }
         return NextResponse.json({ ok: true });
     }
 
@@ -215,25 +242,39 @@ export async function POST(req: NextRequest) {
             // Feedback immediato loading e pre-analisi IA
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analyzing garment geometry...*", { parse_mode: "Markdown" });
 
-            const fileName = `${globalChatId}_${timestamp}.jpg`;
-            const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
+            // Recupera TUTTE le immagini se è un Media Group
+            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: timestamp });
+            if (!files || files.length === 0) {
+                 await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Impossibile ritrovare l'immagine nel cloud.");
+                 return NextResponse.json({ ok: true });
+            }
+            
+            const isOutfit = files.length > 1;
+            const publicUrls = files.map(f => supabase.storage.from('telegram-uploads').getPublicUrl(f.name).data.publicUrl);
+            const firstPublicUrl = publicUrls[0]; // Usata come fallback/original
+
+            let aiInputParts: any[] = [];
+            for (const pUrl of publicUrls) {
+                try {
+                    const r = await fetch(pUrl);
+                    if (r.ok) {
+                        const aBuf = await r.arrayBuffer();
+                        aiInputParts.push({ inlineData: { data: Buffer.from(aBuf).toString('base64'), mimeType: r.headers.get('content-type') || 'image/jpeg' } });
+                    }
+                } catch(e) {}
+            }
 
             try {
-                const response = await fetch(publicUrl);
-                if (response.ok) {
-                    const arrayBuffer = await response.arrayBuffer();
-                    const base64 = Buffer.from(arrayBuffer).toString('base64');
-                    const mimeType = response.headers.get('content-type') || 'image/jpeg';
-
+                if (aiInputParts.length > 0) {
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-                    const prompt = `Sei un ispettore IA pre-generazione. Analizza il capo d'abbigliamento nella foto.
-L'obiettivo primario è capire la struttura del capo: se vedi un top/maglia/camicia tagliato a metà, DEVI OBBLIGATORIAMENTE CHIEDERTI: "sotto c'è una gonna o un pantalone?". Se l'inquadratura non lo mostra con assoluta certezza, DEVI CHIEDERE AL CLIENTE.
+                    const prompt = `Sei un ispettore IA pre-generazione. Analizza il/i capo/i d'abbigliamento forniti.
+L'obiettivo primario è capire la struttura: se ci sono più capi forniti insieme (Outfit), controlla che formino un look sensato. Se invece è fornito un singolo top/maglia tagliato a metà, DEVI OBBLIGATORIAMENTE CHIEDERTI: "sotto c'è una gonna o un pantalone?". 
 
-Se l'immagine è perfettamente chiara (es. vedi tutto il capo intero, oppure è palesemente solo un maglione e non c'è bisogno di gonna/pantalone, o se sai con certezza di che capo si tratta), rispondi ESATTAMENTE con questo JSON: {"ask": false}
+Se l'immagine è perfettamente chiara (es. vedi tutto il capo intero, oppure sono 2 capi che formano chiaramente un outfit, o se sai con certezza come comportarti), rispondi ESATTAMENTE con questo JSON: {"ask": false}
 
-Se invece l'inquadratura è tagliata e non sai se l'abito prosegue come gonna o pantalone, oppure c'è un'altra ambiguità CRITICA, sei OBBLIGATO a fare una domanda.
+Se invece c'è un'ambiguità CRITICA, sei OBBLIGATO a fare una domanda.
 In questo caso, rispondi con un JSON di questo tipo:
-{"ask": true, "question": "La parte inferiore tagliata dalla foto è una gonna o un pantalone?", "options": ["È una gonna", "È un pantalone", "È un abito intero"]}
+{"ask": true, "question": "La parte inferiore tagliata dalla foto è una gonna o un pantalone?", "options": ["È una gonna", "È un pantalone"]}
 
 REGOLE TASSATIVE:
 1. Restituisci SOLO un JSON valido, senza testo fuori.
@@ -245,10 +286,7 @@ REGOLE TASSATIVE:
                        contents: [
                           {
                               role: 'user',
-                              parts: [
-                                  { text: prompt },
-                                  { inlineData: { data: base64, mimeType } }
-                              ]
+                              parts: [ { text: prompt }, ...aiInputParts ]
                           }
                        ]
                     });
@@ -374,9 +412,16 @@ REGOLE TASSATIVE:
                 return NextResponse.json({ ok: true });
             }
 
-            // Ottieni l'URL Pubblico dell'immagine caricata
-            const fileName = `${globalChatId}_${timestamp}.jpg`;
-            const { data: { publicUrl } } = supabase.storage.from('telegram-uploads').getPublicUrl(fileName);
+            // Recupera le immagini per l'Outfit o l'immagine singola
+            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: timestamp });
+            const publicUrls = files?.map(f => supabase.storage.from('telegram-uploads').getPublicUrl(f.name).data.publicUrl) || [];
+            if (publicUrls.length === 0) {
+                await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Immagine originale scaduta dal cloud.");
+                return NextResponse.json({ ok: true });
+            }
+            
+            const firstPublicUrl = publicUrls[0];
+            const isOutfit = publicUrls.length > 1;
 
             const referenceImages = subcat.reference_images || [];
             let referenceBuffers: { data: string, mimeType: string }[] = [];
@@ -409,7 +454,7 @@ REGOLE TASSATIVE:
                             category_id: subcat.business_mode.category_id,
                             business_mode_id: subcat.business_mode_id,
                             subcategory_id: subId,
-                            original_product_image_url: publicUrl,
+                            original_product_image_url: firstPublicUrl,
                             status: "pending",
                             total_cost_eur: 0,
                             results_count: 0
@@ -420,11 +465,19 @@ REGOLE TASSATIVE:
 
                 try {
                     // CHIAMATA A GEMINI ================================
-                    const response = await fetch(publicUrl);
-                    if (!response.ok) throw new Error("Impossibile recuperare l'immagine caricata dal bucket.");
-                    const arrayBuffer = await response.arrayBuffer();
-                    const base64 = Buffer.from(arrayBuffer).toString('base64');
-                    const mimeType = response.headers.get('content-type') || 'image/jpeg';
+                    let base64OutfitParts: any[] = [];
+                    for (const url of publicUrls) {
+                        try {
+                            const res = await fetch(url);
+                            if (res.ok) {
+                                const ab = await res.arrayBuffer();
+                                base64OutfitParts.push({
+                                    inlineData: { data: Buffer.from(ab).toString('base64'), mimeType: res.headers.get('content-type') || 'image/jpeg' }
+                                });
+                            }
+                        } catch(e) {}
+                    }
+                    if (base64OutfitParts.length === 0) throw new Error("Impossibile scaricare le immagini input.");
 
                     // Prompt Master (Istruzione di Stile Pre-calcolata + Contesto)
                     const basePrompt = subcat.base_prompt_prefix;
@@ -448,7 +501,8 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : ''}`;
+${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : ''}
+${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
                     const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
@@ -503,8 +557,14 @@ ${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was aske
                         if (subcat.strict_reference_mode) {
                             variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
                             
-                            aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
-                            aiParts.push({ inlineData: { data: base64, mimeType } });
+                            if (isOutfit) {
+                                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                                aiParts.push(...base64OutfitParts);
+                            } else {
+                                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                                aiParts.push(...base64OutfitParts);
+                            }
+                            
                             if (currentRefInline) {
                                 aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
                                 aiParts.push({ inlineData: currentRefInline });
@@ -518,8 +578,14 @@ ${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was aske
                             
                             variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING/SCENE SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO e USA un NEGATIVE PROMPT SERVER SIDE per sfavorire: "(plastic skin:1.5), perfect symmetry, heavily airbrushed, fake AI look".]`;
                             
-                            aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
-                            aiParts.push({ inlineData: { data: base64, mimeType } });
+                            if (isOutfit) {
+                                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                                aiParts.push(...base64OutfitParts);
+                            } else {
+                                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                                aiParts.push(...base64OutfitParts);
+                            }
+
                             if (currentRefInline) {
                                 aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting, pose, and background aesthetic. DO NOT copy the clothes from this image):" });
                                 aiParts.push({ inlineData: currentRefInline });
@@ -687,7 +753,7 @@ ${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was aske
                             category_id: subcat.business_mode.category_id,
                             business_mode_id: subcat.business_mode_id,
                             subcategory_id: subId,
-                            original_product_image_url: publicUrl,
+                            original_product_image_url: firstPublicUrl,
                             status: "completed",
                             total_cost_eur: jobCost,
                             results_count: generatedBase64s.length,
