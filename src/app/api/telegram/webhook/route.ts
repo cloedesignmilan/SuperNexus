@@ -107,6 +107,8 @@ export async function POST(req: NextRequest) {
         
         const mediaGroupId = update.message.media_group_id || null;
         const timestamp = Date.now().toString();
+        // Short key per restare sotto i 64 byte di Telegram callback_data
+        const callbackKey = mediaGroupId ? `M_${mediaGroupId}` : `S_${timestamp}`;
         const basePrefix = mediaGroupId ? `${globalChatId}_mg_${mediaGroupId}` : `${globalChatId}_single_${timestamp}`;
         const fileName = mediaGroupId ? `${basePrefix}_${timestamp}.jpg` : `${basePrefix}.jpg`;
 
@@ -162,8 +164,8 @@ export async function POST(req: NextRequest) {
         if (mediaGroupId) {
             // Fast-track per Outfit Coordination
             buttons = [
-                [Markup.button.callback("Man 👨", `OUTFIT|MAN|${basePrefix}`)],
-                [Markup.button.callback("Woman 👩", `OUTFIT|WOMAN|${basePrefix}`)]
+                [Markup.button.callback("Man 👨", `OUTFIT|MAN|${callbackKey}`)],
+                [Markup.button.callback("Woman 👩", `OUTFIT|WOMAN|${callbackKey}`)]
             ];
         } else {
             // Normale flusso per immagine singola
@@ -172,7 +174,7 @@ export async function POST(req: NextRequest) {
                 return NextResponse.json({ ok: true });
             }
             buttons = categories.map(cat => [
-                Markup.button.callback(cat.name, `C|${cat.id}|${basePrefix}`)
+                Markup.button.callback(cat.name, `C|${cat.id}|${callbackKey}`)
             ]);
         }
 
@@ -193,20 +195,27 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         }
 
+        // HELPER per ricostruire basePrefix da callbackKey
+        const getBasePrefix = (cbKey: string) => {
+            if (cbKey.startsWith('M_')) return `${globalChatId}_mg_${cbKey.replace('M_', '')}`;
+            if (cbKey.startsWith('S_')) return `${globalChatId}_single_${cbKey.replace('S_', '')}`;
+            return cbKey; // Fallback
+        };
+
         // SCELTA OUTFIT GENDER -> CHIEDI QUANTITA'
         if (action.startsWith('OUTFIT|')) {
             const parts = action.split('|');
             const gender = parts[1]; // MAN or WOMAN
-            const basePrefix = parts[2];
+            const cbKey = parts[2];
             
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${basePrefix}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|OUTFIT_${gender}|${basePrefix}|X`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|OUTFIT_${gender}|${basePrefix}|X`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${cbKey}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|OUTFIT_${gender}|${cbKey}|X`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|OUTFIT_${gender}|${cbKey}|X`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${basePrefix}|X`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|OUTFIT_${gender}|${cbKey}|X`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -222,7 +231,7 @@ export async function POST(req: NextRequest) {
         if (action.startsWith('C|')) {
             const parts = action.split('|');
             const catId = parts[1];
-            const timestamp = parts[2];
+            const cbKey = parts[2];
 
             const modes = await prisma.businessMode.findMany({ where: { category_id: catId, is_active: true }, orderBy: { sort_order: 'asc' } });
             
@@ -232,7 +241,7 @@ export async function POST(req: NextRequest) {
             }
 
             const buttons = modes.map(mode => [
-                Markup.button.callback(mode.name, `M|${mode.id}|${timestamp}`)
+                Markup.button.callback(mode.name, `M|${mode.id}|${cbKey}`)
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -246,7 +255,7 @@ export async function POST(req: NextRequest) {
         if (action.startsWith('M|')) {
             const parts = action.split('|');
             const modeId = parts[1];
-            const timestamp = parts[2];
+            const cbKey = parts[2];
 
             const subcats = await prisma.subcategory.findMany({ where: { business_mode_id: modeId, is_active: true }, orderBy: { sort_order: 'asc' } });
             
@@ -256,7 +265,7 @@ export async function POST(req: NextRequest) {
             }
 
             const buttons = subcats.map(sub => [
-                Markup.button.callback(sub.name, `S|${sub.id}|${timestamp}`)
+                Markup.button.callback(sub.name, `S|${sub.id}|${cbKey}`)
             ]);
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -270,13 +279,14 @@ export async function POST(req: NextRequest) {
         if (action.startsWith('S|')) {
             const parts = action.split('|');
             const subId = parts[1];
-            const timestamp = parts[2];
+            const cbKey = parts[2];
+            const actualBasePrefix = getBasePrefix(cbKey);
 
             // Feedback immediato loading e pre-analisi IA
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analyzing garment geometry...*", { parse_mode: "Markdown" });
 
             // Recupera TUTTE le immagini se è un Media Group
-            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: timestamp });
+            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: actualBasePrefix });
             if (!files || files.length === 0) {
                  await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Impossibile ritrovare l'immagine nel cloud.");
                  return NextResponse.json({ ok: true });
@@ -335,7 +345,7 @@ REGOLE TASSATIVE:
                     if (parsedAnswer.ask && parsedAnswer.options && parsedAnswer.options.length > 0) {
                         const buttons = parsedAnswer.options.map((opt: string) => [
                             // Tronco a 15 caratteri per sicurezza nei callback data
-                            Markup.button.callback(opt, `B|${opt.substring(0, 15)}|${subId}|${timestamp}`)
+                            Markup.button.callback(opt, `B|${opt.substring(0, 15)}|${subId}|${cbKey}`)
                         ]);
                         
                         await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
@@ -351,13 +361,13 @@ REGOLE TASSATIVE:
 
             // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|X`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|X`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${cbKey}|X`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|X`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|X`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|X`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -374,16 +384,16 @@ REGOLE TASSATIVE:
             const parts = action.split('|');
             const userClarification = parts[1]; // Opzione dinamica scelta
             const subId = parts[2];
-            const timestamp = parts[3];
+            const cbKey = parts[3];
 
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${userClarification}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|${userClarification}`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|${userClarification}`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${userClarification}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${cbKey}|${userClarification}`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${userClarification}`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${userClarification}`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${userClarification}`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -398,11 +408,12 @@ REGOLE TASSATIVE:
         // SCELTA QUANTITÀ -> AVVIA GENERAZIONE AI
         if (action.startsWith('Q|')) {
             const parts = action.split('|');
-            const qtyStr = parts[1];
+            const qty = parseInt(parts[1], 10);
             const subId = parts[2];
-            const timestamp = parts[3];
+            const cbKey = parts[3];
             const userClarification = parts[4] || 'X';
-            const qty = parseInt(qtyStr, 10);
+            const actualBasePrefix = getBasePrefix(cbKey);
+            const timestamp = Date.now().toString(); // Usato per le foto generate in output
 
             // Controllo Crediti Clienti
             if (existingUser.role !== 'admin') {
@@ -474,7 +485,7 @@ REGOLE TASSATIVE:
             }
 
             // Recupera le immagini per l'Outfit o l'immagine singola
-            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: timestamp });
+            const { data: files } = await supabase.storage.from('telegram-uploads').list('', { search: actualBasePrefix });
             const publicUrls = files?.map(f => supabase.storage.from('telegram-uploads').getPublicUrl(f.name).data.publicUrl) || [];
             if (publicUrls.length === 0) {
                 await bot.telegram.editMessageText(globalChatId, msgId, undefined, "❌ Immagine originale scaduta dal cloud.");
