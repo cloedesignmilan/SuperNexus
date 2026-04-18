@@ -225,8 +225,17 @@ export async function POST(req: NextRequest) {
                     const base64 = Buffer.from(arrayBuffer).toString('base64');
                     const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
-                    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
-                    const prompt = "Guarda questo capo di abbigliamento. La parte inferiore è chiaramente un 'PANTALONE', o una 'GONNA', o non ha bisogno di pezzo di sotto? Se a causa dell'inquadratura tagliata o dell'angolazione è IMPOSSIBILE capirlo con assoluta certezza, devi rispondere ESATTAMENTE la parola 'AMBIGUO'. Se invece sei ragionevolmente sicuro, rispondi 'SICURO'. Rispondi SOLO con una di queste due parole, senza punteggiatura.";
+                    const prompt = `Sei un ispettore IA pre-generazione. Analizza il capo d'abbigliamento nella foto.
+Se l'immagine è perfettamente chiara e non hai alcun dubbio sulla sua struttura (es. capisci chiaramente se è un pantalone, una gonna, un abito intero, o di che colore è), rispondi ESATTAMENTE con questo JSON: {"ask": false}
+
+Se invece c'è un'ambiguità CRITICA e fondamentale che ti impedirebbe di generare un'immagine corretta (es. la foto è tagliata a metà e non sai se finisce con una gonna o un pantalone, oppure il capo è un groviglio incomprensibile), sei AUTORIZZATO a fare una domanda al cliente.
+In questo caso, rispondi con un JSON di questo tipo:
+{"ask": true, "question": "La parte inferiore tagliata dalla foto è una gonna o un pantalone?", "options": ["È una gonna", "È un pantalone", "È un abito intero"]}
+
+REGOLE TASSATIVE:
+1. Restituisci SOLO un JSON valido, senza testo fuori.
+2. Le "options" devono essere MASSIMO 3.
+3. Ogni opzione deve essere BREVISSIMA (massimo 15-20 caratteri), altrimenti i bottoni di Telegram si rompono.`;
                     
                     const result = await ai.models.generateContent({
                        model: "gemini-3.1-flash",
@@ -241,16 +250,22 @@ export async function POST(req: NextRequest) {
                        ]
                     });
                     
-                    const answer = result.text?.trim().toUpperCase() || "";
+                    const answerText = result.text?.trim().replace(/```json/g, "").replace(/```/g, "") || "{}";
+                    let parsedAnswer: any = { ask: false };
+                    try {
+                        parsedAnswer = JSON.parse(answerText);
+                    } catch(e) {
+                        console.error("Failed to parse dynamic question JSON:", answerText);
+                    }
 
-                    if (answer.includes("AMBIGUO")) {
-                        const buttons = [
-                            [Markup.button.callback("Skirt / One-piece Dress 👗", `B|G|${subId}|${timestamp}`)],
-                            [Markup.button.callback("Pants / Jeans 👖", `B|P|${subId}|${timestamp}`)],
-                            [Markup.button.callback("Ignore (Invisible / Top) 👀", `B|X|${subId}|${timestamp}`)]
-                        ];
+                    if (parsedAnswer.ask && parsedAnswer.options && parsedAnswer.options.length > 0) {
+                        const buttons = parsedAnswer.options.map((opt: string) => [
+                            // Tronco a 15 caratteri per sicurezza nei callback data
+                            Markup.button.callback(opt, `B|${opt.substring(0, 15)}|${subId}|${timestamp}`)
+                        ]);
+                        
                         await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                            "💡 *Artificial Intelligence is in doubt about the shot!*\n\nHelp me avoid generating the wrong clothes: what is the lower part in this photo?", 
+                            `💡 *L'Intelligenza Artificiale ha bisogno di un chiarimento!*\n\n_${parsedAnswer.question}_`, 
                             { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
                         );
                         return NextResponse.json({ ok: true });
@@ -283,18 +298,18 @@ export async function POST(req: NextRequest) {
         // SCELTA DISAMBIGUAZIONE -> CHIEDI QUANTITÀ
         if (action.startsWith('B|')) {
             const parts = action.split('|');
-            const bottom = parts[1]; // 'G', 'P', 'X'
+            const userClarification = parts[1]; // Opzione dinamica scelta
             const subId = parts[2];
             const timestamp = parts[3];
 
             let buttons = [
-                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${bottom}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|${bottom}`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|${bottom}`)]
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${userClarification}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${timestamp}|${userClarification}`)],
+                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${timestamp}|${userClarification}`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
-                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${bottom}`)],
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${timestamp}|${userClarification}`)],
                     [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
@@ -312,7 +327,7 @@ export async function POST(req: NextRequest) {
             const qtyStr = parts[1];
             const subId = parts[2];
             const timestamp = parts[3];
-            const bottomMarker = parts[4] || 'X';
+            const userClarification = parts[4] || 'X';
             const qty = parseInt(qtyStr, 10);
 
             // Controllo Crediti Clienti
@@ -430,7 +445,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${bottomMarker === 'G' ? '8. VINCOLO GONNA: LA MODELLA INDOSSA ASSOLUTAMENTE UNA GONNA O UN VESTITO. NON GENERARE PANTALONI, LEGGINGS O SHORTS SOTTO IL CAPO SUPERIORE.' : bottomMarker === 'P' ? '8. VINCOLO PANTALONI: LA MODELLA INDOSSA ASSOLUTAMENTE DEI PANTALONI O JEANS. NON GENERARE GONNE O VESTITI INTERI.' : ''}`;
+${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
                     const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
