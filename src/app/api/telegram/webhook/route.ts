@@ -225,6 +225,7 @@ export async function POST(req: NextRequest) {
                     const base64 = Buffer.from(arrayBuffer).toString('base64');
                     const mimeType = response.headers.get('content-type') || 'image/jpeg';
 
+                    const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     const prompt = `Sei un ispettore IA pre-generazione. Analizza il capo d'abbigliamento nella foto.
 Se l'immagine è perfettamente chiara e non hai alcun dubbio sulla sua struttura (es. capisci chiaramente se è un pantalone, una gonna, un abito intero, o di che colore è), rispondi ESATTAMENTE con questo JSON: {"ask": false}
 
