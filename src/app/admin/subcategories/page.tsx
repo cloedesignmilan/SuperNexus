@@ -118,8 +118,8 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
               <div key={sub.id} className="admin-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 {/* Copertina Principale */}
                 <div style={{ height: '180px', background: 'var(--color-bg)', position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                  {sub.preview_image ? (
-                    <img src={sub.preview_image} alt={sub.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  {sub.preview_image || sub.reference_images?.[0]?.image_url ? (
+                    <img src={sub.preview_image || sub.reference_images[0].image_url} alt={sub.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
                     <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)', fontSize: '2rem' }}>
                       📸
