@@ -91,6 +91,20 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
                   <p style={{ fontSize: '0.8rem', color: 'rgba(52,211,153,0.8)', fontStyle: 'italic', borderLeft: '2px solid rgba(52,211,153,0.5)', paddingLeft: '0.5rem', margin: '0.5rem 0 0 0', lineHeight: 1.5, maxHeight: '100px', overflowY: 'auto' }}>
                     "{subcat.base_prompt_prefix}"
                   </p>
+                  
+                  {subcat.variations.length > 0 && (
+                    <div style={{ marginTop: '1rem', borderTop: '1px solid rgba(52,211,153,0.2)', paddingTop: '1rem' }}>
+                      <h4 style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 700, marginBottom: '0.5rem' }}>Variazioni Attive ({subcat.variations.length}):</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {subcat.variations.map(v => (
+                          <div key={v.id} style={{ background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#e2e8f0', marginBottom: '0.25rem' }}>{v.variation_name} <span style={{ color: 'var(--color-text-muted)', fontWeight: 400 }}>({v.variation_code})</span></div>
+                            <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>"{v.variation_prompt}"</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
             )}
           </div>
