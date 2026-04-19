@@ -26,12 +26,13 @@ export default async function LandingPage() {
           SuperNexus <span>AI</span>
         </div>
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          {/* Conversion Focus (Hidden on small mobile usually, but kept inline for simplicity) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#888', fontSize: '0.85rem', fontWeight: 600 }} className="desktop-only-nav">
-             <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px' }}>Specialized in:</span>
-             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>T-Shirts</span>
-             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>Footwear</span>
-             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>Event & Ceremony</span>
+          {/* Conversion Focus */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '0.85rem', fontWeight: 700 }} className="desktop-only-nav">
+             <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px' }}>Top Categories:</span>
+             <a href="#showcase" className="glow-link" style={{ color: '#ccff00' }}>T-Shirts</a>
+             <a href="#showcase" className="glow-link" style={{ color: '#03dac6' }}>Footwear</a>
+             <a href="#showcase" className="glow-link" style={{ color: '#ff5470' }}>Event & Ceremony</a>
+             <a href="#showcase" className="glow-link" style={{ color: '#bb86fc' }}>Magazine Covers</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
@@ -53,7 +54,24 @@ export default async function LandingPage() {
           </div>
 
           <style dangerouslySetInnerHTML={{__html: `
-            @media (max-width: 900px) {
+            .glow-link {
+              text-decoration: none;
+              padding: 6px 14px;
+              border-radius: 30px;
+              background: rgba(255,255,255,0.03);
+              border: 1px solid rgba(255,255,255,0.1);
+              transition: all 0.3s ease;
+              text-shadow: 0 0 8px currentColor;
+              opacity: 0.9;
+            }
+            .glow-link:hover {
+              background: rgba(255,255,255,0.1);
+              box-shadow: 0 0 20px currentColor;
+              transform: translateY(-2px);
+              opacity: 1;
+              border-color: currentColor;
+            }
+            @media (max-width: 1024px) {
               .desktop-only-nav {
                 display: none !important;
               }
