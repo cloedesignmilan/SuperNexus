@@ -204,8 +204,7 @@ export default function ShowcaseCategories() {
           gap: '20px',
           overflowX: 'auto',
           padding: '20px 5%',
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'smooth',
+          scrollBehavior: 'auto', // changed from smooth to avoid fighting the interval
           cursor: 'grab',
           WebkitOverflowScrolling: 'touch'
         }}
@@ -214,7 +213,6 @@ export default function ShowcaseCategories() {
           <div key={idx} style={{
             flex: '0 0 auto',
             width: '320px',
-            scrollSnapAlign: 'start',
             background: 'rgba(20, 20, 20, 0.6)',
             border: '1px solid rgba(255, 255, 255, 0.05)',
             borderRadius: '16px',
