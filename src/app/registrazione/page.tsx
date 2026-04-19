@@ -48,26 +48,29 @@ export default function RegistrazionePage() {
 
                     <h3 style={{marginBottom: '20px', fontSize: '1.2rem', color: '#ffffff'}}>Select your subscription</h3>
                     
-                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
-                        {/* FREE TRIAL */}
-                        {!isUpgrade && (
+                    {/* FREE TRIAL */}
+                    {!isUpgrade && (
+                        <div style={{ marginBottom: '20px' }}>
                             <label style={{cursor: 'pointer', display: 'block'}}>
                                 <input type="radio" name="planName" value="free_trial" className="peer" style={{display: 'none'}} 
                                        checked={planName === 'free_trial'} onChange={(e) => setPlanName(e.target.value)} />
-                                <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', height: '100%', display: 'flex', flexDirection: 'column'}} 
+                                <div style={{borderRadius: '12px', padding: '20px', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', border: '2px solid rgba(255,10,179,0.3)'}} 
                                      className="radio-card trial-card">
                                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                         <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Free Trial</h4>
                                         <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$0</span>
                                     </div>
-                                    <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
-                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
-                                        <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
+                                    <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexWrap: 'wrap', gap: '15px'}}>
+                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
+                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
+                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
                                     </ul>
                                 </div>
                             </label>
-                        )}
+                        </div>
+                    )}
+
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '40px'}}>
 
                         {/* STARTER PACK */}
                         <label style={{cursor: 'pointer', display: 'block'}}>
