@@ -341,29 +341,40 @@ export default async function LandingPage() {
             <Link href="/registrazione" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Subscribe Now</Link>
           </div>
 
+          {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
+          <div className="pricing-card" style={{ 
+            gridColumn: '1 / -1', 
+            border: '2px solid #bb86fc', 
+            background: 'linear-gradient(135deg, rgba(187,134,252,0.08) 0%, rgba(0,0,0,0) 100%)',
+            boxShadow: '0 0 20px rgba(187,134,252,0.15)',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '2rem',
+            padding: '3rem',
+            marginTop: '1rem',
+            borderRadius: '16px'
+          }}>
+            <div style={{ flex: '1 1 300px' }}>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Custom <span style={{ color: '#bb86fc', textShadow: '0 0 10px rgba(187,134,252,0.2)' }}>AI Models</span></h3>
+                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.</p>
+            </div>
+            
+            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
+              <li><CheckCircle2 size={24} color="#bb86fc" /> <strong style={{ fontSize: '1.1rem' }}>Bespoke Categories</strong></li>
+              <li><CheckCircle2 size={24} color="#bb86fc" /> <span style={{ fontSize: '1.1rem' }}>Custom Subcategories</span></li>
+            </ul>
+
+            <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
+                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#bb86fc', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(187,134,252,0.4)', borderRadius: '12px' }}>Starting at $299/ea</a>
+            </div>
+          </div>
+
         </div>
 
-        {/* CUSTOM CATEGORIES BANNER */}
-        <div style={{ 
-          marginTop: '3rem', 
-          padding: '2rem', 
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5))', 
-          border: '1px solid rgba(255,255,255,0.1)', 
-          borderRadius: '16px', 
-          textAlign: 'center',
-          maxWidth: '800px',
-          margin: '3rem auto 0',
-          boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
-        }}>
-          <h3 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '0.8rem', fontWeight: 700, letterSpacing: '0.02em' }}>
-            <span style={{ color: '#bb86fc' }}>✨</span> Need a Custom Style?
-          </h3>
-          <p style={{ color: '#aaa', fontSize: '1.1rem', margin: 0, lineHeight: '1.5' }}>
-            We also offer the possibility of having <strong>custom categories and subcategories</strong> trained exactly on your brand's aesthetic starting from <strong style={{ color: '#fff', fontSize: '1.2rem' }}>$299/each</strong>.
-          </p>
-        </div>
-
-        <div style={{ textAlign: 'center', marginTop: '3rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
             <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> Cancel anytime. Your plan will remain active until expiration or until all images are fully utilized.
         </div>
       </section>
