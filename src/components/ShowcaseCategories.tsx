@@ -364,7 +364,7 @@ export default function ShowcaseCategories() {
         className="hide-scrollbar"
         style={{
           display: 'flex',
-          gap: '24px',
+          gap: '64px', // Increased gap to separate cards significantly
           overflowX: 'auto',
           padding: '40px 5%',
           scrollBehavior: 'auto',
