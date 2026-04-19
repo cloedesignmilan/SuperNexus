@@ -6,17 +6,45 @@ import { Sparkles, ShoppingCart, Camera, Star, TrendingUp } from 'lucide-react';
 
 const SHOWCASE_DATA = [
   {
-    id: "tshirt",
+    id: "tshirt-flatlay",
+    category: "T-Shirt & Knitwear",
+    subcategory: "Streetwear FlatLay",
+    useCases: ["Instagram", "Pinterest", "Hypebeast"],
+    desc: "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
+    before: "/prove/Tshirt/Tshirt- FlatLay/prima.jpeg",
+    afters: [
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1809.JPG"
+    ]
+  },
+  {
+    id: "tshirt-ecommerce",
     category: "T-Shirt & Knitwear",
     subcategory: "E-Commerce Clean",
     useCases: ["Amazon", "Etsy", "Shopify"],
-    desc: "Smetti di scattare su manichini rigidi! Trasforma le foto in piano in immagini catalogo ad altissima conversione per il tuo e-commerce.",
+    desc: "Stop shooting on rigid mannequins! Transform flat lays into highly converting e-commerce catalog photos.",
     before: "/prove/Tshirt/Ecommerce Clean/prima.jpeg",
     afters: [
       "/prove/Tshirt/Ecommerce Clean/627D75E3-D637-42B7-94EB-1672B1AB8C88.jpeg",
       "/prove/Tshirt/Ecommerce Clean/977B8826-3409-4E4A-A402-9DD039F7A315.jpeg",
       "/prove/Tshirt/Ecommerce Clean/1029E5FF-14DC-4352-9C9C-3E3538BAD5D3.jpeg",
-      "/prove/Tshirt/UCG/A31F09FA-E905-4EB4-8741-233184C8503F.jpeg"
+      "/prove/Tshirt/Ecommerce Clean/285EF91B-511E-4866-8E52-00DCF520370B.jpeg"
+    ]
+  },
+  {
+    id: "tshirt-ugc",
+    category: "T-Shirt & Knitwear",
+    subcategory: "UGC (User Generated Content)",
+    useCases: ["TikTok", "IG Reels", "FB Ads"],
+    desc: "Create relatable, everyday lifestyle shots that look like genuine customer photos for high-converting ads.",
+    before: "/prove/Tshirt/UCG/prima.png",
+    afters: [
+      "/prove/Tshirt/UCG/A31F09FA-E905-4EB4-8741-233184C8503F.jpeg",
+      "/prove/Tshirt/UCG/5AD87520-5730-481F-9D98-89E55C69521C.jpeg",
+      "/prove/Tshirt/UCG/15AC4616-9783-4ECB-9F56-D058138327BE.jpeg",
+      "/prove/Tshirt/UCG/3AFDA8DC-7D1E-4D9C-B6BB-27DA807B0E70.jpeg"
     ]
   },
   {
@@ -24,7 +52,7 @@ const SHOWCASE_DATA = [
     category: "Women's Fashion",
     subcategory: "Outfit Coordination & Lifestyle",
     useCases: ["Instagram", "Pinterest", "FB Ads"],
-    desc: "Fai indossare i tuoi capi a modelle digitali iper-realistiche in ville lussuose o strade eleganti. Il tuo feed Instagram non è mai stato così vivo.",
+    desc: "Have your garments worn by hyper-realistic digital models in luxury villas or elegant streets. Your Instagram feed has never been so alive.",
     before: "/prove/Donna/Outfit Coordination/prima1.jpeg",
     afters: [
       "/prove/Donna/Outfit Coordination/7EAF8589-60C2-4290-9459-7D26543DAA81.jpeg",
@@ -38,7 +66,7 @@ const SHOWCASE_DATA = [
     category: "Men's Apparel",
     subcategory: "Executive & Silver Fox",
     useCases: ["LinkedIn", "Luxury Magazines", "Boutique"],
-    desc: "Mostra i tuoi abiti nel loro habitat naturale. Eleva istantaneamente il valore percepito della tua collezione sartoriale maschile.",
+    desc: "Showcase your suits in their natural habitat. Instantly elevate the perceived value of your menswear collection.",
     before: "/prove/Uomo/Silver Fox Luxury/prima.jpeg",
     afters: [
       "/prove/Uomo/Silver Fox Luxury/2EB5B578-EDA2-4462-B395-8EE87E11B6AF.jpeg",
@@ -52,7 +80,7 @@ const SHOWCASE_DATA = [
     category: "Footwear & Sneakers",
     subcategory: "Product Clean & Urban",
     useCases: ["Zalando", "Asos", "E-commerce"],
-    desc: "Eliminazione totale dei difetti o degli sfondi rovinati. I tuoi scatti in magazzino diventano still-life perfetti per la vendita online.",
+    desc: "Total elimination of defects or ruined backgrounds. Your warehouse shots become perfect still-lifes ready for online sales.",
     before: "/prove/Calzature/Product Clean/prima.jpeg",
     afters: [
       "/prove/Calzature/Product Clean/F5D64049-913B-41C3-82BB-B4E9E29AE392.jpeg",
@@ -66,7 +94,7 @@ const SHOWCASE_DATA = [
     category: "Kids Collection",
     subcategory: "Playful Lifestyle",
     useCases: ["Parenting Groups", "IG Posts", "TikTok"],
-    desc: "Scatti lifestyle dolci e coinvolgenti, perfetti per catturare l'attenzione dei genitori sui social media.",
+    desc: "Sweet and engaging lifestyle shots perfect for capturing the attention of parents on social media.",
     before: "/prove/Bambino/Playful Lifestyle/prima.jpeg",
     afters: [
       "/prove/Bambino/Playful Lifestyle/38636DEF-3EB4-4A2F-929B-85CF31391D2F.jpeg",
@@ -125,9 +153,9 @@ export default function DynamicShowcase() {
             </div>
             
             <div className="ds-before-preview">
-              <div className="ds-before-label">FOTO ORIGINALE IN MAGAZZINO</div>
+              <div className="ds-before-label">ORIGINAL WAREHOUSE PHOTO</div>
               <div style={{ position: 'relative', width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                <Image src={item.before} alt="Prima" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" quality={60} />
+                <Image src={item.before} alt="Before" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" quality={60} />
               </div>
             </div>
           </div>
@@ -148,9 +176,9 @@ export default function DynamicShowcase() {
                   {item.useCases.map(uc => <span key={uc} className="ds-badge">{uc}</span>)}
                 </div>
                 <div className="ds-before-preview" style={{ marginBottom: '2rem' }}>
-                  <div className="ds-before-label">FOTO ORIGINALE</div>
+                  <div className="ds-before-label">ORIGINAL PHOTO</div>
                   <div style={{ position: 'relative', width: '150px', height: '200px', borderRadius: '12px', overflow: 'hidden' }}>
-                    <Image src={item.before} alt="Prima" fill style={{ objectFit: 'cover' }} quality={60} />
+                    <Image src={item.before} alt="Before" fill style={{ objectFit: 'cover' }} quality={60} />
                   </div>
                 </div>
              </div>
@@ -159,9 +187,9 @@ export default function DynamicShowcase() {
                {item.afters.map((afterImg, i) => (
                  <div key={i} className={`ds-after-card ${i === 0 ? 'ds-card-large' : ''}`}>
                     <div className="ds-after-label">
-                      <Sparkles size={12} /> RISULTATO IA
+                      <Sparkles size={12} /> AI RESULT
                     </div>
-                    <Image src={afterImg} alt={`Risultato ${i}`} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 600px" quality={80} />
+                    <Image src={afterImg} alt={`Result ${i}`} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 600px" quality={80} />
                  </div>
                ))}
              </div>
