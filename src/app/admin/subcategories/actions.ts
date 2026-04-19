@@ -168,6 +168,17 @@ export async function deleteReferenceImage(id: string, storagePath: string) {
   revalidatePath("/admin/subcategories");
 }
 
+export async function reorderReferenceImages(subcategoryId: string, imageIds: string[]) {
+  const updates = imageIds.map((id, index) => 
+    prisma.subcategoryReferenceImage.update({
+      where: { id },
+      data: { image_order: index }
+    })
+  );
+  await prisma.$transaction(updates);
+  revalidatePath(`/admin/subcategories/${subcategoryId}`);
+}
+
 export async function runVisionAnalysis(subcategoryId: string) {
   try {
     const subcat = await prisma.subcategory.findUnique({
