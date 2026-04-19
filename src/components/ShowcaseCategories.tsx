@@ -27,9 +27,9 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(249, 115, 22, 0.8)",
     bgImage: "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
     subcategories: [
-      { name: "Sneakers Donna", icon: <Star size={12} /> },
+      { name: "Women's Sneakers", icon: <Star size={12} /> },
       { name: "Product Clean", icon: <ShoppingBag size={12} /> },
-      { name: "Tacchi Eleganti", icon: <Sparkles size={12} /> },
+      { name: "Elegant Heels", icon: <Sparkles size={12} /> },
       { name: "On Feet Urban", icon: <MapPin size={12} /> },
     ]
   },

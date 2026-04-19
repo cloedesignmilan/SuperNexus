@@ -186,7 +186,7 @@ export async function POST(req: NextRequest) {
 
     // --- GESTIONE BOTTONI (CALLBACK QUERIES) ---
     if (update.callback_query && update.callback_query.data) {
-        const action = update.callback_query.data;
+        let action = update.callback_query.data;
         const msgId = update.callback_query.message.message_id;
 
         // GESTIONE BOTTONI BLOCCATI
@@ -275,14 +275,20 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ ok: true });
         }
 
-        // SCELTA SOTTO-CATEGORIA -> CHECK AMBIGUITÀ O CHIEDI QUANTITÀ
         if (action.startsWith('S|')) {
             const parts = action.split('|');
             const subId = parts[1];
             const cbKey = parts[2];
             const actualBasePrefix = getBasePrefix(cbKey);
 
-            // Feedback immediato loading e pre-analisi IA
+            const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
+            const isMagazine = subcat && (subcat.name.includes("Cover") || subcat.name.includes("Magazine"));
+
+            if (isMagazine) {
+                // Bypass disambiguation and quantity selection, force 1 photo generation
+                action = `Q|1|${subId}|${cbKey}|X`;
+            } else {
+                // Feedback immediato loading e pre-analisi IA
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analyzing garment geometry...*", { parse_mode: "Markdown" });
 
             // Recupera TUTTE le immagini se è un Media Group
@@ -377,6 +383,7 @@ REGOLE TASSATIVE:
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
+            } // Chiude l'else di isMagazine
         }
 
         // SCELTA DISAMBIGUAZIONE -> CHIEDI QUANTITÀ
