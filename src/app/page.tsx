@@ -12,8 +12,11 @@ import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
 import ChatBot from '@/components/ChatBot';
+import { getShowcaseData } from '@/lib/getShowcaseData';
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const showcaseData = await getShowcaseData();
+
   return (
     <div className="landing-container">
       <ChatBot />
@@ -107,7 +110,7 @@ export default function LandingPage() {
         
         <ShowcaseCategories />
 
-        <DynamicShowcase />
+        <DynamicShowcase showcaseData={showcaseData} />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}
