@@ -74,7 +74,7 @@ const SHOWCASE_DATA =
       "/prove/Calzature/Product Clean/F5D64049-913B-41C3-82BB-B4E9E29AE392.jpeg",
       "/prove/Calzature/Product Clean/6263372A-FD3D-4E70-B5F6-A77489858AC2.jpeg",
       "/prove/Calzature/Product Clean/IMG_1823.JPG",
-      "/prove/Calzature/Product Clean/IMG_1825.JPG"
+      "/prove/Calzature/Product Clean/IMG_1824.JPG"
     ]
   },
   {
