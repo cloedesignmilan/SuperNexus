@@ -72,22 +72,6 @@ const SHOWCASE_DATA =
     ]
   },
   {
-    "id": "footwear & sneakers-tacchi-eleganti",
-    "category": "Footwear & Sneakers",
-    "subcategory": "Tacchi Eleganti",
-    "useCases": [
-      "Instagram",
-      "Boutique",
-      "Pinterest"
-    ],
-    "desc": "Showcase elegant heels in luxury settings to attract high-end customers.",
-    "before": "/prove/Calzature/Tacchi/prima.jpeg",
-    "afters": [
-      "/prove/Calzature/Tacchi/DD4DB587-9380-4F07-8B17-8FB2BA33EAC0.jpeg",
-      "/prove/Calzature/Tacchi/C2819FD4-7DEE-4166-8DDF-8190AE44F58A.jpeg"
-    ]
-  },
-  {
     "id": "women's fashion-mannequin-display",
     "category": "Women's Fashion",
     "subcategory": "Mannequin Display",
