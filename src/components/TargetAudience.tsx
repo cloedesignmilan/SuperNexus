@@ -1,8 +1,22 @@
 import React from 'react';
-import { Store, ShoppingBag, Globe, Camera, CheckCircle2, CornerDownRight } from 'lucide-react';
+import { Store, ShoppingBag, Globe, Camera, CheckCircle2 } from 'lucide-react';
 import { Caveat } from 'next/font/google';
 
 const caveat = Caveat({ subsets: ['latin'], weight: '700' });
+
+// Simple hand-drawn SVG arrow
+const ScribbleArrow = ({ color }: { color: string }) => (
+  <svg width="60" height="60" viewBox="0 0 100 100" style={{ transform: 'rotate(-10deg)' }}>
+    <path 
+      d="M20 70 Q 50 20, 80 40 M 65 25 L 80 40 L 60 55" 
+      fill="transparent" 
+      stroke={color} 
+      strokeWidth="5" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+  </svg>
+);
 
 export default function TargetAudience() {
   const audiences = [
@@ -11,28 +25,28 @@ export default function TargetAudience() {
       description: "Upload your entire new collection to your website in a fraction of the time and eliminate studio photography costs.",
       icon: <Store size={32} />,
       color: "#a3cc00", // Darker neon yellow for white bg visibility
-      handwrittenTip: "Perfect for T-Shirts & Apparel"
+      handwrittenTip: "Perfect for T-Shirts!"
     },
     {
       title: "Outlet Stores, eBay, Etsy",
       description: "Clear out excess inventory quickly while looking hyper-professional as a seller on marketplaces.",
       icon: <ShoppingBag size={32} />,
       color: "#ff5470", // Neon Pink
-      handwrittenTip: "Perfect for Footwear & Accessories"
+      handwrittenTip: "Perfect for Footwear!"
     },
     {
       title: "Fashion E-commerce",
       description: "Skyrocket your conversion rates with consistent, premium, and fully-branded imagery.",
       icon: <Globe size={32} />,
       color: "#00b3a6", // Darker cyan for visibility
-      handwrittenTip: "Perfect for Combined Outfits"
+      handwrittenTip: "Perfect for Combined Outfits!"
     },
     {
       title: "Instagram Sellers",
       description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate purchases.",
       icon: <Camera size={32} />,
       color: "#9933ff", // Darker purple for visibility
-      handwrittenTip: "Perfect for UGC Content"
+      handwrittenTip: "Perfect for UGC Content!"
     }
   ];
 
@@ -51,17 +65,17 @@ export default function TargetAudience() {
         <div style={{ 
           display: 'grid', 
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-          gap: '2rem' 
+          gap: '2rem',
+          paddingBottom: '3rem' // Extra space for doodles
         }}>
           {audiences.map((item, index) => (
             <div key={index} style={{
               background: '#f9f9f9',
               borderRadius: '24px',
-              padding: '2.5rem 2rem 1.5rem',
+              padding: '2.5rem 2rem 2.5rem',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               border: '1px solid rgba(0,0,0,0.03)',
               position: 'relative',
-              overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column'
             }} className="target-card">
@@ -87,25 +101,38 @@ export default function TargetAudience() {
                 {item.description}
               </p>
 
-              {/* Hand-drawn section */}
+              {/* Huge Notebook-style Hand-drawn section */}
               <div style={{ 
-                marginTop: '2rem', 
-                paddingTop: '1rem', 
-                borderTop: '2px dashed rgba(0,0,0,0.06)', 
+                marginTop: '1.5rem', 
+                position: 'relative',
                 display: 'flex', 
-                alignItems: 'center', 
-                gap: '12px' 
+                alignItems: 'flex-start',
+                zIndex: 10
               }}>
-                <CornerDownRight size={20} color={item.color} style={{ opacity: 0.8 }} />
-                <span className={caveat.className} style={{ 
-                  fontSize: '1.6rem', 
-                  color: '#444', 
-                  transform: 'rotate(-3deg)',
+                <div style={{ position: 'relative', top: '10px', left: '-10px' }}>
+                  <ScribbleArrow color={item.color} />
+                </div>
+                <div className={caveat.className} style={{ 
+                  fontSize: '2.4rem', 
+                  color: '#111', 
+                  transform: 'rotate(-6deg)',
                   display: 'inline-block',
-                  lineHeight: '1'
+                  lineHeight: '1.1',
+                  marginTop: '15px',
+                  position: 'relative'
                 }}>
+                  {/* Fake marker highlight behind text */}
+                  <span style={{
+                    position: 'absolute',
+                    inset: '4px -8px',
+                    background: item.color,
+                    opacity: 0.2,
+                    borderRadius: '8px',
+                    transform: 'rotate(2deg)',
+                    zIndex: -1
+                  }} />
                   {item.handwrittenTip}
-                </span>
+                </div>
               </div>
 
               <div style={{ position: 'absolute', top: '2rem', right: '2rem', opacity: 0.05, pointerEvents: 'none' }}>
