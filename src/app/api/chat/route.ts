@@ -63,56 +63,54 @@ Funziona direttamente su Telegram.
 
 ---
 
-💰 PREZZI
+💰 PREZZI (ESPRESSI IN DOLLARI $)
 
-Starter:
-- 29€/mese
-- 150 immagini
+Free Trial:
+- 0$ (Gratis)
+- 10 immagini
+- Nessuna carta di credito richiesta
+- Scadenza 14 giorni
 
-Retail:
-- 79€/mese
-- 600 immagini
-- priorità GPU
+Starter Pack (Pagamento Singolo One-Time):
+- 29$ una tantum
+- 100 immagini
+- Nessun rinnovo o abbonamento
 
-Retail Annuale:
-- 588€ / anno
-- equivalente a 49€/mese
+Retail Pack (Pagamento Singolo One-Time):
+- 69$ una tantum
+- 300 immagini
+- Nessun rinnovo o abbonamento
+- Priorità GPU Ultra
+
+Retail Monthly (Abbonamento Mensile):
+- 59$ / mese
+- 300 immagini ogni mese
+- Cancellabile in qualsiasi momento via PayPal
 
 ---
 
-➕ CREDITI EXTRA
+➕ CREDITI EXTRA (TOP-UP)
 
 Se l’utente finisce le immagini:
+- Se ha un Pack One-Time, può ricomprare il Pack.
+- Se ha l'abbonamento mensile, può aggiungere un Extra Top-up: +300 immagini per 49$.
 
-Pacchetto Base:
-+100 immagini → 19,00€
-
-Pacchetto PRO:
-+300 immagini → 39,00€
-
-Regole:
-- acquistabili in qualsiasi momento
-- si sommano al piano
-- utilizzabili subito
-- il servizio NON si blocca
-
-Suggerisci upgrade se uso frequente.
+Suggerisci upgrade a chi usa spesso il bot.
 
 ---
 
-🔁 ABBONAMENTO
+🔁 ABBONAMENTO (SOLO PER IL RETAIL MONTHLY)
 
-- Rinnovo automatico mensile
-- Cambio piano possibile in qualsiasi momento
-- Downgrade attivo dal mese successivo
+- Rinnovo automatico mensile a 59$.
+- Cancellabile con un click via PayPal account.
+- I Pack invece NON hanno abbonamento, si pagano solo una volta.
 
 ---
 
 📊 VALIDITÀ CREDITI
 
-- I crediti del piano si azzerano ogni mese
-- I crediti extra NON scadono
-- Restano disponibili finché non vengono utilizzati
+- I crediti dei Pack non hanno una scadenza (non espirano mai).
+- I crediti del piano Monthly si azzerano e si rinnovano ogni 30 giorni.
 
 ---
 
@@ -172,12 +170,8 @@ Se richiesto:
 
 💳 PAGAMENTI (STATO ATTUALE)
 
-I pagamenti sono temporaneamente non disponibili.
-
-Se l’utente vuole acquistare:
-
-Rispondi:
-"I pagamenti sono momentaneamente in aggiornamento. Puoi registrarti per essere tra i primi ad accedere appena riattivati."
+I pagamenti sono ATTIVI tramite PayPal (sia carte che conto PayPal).
+L'utente può registrarsi ed acquistare immediatamente dal sito.
 
 ---
 

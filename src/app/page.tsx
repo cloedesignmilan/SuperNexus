@@ -245,11 +245,39 @@ export default function LandingPage() {
             <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> Cancel anytime. Your plan will remain active until expiration or until all images are fully utilized.
         </div>
       </section>
-      
-      <footer style={{ textAlign: 'center', padding: '3rem', color: '#888', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
-        <p style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Support and Assistance: <a href="mailto:info@supernexusai.com" style={{ color: '#ff0ab3', textDecoration: 'none', fontWeight: 'bold' }}>info@supernexusai.com</a></p>
-        <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-          © 2026 SuperNexus AI. All rights reserved.
+      <footer style={{ 
+        position: 'relative',
+        background: '#030303', 
+        color: '#fff', 
+        padding: '6rem 2rem 3rem', 
+        overflow: 'hidden',
+        marginTop: '6rem'
+      }}>
+        {/* Glow effect at the top center */}
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '500px', height: '1px', background: 'linear-gradient(90deg, transparent, #00ffff, #ff0ab3, transparent)', opacity: 0.8, boxShadow: '0 0 30px 3px rgba(255,10,179,0.4)' }} />
+        
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-1px', marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, #a0a0a0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                SuperNexus<span style={{color: '#ff0ab3', WebkitTextFillColor: '#ff0ab3'}}>.</span>AI
+            </h2>
+            <p style={{ maxWidth: '450px', color: '#888', fontSize: '1rem', lineHeight: '1.6', marginBottom: '3rem' }}>
+                The ultimate AI generative engine built exclusively for fashion e-commerce. Scale your social volumes, reduce photography costs, and drive higher conversions.
+            </p>
+
+            <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#00ffff'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Contact Support</a>
+                <span style={{ color: '#222' }}>•</span>
+                <Link href="/registrazione" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#ff0ab3'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Start Free Trial</Link>
+                <span style={{ color: '#222' }}>•</span>
+                <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#ccff00'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Terms & Privacy</Link>
+            </div>
+
+            <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '2rem' }} />
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#444' }}>
+                <p>© {new Date().getFullYear()} SuperNexus AI. All rights reserved.</p>
+                <p>Engineered for High-Performance Generative Fashion.</p>
+            </div>
         </div>
       </footer>
 
