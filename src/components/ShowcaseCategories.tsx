@@ -91,29 +91,52 @@ export default function ShowcaseCategories() {
     let startX: number;
     let scrollLeft: number;
     
-    // Auto-scroll logic
-    const autoScroll = setInterval(() => {
-      if (!isDown && scrollContainer) {
-        scrollContainer.scrollLeft += 2;
-        if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
-          scrollContainer.scrollLeft = 0; // Reset
+    let autoScrollTimer: NodeJS.Timeout;
+    let resumeTimeout: NodeJS.Timeout;
+
+    const startAutoScroll = () => {
+      clearInterval(autoScrollTimer);
+      autoScrollTimer = setInterval(() => {
+        if (!isDown && scrollContainer) {
+          scrollContainer.scrollLeft += 1;
+          if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
+            scrollContainer.scrollLeft = 0; // Reset
+          }
         }
-      }
-    }, 30);
+      }, 30);
+    };
+
+    const pauseAutoScroll = () => {
+      isDown = true;
+      clearInterval(autoScrollTimer);
+      clearTimeout(resumeTimeout);
+    };
+
+    const scheduleResume = () => {
+      isDown = false;
+      clearTimeout(resumeTimeout);
+      // Wait 3 seconds after interaction ends to allow momentum scrolling to finish
+      resumeTimeout = setTimeout(() => {
+        startAutoScroll();
+      }, 3000);
+    };
+
+    // Start initially
+    startAutoScroll();
 
     // Mouse drag logic for desktop "swiping"
     const onMouseDown = (e: MouseEvent) => {
-      isDown = true;
+      pauseAutoScroll();
       scrollContainer.style.cursor = 'grabbing';
       startX = e.pageX - scrollContainer.offsetLeft;
       scrollLeft = scrollContainer.scrollLeft;
     };
     const onMouseLeave = () => {
-      isDown = false;
+      scheduleResume();
       scrollContainer.style.cursor = 'grab';
     };
     const onMouseUp = () => {
-      isDown = false;
+      scheduleResume();
       scrollContainer.style.cursor = 'grab';
     };
     const onMouseMove = (e: MouseEvent) => {
@@ -126,10 +149,10 @@ export default function ShowcaseCategories() {
 
     // Touch logic to pause auto-scroll
     const onTouchStart = () => {
-      isDown = true; // Pauses auto-scroll
+      pauseAutoScroll();
     };
     const onTouchEnd = () => {
-      isDown = false; // Resumes auto-scroll
+      scheduleResume();
     };
 
     scrollContainer.addEventListener('mousedown', onMouseDown);
@@ -143,7 +166,8 @@ export default function ShowcaseCategories() {
     scrollContainer.addEventListener('touchcancel', onTouchEnd);
 
     return () => {
-      clearInterval(autoScroll);
+      clearInterval(autoScrollTimer);
+      clearTimeout(resumeTimeout);
       if (scrollContainer) {
         scrollContainer.removeEventListener('mousedown', onMouseDown);
         scrollContainer.removeEventListener('mouseleave', onMouseLeave);
