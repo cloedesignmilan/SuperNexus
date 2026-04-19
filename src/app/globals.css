@@ -1198,7 +1198,7 @@ body {
 
 .ds-card-large {
   grid-column: span 2;
-  aspect-ratio: 16/9;
+  aspect-ratio: 3/4;
 }
 
 .ds-after-label {
