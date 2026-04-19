@@ -13,6 +13,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Shirt size={20} className="text-blue-400" />,
     color: "rgba(59, 130, 246, 0.2)",
     border: "rgba(59, 130, 246, 0.4)",
+    bgImage: "/prove/Tshirt/Ecommerce Clean/627D75E3-D637-42B7-94EB-1672B1AB8C88.jpeg",
     subcategories: [
       { name: "Streetwear FlatLay", icon: <Camera size={12} /> },
       { name: "E-Commerce Clean", icon: <ShoppingBag size={12} /> },
@@ -24,6 +25,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Footprints size={20} className="text-orange-400" />,
     color: "rgba(249, 115, 22, 0.2)",
     border: "rgba(249, 115, 22, 0.4)",
+    bgImage: "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
     subcategories: [
       { name: "Sneakers Donna", icon: <Star size={12} /> },
       { name: "Product Clean", icon: <ShoppingBag size={12} /> },
@@ -36,6 +38,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Sparkles size={20} className="text-purple-400" />,
     color: "rgba(168, 85, 247, 0.2)",
     border: "rgba(168, 85, 247, 0.4)",
+    bgImage: "/prove/Donna/Luxury Villa Shoot/195E2086-E0B9-4CBD-B2BB-DDA2D3913BA0.jpeg",
     subcategories: [
       { name: "Mannequin Display", icon: <UserCheck size={12} /> },
       { name: "Runway Editorial", icon: <Star size={12} /> },
@@ -51,6 +54,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Briefcase size={20} className="text-emerald-400" />,
     color: "rgba(16, 185, 129, 0.2)",
     border: "rgba(16, 185, 129, 0.4)",
+    bgImage: "/prove/Uomo/Street Style/BE25B3F8-3623-4189-988E-AF4258A61ADA.jpeg",
     subcategories: [
       { name: "Ecommerce Studio", icon: <ShoppingBag size={12} /> },
       { name: "Street Style", icon: <MapPin size={12} /> },
@@ -63,6 +67,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Heart size={20} className="text-rose-400" />,
     color: "rgba(244, 63, 94, 0.2)",
     border: "rgba(244, 63, 94, 0.4)",
+    bgImage: "/prove/Sposa/7B9D7519-83A0-4912-A5BD-C99401EBB01A.jpeg",
     subcategories: [
       { name: "Bridal Collection", icon: <Sparkles size={12} /> },
       { name: "Groom Collection", icon: <UserCheck size={12} /> },
@@ -73,6 +78,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Baby size={20} className="text-yellow-400" />,
     color: "rgba(234, 179, 8, 0.2)",
     border: "rgba(234, 179, 8, 0.4)",
+    bgImage: "/prove/Bambino/Elegant Event/0CC85BF4-2349-4DBD-A4E0-3218BD7376C9.jpeg",
     subcategories: [
       { name: "Elegant Event", icon: <Star size={12} /> },
       { name: "Playful Lifestyle", icon: <Trees size={12} /> },
@@ -209,7 +215,7 @@ export default function ShowcaseCategories() {
           WebkitOverflowScrolling: 'touch'
         }}
       >
-        {CATEGORY_STRUCTURE.map((cat, idx) => (
+        {[...CATEGORY_STRUCTURE, ...CATEGORY_STRUCTURE].map((cat, idx) => (
           <div key={idx} style={{
             flex: '0 0 auto',
             width: '320px',
@@ -236,6 +242,19 @@ export default function ShowcaseCategories() {
             const glow = e.currentTarget.querySelector('.cat-glow') as HTMLElement;
             if (glow) glow.style.opacity = '0';
           }}>
+            {/* Background Image */}
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              backgroundImage: `url('${cat.bgImage}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              opacity: 0.15,
+              zIndex: 0,
+              pointerEvents: 'none',
+              mixBlendMode: 'luminosity'
+            }}></div>
+
             {/* Background Glow */}
             <div className="cat-glow" style={{
               position: 'absolute',
