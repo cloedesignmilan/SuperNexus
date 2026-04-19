@@ -1,12 +1,6 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { Sparkles, ShoppingCart, Camera, Star, TrendingUp } from 'lucide-react';
-
-const SHOWCASE_DATA = [
+[
   {
-    "id": "t-shirt-&-knitwear-streetwear-flatlay",
+    "id": "t-shirt & knitwear-streetwear-flatlay",
     "category": "T-Shirt & Knitwear",
     "subcategory": "Streetwear FlatLay",
     "useCases": [
@@ -17,14 +11,14 @@ const SHOWCASE_DATA = [
     "desc": "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
     "before": "/prove/Tshirt/Tshirt- FlatLay/prima.jpeg",
     "afters": [
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1810.JPG",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1809.JPG"
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG"
     ]
   },
   {
-    "id": "t-shirt-&-knitwear-e-commerce-clean",
+    "id": "t-shirt & knitwear-e-commerce-clean",
     "category": "T-Shirt & Knitwear",
     "subcategory": "E-Commerce Clean",
     "useCases": [
@@ -42,7 +36,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "t-shirt-&-knitwear-ugc-(user-generated-content)",
+    "id": "t-shirt & knitwear-ugc-(user-generated-content)",
     "category": "T-Shirt & Knitwear",
     "subcategory": "UGC (User Generated Content)",
     "useCases": [
@@ -60,7 +54,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-sneakers-donna",
+    "id": "footwear & sneakers-sneakers-donna",
     "category": "Footwear & Sneakers",
     "subcategory": "Sneakers Donna",
     "useCases": [
@@ -77,7 +71,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-product-clean",
+    "id": "footwear & sneakers-product-clean",
     "category": "Footwear & Sneakers",
     "subcategory": "Product Clean",
     "useCases": [
@@ -94,7 +88,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-tacchi-eleganti",
+    "id": "footwear & sneakers-tacchi-eleganti",
     "category": "Footwear & Sneakers",
     "subcategory": "Tacchi Eleganti",
     "useCases": [
@@ -110,20 +104,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-on-feet-urban",
-    "category": "Footwear & Sneakers",
-    "subcategory": "On Feet Urban",
-    "useCases": [
-      "Streetwear",
-      "FB Ads",
-      "TikTok"
-    ],
-    "desc": "Realistic on-feet simulations in urban environments for maximum social engagement.",
-    "before": "/prove/Calzature/On Feet Urban/prima.jpeg",
-    "afters": []
-  },
-  {
-    "id": "women's-fashion-mannequin-display",
+    "id": "women's fashion-mannequin-display",
     "category": "Women's Fashion",
     "subcategory": "Mannequin Display",
     "useCases": [
@@ -140,7 +121,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-runway-editorial",
+    "id": "women's fashion-runway-editorial",
     "category": "Women's Fashion",
     "subcategory": "Runway Editorial",
     "useCases": [
@@ -156,7 +137,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-luxury-villa-shoot",
+    "id": "women's fashion-luxury-villa-shoot",
     "category": "Women's Fashion",
     "subcategory": "Luxury Villa Shoot",
     "useCases": [
@@ -173,7 +154,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-instagram-lifestyle",
+    "id": "women's fashion-instagram-lifestyle",
     "category": "Women's Fashion",
     "subcategory": "Instagram Lifestyle",
     "useCases": [
@@ -190,7 +171,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-mature-sophistication",
+    "id": "women's fashion-mature-sophistication",
     "category": "Women's Fashion",
     "subcategory": "Mature Sophistication",
     "useCases": [
@@ -207,7 +188,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-gym-&-fitness",
+    "id": "women's fashion-gym-&-fitness",
     "category": "Women's Fashion",
     "subcategory": "Gym & Fitness",
     "useCases": [
@@ -224,7 +205,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-outfit-coordination",
+    "id": "women's fashion-outfit-coordination",
     "category": "Women's Fashion",
     "subcategory": "Outfit Coordination",
     "useCases": [
@@ -258,7 +239,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "groom-&-formal-groom-collection",
+    "id": "groom & formal-groom-collection",
     "category": "Groom & Formal",
     "subcategory": "Groom Collection",
     "useCases": [
@@ -276,7 +257,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "men's-apparel-ecommerce-studio",
+    "id": "men's apparel-ecommerce-studio",
     "category": "Men's Apparel",
     "subcategory": "Ecommerce Studio",
     "useCases": [
@@ -293,7 +274,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "men's-apparel-street-style",
+    "id": "men's apparel-street-style",
     "category": "Men's Apparel",
     "subcategory": "Street Style",
     "useCases": [
@@ -311,7 +292,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "men's-apparel-silver-fox-luxury",
+    "id": "men's apparel-silver-fox-luxury",
     "category": "Men's Apparel",
     "subcategory": "Silver Fox Luxury",
     "useCases": [
@@ -327,7 +308,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "men's-apparel-executive-lifestyle",
+    "id": "men's apparel-executive-lifestyle",
     "category": "Men's Apparel",
     "subcategory": "Executive Lifestyle",
     "useCases": [
@@ -344,21 +325,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "kids-collection-elegant-event",
-    "category": "Kids Collection",
-    "subcategory": "Elegant Event",
-    "useCases": [
-      "Ceremony",
-      "Catalog"
-    ],
-    "desc": "Adorable, high-quality shots for kids' formal wear and special occasions.",
-    "before": "/prove/Bambino/Elegant Event/0CC85BF4-2349-4DBD-A4E0-3218BD7376C9.jpeg",
-    "afters": [
-      "/prove/Bambino/Elegant Event/722FDB9F-0B65-4671-BEA0-E02088969C51.jpeg"
-    ]
-  },
-  {
-    "id": "kids-collection-playful-lifestyle",
+    "id": "kids collection-playful-lifestyle",
     "category": "Kids Collection",
     "subcategory": "Playful Lifestyle",
     "useCases": [
@@ -374,99 +341,4 @@ const SHOWCASE_DATA = [
       "/prove/Bambino/Playful Lifestyle/2624A391-1824-4FD0-9F0F-728060B61F75.jpeg"
     ]
   }
-];
-
-export default function DynamicShowcase() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observers = SHOWCASE_DATA.map((_, index) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveIndex(index);
-          }
-        },
-        { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
-      );
-      
-      if (sectionRefs.current[index]) {
-        observer.observe(sectionRefs.current[index]!);
-      }
-      return observer;
-    });
-
-    return () => observers.forEach(obs => obs.disconnect());
-  }, []);
-
-  return (
-    <div className="dynamic-showcase-container">
-      <div className="ds-sticky-sidebar hide-mobile">
-        {SHOWCASE_DATA.map((item, idx) => (
-          <div 
-            key={item.id} 
-            className={`ds-sidebar-item ${activeIndex === idx ? 'active' : ''}`}
-          >
-            <div className="ds-category">{item.category}</div>
-            <h3 className="ds-subcategory">{item.subcategory}</h3>
-            <p className="ds-desc">{item.desc}</p>
-            
-            <div className="ds-usecases">
-              {item.useCases.map(uc => (
-                <span key={uc} className="ds-badge">
-                  {uc.toLowerCase().includes('amazon') || uc.toLowerCase().includes('shop') ? <ShoppingCart size={14} /> : 
-                   uc.toLowerCase().includes('insta') || uc.toLowerCase().includes('fb') ? <Camera size={14} /> : 
-                   <TrendingUp size={14} />}
-                  {uc}
-                </span>
-              ))}
-            </div>
-            
-            <div className="ds-before-preview">
-              <div className="ds-before-label">ORIGINAL WAREHOUSE PHOTO</div>
-              <div style={{ position: 'relative', width: '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                <Image src={item.before} alt="Before" fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" quality={60} />
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="ds-scroll-content">
-        {SHOWCASE_DATA.map((item, idx) => (
-          <div 
-            key={`content-${item.id}`} 
-            ref={(el) => { sectionRefs.current[idx] = el; }} 
-            className="ds-section"
-          >
-             <div className="ds-mobile-header show-mobile">
-                <div className="ds-category">{item.category}</div>
-                <h3 className="ds-subcategory">{item.subcategory}</h3>
-                <div className="ds-usecases" style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {item.useCases.map(uc => <span key={uc} className="ds-badge">{uc}</span>)}
-                </div>
-                <div className="ds-before-preview" style={{ marginBottom: '2rem' }}>
-                  <div className="ds-before-label">ORIGINAL PHOTO</div>
-                  <div style={{ position: 'relative', width: '150px', height: '200px', borderRadius: '12px', overflow: 'hidden' }}>
-                    <Image src={item.before} alt="Before" fill style={{ objectFit: 'cover' }} quality={60} />
-                  </div>
-                </div>
-             </div>
-
-             <div className="ds-after-grid">
-               {item.afters.map((afterImg, i) => (
-                 <div key={i} className={`ds-after-card ${i === 0 ? 'ds-card-large' : ''}`}>
-                    <div className="ds-after-label">
-                      <Sparkles size={12} /> AI RESULT
-                    </div>
-                    <Image src={afterImg} alt={`Result ${i}`} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 600px" quality={80} />
-                 </div>
-               ))}
-             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+]
