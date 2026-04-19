@@ -80,6 +80,7 @@ export default async function LandingPage() {
               gap: 8px;
               font-weight: 600;
               box-shadow: 0 2px 10px rgba(255,255,255,0.1);
+              white-space: nowrap;
             }
             .glow-link::before {
               content: '';
