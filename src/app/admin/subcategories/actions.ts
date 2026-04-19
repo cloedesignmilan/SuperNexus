@@ -191,12 +191,29 @@ export async function runVisionAnalysis(subcategoryId: string) {
     }
 
   // 1. Download images to buffer and convert to base64
+  const fs = require('fs');
+  const path = require('path');
+  
   const inlineDataImages = await Promise.all(
     subcat.reference_images.map(async (img) => {
-      const response = await fetch(img.image_url);
-      const arrayBuffer = await response.arrayBuffer();
-      const base64 = Buffer.from(arrayBuffer).toString('base64');
-      const mimeType = response.headers.get('content-type') || 'image/jpeg';
+      let base64 = '';
+      let mimeType = 'image/jpeg';
+      
+      if (img.image_url.startsWith('/')) {
+        // Local file
+        const filePath = path.join(process.cwd(), 'public', img.image_url);
+        const buffer = fs.readFileSync(filePath);
+        base64 = buffer.toString('base64');
+        if (img.image_url.toLowerCase().endsWith('.png')) mimeType = 'image/png';
+        if (img.image_url.toLowerCase().endsWith('.webp')) mimeType = 'image/webp';
+      } else {
+        // Remote URL
+        const response = await fetch(img.image_url);
+        const arrayBuffer = await response.arrayBuffer();
+        base64 = Buffer.from(arrayBuffer).toString('base64');
+        mimeType = response.headers.get('content-type') || 'image/jpeg';
+      }
+      
       return {
         inlineData: {
           data: base64,
