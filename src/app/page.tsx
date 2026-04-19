@@ -29,10 +29,10 @@ export default async function LandingPage() {
           {/* Conversion Focus */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '0.85rem', fontWeight: 600 }} className="desktop-only-nav">
              <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px' }}>Top Categories:</span>
-             <a href="#showcase" className="glow-link" style={{ '--glow-color': '#ccff00' } as React.CSSProperties}>T-Shirts</a>
-             <a href="#showcase" className="glow-link" style={{ '--glow-color': '#03dac6' } as React.CSSProperties}>Footwear</a>
-             <a href="#showcase" className="glow-link" style={{ '--glow-color': '#ff5470' } as React.CSSProperties}>Event & Ceremony</a>
-             <a href="#showcase" className="glow-link" style={{ '--glow-color': '#bb86fc' } as React.CSSProperties}>Magazine Covers</a>
+             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link" style={{ '--glow-color': '#ccff00' } as React.CSSProperties}>T-Shirts</a>
+             <a href="#footwear-and-sneakers-product-clean" className="glow-link" style={{ '--glow-color': '#03dac6' } as React.CSSProperties}>Footwear</a>
+             <a href="#women's-fashion-outfit-coordination" className="glow-link" style={{ '--glow-color': '#ff5470' } as React.CSSProperties}>Combined Outfits</a>
+             <a href="#bridal-bridal-collection" className="glow-link" style={{ '--glow-color': '#bb86fc' } as React.CSSProperties}>Bridal</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
@@ -58,14 +58,13 @@ export default async function LandingPage() {
               text-decoration: none;
               padding: 6px 14px;
               border-radius: 30px;
-              background: rgba(255,255,255,0.05);
-              border: 1px solid rgba(255,255,255,0.1);
+              background: #1a1a1a; /* Solid dark background for perfect contrast */
+              border: 1px solid #333;
               transition: all 0.3s ease;
-              color: white; /* Crisp white text for readability */
+              color: #ffffff !important; /* Force crisp white text */
               display: flex;
               align-items: center;
-              gap: 6px;
-              opacity: 0.9;
+              gap: 8px;
             }
             .glow-link::before {
               content: '';
@@ -78,11 +77,10 @@ export default async function LandingPage() {
               transition: all 0.3s ease;
             }
             .glow-link:hover {
-              background: rgba(255,255,255,0.1);
+              background: #2a2a2a;
               border-color: var(--glow-color);
-              box-shadow: 0 0 15px color-mix(in srgb, var(--glow-color) 30%, transparent);
+              box-shadow: 0 0 15px color-mix(in srgb, var(--glow-color) 20%, transparent);
               transform: translateY(-2px);
-              opacity: 1;
             }
             .glow-link:hover::before {
               box-shadow: 0 0 15px var(--glow-color);

@@ -106,6 +106,7 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
         {showcaseData.map((item, idx) => (
           <div 
             key={`content-${item.id}`} 
+            id={item.id.replace(/\s+/g, '-').replace(/&/g, 'and')}
             ref={(el) => { sectionRefs.current[idx] = el; }} 
             className="ds-section"
           >
