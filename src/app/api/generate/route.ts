@@ -161,7 +161,9 @@ REGOLE AGGIUNTIVE TASSATIVE:
     }
 
     const masterPromptText = subcategoryObj.base_prompt_prefix || 'Modella fotorealistica e professionale.';
-    const negativeRulesText = (subcategoryObj.negative_prompt || 'No modifiche al capo, no tagli') + ', NO TEXT, NO LETTERS, NO WORDS, NO MAGAZINES, NO VOGUE, NO EDITORIAL COVERS';
+    const isMagazine = subcategoryObj.name.includes("Cover") || subcategoryObj.name.includes("Magazine");
+    const globalNegative = isMagazine ? "" : ", NO TEXT, NO LETTERS, NO WORDS, NO MAGAZINES, NO VOGUE, NO EDITORIAL COVERS";
+    const negativeRulesText = (subcategoryObj.negative_prompt || 'No modifiche al capo, no tagli') + globalNegative;
     const integrityRules = subcategoryObj.product_integrity_rules || '';
     const categoryFocusName = subcategoryObj.name || 'Outfit';
 
