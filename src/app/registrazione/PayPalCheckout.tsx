@@ -20,7 +20,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
     const isSubscription = planName === 'retail_monthly';
 
     const getPlanId = () => {
-        if (planName === "retail_monthly") return process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID_RETAIL_ANNUAL;
+        if (planName === "retail_monthly") return process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID_RETAIL;
         return "";
     };
 
