@@ -431,11 +431,13 @@ REGOLE TASSATIVE:
                             { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                         );
                     } else {
+                        const encodedEmail = encodeURIComponent(existingUser.email || "");
+                        const upgradeLink = `${hostUrl}/registrazione?email=${encodedEmail}&upgrade=true`;
                         await bot.telegram.editMessageText(
                             globalChatId, 
                             msgId, 
                             undefined, 
-                            `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available in your enterprise account.\n\n⚡️ **You can instantly purchase a Top-up package to unlock new generations:**\n👉 [Click here to Top-up Online](${hostUrl}/ricarica)\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
+                            `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available.\n\n⚡️ **To unlock new generations, purchase a new Pack or subscribe to a Monthly Plan:**\n👉 [Click here to Buy a new Pack](${upgradeLink})\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
                             { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                         );
                     }
