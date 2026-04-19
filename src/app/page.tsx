@@ -343,7 +343,27 @@ export default async function LandingPage() {
 
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '2.5rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
+        {/* CUSTOM CATEGORIES BANNER */}
+        <div style={{ 
+          marginTop: '3rem', 
+          padding: '2rem', 
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.5))', 
+          border: '1px solid rgba(255,255,255,0.1)', 
+          borderRadius: '16px', 
+          textAlign: 'center',
+          maxWidth: '800px',
+          margin: '3rem auto 0',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.5)'
+        }}>
+          <h3 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '0.8rem', fontWeight: 700, letterSpacing: '0.02em' }}>
+            <span style={{ color: '#bb86fc' }}>✨</span> Need a Custom Style?
+          </h3>
+          <p style={{ color: '#aaa', fontSize: '1.1rem', margin: 0, lineHeight: '1.5' }}>
+            We also offer the possibility of having <strong>custom categories and subcategories</strong> trained exactly on your brand's aesthetic starting from <strong style={{ color: '#fff', fontSize: '1.2rem' }}>$299/each</strong>.
+          </p>
+        </div>
+
+        <div style={{ textAlign: 'center', marginTop: '3rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
             <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> Cancel anytime. Your plan will remain active until expiration or until all images are fully utilized.
         </div>
       </section>
