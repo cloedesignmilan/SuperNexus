@@ -161,7 +161,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     }
 
     const masterPromptText = subcategoryObj.base_prompt_prefix || 'Modella fotorealistica e professionale.';
-    const negativeRulesText = subcategoryObj.negative_prompt || 'No modifiche al capo, no tagli';
+    const negativeRulesText = (subcategoryObj.negative_prompt || 'No modifiche al capo, no tagli') + ', NO TEXT, NO LETTERS, NO WORDS, NO MAGAZINES, NO VOGUE, NO EDITORIAL COVERS';
     const integrityRules = subcategoryObj.product_integrity_rules || '';
     const categoryFocusName = subcategoryObj.name || 'Outfit';
 
@@ -286,10 +286,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
             const currentLighting = shuffledLighting[idx % shuffledLighting.length];
 
             const modifiers = {
-                gender: genderStr === "FEMALE" ? `stunningly beautiful high-end fashion female top model (${ageBracket} years old), flawless photorealistic skin, vogue photoshoot` :
-                        genderStr === "MALE" ? `handsome confident high-end fashion male model (${ageBracket} years old), flawless photorealistic skin, GQ commercial` :
-                        genderStr === "BOY (CHILD)" ? `handsome young boy child model (${ageBracket} years old), photorealistic natural smile, gorgeous` :
-                        genderStr === "GIRL (CHILD)" ? `beautiful young girl child model (${ageBracket} years old), photorealistic natural smile, gorgeous` : "stunningly attractive photorealistic high-end model",
+                gender: genderStr === "FEMALE" ? `stunningly beautiful high-end fashion female top model (${ageBracket} years old), flawless photorealistic skin, editorial high-fashion portrait, STRICTLY NO TEXT NO MAGAZINES` :
+                        genderStr === "MALE" ? `handsome confident high-end fashion male model (${ageBracket} years old), flawless photorealistic skin, premium commercial portrait, STRICTLY NO TEXT NO MAGAZINES` :
+                        genderStr === "BOY (CHILD)" ? `handsome young boy child model (${ageBracket} years old), photorealistic natural smile, gorgeous, STRICTLY NO TEXT` :
+                        genderStr === "GIRL (CHILD)" ? `beautiful young girl child model (${ageBracket} years old), photorealistic natural smile, gorgeous, STRICTLY NO TEXT` : "stunningly attractive photorealistic high-end model, STRICTLY NO TEXT",
                 bottomType: confirmedBottom || null,
                 customBrand: confirmedBrand || null,
                 cameraAngle: currentAngle,

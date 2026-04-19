@@ -45,7 +45,7 @@ No exaggerated poses.`;
 // User-provided brief mapped to structural parameters
 const cerScene = "Minimal studio environment with a clean background (white, beige, grey, or soft neutral tones). No distractions.";
 const cerSubject = "A real-looking model (male or female) aged 20–35, with European appearance, light skin tones, natural features, not overly artificial.";
-const cerStyle = "High-end fashion magazine photography (Vogue-style), clean, sharp, and premium.";
+const cerStyle = "High-end fashion editorial photography, clean, sharp, and premium, STRICTLY NO TEXT NO MAGAZINES.";
 const cerMood = "Elegant, minimal, sophisticated, editorial.";
 const cerDetails = "Professional studio floor, extremely clean negative space to direct all focus on the outfit.";
 
