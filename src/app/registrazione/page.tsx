@@ -125,6 +125,7 @@ export default function RegistrazionePage() {
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#e0e0e0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> <strong>300 generations / month</strong></li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Nano Pro absolute fidelity</li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Cancel anytime via PayPal</li>
                                 </ul>
                             </div>
                         </label>
