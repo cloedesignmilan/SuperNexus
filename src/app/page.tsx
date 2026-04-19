@@ -60,9 +60,6 @@ export default async function LandingPage() {
             }}>
               Try it Free
             </a>
-            <a href="/admin" style={{ fontSize: '0.8rem', color: '#555', textDecoration: 'none' }}>
-              Login
-            </a>
           </div>
 
           <style dangerouslySetInnerHTML={{__html: `
