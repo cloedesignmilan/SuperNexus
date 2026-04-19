@@ -4,6 +4,7 @@ import { UploaderBase } from "../uploader-client";
 import { AnalyzeButton } from "../analyze-btn";
 import { ValidationCheckCard } from "../ValidationCheckCard";
 import StrictReferenceToggle from "../StrictReferenceToggle";
+import SubcategoryModelToggle from "../SubcategoryModelToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -67,6 +68,9 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
                    <strong style={{ color: 'var(--color-text-muted)', display: 'block' }}>Max Images Allowed:</strong>
                    {subcat.max_images_allowed}
                  </div>
+               </div>
+               <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                  <SubcategoryModelToggle subcategoryId={subcat.id} initialModel={subcat.active_model} />
                </div>
              </div>
           </div>

@@ -577,7 +577,7 @@ ${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was aske
 ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
-                    const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
+                    const generationModel = subcat.active_model || activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
                     
                     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
                     let generatedBase64s: string[] = [];

@@ -92,6 +92,7 @@ model Subcategory {
   sort_order             Int      @default(0)
   is_active              Boolean  @default(true)
   strict_reference_mode  Boolean  @default(false)
+  active_model           String?
   
   // Campi integrati da ex PromptTemplateSettings
   base_prompt_prefix      String?  @db.Text

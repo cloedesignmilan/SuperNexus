@@ -267,7 +267,7 @@ REGOLE AGGIUNTIVE TASSATIVE:
     }
 
     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
-    const generationModel = activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
+    const generationModel = subcategoryObj.active_model || activeModelSetting?.value || 'gemini-3.1-flash-image-preview';
 
     let auditPrompts: string[] = [];
     let totalPromptsAttempted = 0;

@@ -282,3 +282,11 @@ export async function updateValidationNotes(id: string, notes: string) {
   });
   revalidatePath("/admin/subcategories");
 }
+
+export async function updateSubcategoryModel(id: string, model: string | null) {
+  await prisma.subcategory.update({
+    where: { id },
+    data: { active_model: model }
+  });
+  revalidatePath(`/admin/subcategories/${id}`);
+}
