@@ -25,10 +25,40 @@ export default async function LandingPage() {
         <div className="landing-logo">
           SuperNexus <span>AI</span>
         </div>
-        <nav>
-          <a href="/admin" className="btn-secondary" style={{ padding: '0.6rem 1.5rem', fontSize: '0.9rem' }}>
-            Login
-          </a>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          {/* Conversion Focus (Hidden on small mobile usually, but kept inline for simplicity) */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#888', fontSize: '0.85rem', fontWeight: 600 }} className="desktop-only-nav">
+             <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px' }}>Specialized in:</span>
+             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>T-Shirts</span>
+             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>Footwear</span>
+             <span style={{ background: 'rgba(255,255,255,0.08)', padding: '4px 12px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.1)' }}>Event & Ceremony</span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+            <a href="#pricing" style={{ 
+              padding: '0.6rem 1.5rem', 
+              fontSize: '0.9rem', 
+              fontWeight: 700,
+              background: '#fff', 
+              color: '#000',
+              borderRadius: '30px',
+              textDecoration: 'none',
+              boxShadow: '0 4px 15px rgba(255,255,255,0.2)'
+            }}>
+              Try it Free
+            </a>
+            <a href="/admin" style={{ fontSize: '0.8rem', color: '#555', textDecoration: 'none' }}>
+              Login
+            </a>
+          </div>
+
+          <style dangerouslySetInnerHTML={{__html: `
+            @media (max-width: 900px) {
+              .desktop-only-nav {
+                display: none !important;
+              }
+            }
+          `}} />
         </nav>
       </header>
 
