@@ -344,9 +344,9 @@ export default async function LandingPage() {
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
           <div className="pricing-card" style={{ 
             gridColumn: '1 / -1', 
-            border: '2px solid #bb86fc', 
-            background: 'linear-gradient(135deg, rgba(187,134,252,0.08) 0%, rgba(0,0,0,0) 100%)',
-            boxShadow: '0 0 20px rgba(187,134,252,0.15)',
+            border: '1px solid #444', 
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,1) 100%)',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -358,17 +358,17 @@ export default async function LandingPage() {
             borderRadius: '16px'
           }}>
             <div style={{ flex: '1 1 300px' }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Custom <span style={{ color: '#bb86fc', textShadow: '0 0 10px rgba(187,134,252,0.2)' }}>AI Models</span></h3>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#fff' }}>Custom <span style={{ color: '#888', textShadow: 'none' }}>AI Models</span></h3>
                 <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.</p>
             </div>
             
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
-              <li><CheckCircle2 size={24} color="#bb86fc" /> <strong style={{ fontSize: '1.1rem' }}>Bespoke Categories</strong></li>
-              <li><CheckCircle2 size={24} color="#bb86fc" /> <span style={{ fontSize: '1.1rem' }}>Custom Subcategories</span></li>
+              <li><CheckCircle2 size={24} color="#fff" /> <strong style={{ fontSize: '1.1rem', color: '#fff' }}>Bespoke Categories</strong></li>
+              <li><CheckCircle2 size={24} color="#fff" /> <span style={{ fontSize: '1.1rem', color: '#fff' }}>Custom Subcategories</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#bb86fc', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(187,134,252,0.4)', borderRadius: '12px' }}>Starting at $299/ea</a>
+                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#000', color: '#fff', border: '2px solid #fff', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,255,255,0.05)', borderRadius: '12px' }}>Starting at $299/ea</a>
             </div>
           </div>
 
