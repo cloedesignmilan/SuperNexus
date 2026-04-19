@@ -249,7 +249,7 @@ export default function ShowcaseCategories() {
               backgroundImage: `url('${cat.bgImage}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              opacity: 0.15,
+              opacity: 0.4,
               zIndex: 0,
               pointerEvents: 'none',
               mixBlendMode: 'luminosity'
