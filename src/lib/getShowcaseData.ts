@@ -88,7 +88,7 @@ const CATEGORIES = [
     "category": "Women's Fashion",
     "subcategory": "Outfit Coordination",
     "useCases": ["Pinterest", "Lookbook"],
-    "desc": "Show how different pieces match together in realistic, coordinated street looks.",
+    "desc": "Show how different pieces match together in realistic, coordinated street looks. Just send multiple photos to the bot at once!",
     "folderPath": "/prove/Donna/Outfit Coordination"
   },
   {
@@ -147,7 +147,7 @@ export interface ShowcaseItem {
   subcategory: string;
   useCases: string[];
   desc: string;
-  before: string;
+  before: string[];
   afters: string[];
 }
 
@@ -156,7 +156,7 @@ export async function getShowcaseData(): Promise<ShowcaseItem[]> {
 
   for (const cat of CATEGORIES) {
     const fullPath = path.join(process.cwd(), 'public', cat.folderPath);
-    let beforeImage = "";
+    let beforeImages: string[] = [];
     let afterImages: string[] = [];
 
     if (fs.existsSync(fullPath)) {
@@ -176,7 +176,7 @@ export async function getShowcaseData(): Promise<ShowcaseItem[]> {
 
         // Before rule: starts with "prima"
         if (lowerFile.startsWith('prima')) {
-          beforeImage = `${cat.folderPath}/${file}`;
+          beforeImages.push(`${cat.folderPath}/${file}`);
           continue;
         }
 
@@ -194,6 +194,9 @@ export async function getShowcaseData(): Promise<ShowcaseItem[]> {
         
         return a.localeCompare(b);
       });
+
+      // Sort before images so prima1 comes before prima2
+      beforeImages.sort((a, b) => a.localeCompare(b));
     }
 
     result.push({
@@ -202,7 +205,7 @@ export async function getShowcaseData(): Promise<ShowcaseItem[]> {
       subcategory: cat.subcategory,
       useCases: cat.useCases,
       desc: cat.desc,
-      before: beforeImage || `${cat.folderPath}/prima.jpeg`, // fallback
+      before: beforeImages.length > 0 ? beforeImages : [`${cat.folderPath}/prima.jpeg`], // fallback
       afters: afterImages
     });
   }
