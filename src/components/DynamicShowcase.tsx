@@ -302,6 +302,32 @@ export default function DynamicShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
+
+  // Hide main header on mobile when entering showcase
+  useEffect(() => {
+    const showcaseContainer = document.querySelector('.dynamic-showcase-container');
+    const header = document.querySelector('.landing-header') as HTMLElement;
+    
+    if (!showcaseContainer || !header) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (window.innerWidth <= 900) {
+        if (entry.isIntersecting) {
+          header.style.transform = 'translateY(-100%)';
+          header.style.transition = 'transform 0.3s ease';
+        } else {
+          header.style.transform = 'translateY(0)';
+        }
+      }
+    }, { rootMargin: '-10% 0px -10% 0px', threshold: 0 });
+
+    observer.observe(showcaseContainer);
+    return () => {
+      observer.disconnect();
+      if (header) header.style.transform = 'translateY(0)';
+    };
+  }, []);
+
   useEffect(() => {
     const observers = SHOWCASE_DATA.map((_, index) => {
       const observer = new IntersectionObserver(
@@ -362,21 +388,21 @@ export default function DynamicShowcase() {
             ref={(el) => { sectionRefs.current[idx] = el; }} 
             className="ds-section"
           >
-             <div className="ds-mobile-header show-mobile">
-                <div style={{
+             <div className="show-mobile" style={{
                   position: 'sticky',
-                  top: '70px',
-                  zIndex: 20,
+                  top: '-1px',
+                  zIndex: 30,
                   background: 'rgba(8, 8, 8, 0.95)',
                   backdropFilter: 'blur(10px)',
                   padding: '1rem 0',
-                  margin: '-1rem 0 1rem 0',
+                  margin: '0',
                   borderBottom: '1px solid rgba(255,255,255,0.05)'
                 }}>
                   <div className="ds-category">{item.category}</div>
-                  <h3 className="ds-subcategory" style={{ margin: 0 }}>{item.subcategory}</h3>
-                </div>
+                  <h3 className="ds-subcategory" style={{ margin: 0, fontSize: '1.5rem' }}>{item.subcategory}</h3>
+             </div>
 
+             <div className="ds-mobile-header show-mobile" style={{ marginTop: '1rem' }}>
                 <div className="ds-usecases" style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {item.useCases.map(uc => <span key={uc} className="ds-badge">{uc}</span>)}
                 </div>
