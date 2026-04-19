@@ -84,7 +84,15 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
               <div className="ds-before-label">ORIGINAL WAREHOUSE PHOTO{item.before.length > 1 ? 'S' : ''}</div>
               <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: item.before.length > 1 ? '8px' : '0' }}>
                 {item.before.map((b, i) => (
-                  <div key={i} style={{ position: 'relative', width: item.before.length > 1 ? 'calc(50% - 4px)' : '100%', height: '180px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', flexShrink: 0 }}>
+                  <div key={i} style={{ 
+                    position: 'relative', 
+                    width: item.before.length > 1 ? 'calc(50% - 4px)' : '100%', 
+                    height: item.before.length > 1 ? '250px' : '450px', 
+                    borderRadius: '12px', 
+                    overflow: 'hidden', 
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.5)', 
+                    flexShrink: 0 
+                  }}>
                     <Image src={b} alt={`Before ${i+1}`} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 300px" quality={60} />
                   </div>
                 ))}
