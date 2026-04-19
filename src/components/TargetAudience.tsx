@@ -1,5 +1,8 @@
 import React from 'react';
-import { Store, ShoppingBag, Globe, Camera, CheckCircle2 } from 'lucide-react';
+import { Store, ShoppingBag, Globe, Camera, CheckCircle2, CornerDownRight } from 'lucide-react';
+import { Caveat } from 'next/font/google';
+
+const caveat = Caveat({ subsets: ['latin'], weight: '700' });
 
 export default function TargetAudience() {
   const audiences = [
@@ -7,25 +10,29 @@ export default function TargetAudience() {
       title: "Clothing Stores",
       description: "Upload your entire new collection to your website in a fraction of the time and eliminate studio photography costs.",
       icon: <Store size={32} />,
-      color: "#ccff00" // Neon Yellow
+      color: "#a3cc00", // Darker neon yellow for white bg visibility
+      handwrittenTip: "Perfect for T-Shirts & Apparel"
     },
     {
-      title: "Outlet Stores, eBay, Etsy, Amazon",
-      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on Amazon, eBay, or Etsy.",
+      title: "Outlet Stores, eBay, Etsy",
+      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on marketplaces.",
       icon: <ShoppingBag size={32} />,
-      color: "#ff5470" // Neon Pink
+      color: "#ff5470", // Neon Pink
+      handwrittenTip: "Perfect for Footwear & Accessories"
     },
     {
       title: "Fashion E-commerce",
       description: "Skyrocket your conversion rates with consistent, premium, and fully-branded imagery.",
       icon: <Globe size={32} />,
-      color: "#03dac6" // Neon Cyan
+      color: "#00b3a6", // Darker cyan for visibility
+      handwrittenTip: "Perfect for Combined Outfits"
     },
     {
       title: "Instagram Sellers",
       description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate purchases.",
       icon: <Camera size={32} />,
-      color: "#bb86fc" // Neon Purple
+      color: "#9933ff", // Darker purple for visibility
+      handwrittenTip: "Perfect for UGC Content"
     }
   ];
 
@@ -50,11 +57,13 @@ export default function TargetAudience() {
             <div key={index} style={{
               background: '#f9f9f9',
               borderRadius: '24px',
-              padding: '2.5rem 2rem',
+              padding: '2.5rem 2rem 1.5rem',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               border: '1px solid rgba(0,0,0,0.03)',
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column'
             }} className="target-card">
               
               <div style={{ 
@@ -74,11 +83,32 @@ export default function TargetAudience() {
                 {item.title}
               </h3>
               
-              <p style={{ color: '#666', fontSize: '1.05rem', lineHeight: '1.5', margin: 0 }}>
+              <p style={{ color: '#666', fontSize: '1.05rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
                 {item.description}
               </p>
 
-              <div style={{ position: 'absolute', top: '2rem', right: '2rem', opacity: 0.1 }}>
+              {/* Hand-drawn section */}
+              <div style={{ 
+                marginTop: '2rem', 
+                paddingTop: '1rem', 
+                borderTop: '2px dashed rgba(0,0,0,0.06)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '12px' 
+              }}>
+                <CornerDownRight size={20} color={item.color} style={{ opacity: 0.8 }} />
+                <span className={caveat.className} style={{ 
+                  fontSize: '1.6rem', 
+                  color: '#444', 
+                  transform: 'rotate(-3deg)',
+                  display: 'inline-block',
+                  lineHeight: '1'
+                }}>
+                  {item.handwrittenTip}
+                </span>
+              </div>
+
+              <div style={{ position: 'absolute', top: '2rem', right: '2rem', opacity: 0.05, pointerEvents: 'none' }}>
                 <CheckCircle2 size={100} style={{ transform: 'translate(40%, -40%)' }} />
               </div>
             </div>
