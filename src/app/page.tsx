@@ -27,12 +27,24 @@ export default async function LandingPage() {
         </div>
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           {/* Conversion Focus */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', fontSize: '0.85rem', fontWeight: 600 }} className="desktop-only-nav">
-             <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px' }}>Top Categories:</span>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '0.8rem', 
+            fontSize: '0.85rem', 
+            fontWeight: 600,
+            overflowX: 'auto',
+            paddingBottom: '4px', // Space for scrollbar if visible
+            maxWidth: '55vw' // Prevent pushing the right buttons out
+          }} className="desktop-only-nav hide-scrollbar">
+             <span style={{ color: '#fff', textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.75rem', marginRight: '4px', whiteSpace: 'nowrap' }}>Top Categories:</span>
              <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link" style={{ '--glow-color': '#ccff00' } as React.CSSProperties}>T-Shirts</a>
              <a href="#footwear-and-sneakers-product-clean" className="glow-link" style={{ '--glow-color': '#03dac6' } as React.CSSProperties}>Footwear</a>
-             <a href="#women's-fashion-outfit-coordination" className="glow-link" style={{ '--glow-color': '#ff5470' } as React.CSSProperties}>Combined Outfits</a>
+             <a href="#women's-fashion-outfit-coordination" className="glow-link" style={{ '--glow-color': '#ff5470' } as React.CSSProperties}>Outfits</a>
              <a href="#bridal-bridal-collection" className="glow-link" style={{ '--glow-color': '#bb86fc' } as React.CSSProperties}>Bridal</a>
+             <a href="#men's-apparel-executive-lifestyle" className="glow-link" style={{ '--glow-color': '#4d94ff' } as React.CSSProperties}>Men's Suits</a>
+             <a href="#kids-collection-elegant-event" className="glow-link" style={{ '--glow-color': '#ffaa00' } as React.CSSProperties}>Kids</a>
+             <a href="#women's-fashion-runway-editorial" className="glow-link" style={{ '--glow-color': '#ff0055' } as React.CSSProperties}>Runway</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
