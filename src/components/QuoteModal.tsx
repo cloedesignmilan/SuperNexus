@@ -48,6 +48,11 @@ export default function QuoteModal({ isOpen, onClose }: QuoteModalProps) {
         throw new Error('Failed to send request');
       }
 
+      // Track Meta Pixel Event for Lead Generation
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead');
+      }
+
       setIsSuccess(true);
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.');

@@ -13,6 +13,7 @@ import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
 import ChatBot from '@/components/ChatBot';
 import QuoteCTA from '@/components/QuoteCTA';
+import TrackedLink from '@/components/TrackedLink';
 import { getShowcaseData } from '@/lib/getShowcaseData';
 
 export default async function LandingPage() {
@@ -187,9 +188,9 @@ export default async function LandingPage() {
             </p>
           </div>
           <div className="hero-buttons">
-            <Link href="/registrazione" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }}>
+            <TrackedLink href="/registrazione" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
               Start 10-Image Free Trial
-            </Link>
+            </TrackedLink>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
             </a>

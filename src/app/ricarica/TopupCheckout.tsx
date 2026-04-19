@@ -49,6 +49,19 @@ export default function TopupCheckout({ pin, packageId, onSuccess }: TopupChecko
             const orderData = await response.json();
 
             if (orderData.status === "COMPLETED" || orderData.id) {
+                // Track Meta Pixel Event for Purchase
+                if (typeof window !== 'undefined' && (window as any).fbq) {
+                    // Try to extract value from packageId if possible, else send generic Purchase
+                    let value = 0;
+                    if (packageId.includes('10')) value = 10;
+                    else if (packageId.includes('29')) value = 29;
+                    else if (packageId.includes('69')) value = 69;
+                    
+                    (window as any).fbq('track', 'Purchase', {
+                        value: value > 0 ? value : 10.00,
+                        currency: 'EUR'
+                    });
+                }
                 onSuccess(); // Trasmette la vittoria alla pagina
             } else {
                 setError("Pagamento non completato (Status: " + orderData.status + ")");
