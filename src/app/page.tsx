@@ -12,6 +12,7 @@ import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
 import ChatBot from '@/components/ChatBot';
+import QuoteCTA from '@/components/QuoteCTA';
 import { getShowcaseData } from '@/lib/getShowcaseData';
 
 export default async function LandingPage() {
@@ -396,7 +397,7 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px', zIndex: 2 }}>
-                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(204,255,0,0.4)', borderRadius: '12px' }}>Starting at $299/ea</a>
+                <QuoteCTA />
             </div>
           </div>
 
