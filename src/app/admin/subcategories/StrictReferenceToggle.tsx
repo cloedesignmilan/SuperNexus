@@ -24,7 +24,7 @@ export default function StrictReferenceToggle({ subcategoryId, currentStatus }: 
         </h4>
         <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
           {currentStatus 
-            ? "L'AI genererà pose identiche alla reference (1:1), ignorando variazioni di sistema." 
+            ? "L'AI genererà pose identiche alla reference (1:1), ignorando variazioni di sistema con questa regola: se scelgo di creare 1 foto crea solo la prima Reference Images, se scelgo di creare 5 immagini lui crea le prime Reference Images dalla 1 alla 5." 
             : "L'AI mescolerà la scenografia della reference con pose fotografiche casuali (Dinamico)."}
         </p>
       </div>
