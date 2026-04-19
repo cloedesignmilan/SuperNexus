@@ -51,12 +51,12 @@ export default async function LandingPage() {
             <a href="#pricing" style={{ 
               padding: '0.6rem 1.5rem', 
               fontSize: '0.9rem', 
-              fontWeight: 700,
-              background: '#fff', 
+              fontWeight: 800,
+              background: '#ccff00', 
               color: '#000',
               borderRadius: '30px',
               textDecoration: 'none',
-              boxShadow: '0 4px 15px rgba(255,255,255,0.2)'
+              boxShadow: '0 4px 15px rgba(204,255,0,0.3)'
             }}>
               Try it Free
             </a>
@@ -132,6 +132,23 @@ export default async function LandingPage() {
             @keyframes spin-border {
               100% { transform: rotate(360deg); }
             }
+            .hero-buttons {
+              display: flex;
+              gap: 1rem;
+              justify-content: center;
+            }
+            @media (max-width: 600px) {
+              .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+                padding: 0 1rem;
+              }
+              .hero-buttons > * {
+                width: 100%;
+                text-align: center;
+              }
+            }
           `}} />
         </nav>
       </header>
@@ -163,11 +180,11 @@ export default async function LandingPage() {
               ✨ Create Photos that actually sell
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <Link href="/registrazione" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800' }}>
+          <div className="hero-buttons">
+            <Link href="/registrazione" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }}>
               Start 10-Image Free Trial
             </Link>
-            <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000' }}>
+            <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
             </a>
           </div>
