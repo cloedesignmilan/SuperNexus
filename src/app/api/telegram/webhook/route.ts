@@ -473,7 +473,7 @@ REGOLE TASSATIVE:
             } else {
                 subcat = await prisma.subcategory.findUnique({
                     where: { id: subId },
-                    include: { variations: { orderBy: { sort_order: 'asc' } }, business_mode: { include: { category: true } }, reference_images: true }
+                    include: { variations: { orderBy: { sort_order: 'asc' } }, business_mode: { include: { category: true } }, reference_images: { orderBy: { image_order: 'asc' } } }
                 });
                 dbCatId = subcat?.business_mode.category_id || "fake";
                 dbModeId = subcat?.business_mode_id || "fake";
