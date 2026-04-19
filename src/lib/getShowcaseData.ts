@@ -97,7 +97,7 @@ const CATEGORIES = [
     "subcategory": "Romantic Venue",
     "useCases": ["Atelier", "Wedding", "Pinterest"],
     "desc": "Transform an anonymous dress hanging in the Atelier into sumptuous catalogs that enchant brides.",
-    "folderPath": "/prove/Sposa"
+    "folderPath": "/prove/Sposa/Romantic Venue"
   },
   {
     "id": "groom & formal-groom-collection",
