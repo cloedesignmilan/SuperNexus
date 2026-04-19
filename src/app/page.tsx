@@ -5,7 +5,7 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
-import ShowcaseTabs from '@/components/ShowcaseTabs';
+import DynamicShowcase from '@/components/DynamicShowcase';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
@@ -98,12 +98,12 @@ export default function LandingPage() {
       <TargetAudience />
 
       {/* SHOWCASE DA ZERO */}
-      <section id="showcase" className="bento-section" style={{ padding: '4rem 5%', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
-        <h2 className="section-title" style={{ color: '#fff' }}>Indispensable for your Store.</h2>
+      <section id="showcase" style={{ padding: '4rem 0', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
+        <h2 className="section-title" style={{ color: '#fff', textAlign: 'center' }}>Indispensable for your Store.</h2>
         <p style={{ fontSize: '1.2rem', color: '#aaa', marginBottom: '4rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 4rem' }}>
           From the box to the web in 30 seconds. Watch how quickly taken photos from our affiliated stores are transformed into perfect images for Facebook Campaigns, Instagram Posts, and Website catalogs.
         </p>
-        <ShowcaseTabs />
+        <DynamicShowcase />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}
