@@ -52,7 +52,7 @@ const SHOWCASE_DATA =
       "FB Ads"
     ],
     "desc": "Create relatable, everyday lifestyle shots that look like genuine customer photos for high-converting ads.",
-    "before": "/prove/Tshirt/UCG/prima.png",
+    "before": "/prove/Tshirt/UCG/prima.jpeg",
     "afters": [
       "/prove/Tshirt/UCG/A31F09FA-E905-4EB4-8741-233184C8503F.jpeg",
       "/prove/Tshirt/UCG/5AD87520-5730-481F-9D98-89E55C69521C.jpeg",
@@ -138,7 +138,7 @@ const SHOWCASE_DATA =
       "IG Reels"
     ],
     "desc": "Create vibrant, trendy lifestyle shots that perfectly match the Instagram aesthetic.",
-    "before": "/prove/Donna/Instagram Lifestyle/prima.png",
+    "before": "/prove/Donna/Instagram Lifestyle/prima.jpeg",
     "afters": [
       "/prove/Donna/Instagram Lifestyle/B8DF2811-7EFF-4CB6-AC32-6C841B0407BF.jpeg",
       "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
