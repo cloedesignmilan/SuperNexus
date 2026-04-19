@@ -38,17 +38,17 @@ export default async function LandingPage() {
             paddingBottom: '4px', // Space for scrollbar if visible
             maxWidth: '55vw' // Prevent pushing the right buttons out
           }} className="desktop-only-nav hide-scrollbar">
-             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link" style={{ '--glow-color': '#ccff00' } as React.CSSProperties}>T-Shirts</a>
-             <a href="#footwear-and-sneakers-product-clean" className="glow-link" style={{ '--glow-color': '#03dac6' } as React.CSSProperties}>Footwear</a>
-             <a href="#women's-fashion-outfit-coordination" className="glow-link" style={{ '--glow-color': '#ff5470' } as React.CSSProperties}>Outfits</a>
-             <a href="#bridal-bridal-collection" className="glow-link" style={{ '--glow-color': '#bb86fc' } as React.CSSProperties}>Bridal</a>
-             <a href="#men's-apparel-executive-lifestyle" className="glow-link" style={{ '--glow-color': '#4d94ff' } as React.CSSProperties}>Men's Suits</a>
-             <a href="#kids-collection-elegant-event" className="glow-link" style={{ '--glow-color': '#ffaa00' } as React.CSSProperties}>Kids</a>
-             <a href="#women's-fashion-runway-editorial" className="glow-link" style={{ '--glow-color': '#ff0055' } as React.CSSProperties}>Runway</a>
+             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}>T-Shirts</a>
+             <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}>Footwear</a>
+             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}>Outfits</a>
+             <a href="#bridal-bridal-collection" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}>Bridal</a>
+             <a href="#men's-apparel-executive-lifestyle" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}>Men's Suits</a>
+             <a href="#kids-collection-elegant-event" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}>Kids</a>
+             <a href="#women's-fashion-runway-editorial" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}>Runway</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
-            <a href="#pricing" style={{ 
+            <a href="#pricing" className="stagger-anim" style={{ 
               padding: '0.6rem 1.5rem', 
               fontSize: '0.9rem', 
               fontWeight: 800,
@@ -56,13 +56,22 @@ export default async function LandingPage() {
               color: '#000',
               borderRadius: '30px',
               textDecoration: 'none',
-              boxShadow: '0 4px 15px rgba(204,255,0,0.3)'
+              boxShadow: '0 4px 15px rgba(204,255,0,0.3)',
+              animationDelay: '0.8s'
             }}>
               Try it Free
             </a>
           </div>
 
           <style dangerouslySetInnerHTML={{__html: `
+            @keyframes popIn {
+              0% { opacity: 0; transform: scale(0.8) translateY(-10px); }
+              100% { opacity: 1; transform: scale(1) translateY(0); }
+            }
+            .stagger-anim {
+              opacity: 0;
+              animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            }
             .glow-link {
               text-decoration: none;
               padding: 6px 14px;
