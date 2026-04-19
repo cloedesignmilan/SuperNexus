@@ -124,10 +124,23 @@ export default function ShowcaseCategories() {
       scrollContainer.scrollLeft = scrollLeft - walk;
     };
 
+    // Touch logic to pause auto-scroll
+    const onTouchStart = () => {
+      isDown = true; // Pauses auto-scroll
+    };
+    const onTouchEnd = () => {
+      isDown = false; // Resumes auto-scroll
+    };
+
     scrollContainer.addEventListener('mousedown', onMouseDown);
     scrollContainer.addEventListener('mouseleave', onMouseLeave);
     scrollContainer.addEventListener('mouseup', onMouseUp);
     scrollContainer.addEventListener('mousemove', onMouseMove);
+    
+    // Listen for native touch to stop interference
+    scrollContainer.addEventListener('touchstart', onTouchStart, { passive: true });
+    scrollContainer.addEventListener('touchend', onTouchEnd);
+    scrollContainer.addEventListener('touchcancel', onTouchEnd);
 
     return () => {
       clearInterval(autoScroll);
@@ -136,6 +149,10 @@ export default function ShowcaseCategories() {
         scrollContainer.removeEventListener('mouseleave', onMouseLeave);
         scrollContainer.removeEventListener('mouseup', onMouseUp);
         scrollContainer.removeEventListener('mousemove', onMouseMove);
+        
+        scrollContainer.removeEventListener('touchstart', onTouchStart);
+        scrollContainer.removeEventListener('touchend', onTouchEnd);
+        scrollContainer.removeEventListener('touchcancel', onTouchEnd);
       }
     };
   }, []);
