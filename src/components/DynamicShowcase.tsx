@@ -18,12 +18,12 @@ const SHOWCASE_DATA =
     "desc": "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
     "before": "/prove/Tshirt/Tshirt- FlatLay/prima.jpeg",
     "afters": [
+      "/prove/Tshirt/Tshirt- FlatLay/1.JPG",
       "/prove/Tshirt/Tshirt- FlatLay/ChatGPT Image 19 apr 2026, 16_13_47.jpeg",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1810.JPG",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1809.JPG",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG"
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG"
     ]
   },
   {
