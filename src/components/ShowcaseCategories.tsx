@@ -219,77 +219,120 @@ export default function ShowcaseCategories() {
           <div key={idx} style={{
             flex: '0 0 auto',
             width: '320px',
-            background: 'rgba(20, 20, 20, 0.6)',
-            border: '1px solid rgba(255, 255, 255, 0.05)',
-            borderRadius: '16px',
-            padding: '24px',
-            backdropFilter: 'blur(10px)',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            height: '380px',
+            background: '#0a0a0a',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderRadius: '24px',
+            transition: 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.8)'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
             e.currentTarget.style.border = `1px solid ${cat.border}`;
-            e.currentTarget.style.boxShadow = `0 10px 30px ${cat.color}`;
+            e.currentTarget.style.boxShadow = `0 20px 50px ${cat.color}`;
+            
             const glow = e.currentTarget.querySelector('.cat-glow') as HTMLElement;
-            if (glow) glow.style.opacity = '1';
+            if (glow) glow.style.opacity = '0.8';
+            
+            const img = e.currentTarget.querySelector('.cat-bg-img') as HTMLElement;
+            if (img) {
+              img.style.transform = 'scale(1.08)';
+              img.style.opacity = '0.9';
+              img.style.filter = 'grayscale(0%) contrast(1.1)';
+            }
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.05)';
-            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.8)';
+            
             const glow = e.currentTarget.querySelector('.cat-glow') as HTMLElement;
             if (glow) glow.style.opacity = '0';
+            
+            const img = e.currentTarget.querySelector('.cat-bg-img') as HTMLElement;
+            if (img) {
+              img.style.transform = 'scale(1)';
+              img.style.opacity = '0.4';
+              img.style.filter = 'grayscale(30%)';
+            }
           }}>
-            {/* Background Image */}
-            <div style={{
+            {/* Dynamic Background Image */}
+            <div className="cat-bg-img" style={{
               position: 'absolute',
               top: 0, left: 0, right: 0, bottom: 0,
               backgroundImage: `url('${cat.bgImage}')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: 0.4,
+              filter: 'grayscale(30%)',
+              transition: 'all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1)',
               zIndex: 0,
-              pointerEvents: 'none',
-              mixBlendMode: 'luminosity'
+              pointerEvents: 'none'
             }}></div>
 
-            {/* Background Glow */}
+            {/* Premium Gradient Overlay */}
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, bottom: 0,
+              background: 'linear-gradient(to bottom, rgba(10,10,10,0.1) 0%, rgba(10,10,10,0.95) 85%, #0a0a0a 100%)',
+              zIndex: 1,
+              pointerEvents: 'none'
+            }}></div>
+
+            {/* Subtle Colored Glow */}
             <div className="cat-glow" style={{
               position: 'absolute',
               top: '-50%',
               left: '-50%',
               width: '200%',
               height: '200%',
-              background: `radial-gradient(circle at center, ${cat.color} 0%, transparent 60%)`,
+              background: `radial-gradient(circle at center, ${cat.color} 0%, transparent 50%)`,
               opacity: 0,
-              transition: 'opacity 0.4s ease',
-              zIndex: 0,
-              pointerEvents: 'none'
+              transition: 'opacity 0.5s ease',
+              zIndex: 1,
+              pointerEvents: 'none',
+              mixBlendMode: 'screen'
             }}></div>
 
-            <div style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
+            {/* Content Container pinned to bottom */}
+            <div style={{ 
+              position: 'absolute', 
+              bottom: 0, 
+              left: 0, 
+              right: 0, 
+              padding: '24px', 
+              zIndex: 2, 
+              pointerEvents: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              height: '100%'
+            }}>
               {/* Macro Category Header */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '10px',
-                  background: cat.color,
-                  border: `1px solid ${cat.border}`
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  border: `1px solid rgba(255,255,255,0.2)`,
+                  boxShadow: `0 4px 15px ${cat.color}`
                 }}>
                   {cat.icon}
                 </div>
                 <h3 style={{ 
                   margin: 0, 
-                  fontSize: '1.2rem', 
-                  fontWeight: 600, 
-                  color: '#fff',
-                  letterSpacing: '-0.02em'
+                  fontSize: '1.4rem', 
+                  fontWeight: 700, 
+                  color: '#ffffff',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.8)'
                 }}>
                   {cat.name}
                 </h3>
@@ -302,14 +345,16 @@ export default function ShowcaseCategories() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '6px 12px',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    borderRadius: '20px',
+                    padding: '8px 14px',
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(8px)',
+                    borderRadius: '30px',
                     fontSize: '0.85rem',
-                    color: '#aaa',
+                    color: '#e5e5e5',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
                   }}>
-                    <span style={{ opacity: 0.7 }}>{sub.icon}</span>
+                    <span style={{ opacity: 0.8 }}>{sub.icon}</span>
                     {sub.name}
                   </span>
                 ))}
