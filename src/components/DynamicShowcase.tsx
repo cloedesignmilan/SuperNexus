@@ -4,9 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Sparkles, ShoppingCart, Camera, Star, TrendingUp } from 'lucide-react';
 
-const SHOWCASE_DATA = [
+const SHOWCASE_DATA = 
+[
   {
-    "id": "t-shirt-&-knitwear-streetwear-flatlay",
+    "id": "t-shirt & knitwear-streetwear-flatlay",
     "category": "T-Shirt & Knitwear",
     "subcategory": "Streetwear FlatLay",
     "useCases": [
@@ -17,14 +18,14 @@ const SHOWCASE_DATA = [
     "desc": "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
     "before": "/prove/Tshirt/Tshirt- FlatLay/prima.jpeg",
     "afters": [
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1810.JPG",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1809.JPG"
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG"
     ]
   },
   {
-    "id": "t-shirt-&-knitwear-e-commerce-clean",
+    "id": "t-shirt & knitwear-e-commerce-clean",
     "category": "T-Shirt & Knitwear",
     "subcategory": "E-Commerce Clean",
     "useCases": [
@@ -42,7 +43,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "t-shirt-&-knitwear-ugc-(user-generated-content)",
+    "id": "t-shirt & knitwear-ugc-(user-generated-content)",
     "category": "T-Shirt & Knitwear",
     "subcategory": "UGC (User Generated Content)",
     "useCases": [
@@ -60,24 +61,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-sneakers-donna",
-    "category": "Footwear & Sneakers",
-    "subcategory": "Sneakers Donna",
-    "useCases": [
-      "Zalando",
-      "Asos",
-      "E-commerce"
-    ],
-    "desc": "Perfect lighting and reflection generation for premium sneaker catalogs.",
-    "before": "/prove/Calzature/sneakers-donna/prima.jpeg",
-    "afters": [
-      "/prove/Calzature/sneakers-donna/D725FEDD-7A1B-4FEE-9D5E-630B7864FEA0.jpeg",
-      "/prove/Calzature/sneakers-donna/E64FEFE4-84D3-4C79-BD4E-F3DD070E6FF6.jpeg",
-      "/prove/Calzature/sneakers-donna/D71F9B31-5489-4298-A540-86B9C65C78CE.jpeg"
-    ]
-  },
-  {
-    "id": "footwear-&-sneakers-product-clean",
+    "id": "footwear & sneakers-product-clean",
     "category": "Footwear & Sneakers",
     "subcategory": "Product Clean",
     "useCases": [
@@ -94,7 +78,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-tacchi-eleganti",
+    "id": "footwear & sneakers-tacchi-eleganti",
     "category": "Footwear & Sneakers",
     "subcategory": "Tacchi Eleganti",
     "useCases": [
@@ -110,20 +94,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "footwear-&-sneakers-on-feet-urban",
-    "category": "Footwear & Sneakers",
-    "subcategory": "On Feet Urban",
-    "useCases": [
-      "Streetwear",
-      "FB Ads",
-      "TikTok"
-    ],
-    "desc": "Realistic on-feet simulations in urban environments for maximum social engagement.",
-    "before": "/prove/Calzature/On Feet Urban/prima.jpeg",
-    "afters": []
-  },
-  {
-    "id": "women's-fashion-mannequin-display",
+    "id": "women's fashion-mannequin-display",
     "category": "Women's Fashion",
     "subcategory": "Mannequin Display",
     "useCases": [
@@ -140,7 +111,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-runway-editorial",
+    "id": "women's fashion-runway-editorial",
     "category": "Women's Fashion",
     "subcategory": "Runway Editorial",
     "useCases": [
@@ -156,7 +127,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-luxury-villa-shoot",
+    "id": "women's fashion-luxury-villa-shoot",
     "category": "Women's Fashion",
     "subcategory": "Luxury Villa Shoot",
     "useCases": [
@@ -173,7 +144,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-instagram-lifestyle",
+    "id": "women's fashion-instagram-lifestyle",
     "category": "Women's Fashion",
     "subcategory": "Instagram Lifestyle",
     "useCases": [
@@ -182,15 +153,15 @@ const SHOWCASE_DATA = [
       "IG Reels"
     ],
     "desc": "Create vibrant, trendy lifestyle shots that perfectly match the Instagram aesthetic.",
-    "before": "/prove/Donna/Instagram Lifestyle/prima.jpeg",
+    "before": "/prove/Donna/Instagram Lifestyle/prima.png",
     "afters": [
       "/prove/Donna/Instagram Lifestyle/B8DF2811-7EFF-4CB6-AC32-6C841B0407BF.jpeg",
-      "/prove/Donna/Instagram Lifestyle/Screenshot 2026-04-18 alle 22.06.49.png",
-      "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg"
+      "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
+      "/prove/Donna/Instagram Lifestyle/csdssd.jpeg"
     ]
   },
   {
-    "id": "women's-fashion-mature-sophistication",
+    "id": "women's fashion-mature-sophistication",
     "category": "Women's Fashion",
     "subcategory": "Mature Sophistication",
     "useCases": [
@@ -207,7 +178,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "women's-fashion-gym-&-fitness",
+    "id": "women's fashion-gym-&-fitness",
     "category": "Women's Fashion",
     "subcategory": "Gym & Fitness",
     "useCases": [
@@ -216,15 +187,15 @@ const SHOWCASE_DATA = [
       "Instagram"
     ],
     "desc": "Dynamic, high-energy shots perfect for showcasing athletic wear in action.",
-    "before": "/prove/Donna/Gym & Fitness/prima.jpeg",
+    "before": "/prove/Donna/Gym & Fitness/prima.jpg",
     "afters": [
       "/prove/Donna/Gym & Fitness/E29A3BA2-793E-41BE-989E-22AE1A7F3288.jpeg",
       "/prove/Donna/Gym & Fitness/FED0DBA2-A8CC-4589-B8CF-2A6FE38CD6FD.jpeg",
-      "/prove/Donna/Gym & Fitness/schoeffel-womens-fleece-jacket-leona3-giacca-in-pile.jpg"
+      "/prove/Donna/Gym & Fitness/ssss.jpeg"
     ]
   },
   {
-    "id": "women's-fashion-outfit-coordination",
+    "id": "women's fashion-outfit-coordination",
     "category": "Women's Fashion",
     "subcategory": "Outfit Coordination",
     "useCases": [
@@ -258,7 +229,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "groom-&-formal-groom-collection",
+    "id": "groom & formal-groom-collection",
     "category": "Groom & Formal",
     "subcategory": "Groom Collection",
     "useCases": [
@@ -271,47 +242,12 @@ const SHOWCASE_DATA = [
     "afters": [
       "/prove/Sposo/41138CB3-9781-4372-9A2F-CAB40746BE58.jpeg",
       "/prove/Sposo/50893A5E-4586-4D83-8D77-F1C767804D17.jpeg",
-      "/prove/Sposo/0E46418E-D415-4924-B408-AB9EB7D9DE63_1_105_c.jpeg",
+      "/prove/Sposo/dsdsds.jpeg",
       "/prove/Sposo/B127FC8B-E1B6-4CD7-A0BE-927BCAEA0631.jpeg"
     ]
   },
   {
-    "id": "men's-apparel-ecommerce-studio",
-    "category": "Men's Apparel",
-    "subcategory": "Ecommerce Studio",
-    "useCases": [
-      "Zalando",
-      "Shopify",
-      "Catalog"
-    ],
-    "desc": "Clean, professional studio shots highlighting the fit and fabric of menswear.",
-    "before": "/prove/Uomo/Ecommerce Studio/prima.jpeg",
-    "afters": [
-      "/prove/Uomo/Ecommerce Studio/67F2EDE9-CDE5-4F19-BFF3-1674A94C74EE.jpeg",
-      "/prove/Uomo/Ecommerce Studio/1D6FDF62-F3A9-4348-8111-2EDCEDDE55F5.jpeg",
-      "/prove/Uomo/Ecommerce Studio/770A9507-8576-46B6-A5ED-D3DB30FB3B93.jpeg"
-    ]
-  },
-  {
-    "id": "men's-apparel-street-style",
-    "category": "Men's Apparel",
-    "subcategory": "Street Style",
-    "useCases": [
-      "Hypebeast",
-      "Instagram",
-      "TikTok"
-    ],
-    "desc": "Urban and edgy looks perfect for marketing modern men's streetwear.",
-    "before": "/prove/Uomo/Street Style/prima.jpeg",
-    "afters": [
-      "/prove/Uomo/Street Style/93B17AD3-1627-453F-A7CF-C496E7FEA4ED.jpeg",
-      "/prove/Uomo/Street Style/645279D9-CA01-4423-A621-611C6AD6FC44.jpeg",
-      "/prove/Uomo/Street Style/BE25B3F8-3623-4189-988E-AF4258A61ADA.jpeg",
-      "/prove/Uomo/Street Style/829F0B8E-87E3-455B-AE64-C17957EB61ED.jpeg"
-    ]
-  },
-  {
-    "id": "men's-apparel-silver-fox-luxury",
+    "id": "men's apparel-silver-fox-luxury",
     "category": "Men's Apparel",
     "subcategory": "Silver Fox Luxury",
     "useCases": [
@@ -327,7 +263,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "men's-apparel-executive-lifestyle",
+    "id": "men's apparel-executive-lifestyle",
     "category": "Men's Apparel",
     "subcategory": "Executive Lifestyle",
     "useCases": [
@@ -344,7 +280,7 @@ const SHOWCASE_DATA = [
     ]
   },
   {
-    "id": "kids-collection-elegant-event",
+    "id": "kids collection-elegant-event",
     "category": "Kids Collection",
     "subcategory": "Elegant Event",
     "useCases": [
@@ -352,13 +288,14 @@ const SHOWCASE_DATA = [
       "Catalog"
     ],
     "desc": "Adorable, high-quality shots for kids' formal wear and special occasions.",
-    "before": "/prove/Bambino/Elegant Event/0CC85BF4-2349-4DBD-A4E0-3218BD7376C9.jpeg",
+    "before": "/prove/Bambino/Elegant Event/prima.jpeg",
     "afters": [
+      "/prove/Bambino/Elegant Event/0CC85BF4-2349-4DBD-A4E0-3218BD7376C9.jpeg",
       "/prove/Bambino/Elegant Event/722FDB9F-0B65-4671-BEA0-E02088969C51.jpeg"
     ]
   },
   {
-    "id": "kids-collection-playful-lifestyle",
+    "id": "kids collection-playful-lifestyle",
     "category": "Kids Collection",
     "subcategory": "Playful Lifestyle",
     "useCases": [
@@ -375,6 +312,7 @@ const SHOWCASE_DATA = [
     ]
   }
 ];
+
 
 export default function DynamicShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);

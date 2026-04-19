@@ -1,3 +1,4 @@
+const SHOWCASE_DATA = 
 [
   {
     "id": "t-shirt & knitwear-streetwear-flatlay",
@@ -304,4 +305,4 @@
       "/prove/Bambino/Playful Lifestyle/2624A391-1824-4FD0-9F0F-728060B61F75.jpeg"
     ]
   }
-]
+];
