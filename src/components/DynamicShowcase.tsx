@@ -122,8 +122,9 @@ const SHOWCASE_DATA =
     "desc": "Have your garments worn by hyper-realistic digital models in luxury villas.",
     "before": "/prove/Donna/Luxury Villa Shoot/prima.jpeg",
     "afters": [
-      "/prove/Donna/Luxury Villa Shoot/7061528C-C8DD-499C-8F24-BD14A9A9F02D.jpeg",
-      "/prove/Donna/Luxury Villa Shoot/AFC760F3-AB9D-42CD-B5F8-24C3DCE0BC15.jpeg",
+      "/prove/Donna/Luxury Villa Shoot/195E2086-E0B9-4CBD-B2BB-DDA2D3913BA0.jpeg",
+      "/prove/Donna/Luxury Villa Shoot/1F1B70DF-D52A-47FD-B820-42B502F12340.jpeg",
+      "/prove/Donna/Luxury Villa Shoot/51B1E9B9-ABCD-4E6A-AC79-E178B0C9F5CB.jpeg",
       "/prove/Donna/Luxury Villa Shoot/65A60FA9-9CEC-4B9F-B6D9-EB7478FC8FBB.jpeg"
     ]
   },
