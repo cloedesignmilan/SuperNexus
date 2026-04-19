@@ -6,7 +6,7 @@ const CATEGORIES = [
   {
     "id": "t-shirt & knitwear-streetwear-flatlay",
     "category": "T-Shirt & Knitwear",
-    "subcategory": "Streetwear FlatLay",
+    "subcategory": "Flat Lay Clean",
     "useCases": ["Instagram", "Pinterest", "Hypebeast"],
     "desc": "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
     "folderPath": "/prove/Tshirt/Tshirt- FlatLay"
@@ -22,7 +22,7 @@ const CATEGORIES = [
   {
     "id": "t-shirt & knitwear-ugc-(user-generated-content)",
     "category": "T-Shirt & Knitwear",
-    "subcategory": "UGC (User Generated Content)",
+    "subcategory": "UGC / Creator Style",
     "useCases": ["TikTok", "IG Reels", "FB Ads"],
     "desc": "Create relatable, everyday lifestyle shots that look like genuine customer photos for high-converting ads.",
     "folderPath": "/prove/Tshirt/UCG"
@@ -86,7 +86,7 @@ const CATEGORIES = [
   {
     "id": "women's fashion-outfit-coordination",
     "category": "Women's Fashion",
-    "subcategory": "Outfit Coordination",
+    "subcategory": "Street Style",
     "useCases": ["Pinterest", "Lookbook"],
     "desc": "Show how different pieces match together in realistic, coordinated street looks.",
     "folderPath": "/prove/Donna/Outfit Coordination"
@@ -94,7 +94,7 @@ const CATEGORIES = [
   {
     "id": "bridal-bridal-collection",
     "category": "Bridal",
-    "subcategory": "Bridal Collection",
+    "subcategory": "Romantic Venue",
     "useCases": ["Atelier", "Wedding", "Pinterest"],
     "desc": "Transform an anonymous dress hanging in the Atelier into sumptuous catalogs that enchant brides.",
     "folderPath": "/prove/Sposa"
@@ -102,7 +102,7 @@ const CATEGORIES = [
   {
     "id": "groom & formal-groom-collection",
     "category": "Groom & Formal",
-    "subcategory": "Groom Collection",
+    "subcategory": "Elegant Groom",
     "useCases": ["Tailoring", "Wedding", "Magazine"],
     "desc": "Elegant formal wear presented in stunning, romantic locations.",
     "folderPath": "/prove/Sposo"
