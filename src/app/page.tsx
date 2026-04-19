@@ -265,11 +265,11 @@ export default function LandingPage() {
             </p>
 
             <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#00ffff'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Contact Support</a>
+                <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Contact Support</a>
                 <span style={{ color: '#222' }}>•</span>
-                <Link href="/registrazione" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#ff0ab3'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Start Free Trial</Link>
+                <Link href="/registrazione" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Start Free Trial</Link>
                 <span style={{ color: '#222' }}>•</span>
-                <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color='#ccff00'} onMouseOut={e => e.currentTarget.style.color='#a0a0a0'}>Terms & Privacy</Link>
+                <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Terms & Privacy</Link>
             </div>
 
             <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '2rem' }} />
