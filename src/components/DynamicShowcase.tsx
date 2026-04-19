@@ -363,8 +363,20 @@ export default function DynamicShowcase() {
             className="ds-section"
           >
              <div className="ds-mobile-header show-mobile">
-                <div className="ds-category">{item.category}</div>
-                <h3 className="ds-subcategory">{item.subcategory}</h3>
+                <div style={{
+                  position: 'sticky',
+                  top: '70px',
+                  zIndex: 20,
+                  background: 'rgba(8, 8, 8, 0.95)',
+                  backdropFilter: 'blur(10px)',
+                  padding: '1rem 0',
+                  margin: '-1rem 0 1rem 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)'
+                }}>
+                  <div className="ds-category">{item.category}</div>
+                  <h3 className="ds-subcategory" style={{ margin: 0 }}>{item.subcategory}</h3>
+                </div>
+
                 <div className="ds-usecases" style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {item.useCases.map(uc => <span key={uc} className="ds-badge">{uc}</span>)}
                 </div>
