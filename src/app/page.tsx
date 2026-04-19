@@ -104,6 +104,33 @@ export default async function LandingPage() {
                 display: none !important;
               }
             }
+            
+            /* Animated AI Border */
+            .animated-ai-border {
+              background: #fff;
+            }
+            .animated-ai-border::before {
+              content: '';
+              position: absolute;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              background: conic-gradient(transparent, transparent, transparent, #ccff00, #ff0ab3, transparent);
+              animation: spin-border 4s linear infinite;
+              z-index: -2;
+            }
+            .animated-ai-border::after {
+              content: '';
+              position: absolute;
+              inset: 3px;
+              background: #ffffff;
+              border-radius: 14px;
+              z-index: -1;
+            }
+            @keyframes spin-border {
+              100% { transform: rotate(360deg); }
+            }
           `}} />
         </nav>
       </header>
@@ -342,11 +369,9 @@ export default async function LandingPage() {
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
-          <div className="pricing-card" style={{ 
+          <div className="pricing-card animated-ai-border" style={{ 
             gridColumn: '1 / -1', 
-            border: '1px solid #444', 
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,1) 100%)',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+            position: 'relative',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
@@ -355,20 +380,23 @@ export default async function LandingPage() {
             gap: '2rem',
             padding: '3rem',
             marginTop: '1rem',
-            borderRadius: '16px'
+            borderRadius: '16px',
+            overflow: 'hidden',
+            zIndex: 1,
+            boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
           }}>
-            <div style={{ flex: '1 1 300px' }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#fff' }}>Custom <span style={{ color: '#888', textShadow: 'none' }}>AI Models</span></h3>
-                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.</p>
+            <div style={{ flex: '1 1 300px', zIndex: 2 }}>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#000' }}>Custom <span style={{ color: '#888', textShadow: 'none' }}>AI Models</span></h3>
+                <p style={{ color: '#555', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.</p>
             </div>
             
-            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
-              <li><CheckCircle2 size={24} color="#fff" /> <strong style={{ fontSize: '1.1rem', color: '#fff' }}>Bespoke Categories</strong></li>
-              <li><CheckCircle2 size={24} color="#fff" /> <span style={{ fontSize: '1.1rem', color: '#fff' }}>Custom Subcategories</span></li>
+            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0, zIndex: 2 }}>
+              <li><CheckCircle2 size={24} color="#000" /> <strong style={{ fontSize: '1.1rem', color: '#000' }}>Bespoke Categories</strong></li>
+              <li><CheckCircle2 size={24} color="#000" /> <span style={{ fontSize: '1.1rem', color: '#000' }}>Custom Subcategories</span></li>
             </ul>
 
-            <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#000', color: '#fff', border: '2px solid #fff', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,255,255,0.05)', borderRadius: '12px' }}>Starting at $299/ea</a>
+            <div style={{ flex: '0 0 auto', minWidth: '250px', zIndex: 2 }}>
+                <a href="https://t.me/supernexus_bot" target="_blank" rel="noopener noreferrer" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(204,255,0,0.4)', borderRadius: '12px' }}>Starting at $299/ea</a>
             </div>
           </div>
 
