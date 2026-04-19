@@ -113,7 +113,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email?.trim() || "");
 
     return (
-        <PayPalScriptProvider options={initialOptions} key={isSubscription ? "sub" : "cap"}>
+        <PayPalScriptProvider options={initialOptions}>
             {isSubscription ? (
                 <PayPalButtons 
                     createSubscription={createSubscription} 
