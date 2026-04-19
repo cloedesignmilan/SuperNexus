@@ -86,7 +86,7 @@ const CATEGORIES = [
   {
     "id": "women's fashion-outfit-coordination",
     "category": "Women's Fashion",
-    "subcategory": "Street Style",
+    "subcategory": "Outfit Coordination",
     "useCases": ["Pinterest", "Lookbook"],
     "desc": "Show how different pieces match together in realistic, coordinated street looks.",
     "folderPath": "/prove/Donna/Outfit Coordination"
