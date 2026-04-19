@@ -5,16 +5,28 @@ import { redirect } from "next/navigation";
 
 export async function processRegistrationFrontend(email: string, planName: string, subscriptionId?: string) {
     let imagesAllowance = 150;
-    if (planName === "retail") imagesAllowance = 600;
-    if (planName === "retail_annual") imagesAllowance = 7200; // 600 * 12
+    
+    // Assegna il numero di immagini in base al nuovo nome del piano
+    if (planName === "starter_pack") imagesAllowance = 100;
+    if (planName === "retail_pack") imagesAllowance = 300;
+    if (planName === "retail_monthly") imagesAllowance = 300;
 
     // Genera un PIN casuale di 6 cifre
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
 
     // Impostiamo la scadenza
+    // I Pack (starter_pack, retail_pack) NON hanno una scadenza reale, mettiamo 10 anni.
+    // L'abbonamento (retail_monthly) scade tra 30 giorni (verrà poi aggiornato dai webhooks di PayPal).
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 30); // 30 giorni di base, se annuale possiamo estendere, ma il Webhook aggiornerà.
-    if (planName === "retail_annual") expiresAt.setDate(expiresAt.getDate() + 335);
+    if (planName === "retail_monthly") {
+        expiresAt.setDate(expiresAt.getDate() + 30); 
+    } else {
+        expiresAt.setFullYear(expiresAt.getFullYear() + 10); // Packs non scadono (10 anni)
+    }
+
+    // Se è un pack, non considerarlo come un abbonamento attivo nel senso classico (se il db richiede boolean)
+    // Manteniamo subscription_active a true per permettere l'accesso al bot
+    const isSubscription = planName === "retail_monthly";
 
     try {
         await prisma.user.create({
@@ -24,15 +36,14 @@ export async function processRegistrationFrontend(email: string, planName: strin
                 bot_pin: pin,
                 images_allowance: imagesAllowance,
                 base_allowance: imagesAllowance,
-                subscription_active: true,
-                paypal_subscription_id: subscriptionId || null,
-                subscription_status: 'active',
+                subscription_active: true, // true per poterlo far accedere
+                paypal_subscription_id: subscriptionId || null, // Per i pack, questo conterrà l'OrderID
+                subscription_status: isSubscription ? 'active' : 'one_time_pack',
                 subscription_expires_at: expiresAt,
             }
         });
 
         // Passiamo la password generata alla pagina di Benvenuto
-        // Usiamo redirect verso la pagina congratulazioni appendendo i param in base64 per maggior "sicurezza visiva" ed evitare URL bruttissimi
         const welcomeData = Buffer.from(JSON.stringify({ name: email, psw: pin, plan: planName })).toString('base64');
 
         redirect(`/benvenuto?d=${welcomeData}`);

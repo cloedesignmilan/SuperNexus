@@ -1,15 +1,10 @@
-"use client";
+import re
 
-import React, { useState } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { processRegistrationFrontend } from "./actions";
+with open('src/app/registrazione/PayPalCheckout.tsx', 'r') as f:
+    content = f.read()
 
-interface PayPalCheckoutProps {
-    email: string;
-    planName: string;
-}
-
-export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps) {
+# Replace the intent logic and add createOrder/onApprove logic for capture
+new_component = """export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps) {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState("");
 
@@ -20,7 +15,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
     const isSubscription = planName === 'retail_monthly';
 
     const getPlanId = () => {
-        if (planName === "retail_monthly") return process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID_RETAIL_ANNUAL;
+        if (planName === "retail_monthly") return process.env.NEXT_PUBLIC_PAYPAL_PLAN_ID_RETAIL_ANNUAL; // Reuse existing plan ID or create new env var
         return "";
     };
 
@@ -134,4 +129,11 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
             )}
         </PayPalScriptProvider>
     );
-}
+}"""
+
+content = re.sub(r'export default function PayPalCheckout\(\{ email, planName \}: PayPalCheckoutProps\) \{.*', new_component, content, flags=re.DOTALL)
+
+with open('src/app/registrazione/PayPalCheckout.tsx', 'w') as f:
+    f.write(content)
+
+print("PayPalCheckout.tsx updated")
