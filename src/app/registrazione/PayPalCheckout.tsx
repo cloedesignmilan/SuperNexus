@@ -66,7 +66,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
             purchase_units: [{
                 description: `SuperNexus ${planName}`,
                 amount: {
-                    currency_code: "EUR",
+                    currency_code: "USD",
                     value: getPriceForPack()
                 }
             }]
@@ -105,7 +105,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
 
     const initialOptions = {
         clientId: clientId,
-        currency: "EUR",
+        currency: "USD",
         intent: isSubscription ? "subscription" : "capture",
         vault: isSubscription ? true : false,
     };
