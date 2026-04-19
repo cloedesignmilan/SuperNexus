@@ -21,7 +21,10 @@ const SHOWCASE_DATA =
       "/prove/Tshirt/Tshirt- FlatLay/ChatGPT Image 19 apr 2026, 16_13_47.jpeg",
       "/prove/Tshirt/Tshirt- FlatLay/2026-04-19 16.10.41.jpg",
       "/prove/Tshirt/Tshirt- FlatLay/IMG_1810.JPG",
-      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG"
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1809.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1808.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1807.JPG",
+      "/prove/Tshirt/Tshirt- FlatLay/IMG_1806.JPG"
     ]
   },
   {
