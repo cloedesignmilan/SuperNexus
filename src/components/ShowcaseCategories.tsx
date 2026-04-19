@@ -81,38 +81,117 @@ const CATEGORY_STRUCTURE = [
 ];
 
 export default function ShowcaseCategories() {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    let isDown = false;
+    let startX: number;
+    let scrollLeft: number;
+    
+    // Auto-scroll logic
+    const autoScroll = setInterval(() => {
+      if (!isDown && scrollContainer) {
+        scrollContainer.scrollLeft += 2;
+        if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
+          scrollContainer.scrollLeft = 0; // Reset
+        }
+      }
+    }, 30);
+
+    // Mouse drag logic for desktop "swiping"
+    const onMouseDown = (e: MouseEvent) => {
+      isDown = true;
+      scrollContainer.style.cursor = 'grabbing';
+      startX = e.pageX - scrollContainer.offsetLeft;
+      scrollLeft = scrollContainer.scrollLeft;
+    };
+    const onMouseLeave = () => {
+      isDown = false;
+      scrollContainer.style.cursor = 'grab';
+    };
+    const onMouseUp = () => {
+      isDown = false;
+      scrollContainer.style.cursor = 'grab';
+    };
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - scrollContainer.offsetLeft;
+      const walk = (x - startX) * 2;
+      scrollContainer.scrollLeft = scrollLeft - walk;
+    };
+
+    scrollContainer.addEventListener('mousedown', onMouseDown);
+    scrollContainer.addEventListener('mouseleave', onMouseLeave);
+    scrollContainer.addEventListener('mouseup', onMouseUp);
+    scrollContainer.addEventListener('mousemove', onMouseMove);
+
+    return () => {
+      clearInterval(autoScroll);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('mousedown', onMouseDown);
+        scrollContainer.removeEventListener('mouseleave', onMouseLeave);
+        scrollContainer.removeEventListener('mouseup', onMouseUp);
+        scrollContainer.removeEventListener('mousemove', onMouseMove);
+      }
+    };
+  }, []);
+
   return (
     <div style={{
-      maxWidth: '1200px',
+      width: '100%',
       margin: '0 auto 4rem auto',
-      padding: '0 20px'
+      padding: '0'
     }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-        gap: '20px',
-      }}>
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+      <div 
+        ref={scrollRef}
+        className="hide-scrollbar"
+        style={{
+          display: 'flex',
+          gap: '20px',
+          overflowX: 'auto',
+          padding: '20px 5%',
+          scrollSnapType: 'x mandatory',
+          scrollBehavior: 'smooth',
+          cursor: 'grab',
+          WebkitOverflowScrolling: 'touch'
+        }}
+      >
         {CATEGORY_STRUCTURE.map((cat, idx) => (
           <div key={idx} style={{
+            flex: '0 0 auto',
+            width: '320px',
+            scrollSnapAlign: 'start',
             background: 'rgba(20, 20, 20, 0.6)',
             border: '1px solid rgba(255, 255, 255, 0.05)',
             borderRadius: '16px',
             padding: '24px',
             backdropFilter: 'blur(10px)',
             transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            cursor: 'default',
             position: 'relative',
             overflow: 'hidden'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)';
+            e.currentTarget.style.transform = 'translateY(-5px)';
             e.currentTarget.style.border = `1px solid ${cat.border}`;
             e.currentTarget.style.boxShadow = `0 10px 30px ${cat.color}`;
             const glow = e.currentTarget.querySelector('.cat-glow') as HTMLElement;
             if (glow) glow.style.opacity = '1';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
+            e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.border = '1px solid rgba(255, 255, 255, 0.05)';
             e.currentTarget.style.boxShadow = 'none';
             const glow = e.currentTarget.querySelector('.cat-glow') as HTMLElement;
@@ -132,7 +211,7 @@ export default function ShowcaseCategories() {
               pointerEvents: 'none'
             }}></div>
 
-            <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
               {/* Macro Category Header */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                 <div style={{
@@ -171,15 +250,6 @@ export default function ShowcaseCategories() {
                     borderRadius: '20px',
                     fontSize: '0.85rem',
                     color: '#aaa',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                    e.currentTarget.style.color = '#aaa';
                   }}>
                     <span style={{ opacity: 0.7 }}>{sub.icon}</span>
                     {sub.name}
