@@ -96,22 +96,16 @@ function CategoryCard({ cat }: { cat: any }) {
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    
-    // Calculate mouse position as a percentage 0-100%
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     setMousePos({ x, y });
 
-    // Calculate tilt angles (max 15 degrees)
-    const tiltX = (50 - y) * 0.3; // Up/down tilt
-    const tiltY = (x - 50) * 0.3; // Left/right tilt
+    const tiltX = (50 - y) * 0.25;
+    const tiltY = (x - 50) * 0.25;
     setTilt({ x: tiltX, y: tiltY });
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
+  const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
     setIsHovered(false);
     setTilt({ x: 0, y: 0 });
@@ -129,148 +123,129 @@ function CategoryCard({ cat }: { cat: any }) {
         width: '320px',
         height: '420px',
         position: 'relative',
-        perspective: '1000px', // Creates 3D space
+        perspective: '1200px',
         cursor: 'pointer'
       }}
     >
       <div style={{
         width: '100%',
         height: '100%',
-        background: '#050505',
+        background: '#111',
         borderRadius: '24px',
         position: 'relative',
         transformStyle: 'preserve-3d',
         transition: isHovered ? 'none' : 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-        transform: isHovered ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.05, 1.05, 1.05)` : 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+        transform: isHovered ? `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.03, 1.03, 1.03)` : 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
         boxShadow: isHovered 
-          ? `0 30px 60px rgba(0,0,0,0.8), 0 0 40px ${cat.color.replace('0.5', '0.2')}`
-          : '0 10px 30px rgba(0,0,0,0.5)',
-        border: `1px solid ${isHovered ? cat.border : 'rgba(255,255,255,0.05)'}`,
+          ? `0 30px 60px rgba(0,0,0,0.6), 0 0 40px ${cat.color.replace('0.5', '0.3')}`
+          : '0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
+        border: `1px solid ${isHovered ? cat.border : 'rgba(255,255,255,0.15)'}`,
       }}>
         
-        {/* PARALLAX BACKGROUND IMAGE */}
+        {/* PARALLAX VIBRANT BACKGROUND IMAGE */}
         <div style={{
           position: 'absolute',
-          inset: '-20px', // Oversize the image so it can move without showing edges
+          inset: '-20px',
           backgroundImage: `url('${cat.bgImage}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: isHovered ? 0.8 : 0.4,
-          filter: isHovered ? 'grayscale(0%) contrast(1.1) brightness(1.2)' : 'grayscale(50%) brightness(0.8)',
+          opacity: isHovered ? 1 : 0.9,
+          filter: isHovered ? 'brightness(1.1) contrast(1.1) saturate(1.2)' : 'brightness(1) contrast(1.05) saturate(1.1)',
           transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-          transform: isHovered ? `translateX(${tilt.y * -1.5}px) translateY(${tilt.x * 1.5}px) translateZ(-50px) scale(1.05)` : 'translateZ(0) scale(1)',
+          transform: isHovered ? `translateX(${tilt.y * -1.5}px) translateY(${tilt.x * 1.5}px) translateZ(-40px) scale(1.05)` : 'translateZ(0) scale(1)',
           borderRadius: '32px',
           pointerEvents: 'none'
         }} />
 
-        {/* SPOTLIGHT GRADIENT */}
+        {/* SUBTLE LIGHT GRADIENT TOP-DOWN (for brightness) */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 50%)',
+          borderRadius: '24px',
+          zIndex: 2,
+          pointerEvents: 'none',
+        }} />
+
+        {/* SPOTLIGHT GLOW ON HOVER */}
         <div style={{
           position: 'absolute',
           inset: 0,
           background: isHovered 
-            ? `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(255,255,255,0.15) 0%, transparent 60%)` 
-            : 'radial-gradient(circle at 50% 50%, transparent 0%, transparent 100%)',
+            ? `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(255,255,255,0.2) 0%, transparent 50%)` 
+            : 'none',
           borderRadius: '24px',
           pointerEvents: 'none',
           mixBlendMode: 'overlay',
-          zIndex: 2,
+          zIndex: 3,
           transition: 'opacity 0.3s ease',
           opacity: isHovered ? 1 : 0
         }} />
 
-        {/* BOTTOM VIGNETTE / DARK GRADIENT */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.6) 50%, #050505 100%)',
-          borderRadius: '24px',
-          zIndex: 3,
-          pointerEvents: 'none',
-        }} />
-
-        {/* SHIMMER BORDER EFFECT (Animated) */}
-        {isHovered && (
-           <div style={{
-             position: 'absolute',
-             inset: '-1px',
-             borderRadius: '25px',
-             background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, ${cat.color.replace('0.5', '1')} 0%, transparent 40%)`,
-             zIndex: 1,
-             maskImage: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-             WebkitMaskImage: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-             WebkitMaskComposite: 'xor',
-             maskComposite: 'exclude',
-             padding: '1px',
-             pointerEvents: 'none'
-           }} />
-        )}
-
-        {/* CONTENT LAYER (Elevated in 3D) */}
+        {/* CONTENT LAYER (Elevated in 3D, always bright) */}
         <div style={{ 
           position: 'absolute', 
-          bottom: 0, 
-          left: 0, 
-          right: 0, 
-          padding: '24px', 
+          bottom: '12px', 
+          left: '12px', 
+          right: '12px', 
+          padding: '20px', 
           zIndex: 4, 
           pointerEvents: 'none',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'flex-end',
-          height: '100%',
-          transform: isHovered ? 'translateZ(30px)' : 'translateZ(0)',
+          background: 'rgba(10, 10, 10, 0.65)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 -10px 40px rgba(0,0,0,0.3)',
+          transform: isHovered ? 'translateZ(40px)' : 'translateZ(0)',
           transition: 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'
         }}>
           {/* Macro Category Header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '48px',
-              height: '48px',
-              borderRadius: '14px',
-              background: isHovered ? cat.color.replace('0.5', '0.2') : 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(12px)',
-              border: `1px solid ${isHovered ? cat.border : 'rgba(255,255,255,0.1)'}`,
-              boxShadow: isHovered ? `0 0 20px ${cat.color}` : 'none',
-              transition: 'all 0.4s ease'
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              background: cat.color.replace('0.5', '0.25'),
+              border: `1px solid ${cat.border}`,
+              boxShadow: `0 4px 15px ${cat.color.replace('0.5', '0.4')}`
             }}>
               {cat.icon}
             </div>
             <h3 style={{ 
               margin: 0, 
-              fontSize: '1.5rem', 
+              fontSize: '1.35rem', 
               fontWeight: 800, 
               color: '#ffffff',
-              letterSpacing: '-0.03em',
-              textShadow: '0 4px 20px rgba(0,0,0,0.9)'
+              letterSpacing: '-0.02em',
+              textShadow: '0 2px 10px rgba(0,0,0,0.5)'
             }}>
               {cat.name}
             </h3>
           </div>
 
           {/* Subcategories Pills */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {cat.subcategories.map((sub: any, i: number) => (
               <span key={i} style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                padding: '8px 14px',
-                background: isHovered ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid',
-                borderColor: isHovered ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '30px',
-                fontSize: '0.85rem',
-                fontWeight: 500,
-                color: isHovered ? '#fff' : '#aaa',
-                boxShadow: isHovered ? '0 4px 15px rgba(0,0,0,0.4)' : 'none',
-                transition: 'all 0.4s ease',
-                transitionDelay: `${i * 0.05}s` // staggered animation
+                padding: '6px 12px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                borderRadius: '20px',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                color: '#ffffff',
+                textShadow: '0 1px 2px rgba(0,0,0,0.5)'
               }}>
-                <span style={{ opacity: isHovered ? 1 : 0.6 }}>{sub.icon}</span>
+                <span style={{ opacity: 0.9 }}>{sub.icon}</span>
                 {sub.name}
               </span>
             ))}
