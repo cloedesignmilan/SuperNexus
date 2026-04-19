@@ -58,13 +58,15 @@ export default async function LandingPage() {
               text-decoration: none;
               padding: 6px 14px;
               border-radius: 30px;
-              background: #1a1a1a; /* Solid dark background for perfect contrast */
-              border: 1px solid #333;
+              background: #ffffff; /* White background like Try it Free */
+              border: 1px solid #eeeeee;
               transition: all 0.3s ease;
-              color: #ffffff !important; /* Force crisp white text */
+              color: #000000 !important; /* Black text */
               display: flex;
               align-items: center;
               gap: 8px;
+              font-weight: 600;
+              box-shadow: 0 2px 10px rgba(255,255,255,0.1);
             }
             .glow-link::before {
               content: '';
@@ -77,9 +79,9 @@ export default async function LandingPage() {
               transition: all 0.3s ease;
             }
             .glow-link:hover {
-              background: #2a2a2a;
-              border-color: var(--glow-color);
-              box-shadow: 0 0 15px color-mix(in srgb, var(--glow-color) 20%, transparent);
+              background: #f8f8f8;
+              border-color: #ddd;
+              box-shadow: 0 4px 15px color-mix(in srgb, var(--glow-color) 20%, transparent);
               transform: translateY(-2px);
             }
             .glow-link:hover::before {
