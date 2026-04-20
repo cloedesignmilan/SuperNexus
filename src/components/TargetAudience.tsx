@@ -82,7 +82,9 @@ export default function TargetAudience() {
               display: 'flex',
               flexDirection: 'column',
               boxShadow: '0 -10px 30px rgba(0,0,0,0.05)',
-              zIndex: index + 1
+              zIndex: index + 1,
+              willChange: 'transform',
+              transform: 'translateZ(0)'
             }} className="target-card">
               
               <div style={{ 

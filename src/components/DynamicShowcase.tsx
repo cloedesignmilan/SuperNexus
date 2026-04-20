@@ -112,9 +112,10 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
             style={{
               opacity: activeIndex === idx ? 1 : 0.25,
               filter: activeIndex === idx ? 'none' : 'grayscale(50%)',
-              transform: activeIndex === idx ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(20px)',
+              transform: activeIndex === idx ? 'scale(1) translateY(0) translateZ(0)' : 'scale(0.95) translateY(20px) translateZ(0)',
               transition: 'all 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
-              transformOrigin: 'center center'
+              transformOrigin: 'center center',
+              willChange: 'transform, opacity, filter'
             }}
           >
              <div className="show-mobile" style={{
