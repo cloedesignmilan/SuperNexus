@@ -65,8 +65,8 @@ export default function TargetAudience() {
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column',
-          gap: '30vh', // Significant gap to allow scrolling before the next card stacks
-          paddingBottom: '10vh', 
+          gap: '20vh', // Reduced gap between cards to make them stack faster
+          paddingBottom: '2rem', 
           maxWidth: '800px',
           margin: '0 auto'
         }}>
@@ -78,7 +78,7 @@ export default function TargetAudience() {
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               border: '1px solid rgba(0,0,0,0.03)',
               position: 'sticky',
-              top: `calc(100px + ${index * 20}px)`,
+              top: `calc(120px + ${index * 16}px)`,
               display: 'flex',
               flexDirection: 'column',
               boxShadow: '0 -10px 30px rgba(0,0,0,0.05)',
@@ -145,6 +145,9 @@ export default function TargetAudience() {
               </div>
             </div>
           ))}
+          
+          {/* Spacer to extend the container track, keeping the 4th card sticky until the next section arrives to push it up */}
+          <div style={{ height: '40vh', pointerEvents: 'none' }} />
         </div>
 
         <style dangerouslySetInnerHTML={{__html: `
