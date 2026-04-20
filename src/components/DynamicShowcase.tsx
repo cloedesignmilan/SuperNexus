@@ -108,7 +108,14 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
             key={`content-${item.id}`} 
             id={item.id.replace(/\s+/g, '-').replace(/&/g, 'and')}
             ref={(el) => { sectionRefs.current[idx] = el; }} 
-            className="ds-section"
+            className={`ds-section ${activeIndex === idx ? 'active' : ''}`}
+            style={{
+              opacity: activeIndex === idx ? 1 : 0.25,
+              filter: activeIndex === idx ? 'none' : 'grayscale(50%)',
+              transform: activeIndex === idx ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(20px)',
+              transition: 'all 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
+              transformOrigin: 'center center'
+            }}
           >
              <div className="show-mobile" style={{
                   position: 'sticky',
