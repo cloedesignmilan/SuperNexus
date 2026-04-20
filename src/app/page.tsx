@@ -57,20 +57,20 @@ export default async function LandingPage() {
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: '0.6rem', 
-            fontSize: '0.85rem', 
+            gap: '0.4rem', 
+            fontSize: '0.75rem', 
             fontWeight: 600,
             flexWrap: 'wrap',
             justifyContent: 'center'
           }} className="desktop-only-nav">
-             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={16} color="#000000" className="glow-icon" /> T-Shirts</a>
-             <a href="#swimwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={16} color="#000000" className="glow-icon" /> Swimwear</a>
-             <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={16} color="#000000" className="glow-icon" /> Footwear</a>
-             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={16} color="#000000" className="glow-icon" /> Outfits</a>
-             <a href="#bridal-bridal-collection" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={16} color="#000000" className="glow-icon" /> Bridal</a>
-             <a href="#men's-apparel-executive-lifestyle" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={16} color="#000000" className="glow-icon" /> Men's Suits</a>
-             <a href="#kids-collection-elegant-event" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={16} color="#000000" className="glow-icon" /> Kids</a>
-             <a href="#women's-fashion-runway-editorial" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={16} color="#000000" className="glow-icon" /> Runway</a>
+             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> T-Shirts</a>
+             <a href="#swimwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> Swimwear</a>
+             <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> Footwear</a>
+             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Outfits</a>
+             <a href="#bridal-bridal-collection" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Bridal</a>
+             <a href="#men's-apparel-executive-lifestyle" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={14} color="#000000" className="glow-icon" /> Men's Suits</a>
+             <a href="#kids-collection-elegant-event" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={14} color="#000000" className="glow-icon" /> Kids</a>
+             <a href="#women's-fashion-runway-editorial" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Runway</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
@@ -100,7 +100,7 @@ export default async function LandingPage() {
             }
             .glow-link {
               text-decoration: none;
-              padding: 6px 14px;
+              padding: 4px 10px;
               border-radius: 30px;
               background: #ffffff; /* White background like Try it Free */
               border: 1px solid #eeeeee;
@@ -108,7 +108,7 @@ export default async function LandingPage() {
               color: #000000 !important; /* Black text */
               display: flex;
               align-items: center;
-              gap: 8px;
+              gap: 6px;
               font-weight: 600;
               box-shadow: 0 2px 10px rgba(255,255,255,0.1);
               white-space: nowrap;
