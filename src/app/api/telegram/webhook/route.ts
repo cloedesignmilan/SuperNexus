@@ -74,9 +74,10 @@ export async function POST(req: NextRequest) {
                 data: { telegram_chat_id: globalChatId }
             });
             
-            const rem = newlyBindedUser.images_allowance - newlyBindedUser.images_generated;
-            let roleContext = newlyBindedUser.paypal_subscription_id?.startsWith("free_trial") ? "Free Trial" : "Enterprise";
-            await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus ${roleContext} platform.\nImage Quota: **${rem} remaining**.\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
+            const created = newlyBindedUser.images_generated;
+            const remaining = newlyBindedUser.images_allowance - newlyBindedUser.images_generated;
+            let roleContext = newlyBindedUser.paypal_subscription_id?.startsWith("free_trial") ? "Free Trial" : "Pro";
+            await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus ${roleContext} platform.\n\n📊 **Your Quota:**\n• Images Created: **${created}**\n• Images Remaining: **${remaining}**\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
             return NextResponse.json({ ok: true });
         }
     }
