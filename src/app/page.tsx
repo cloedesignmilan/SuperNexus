@@ -32,13 +32,12 @@ export default async function LandingPage() {
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: '0.8rem', 
+            gap: '0.6rem', 
             fontSize: '0.85rem', 
             fontWeight: 600,
-            overflowX: 'auto',
-            paddingBottom: '4px', // Space for scrollbar if visible
-            maxWidth: '55vw' // Prevent pushing the right buttons out
-          }} className="desktop-only-nav hide-scrollbar">
+            flexWrap: 'wrap',
+            justifyContent: 'center'
+          }} className="desktop-only-nav">
              <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={16} color="#000000" className="glow-icon" /> T-Shirts</a>
              <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={16} color="#000000" className="glow-icon" /> Footwear</a>
              <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Sparkles size={16} color="#000000" className="glow-icon" /> Outfits</a>
