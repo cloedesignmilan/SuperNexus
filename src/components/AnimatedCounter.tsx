@@ -80,9 +80,9 @@ export default function AnimatedCounter({
           color: inherit;
           border: 1px solid #2a2a2a;
           border-radius: 0.15em;
-          padding: 0 0.2em;
-          min-width: 0.85em;
-          height: 1.25em;
+          padding: 0 0.05em;
+          width: 0.65em;
+          height: 1.5em;
           position: relative;
           box-shadow: 0 0.15em 0.5em rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1);
           overflow: hidden;
@@ -90,6 +90,9 @@ export default function AnimatedCounter({
           font-variant-numeric: tabular-nums;
           font-weight: 900;
           line-height: 1;
+        }
+        .flap-digit span {
+          transform: scaleY(1.3) scaleX(0.9);
         }
         .flap-digit::before {
           content: '';
@@ -114,16 +117,17 @@ export default function AnimatedCounter({
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 0 0.1em;
+          padding: 0 0.15em;
           font-family: 'Inter', system-ui, -apple-system, sans-serif;
           font-weight: 900;
           line-height: 1;
+          font-size: 0.5em;
         }
       `}} />
       <span ref={ref} className="split-flap-container">
         {fullText.split('').map((char, i) => {
           if (/[0-9]/.test(char)) {
-            return <span key={i} className="flap-digit">{char}</span>;
+            return <span key={i} className="flap-digit"><span>{char}</span></span>;
           }
           return <span key={i} className="flap-symbol">{char}</span>;
         })}
