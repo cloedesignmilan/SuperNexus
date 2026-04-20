@@ -55,6 +55,17 @@ export function buildCreatorPrompt(
   } else {
      mods += `- Model Description: An attractive ${modifiers.gender || 'model'} ${modifiers.pose ? modifiers.pose : 'posing naturally'}.\n`;
   }
+
+  // Swimwear Safety
+  if (categoryName.toLowerCase().includes("swimwear") || categoryName.toLowerCase().includes("costumi")) {
+     mods += `- SWIMWEAR SAFETY PROTOCOL: STRICTLY PROFESSIONAL CATALOG SHOT. The model must have a modest, natural standing pose. Absolutely NO arched backs, NO suggestive angles, NO seductive looks, NO provocative bikini model poses. Ensure hyper-realistic natural lighting and skin texture.\n`;
+  }
+
+  // UGC Fitting Room
+  if (dbSceneText.toLowerCase().includes("ugc") || dbSceneText.toLowerCase().includes("fitting room") || dbSceneText.toLowerCase().includes("camerino")) {
+     mods += `- UGC STYLE: Must look like a high-quality smartphone mirror selfie or casual candid fitting room shot. The model should look like a beautiful but "normal" everyday girl/boy (not a supermodel), ultra-realistic imperfect skin texture, casual standing pose. Background should be a modern boutique fitting room with a mirror and warm ambient lighting.\n`;
+  }
+
   if (modifiers.bottomType) mods += `- Paired Bottom: ${modifiers.bottomType} (keep it matching, elegant and neutral, do not let it steal focus from the main garment)\n`;
   
   if (modifiers.lighting) {
