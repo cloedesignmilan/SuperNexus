@@ -15,10 +15,14 @@ export default function RegistrazionePage() {
             const params = new URLSearchParams(window.location.search);
             const urlEmail = params.get('email');
             const urlUpgrade = params.get('upgrade');
+            const urlPlan = params.get('plan');
             if (urlEmail) setEmail(urlEmail);
             if (urlUpgrade === 'true') {
                 setIsUpgrade(true);
                 setPlanName('starter_pack'); // Default to starter on upgrade
+            }
+            if (urlPlan) {
+                setPlanName(urlPlan);
             }
         }
     }, []);
