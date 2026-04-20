@@ -57,6 +57,27 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
     return () => observers.forEach(obs => obs.disconnect());
   }, []);
 
+  // Mobile dedicated observer for the large cards
+  useEffect(() => {
+    const mobileObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('card-revealed');
+          } else {
+            entry.target.classList.remove('card-revealed');
+          }
+        });
+      },
+      { rootMargin: '-30% 0px -30% 0px', threshold: 0 }
+    );
+
+    const cards = document.querySelectorAll('.reveal-on-scroll');
+    cards.forEach(el => mobileObserver.observe(el));
+
+    return () => mobileObserver.disconnect();
+  }, [showcaseData]);
+
   return (
     <div className="dynamic-showcase-container">
       <div className="ds-sticky-sidebar hide-mobile">
@@ -119,7 +140,7 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
           }
         }
         @media (max-width: 900px) {
-          .ds-section .ds-card-large {
+          .reveal-on-scroll {
             opacity: 0.25;
             filter: grayscale(50%);
             transform: scale(0.95) translateY(20px) translateZ(0);
@@ -127,7 +148,7 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
             will-change: transform, opacity, filter;
             transform-origin: center center;
           }
-          .ds-section.active .ds-card-large {
+          .reveal-on-scroll.card-revealed {
             opacity: 1;
             filter: none;
             transform: scale(1) translateY(0) translateZ(0);
@@ -174,7 +195,7 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
 
              <div className="ds-after-grid">
                {item.afters.map((afterImg, i) => (
-                 <div key={i} className={`ds-after-card ${i === 0 ? 'ds-card-large' : ''}`}>
+                 <div key={i} className={`ds-after-card ${i === 0 ? 'ds-card-large reveal-on-scroll' : ''}`}>
                     <div className="ds-after-label">
                       <Sparkles size={12} /> AI RESULT
                     </div>
