@@ -102,6 +102,38 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
         ))}
       </div>
 
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (min-width: 901px) {
+          .ds-section {
+            opacity: 0.25;
+            filter: grayscale(50%);
+            transform: scale(0.95) translateY(20px) translateZ(0);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform, opacity, filter;
+            transform-origin: center center;
+          }
+          .ds-section.active {
+            opacity: 1;
+            filter: none;
+            transform: scale(1) translateY(0) translateZ(0);
+          }
+        }
+        @media (max-width: 900px) {
+          .ds-section .ds-card-large {
+            opacity: 0.25;
+            filter: grayscale(50%);
+            transform: scale(0.95) translateY(20px) translateZ(0);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform, opacity, filter;
+            transform-origin: center center;
+          }
+          .ds-section.active .ds-card-large {
+            opacity: 1;
+            filter: none;
+            transform: scale(1) translateY(0) translateZ(0);
+          }
+        }
+      `}} />
       <div className="ds-scroll-content">
         {showcaseData.map((item, idx) => (
           <div 
@@ -109,14 +141,6 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
             id={item.id.replace(/\s+/g, '-').replace(/&/g, 'and')}
             ref={(el) => { sectionRefs.current[idx] = el; }} 
             className={`ds-section ${activeIndex === idx ? 'active' : ''}`}
-            style={{
-              opacity: activeIndex === idx ? 1 : 0.25,
-              filter: activeIndex === idx ? 'none' : 'grayscale(50%)',
-              transform: activeIndex === idx ? 'scale(1) translateY(0) translateZ(0)' : 'scale(0.95) translateY(20px) translateZ(0)',
-              transition: 'all 0.7s cubic-bezier(0.23, 1, 0.32, 1)',
-              transformOrigin: 'center center',
-              willChange: 'transform, opacity, filter'
-            }}
           >
              <div className="show-mobile" style={{
                   position: 'sticky',
