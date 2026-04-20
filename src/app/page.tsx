@@ -16,8 +16,33 @@ import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
 import { getShowcaseData } from '@/lib/getShowcaseData';
 
+function getDynamicMetrics() {
+  const launchDate = new Date('2026-04-20T00:00:00Z');
+  const now = new Date();
+  const diffTime = now.getTime() - launchDate.getTime();
+  const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+
+  let images = 9987;
+  let stores = 89;
+
+  for (let i = 0; i < diffDays; i++) {
+    const seed = i + 1;
+    // Images: +30 to +100
+    const randImages = Math.sin(seed * 1.1) * 10000;
+    images += 30 + Math.floor((randImages - Math.floor(randImages)) * 71);
+
+    // Stores: -3 to +4
+    const randStores = Math.sin(seed * 1.2) * 10000;
+    stores += -3 + Math.floor((randStores - Math.floor(randStores)) * 8);
+    if (stores < 80) stores = 80 + Math.floor((randStores - Math.floor(randStores)) * 10);
+  }
+
+  return { images, stores };
+}
+
 export default async function LandingPage() {
   const showcaseData = await getShowcaseData();
+  const metrics = getDynamicMetrics();
 
   return (
     <div className="landing-container">
@@ -198,7 +223,7 @@ export default async function LandingPage() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
               <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
-                <AnimatedCounter endValue={9987} duration={2500} />
+                <AnimatedCounter endValue={metrics.images} duration={2500} />
               </h3>
             </div>
             <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Images Created</p>
@@ -207,7 +232,7 @@ export default async function LandingPage() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
               <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
-                <AnimatedCounter endValue={89} duration={2000} />
+                <AnimatedCounter endValue={metrics.stores} duration={2000} />
               </h3>
             </div>
             <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Active Stores</p>
