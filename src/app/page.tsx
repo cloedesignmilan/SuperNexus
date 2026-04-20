@@ -197,7 +197,7 @@ export default async function LandingPage() {
         <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#ccff00', margin: 0, lineHeight: '1' }}>
+              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
                 <AnimatedCounter endValue={9987} duration={2500} />
               </h3>
             </div>
@@ -206,7 +206,7 @@ export default async function LandingPage() {
           <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} className="hide-mobile"></div>
           <div style={{ textAlign: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#03dac6', margin: 0, lineHeight: '1' }}>
+              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
                 <AnimatedCounter endValue={89} duration={2000} />
               </h3>
             </div>
