@@ -70,7 +70,7 @@ export default function AnimatedCounter({
         .split-flap-container {
           display: inline-flex;
           align-items: center;
-          gap: 0.1em;
+          gap: 0.04em;
         }
         .flap-digit {
           display: inline-flex;
@@ -79,20 +79,17 @@ export default function AnimatedCounter({
           background: linear-gradient(180deg, #1f1f1f 0%, #0a0a0a 100%);
           color: inherit;
           border: 1px solid #2a2a2a;
-          border-radius: 0.15em;
-          padding: 0 0.05em;
-          width: 0.65em;
-          height: 1.5em;
+          border-radius: 0.12em;
+          padding: 0 0.15em;
+          min-width: 0.8em;
+          height: 1.2em;
           position: relative;
           box-shadow: 0 0.15em 0.5em rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1);
           overflow: hidden;
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-variant-numeric: tabular-nums;
-          font-weight: 900;
+          font-weight: 700;
           line-height: 1;
-        }
-        .flap-digit span {
-          transform: scaleY(1.3) scaleX(0.9);
         }
         .flap-digit::before {
           content: '';
@@ -117,9 +114,9 @@ export default function AnimatedCounter({
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 0 0.15em;
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
-          font-weight: 900;
+          padding: 0 0.05em;
+          font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+          font-weight: 700;
           line-height: 1;
           font-size: 0.5em;
         }
@@ -127,7 +124,7 @@ export default function AnimatedCounter({
       <span ref={ref} className="split-flap-container">
         {fullText.split('').map((char, i) => {
           if (/[0-9]/.test(char)) {
-            return <span key={i} className="flap-digit"><span>{char}</span></span>;
+            return <span key={i} className="flap-digit">{char}</span>;
           }
           return <span key={i} className="flap-symbol">{char}</span>;
         })}
