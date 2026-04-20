@@ -449,7 +449,7 @@ export default function ShowcaseCategories() {
           return (
             <div key={actualCatIdx} className="macro-cat-icon" onClick={scrollToCard}>
               <div className="icon-circle" style={{ '--accent': actualCat.border } as React.CSSProperties}>
-                {React.cloneElement(actualCat.icon as React.ReactElement, { size: 32, className: '' })}
+                {React.cloneElement(actualCat.icon as React.ReactElement<any>, { size: 32, className: '' })}
               </div>
               <span>{actualCat.shortName}</span>
             </div>
