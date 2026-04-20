@@ -60,12 +60,11 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
   // Mobile dedicated observer for the large cards
   useEffect(() => {
     const mobileObserver = new IntersectionObserver(
-      (entries) => {
+      (entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('card-revealed');
-          } else {
-            entry.target.classList.remove('card-revealed');
+            observer.unobserve(entry.target); // Stop tracking once revealed
           }
         });
       },
