@@ -3,6 +3,29 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
+async function notifyAdmin(email: string, plan: string) {
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_ADMIN_CHAT_ID;
+    
+    if (!token || !chatId) return;
+
+    const message = `🚀 <b>Nuovo Cliente!</b>\n\n👤 Email: ${email}\n📦 Piano: ${plan}\n📅 Data: ${new Date().toLocaleString('it-IT')}`;
+    
+    try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+    } catch (e) {
+        console.error("Failed to notify admin via Telegram:", e);
+    }
+}
+
 export async function processRegistrationFrontend(email: string, planName: string, subscriptionId?: string) {
     let imagesAllowance = 150;
     
@@ -43,6 +66,9 @@ export async function processRegistrationFrontend(email: string, planName: strin
             }
         });
 
+        // Notify Admin
+        await notifyAdmin(email, planName);
+
         // Passiamo la password generata alla pagina di Benvenuto
         const welcomeData = Buffer.from(JSON.stringify({ name: email, psw: pin, plan: planName })).toString('base64');
 
@@ -80,6 +106,9 @@ export async function createFreeTrial(email: string) {
                 subscription_expires_at: expiresAt,
             }
         });
+
+        // Notify Admin
+        await notifyAdmin(email, 'free_trial');
 
         const welcomeData = Buffer.from(JSON.stringify({ name: email, psw: pin, plan: 'free_trial' })).toString('base64');
         return { success: true, redirectUrl: `/benvenuto?d=${welcomeData}` };
