@@ -10,6 +10,7 @@ import {
 const CATEGORY_STRUCTURE = [
   {
     name: "T-Shirt & Knitwear",
+    shortName: "T-Shirts",
     icon: <Shirt size={20} className="text-blue-400" />,
     color: "rgba(59, 130, 246, 0.5)", // Brighter core colors
     border: "rgba(59, 130, 246, 0.8)",
@@ -22,6 +23,7 @@ const CATEGORY_STRUCTURE = [
   },
   {
     name: "Footwear & Sneakers",
+    shortName: "Footwear",
     icon: <Footprints size={20} className="text-orange-400" />,
     color: "rgba(249, 115, 22, 0.5)",
     border: "rgba(249, 115, 22, 0.8)",
@@ -35,6 +37,7 @@ const CATEGORY_STRUCTURE = [
   },
   {
     name: "Women's Fashion",
+    shortName: "Women",
     icon: <Sparkles size={20} className="text-purple-400" />,
     color: "rgba(168, 85, 247, 0.5)",
     border: "rgba(168, 85, 247, 0.8)",
@@ -51,6 +54,7 @@ const CATEGORY_STRUCTURE = [
   },
   {
     name: "Men's Apparel",
+    shortName: "Men",
     icon: <Briefcase size={20} className="text-emerald-400" />,
     color: "rgba(16, 185, 129, 0.5)",
     border: "rgba(16, 185, 129, 0.8)",
@@ -64,6 +68,7 @@ const CATEGORY_STRUCTURE = [
   },
   {
     name: "Bridal & Groom",
+    shortName: "Bridal",
     icon: <Heart size={20} className="text-rose-400" />,
     color: "rgba(244, 63, 94, 0.5)",
     border: "rgba(244, 63, 94, 0.8)",
@@ -75,6 +80,7 @@ const CATEGORY_STRUCTURE = [
   },
   {
     name: "Kids Collection",
+    shortName: "Kids",
     icon: <Baby size={20} className="text-yellow-400" />,
     color: "rgba(234, 179, 8, 0.5)",
     border: "rgba(234, 179, 8, 0.8)",
@@ -87,7 +93,7 @@ const CATEGORY_STRUCTURE = [
 ];
 
 // --- ADVANCED 3D TILT CATEGORY CARD ---
-function CategoryCard({ cat }: { cat: any }) {
+function CategoryCard({ cat, id }: { cat: any, id?: string }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
@@ -114,6 +120,7 @@ function CategoryCard({ cat }: { cat: any }) {
 
   return (
     <div 
+      id={id}
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -258,6 +265,7 @@ function CategoryCard({ cat }: { cat: any }) {
 
 export default function ShowcaseCategories() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const pauseAutoScrollRef = useRef<boolean>(false);
 
   React.useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -273,7 +281,7 @@ export default function ShowcaseCategories() {
     const startAutoScroll = () => {
       clearInterval(autoScrollTimer);
       autoScrollTimer = setInterval(() => {
-        if (!isDown && scrollContainer) {
+        if (!isDown && scrollContainer && !pauseAutoScrollRef.current) {
           scrollContainer.scrollLeft += 1;
           if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth)) {
             scrollContainer.scrollLeft = 0; // Reset
@@ -358,7 +366,97 @@ export default function ShowcaseCategories() {
       <style>{`
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .macro-cat-icon {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1.2rem;
+          transition: transform 0.3s ease;
+          cursor: pointer;
+        }
+        .macro-cat-icon:hover {
+          transform: translateY(-5px);
+        }
+        .icon-circle {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          background: #111;
+          border: 1px solid rgba(255,255,255,0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          transition: all 0.3s ease;
+          position: relative;
+        }
+        .icon-circle::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+        }
+        .macro-cat-icon:hover .icon-circle {
+          border-color: var(--accent);
+          box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 25px var(--accent);
+          background: #1a1a1a;
+        }
+        .macro-cat-icon span {
+          color: #666;
+          font-size: 0.95rem;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          transition: color 0.3s ease;
+        }
+        .macro-cat-icon:hover span {
+          color: #fff;
+        }
       `}</style>
+
+      {/* MACRO CATEGORIES PREMIUM ICONS */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        gap: '4rem', 
+        marginBottom: '3rem',
+        flexWrap: 'wrap'
+      }}>
+        {CATEGORY_STRUCTURE.map((cat, idx) => {
+          // Reorder to match header order: Women(2), Men(3), T-Shirts(0), Footwear(1), Bridal(4), Kids(5)
+          const displayOrder = [2, 3, 0, 1, 4, 5];
+          const actualCatIdx = displayOrder[idx];
+          const actualCat = CATEGORY_STRUCTURE[actualCatIdx];
+
+          const scrollToCard = () => {
+            if (scrollRef.current) {
+              pauseAutoScrollRef.current = true; // Pause auto scroll
+              
+              const card = document.getElementById(`category-card-${actualCatIdx}`);
+              if (card) {
+                card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }
+        
+              // Resume after a few seconds
+              setTimeout(() => {
+                pauseAutoScrollRef.current = false;
+              }, 4000);
+            }
+          };
+
+          return (
+            <div key={actualCatIdx} className="macro-cat-icon" onClick={scrollToCard}>
+              <div className="icon-circle" style={{ '--accent': actualCat.border } as React.CSSProperties}>
+                {React.cloneElement(actualCat.icon as React.ReactElement, { size: 32, className: '' })}
+              </div>
+              <span>{actualCat.shortName}</span>
+            </div>
+          );
+        })}
+      </div>
+
       <div 
         ref={scrollRef}
         className="hide-scrollbar"
@@ -374,7 +472,7 @@ export default function ShowcaseCategories() {
         }}
       >
         {[...CATEGORY_STRUCTURE, ...CATEGORY_STRUCTURE].map((cat, idx) => (
-          <CategoryCard key={idx} cat={cat} />
+          <CategoryCard key={idx} id={`category-card-${idx}`} cat={cat} />
         ))}
       </div>
     </div>
