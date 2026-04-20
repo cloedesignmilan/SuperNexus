@@ -1137,22 +1137,31 @@ body {
 
 .ds-usecases {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-wrap: nowrap;
+  gap: 6px;
   margin-bottom: 3rem;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.ds-usecases::-webkit-scrollbar {
+  display: none;
 }
 
 .ds-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: 50px;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #ffffff;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .ds-before-preview {

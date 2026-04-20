@@ -177,7 +177,7 @@ export default function DynamicShowcase({ showcaseData }: { showcaseData: Showca
              </div>
 
              <div className="ds-mobile-header show-mobile" style={{ marginTop: '1rem' }}>
-                <div className="ds-usecases" style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div className="ds-usecases" style={{ marginBottom: '1rem' }}>
                   {item.useCases.map(uc => <span key={uc} className="ds-badge">{uc}</span>)}
                 </div>
                 <div className="ds-before-preview" style={{ marginBottom: '2rem' }}>
