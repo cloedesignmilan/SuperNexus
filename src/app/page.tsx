@@ -64,8 +64,9 @@ export default async function LandingPage() {
             justifyContent: 'center'
           }} className="desktop-only-nav">
              <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={16} color="#000000" className="glow-icon" /> T-Shirts</a>
+             <a href="#swimwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={16} color="#000000" className="glow-icon" /> Swimwear</a>
              <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={16} color="#000000" className="glow-icon" /> Footwear</a>
-             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Sparkles size={16} color="#000000" className="glow-icon" /> Outfits</a>
+             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={16} color="#000000" className="glow-icon" /> Outfits</a>
              <a href="#bridal-bridal-collection" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={16} color="#000000" className="glow-icon" /> Bridal</a>
              <a href="#men's-apparel-executive-lifestyle" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={16} color="#000000" className="glow-icon" /> Men's Suits</a>
              <a href="#kids-collection-elegant-event" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={16} color="#000000" className="glow-icon" /> Kids</a>

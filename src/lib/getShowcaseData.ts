@@ -28,6 +28,30 @@ const CATEGORIES = [
     "folderPath": "/prove/Tshirt/UCG"
   },
   {
+    "id": "swimwear-e-commerce-clean",
+    "category": "Swimwear",
+    "subcategory": "E-Commerce Clean",
+    "useCases": ["Amazon", "Shopify", "Catalog"],
+    "desc": "Perfectly lit, distraction-free catalog shots to maximize conversion rates.",
+    "folderPath": "/prove/Donna/Costumi/Catalogo"
+  },
+  {
+    "id": "swimwear-poolside-lifestyle",
+    "category": "Swimwear",
+    "subcategory": "Poolside Lifestyle",
+    "useCases": ["Instagram", "Facebook Ads", "Resort"],
+    "desc": "Showcase your swimwear in realistic, sun-drenched outdoor environments.",
+    "folderPath": "/prove/Donna/Costumi/In spiaggia"
+  },
+  {
+    "id": "swimwear-fitting-room-ugc",
+    "category": "Swimwear",
+    "subcategory": "Fitting Room UGC",
+    "useCases": ["TikTok", "IG Reels", "UGC Ads"],
+    "desc": "Ultra-realistic, relatable fitting room selfies that look like genuine customer content.",
+    "folderPath": "/prove/Donna/Costumi/UGC"
+  },
+  {
     "id": "footwear & sneakers-product-clean",
     "category": "Footwear & Sneakers",
     "subcategory": "Product Clean",
