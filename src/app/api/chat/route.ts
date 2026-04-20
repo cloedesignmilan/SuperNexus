@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { logApiCost } from "@/lib/gemini-cost";
+import { CATEGORIES } from "@/lib/getShowcaseData";
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
-const SYSTEM_PROMPT = `Sei l’assistente ufficiale di SuperNexus AI.
+const getSystemPrompt = () => {
+  const uniqueCategories = Array.from(new Set(CATEGORIES.map(c => c.category))).join(', ');
+  const uniqueSubcategories = Array.from(new Set(CATEGORIES.map(c => c.subcategory))).join(', ');
+
+  return `Sei l’assistente ufficiale di SuperNexus AI.
 
 Il tuo obiettivo è:
 1) Rispondere in modo chiaro e semplice alle domande
@@ -29,12 +34,16 @@ Scrivi come una persona reale in una chat di messaggistica veloce, non come un r
 
 ---
 
-🚀 PRODOTTO
+🚀 PRODOTTO E CATEGORIE
 
 SuperNexus AI trasforma foto amatoriali in immagini professionali pronte per:
 - Instagram
 - Pubblicità
 - Ecommerce
+
+**ATTENZIONE: Queste sono le NOSTRE CATEGORIE E SOTTOCATEGORIE ATTUALMENTE DISPONIBILI.**
+Macro-Categorie supportate: ${uniqueCategories}
+Alcuni esempi di Stili/Sottocategorie: ${uniqueSubcategories}
 
 Non serve alcun set fotografico.
 
@@ -221,6 +230,7 @@ Esempio:
 Portare l’utente a registrarsi.
 
 Sempre.`;
+};
 
 export async function POST(req: Request) {
   try {
@@ -243,7 +253,7 @@ export async function POST(req: Request) {
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: [
-            { role: 'user', parts: [{ text: "SYSTEM INSTRUCTION:\n" + SYSTEM_PROMPT + "\n\nOkey, the instructions are understood. Waiting for user messages." }]},
+            { role: 'user', parts: [{ text: "SYSTEM INSTRUCTION:\n" + getSystemPrompt() + "\n\nOkey, the instructions are understood. Waiting for user messages." }]},
             { role: 'model', parts: [{ text: "Capito. Sono pronto a rispondere ai visitatori della Landing Page." }]},
             ...formattedMessages
         ]

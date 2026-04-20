@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Define the static structure
-const CATEGORIES = [
+export const CATEGORIES = [
   {
     "id": "t-shirt & knitwear-streetwear-flatlay",
     "category": "T-Shirt & Knitwear",
