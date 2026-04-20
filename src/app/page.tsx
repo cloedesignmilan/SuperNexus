@@ -49,7 +49,7 @@ export default async function LandingPage() {
       <ChatBot />
       {/* HEADER */}
       <header className="landing-header" id="top">
-        <a href="#" className="landing-logo" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
+        <a href="/" className="landing-logo" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
           SuperNexus <span>AI</span>
         </a>
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
