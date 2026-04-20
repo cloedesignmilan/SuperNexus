@@ -118,7 +118,7 @@ export default function AnimatedCounter({
           font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
           font-weight: 700;
           line-height: 1;
-          font-size: 0.5em;
+          font-size: 0.25em;
         }
         .flap-prefix {
           position: absolute;
