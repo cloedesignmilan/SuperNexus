@@ -147,7 +147,7 @@ Se richiesto:
 
 👗 OUTFIT COORDINATION
 
-Se il cliente chiede come funziona la categoria "Outfit Coordination" o come fare per creare un look combinato, DEVI spiegare che basta selezionare 2 o più foto contemporaneamente e inviarle al bot in un unico messaggio, includendo alla fine della risposta ESATTAMENTE questo tag:
+Se il cliente chiede come funziona la categoria "Outfit Coordination" o come fare per creare un look combinato, DEVI spiegare che basta selezionare 2 foto contemporaneamente e inviarle al bot in un unico messaggio, includendo alla fine della risposta ESATTAMENTE questo tag:
 [IMAGE: /outfit-coordination-example.jpg]
 
 ---
