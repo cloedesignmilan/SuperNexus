@@ -120,14 +120,31 @@ export default function AnimatedCounter({
           line-height: 1;
           font-size: 0.5em;
         }
+        .flap-prefix {
+          position: absolute;
+          top: 0.12em;
+          left: 0.12em;
+          font-size: 0.25em;
+          font-weight: 700;
+          color: inherit;
+          z-index: 20;
+          line-height: 1;
+        }
       `}} />
       <span ref={ref} className="split-flap-container">
-        {fullText.split('').map((char, i) => {
+        {formattedCount.split('').map((char, i) => {
+          const isFirstDigit = i === 0;
           if (/[0-9]/.test(char)) {
-            return <span key={i} className="flap-digit">{char}</span>;
+            return (
+              <span key={i} className="flap-digit">
+                {isFirstDigit && prefix && <span className="flap-prefix">{prefix}</span>}
+                {char}
+              </span>
+            );
           }
-          return <span key={i} className="flap-symbol">{char}</span>;
+          return <span key={`sym-${i}`} className="flap-symbol">{char}</span>;
         })}
+        {suffix && <span className="flap-symbol">{suffix}</span>}
       </span>
     </>
   );
