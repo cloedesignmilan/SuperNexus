@@ -220,18 +220,18 @@ export default async function LandingPage() {
       {/* METRICHE SOCIAL PROOF */}
       <section style={{ padding: '3rem 5%', background: '#0a0a0a', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '2rem' }}>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
+              <h3 style={{ fontSize: 'clamp(3rem, 15vw, 7.5rem)', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
                 <AnimatedCounter endValue={metrics.images} duration={2500} />
               </h3>
             </div>
             <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Images Created</p>
           </div>
           <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} className="hide-mobile"></div>
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '7.5rem', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
+              <h3 style={{ fontSize: 'clamp(3rem, 15vw, 7.5rem)', fontWeight: '900', color: '#eaeaea', margin: 0, lineHeight: '1' }}>
                 <AnimatedCounter endValue={metrics.stores} duration={2000} />
               </h3>
             </div>
