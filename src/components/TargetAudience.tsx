@@ -63,10 +63,12 @@ export default function TargetAudience() {
         </div>
 
         <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-          gap: '2rem',
-          paddingBottom: '3rem' // Extra space for doodles
+          display: 'flex', 
+          flexDirection: 'column',
+          gap: '30vh', // Significant gap to allow scrolling before the next card stacks
+          paddingBottom: '10vh', 
+          maxWidth: '800px',
+          margin: '0 auto'
         }}>
           {audiences.map((item, index) => (
             <div key={index} style={{
@@ -75,9 +77,12 @@ export default function TargetAudience() {
               padding: '2.5rem 2rem 2.5rem',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               border: '1px solid rgba(0,0,0,0.03)',
-              position: 'relative',
+              position: 'sticky',
+              top: `calc(100px + ${index * 20}px)`,
               display: 'flex',
-              flexDirection: 'column'
+              flexDirection: 'column',
+              boxShadow: '0 -10px 30px rgba(0,0,0,0.05)',
+              zIndex: index + 1
             }} className="target-card">
               
               <div style={{ 

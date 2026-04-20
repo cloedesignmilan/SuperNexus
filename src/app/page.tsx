@@ -456,7 +456,7 @@ export default async function LandingPage() {
             <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '2rem' }} />
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#444' }}>
-                <p>© {new Date().getFullYear()} SuperNexus AI. All rights reserved.</p>
+                <p>© 2025 SuperNexus AI. All rights reserved.</p>
                 <p>Engineered for High-Performance Generative Fashion.</p>
             </div>
         </div>
