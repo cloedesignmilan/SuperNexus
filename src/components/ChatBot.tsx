@@ -83,7 +83,21 @@ export default function ChatBot() {
             </div>
             
             <div ref={scrollRef} style={{ height: '350px', overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                {messages.map((m, i) => (
+                {messages.map((m, i) => {
+                    const renderMessageContent = (text: string) => {
+                        const parts = text.split(/(\[IMAGE:\s*[^\]]+\])/);
+                        return parts.map((part, idx) => {
+                          if (part.startsWith('[IMAGE:')) {
+                            const match = part.match(/\[IMAGE:\s*([^\]]+)\]/);
+                            if (match && match[1]) {
+                              return <img key={idx} src={match[1]} alt="Example" style={{ width: '100%', borderRadius: '8px', marginTop: '10px', display: 'block' }} />;
+                            }
+                          }
+                          return <span key={idx} style={{ whiteSpace: 'pre-wrap' }}>{part}</span>;
+                        });
+                    };
+
+                    return (
                     <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start' }}>
                         <div style={{ 
                             maxWidth: '85%', 
@@ -96,10 +110,10 @@ export default function ChatBot() {
                             fontSize: '0.95rem',
                             lineHeight: '1.4'
                         }}>
-                            {m.content}
+                            {renderMessageContent(m.content)}
                         </div>
                     </div>
-                ))}
+                )})}
                 {isLoading && (
                     <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                         <div style={{ padding: '12px 16px', borderRadius: '16px', background: '#222', color: '#888', fontStyle: 'italic', fontSize: '0.9rem' }}>
