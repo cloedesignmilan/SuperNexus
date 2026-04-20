@@ -69,24 +69,34 @@ export default function AnimatedCounter({
       <style dangerouslySetInnerHTML={{__html: `
         .split-flap-container {
           display: inline-flex;
-          gap: 6px;
+          align-items: center;
+          gap: 0.1em;
         }
         .flap-digit {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          background: #151515;
+          background: linear-gradient(180deg, #1f1f1f 0%, #0a0a0a 100%);
           color: inherit;
-          border: 2px solid #2a2a2a;
-          border-radius: 6px;
-          padding: 0 12px;
-          min-width: 1.5ch;
+          border: 1px solid #2a2a2a;
+          border-radius: 0.15em;
+          padding: 0 0.2em;
+          min-width: 0.85em;
+          height: 1.25em;
           position: relative;
-          box-shadow: 0 8px 15px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.15);
+          box-shadow: 0 0.15em 0.5em rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.1);
           overflow: hidden;
-          font-family: monospace;
-          line-height: 1.2;
-          font-weight: 800;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+          font-variant-numeric: tabular-nums;
+          font-weight: 900;
+          line-height: 1;
+        }
+        .flap-digit::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 50%;
+          background: rgba(255,255,255,0.05);
+          z-index: 1;
         }
         .flap-digit::after {
           content: '';
@@ -94,9 +104,9 @@ export default function AnimatedCounter({
           top: 50%;
           left: 0;
           right: 0;
-          height: 3px;
+          height: 2px;
           background: #000;
-          box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+          box-shadow: 0 1px 0 rgba(255,255,255,0.15);
           z-index: 10;
           transform: translateY(-50%);
         }
@@ -104,9 +114,10 @@ export default function AnimatedCounter({
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 0 2px;
-          font-family: inherit;
+          padding: 0 0.1em;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
           font-weight: 900;
+          line-height: 1;
         }
       `}} />
       <span ref={ref} className="split-flap-container">
