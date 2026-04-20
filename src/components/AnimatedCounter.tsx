@@ -132,16 +132,18 @@ export default function AnimatedCounter({
         }
       `}} />
       <span ref={ref} className="split-flap-container">
+        {prefix && <span className="flap-symbol">{prefix}</span>}
         {formattedCount.split('').map((char, i) => {
           const isFirstDigit = i === 0;
           if (/[0-9]/.test(char)) {
             return (
               <span key={i} className="flap-digit">
-                {isFirstDigit && prefix && <span className="flap-prefix">{prefix}</span>}
+                {isFirstDigit && <span className="flap-prefix">.</span>}
                 {char}
               </span>
             );
           }
+          if (char === '.') return null; // Hide the regular dot since it's on the first card
           return <span key={`sym-${i}`} className="flap-symbol">{char}</span>;
         })}
         {suffix && <span className="flap-symbol">{suffix}</span>}
