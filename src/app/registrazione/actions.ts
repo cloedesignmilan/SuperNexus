@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { PRICING_CONFIG } from "@/lib/pricingConfig";
 
 async function notifyAdmin(email: string, plan: string) {
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -27,12 +28,12 @@ async function notifyAdmin(email: string, plan: string) {
 }
 
 export async function processRegistrationFrontend(email: string, planName: string, subscriptionId?: string) {
-    let imagesAllowance = 150;
+    let imagesAllowance = 0;
     
     // Assegna il numero di immagini in base al nuovo nome del piano
-    if (planName === "starter_pack") imagesAllowance = 100;
-    if (planName === "retail_pack") imagesAllowance = 300;
-    if (planName === "retail_monthly") imagesAllowance = 300;
+    if (planName === "starter_pack") imagesAllowance = PRICING_CONFIG.starter_pack.images;
+    if (planName === "retail_pack") imagesAllowance = PRICING_CONFIG.retail_pack.images;
+    if (planName === "retail_monthly") imagesAllowance = PRICING_CONFIG.retail_monthly.images;
 
     // Genera un PIN casuale di 6 cifre
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
@@ -90,7 +91,7 @@ export async function createFreeTrial(email: string) {
 
     const pin = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 14); // 14 giorni di scadenza
+    expiresAt.setDate(expiresAt.getDate() + PRICING_CONFIG.free_trial.days); // scadenza configurata
 
     try {
         await prisma.user.create({
@@ -98,8 +99,8 @@ export async function createFreeTrial(email: string) {
                 email,
                 role: 'client',
                 bot_pin: pin,
-                images_allowance: 10,
-                base_allowance: 10,
+                images_allowance: PRICING_CONFIG.free_trial.images,
+                base_allowance: PRICING_CONFIG.free_trial.images,
                 subscription_active: true,
                 paypal_subscription_id: 'free_trial_' + Date.now().toString(),
                 subscription_status: 'active',

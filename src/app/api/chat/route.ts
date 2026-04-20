@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { logApiCost } from "@/lib/gemini-cost";
 import { CATEGORIES } from "@/lib/getShowcaseData";
+import { PRICING_CONFIG } from "@/lib/pricingConfig";
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
 const getSystemPrompt = () => {
@@ -75,25 +76,25 @@ Funziona direttamente su Telegram.
 💰 PREZZI (ESPRESSI IN DOLLARI $)
 
 Free Trial:
-- 0$ (Gratis)
-- 10 immagini
+- ${PRICING_CONFIG.free_trial.price}$ (Gratis)
+- ${PRICING_CONFIG.free_trial.images} immagini
 - Nessuna carta di credito richiesta
-- Scadenza 14 giorni
+- Scadenza ${PRICING_CONFIG.free_trial.days} giorni
 
 Starter Pack (Pagamento Singolo One-Time):
-- 29$ una tantum
-- 100 immagini
+- ${PRICING_CONFIG.starter_pack.price}$ una tantum
+- ${PRICING_CONFIG.starter_pack.images} immagini
 - Nessun rinnovo o abbonamento
 
 Retail Pack (Pagamento Singolo One-Time):
-- 69$ una tantum
-- 300 immagini
+- ${PRICING_CONFIG.retail_pack.price}$ una tantum
+- ${PRICING_CONFIG.retail_pack.images} immagini
 - Nessun rinnovo o abbonamento
 - Priorità GPU Ultra
 
 Retail Monthly (Abbonamento Mensile):
-- 59$ / mese
-- 300 immagini ogni mese
+- ${PRICING_CONFIG.retail_monthly.price}$ / mese
+- ${PRICING_CONFIG.retail_monthly.images} immagini ogni mese
 - Cancellabile in qualsiasi momento via PayPal
 
 ---
@@ -102,7 +103,7 @@ Retail Monthly (Abbonamento Mensile):
 
 Se l’utente finisce le immagini:
 - Se ha un Pack One-Time, può ricomprare il Pack.
-- Se ha l'abbonamento mensile, può aggiungere un Extra Top-up: +300 immagini per 49$.
+- Se ha l'abbonamento mensile, può aggiungere un Extra Top-up: +${PRICING_CONFIG.top_up.images} immagini per ${PRICING_CONFIG.top_up.price}$.
 
 Suggerisci upgrade a chi usa spesso il bot.
 
@@ -110,7 +111,7 @@ Suggerisci upgrade a chi usa spesso il bot.
 
 🔁 ABBONAMENTO (SOLO PER IL RETAIL MONTHLY)
 
-- Rinnovo automatico mensile a 59$.
+- Rinnovo automatico mensile a ${PRICING_CONFIG.retail_monthly.price}$.
 - Cancellabile con un click via PayPal account.
 - I Pack invece NON hanno abbonamento, si pagano solo una volta.
 

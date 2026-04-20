@@ -12,6 +12,7 @@ import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
 import ChatBot from '@/components/ChatBot';
+import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
 import { getShowcaseData } from '@/lib/getShowcaseData';
@@ -359,9 +360,9 @@ export default async function LandingPage() {
           <div className="pricing-card" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '1px solid rgba(255,10,179,0.3)' }}>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#fff' }}>STARTER PACK</h3>
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Perfect for testing without subscription.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>$29<span style={{ color: '#888' }}>/one-time</span></div>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.starter_pack.price}<span style={{ color: '#888' }}>/one-time</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> <strong>100 images</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> <strong>{PRICING_CONFIG.starter_pack.images} images</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Telegram Bot Access</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Instant Setup</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> No recurring fees</li>
@@ -376,9 +377,9 @@ export default async function LandingPage() {
           <div className="pricing-card" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '1px solid rgba(0,255,255,0.3)' }}>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#fff' }}>RETAIL PACK</h3>
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Scale your volumes without a subscription.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>$69<span style={{ color: '#888' }}>/one-time</span></div>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_pack.price}<span style={{ color: '#888' }}>/one-time</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> <strong>300 images</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> <strong>{PRICING_CONFIG.retail_pack.images} images</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> Nano Pro absolute fidelity</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> Priority GPU Ultra Bot</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> No recurring fees</li>
@@ -396,17 +397,17 @@ export default async function LandingPage() {
             </div>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#ccff00' }}>RETAIL MONTHLY</h3>
             <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Scale your social volumes.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>$59<span>/month</span></div>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_monthly.price}<span>/month</span></div>
             <div style={{ fontSize: '0.85rem', color: '#ccff00', fontWeight: 'bold', marginTop: '-32px', marginBottom: '1.5rem', position: 'relative', zIndex: 1, opacity: 0 }}>Spacer</div>
             
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>300 images unlocked monthly</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>{PRICING_CONFIG.retail_monthly.images} images unlocked monthly</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Nano Pro absolute fidelity</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Priority GPU Ultra Bot</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> All niches unlocked</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
-              Extra Top-up: <strong>+300 images for $49</strong>
+              Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
             </div>
             <Link href="/registrazione?plan=retail_monthly" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Subscribe Now</Link>
           </div>

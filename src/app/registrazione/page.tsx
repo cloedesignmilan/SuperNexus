@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, Zap, Gem } from 'lucide-react';
+import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import PayPalCheckout from './PayPalCheckout';
 
 export default function RegistrazionePage() {
@@ -62,12 +63,12 @@ export default function RegistrazionePage() {
                                      className="radio-card trial-card">
                                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                         <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Free Trial</h4>
-                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$0</span>
+                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>${PRICING_CONFIG.free_trial.price}</span>
                                     </div>
                                     <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexWrap: 'wrap', gap: '15px'}}>
-                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> 10 Free Images</li>
+                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> {PRICING_CONFIG.free_trial.images} Free Images</li>
                                         <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Credit Card</li>
-                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> 14 Days Expiration</li>
+                                        <li style={{display: 'flex', gap: '8px', alignItems: 'center'}}><CheckCircle2 size={16} color="#ff0ab3"/> {PRICING_CONFIG.free_trial.days} Days Expiration</li>
                                     </ul>
                                 </div>
                             </label>
@@ -84,10 +85,10 @@ export default function RegistrazionePage() {
                                  className="radio-card starter-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                     <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Zap size={18} color="#ff0ab3" /> Starter Pack</h4>
-                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>$29<span style={{fontSize: '0.9rem', color: '#888'}}> one-time</span></span>
+                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold'}}>${PRICING_CONFIG.starter_pack.price}<span style={{fontSize: '0.9rem', color: '#888'}}> one-time</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> <strong>100 generations</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> <strong>{PRICING_CONFIG.starter_pack.images} generations</strong></li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> Telegram Bot Access</li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ff0ab3"/> No Subscription</li>
                                 </ul>
@@ -102,10 +103,10 @@ export default function RegistrazionePage() {
                                  className="radio-card retail-card">
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                                     <h4 style={{fontSize: '1.2rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px'}}><Gem size={18} color="#00ffff" /> Retail Pack</h4>
-                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff'}}>$69<span style={{fontSize: '0.9rem', color: '#888'}}> one-time</span></span>
+                                    <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff'}}>${PRICING_CONFIG.retail_pack.price}<span style={{fontSize: '0.9rem', color: '#888'}}> one-time</span></span>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#a0a0a0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> <strong>300 generations</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> <strong>{PRICING_CONFIG.retail_pack.images} generations</strong></li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> Ultra GPU Bot Priority</li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#00ffff"/> No Subscription</li>
                                 </ul>
@@ -122,12 +123,12 @@ export default function RegistrazionePage() {
                                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px'}}>
                                     <h4 style={{fontSize: '1.2rem', margin: 0, color: '#ccff00', display: 'flex', alignItems: 'center', gap: '8px'}}>Retail Monthly</h4>
                                     <div style={{textAlign: 'right'}}>
-                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', display: 'block'}}>$59<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
+                                        <span style={{fontSize: '1.4rem', fontWeight: 'bold', color: '#fff', display: 'block'}}>${PRICING_CONFIG.retail_monthly.price}<span style={{fontSize: '0.9rem', color: '#888'}}>/mo</span></span>
                                         <span style={{fontSize: '0.7rem', color: '#ccff00'}}>Subscription</span>
                                     </div>
                                 </div>
                                 <ul style={{listStyle: 'none', padding: 0, margin: 0, color: '#e0e0e0', fontSize: '0.85rem', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1}}>
-                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> <strong>300 generations / month</strong></li>
+                                    <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> <strong>{PRICING_CONFIG.retail_monthly.images} generations / month</strong></li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Nano Pro absolute fidelity</li>
                                     <li style={{display: 'flex', gap: '8px'}}><CheckCircle2 size={16} color="#ccff00"/> Cancel anytime via PayPal</li>
                                 </ul>
