@@ -82,7 +82,7 @@ export default function TargetAudience() {
          </div>
          
          {/* 4-COLUMN WOW GRID */}
-         <div className="wow-grid">
+         <div className="wow-grid" ref={containerRef}>
             {audiences.map((item, i) => (
                <div key={i} className="wow-card" style={{ '--theme-color': item.color } as React.CSSProperties}>
                   <div className="wow-card-inner">
