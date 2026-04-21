@@ -149,6 +149,7 @@ export default function TargetAudience() {
            background: #1a1a1a;
            border-radius: 31px;
            height: 100%;
+           min-height: 480px;
            padding: 2.5rem 1.8rem;
            position: relative;
            overflow: hidden;
