@@ -307,36 +307,50 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                       <p style={{ color: '#ccc', fontStyle: 'italic', margin: 0, fontSize: '1rem', borderLeft: `3px solid ${cat.border}`, paddingLeft: '1rem' }}>"{exampleData.desc}"</p>
                       
-                      {/* BEFORE IMAGES */}
-                      <div>
-                        <p style={{ color: '#aaa', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>ORIGINAL WAREHOUSE PHOTO{exampleData.before.length > 1 ? 'S' : ''}</p>
-                        <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
-                          {exampleData.before.map((bImg: string, i: number) => (
-                            <img key={i} src={bImg} alt={`Before ${i+1}`} style={{ width: '180px', borderRadius: '12px', objectFit: 'cover', height: '240px', opacity: 0.8, boxShadow: '0 4px 15px rgba(0,0,0,0.5)' }} />
-                          ))}
-                        </div>
+                      {/* SIDE BY SIDE COMPARISON */}
+                      <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'stretch' }}>
+                        
+                        {/* LEFT: FIRST BEFORE IMAGE */}
+                        {exampleData.before.length > 0 && (
+                          <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                             <p style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
+                               ORIGINAL WAREHOUSE PHOTO
+                             </p>
+                             <img src={exampleData.before[0]} alt="Original" style={{ width: '100%', height: '100%', minHeight: '400px', objectFit: 'cover', display: 'block' }} />
+                          </div>
+                        )}
+
+                        {/* RIGHT: FIRST AFTER IMAGE */}
+                        {exampleData.afters.length > 0 && (
+                          <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                             <p style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, color: cat.border, border: `1px solid ${cat.border}` }}>
+                               AI RESULT
+                             </p>
+                             <img src={exampleData.afters[0]} alt="Result 1" style={{ width: '100%', height: '100%', minHeight: '400px', objectFit: 'cover', display: 'block' }} />
+                          </div>
+                        )}
                       </div>
 
-                      {/* AFTER IMAGES */}
-                      <div>
-                        <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                           <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}` }} />
-                           AI RESULTS
-                        </p>
-                        <div style={{ 
-                          display: 'grid', 
-                          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-                          gap: '1rem',
-                          justifyContent: 'flex-end'
-                        }}>
-                          {exampleData.afters.map((aImg: string, i: number) => (
-                            <div key={i} style={{ position: 'relative', width: i === 0 ? '50%' : '100%', justifySelf: i === 0 ? 'flex-end' : 'auto', height: i === 0 ? 'auto' : '250px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
-                               <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: i === 0 ? 'auto' : '100%', objectFit: 'cover', display: 'block' }} />
-                               <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: `1px solid ${cat.color.replace('0.5', '0.3')}` }}>AI Generation {i+1}</div>
-                            </div>
-                          ))}
+                      {/* OTHER IMAGES GRID */}
+                      {(exampleData.before.length > 1 || exampleData.afters.length > 1) && (
+                        <div style={{ marginTop: '1.5rem' }}>
+                          <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>MORE VARIATIONS</p>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                            {exampleData.before.slice(1).map((bImg: string, i: number) => (
+                              <div key={`b-${i}`} style={{ position: 'relative', width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+                                 <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>ORIGINAL {i+2}</p>
+                                 <img src={bImg} alt={`Before ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                              </div>
+                            ))}
+                            {exampleData.afters.slice(1).map((aImg: string, i: number) => (
+                              <div key={`a-${i}`} style={{ position: 'relative', width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+                                 <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>AI RESULT {i+2}</p>
+                                 <img src={aImg} alt={`Result ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
                     </div>
                   );
