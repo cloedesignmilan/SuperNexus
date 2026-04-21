@@ -16,9 +16,9 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(59, 130, 246, 0.8)",
     bgImage: "/prove/Tshirt/Ecommerce Clean/627D75E3-D637-42B7-94EB-1672B1AB8C88.jpeg",
     subcategories: [
-      { name: "Streetwear FlatLay", icon: <Camera size={12} /> },
-      { name: "E-Commerce Clean", icon: <ShoppingBag size={12} /> },
-      { name: "UGC Content", icon: <Smartphone size={12} /> },
+      { name: "Streetwear FlatLay", showcaseId: "t-shirt & knitwear-streetwear-flatlay", icon: <Camera size={12} /> },
+      { name: "E-Commerce Clean", showcaseId: "t-shirt & knitwear-e-commerce-clean", icon: <ShoppingBag size={12} /> },
+      { name: "UGC Content", showcaseId: "t-shirt & knitwear-ugc-(user-generated-content)", icon: <Smartphone size={12} /> },
     ]
   },
   {
@@ -30,7 +30,7 @@ const CATEGORY_STRUCTURE = [
     bgImage: "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
     subcategories: [
       { name: "Women's Sneakers", icon: <Star size={12} /> },
-      { name: "Product Clean", icon: <ShoppingBag size={12} /> },
+      { name: "Product Clean", showcaseId: "footwear & sneakers-product-clean", icon: <ShoppingBag size={12} /> },
       { name: "Elegant Heels", icon: <Sparkles size={12} /> },
       { name: "On Feet Urban", icon: <MapPin size={12} /> },
     ]
@@ -43,13 +43,13 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(168, 85, 247, 0.8)",
     bgImage: "/prove/Donna/Luxury Villa Shoot/195E2086-E0B9-4CBD-B2BB-DDA2D3913BA0.jpeg",
     subcategories: [
-      { name: "Mannequin Display", icon: <UserCheck size={12} /> },
-      { name: "Runway Editorial", icon: <Star size={12} /> },
-      { name: "Luxury Villa", icon: <Building size={12} /> },
-      { name: "Instagram Style", icon: <Smartphone size={12} /> },
-      { name: "Mature Sophistication", icon: <Heart size={12} /> },
-      { name: "Gym & Fitness", icon: <Sun size={12} /> },
-      { name: "Outfit Coordination", icon: <ImageIcon size={12} /> },
+      { name: "Mannequin Display", showcaseId: "women's fashion-mannequin-display", icon: <UserCheck size={12} /> },
+      { name: "Runway Editorial", showcaseId: "women's fashion-runway-editorial", icon: <Star size={12} /> },
+      { name: "Luxury Villa", showcaseId: "women's fashion-luxury-villa-shoot", icon: <Building size={12} /> },
+      { name: "Instagram Style", showcaseId: "women's fashion-instagram-lifestyle", icon: <Smartphone size={12} /> },
+      { name: "Mature Sophistication", showcaseId: "women's fashion-mature-sophistication", icon: <Heart size={12} /> },
+      { name: "Gym & Fitness", showcaseId: "women's fashion-gym-&-fitness", icon: <Sun size={12} /> },
+      { name: "Outfit Coordination", showcaseId: "women's fashion-outfit-coordination", icon: <ImageIcon size={12} /> },
       { name: "Curvy", icon: <Star size={12} /> },
     ]
   },
@@ -63,8 +63,8 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Ecommerce Studio", icon: <ShoppingBag size={12} /> },
       { name: "Street Style", icon: <MapPin size={12} /> },
-      { name: "Silver Fox Luxury", icon: <Star size={12} /> },
-      { name: "Executive Lifestyle", icon: <Building size={12} /> },
+      { name: "Silver Fox Luxury", showcaseId: "men's apparel-silver-fox-luxury", icon: <Star size={12} /> },
+      { name: "Executive Lifestyle", showcaseId: "men's apparel-executive-lifestyle", icon: <Building size={12} /> },
     ]
   },
   {
@@ -75,8 +75,8 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(244, 63, 94, 0.8)",
     bgImage: "/prove/Sposa/Romantic Venue/7B9D7519-83A0-4912-A5BD-C99401EBB01A.jpeg",
     subcategories: [
-      { name: "Bridal Collection", icon: <Sparkles size={12} /> },
-      { name: "Groom Collection", icon: <UserCheck size={12} /> },
+      { name: "Bridal Collection", showcaseId: "bridal-bridal-collection", icon: <Sparkles size={12} /> },
+      { name: "Groom Collection", showcaseId: "groom & formal-groom-collection", icon: <UserCheck size={12} /> },
       { name: "Bridal Story", icon: <ImageIcon size={12} /> },
       { name: "Groom Story", icon: <Camera size={12} /> },
     ]
@@ -89,8 +89,8 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(234, 179, 8, 0.8)",
     bgImage: "/prove/Bambino/Elegant Event/1.jpeg",
     subcategories: [
-      { name: "Elegant Event", icon: <Star size={12} /> },
-      { name: "Playful Lifestyle", icon: <Trees size={12} /> },
+      { name: "Elegant Event", showcaseId: "kids collection-elegant-event", icon: <Star size={12} /> },
+      { name: "Playful Lifestyle", showcaseId: "kids collection-playful-lifestyle", icon: <Trees size={12} /> },
       { name: "Back to School", icon: <Building size={12} /> },
       { name: "First Communion", icon: <Sparkles size={12} /> },
       { name: "Holiday Season", icon: <Heart size={12} /> },
@@ -98,8 +98,9 @@ const CATEGORY_STRUCTURE = [
   },
 ];
 
-export default function ShowcaseCategories() {
+export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData?: any[] }) {
   const displayOrder = [2, 3, 0, 1, 4, 5]; // Women(2), Men(3), T-Shirts(0), Footwear(1), Bridal(4), Kids(5)
+  const [activeExample, setActiveExample] = useState<{catIndex: number, subName: string, showcaseId?: string} | null>(null);
 
   return (
     <div style={{
@@ -240,7 +241,11 @@ export default function ShowcaseCategories() {
                   boxShadow: `0 4px 20px rgba(0,0,0,0.3)` 
                 }}
                 onClick={() => {
-                  document.getElementById('explore-examples')?.scrollIntoView({ behavior: 'smooth' });
+                  if (activeExample?.subName === sub.name) {
+                    setActiveExample(null); // Toggle off
+                  } else {
+                    setActiveExample({ catIndex: index, subName: sub.name, showcaseId: sub.showcaseId });
+                  }
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = cat.border;
@@ -270,6 +275,73 @@ export default function ShowcaseCategories() {
                 </div>
               ))}
             </div>
+
+            {/* INLINE EXAMPLE REVEAL */}
+            {activeExample?.catIndex === index && (
+              <div style={{
+                marginTop: '2rem',
+                background: '#111',
+                border: `1px solid ${cat.border}`,
+                borderRadius: '24px',
+                padding: '2rem',
+                animation: 'fadeUp 0.5s ease forwards',
+                boxShadow: `0 10px 40px rgba(0,0,0,0.5), 0 0 30px ${cat.color.replace('0.5', '0.1')}`
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                  <h4 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
+                    <span style={{ color: cat.border }}>{activeExample.subName}</span> Example
+                  </h4>
+                  <button 
+                    onClick={() => setActiveExample(null)}
+                    style={{ background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', fontSize: '1.5rem' }}
+                  >
+                    ×
+                  </button>
+                </div>
+                
+                {(() => {
+                  const exampleData = showcaseData.find(d => (activeExample.showcaseId && d.id === activeExample.showcaseId) || d.subcategory === activeExample.subName || d.category === activeExample.subName);
+                  if (!exampleData) return <p style={{ color: '#888' }}>Example coming soon for this specific mode...</p>;
+                  
+                  return (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                      <p style={{ color: '#ccc', fontStyle: 'italic', margin: 0, fontSize: '1rem', borderLeft: `3px solid ${cat.border}`, paddingLeft: '1rem' }}>"{exampleData.desc}"</p>
+                      
+                      {/* BEFORE IMAGES */}
+                      <div>
+                        <p style={{ color: '#aaa', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>ORIGINAL WAREHOUSE PHOTO{exampleData.before.length > 1 ? 'S' : ''}</p>
+                        <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                          {exampleData.before.map((bImg: string, i: number) => (
+                            <img key={i} src={bImg} alt={`Before ${i+1}`} style={{ width: '180px', borderRadius: '12px', objectFit: 'cover', height: '240px', opacity: 0.8, boxShadow: '0 4px 15px rgba(0,0,0,0.5)' }} />
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* AFTER IMAGES */}
+                      <div>
+                        <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                           <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}` }} />
+                           AI RESULTS
+                        </p>
+                        <div style={{ 
+                          display: 'grid', 
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+                          gap: '1rem' 
+                        }}>
+                          {exampleData.afters.map((aImg: string, i: number) => (
+                            <div key={i} style={{ position: 'relative', width: '100%', height: i === 0 ? '500px' : '250px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                               <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                               <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: `1px solid ${cat.color.replace('0.5', '0.3')}` }}>AI Generation {i+1}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
 
           </div>
         );

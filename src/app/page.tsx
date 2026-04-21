@@ -255,7 +255,7 @@ export default async function LandingPage() {
           From the box to the web: 1 photo in less than 30 seconds, and 5 photos in about 120 seconds. Watch how quickly taken photos from our affiliated stores are transformed into perfect images for Facebook Campaigns, Instagram Posts, and Website catalogs.
         </p>
 
-        <ShowcaseCategories />
+        <ShowcaseCategories showcaseData={showcaseData} />
 
         <div id="explore-examples" style={{ textAlign: 'center', marginTop: '6rem', marginBottom: '4rem', padding: '0 20px' }}>
           <h2 style={{ 
