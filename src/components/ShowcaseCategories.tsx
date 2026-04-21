@@ -91,6 +91,9 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Elegant Event", icon: <Star size={12} /> },
       { name: "Playful Lifestyle", icon: <Trees size={12} /> },
+      { name: "Back to School", icon: <Building size={12} /> },
+      { name: "First Communion", icon: <Sparkles size={12} /> },
+      { name: "Holiday Season", icon: <Heart size={12} /> },
     ]
   },
 ];
