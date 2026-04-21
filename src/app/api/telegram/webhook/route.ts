@@ -367,15 +367,20 @@ REGOLE TASSATIVE:
             }
 
             // Fallback in caso di "SICURO" o errore: passiamo direttamente ai bottoni Quantità
+            const isStoryMode = subcat && subcat.name.includes("Story");
             let buttons = [
                 [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|X`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${cbKey}|X`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|X`)]
+                isStoryMode 
+                    ? [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|X`), Markup.button.callback("7 Photos 🎬", `Q|7|${subId}|${cbKey}|X`)]
+                    : [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|X`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
                     [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|X`)],
-                    [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                    isStoryMode 
+                        ? [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 7 Photos (Pro)", `UPSELL`)]
+                        : [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
 
@@ -394,15 +399,22 @@ REGOLE TASSATIVE:
             const subId = parts[2];
             const cbKey = parts[3];
 
+            const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
+            const isStoryMode = subcat && subcat.name.includes("Story");
+            
             let buttons = [
                 [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${userClarification}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${cbKey}|${userClarification}`)],
-                [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${userClarification}`)]
+                isStoryMode
+                    ? [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${userClarification}`), Markup.button.callback("7 Photos 🎬", `Q|7|${subId}|${cbKey}|${userClarification}`)]
+                    : [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${userClarification}`)]
             ];
 
             if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
                 buttons = [
                     [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${userClarification}`)],
-                    [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                    isStoryMode
+                        ? [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 7 Photos (Pro)", `UPSELL`)]
+                        : [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
                 ];
             }
 
