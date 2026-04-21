@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { 
   Shirt, Footprints, Sparkles, Heart, Briefcase, Baby, 
   Camera, ShoppingBag, Smartphone, Image as ImageIcon,
@@ -153,21 +154,21 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                 
                 {/* LEFT: FIRST BEFORE IMAGE */}
                 {exampleData.before.length > 0 && (
-                  <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                  <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', minHeight: '400px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
                      <p style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}>
                        ORIGINAL WAREHOUSE PHOTO
                      </p>
-                     <img src={exampleData.before[0]} alt="Original" style={{ width: '100%', height: '100%', minHeight: '400px', objectFit: 'cover', display: 'block' }} />
+                     <Image src={exampleData.before[0]} alt="Original" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} priority />
                   </div>
                 )}
 
                 {/* RIGHT: FIRST AFTER IMAGE */}
                 {exampleData.afters.length > 0 && (
-                  <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                  <div style={{ flex: '1 1 calc(50% - 0.75rem)', minWidth: '280px', minHeight: '400px', position: 'relative', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
                      <p style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 800, color: cat.border, border: `1px solid ${cat.border}` }}>
                        AI RESULT
                      </p>
-                     <img src={exampleData.afters[0]} alt="Result 1" style={{ width: '100%', height: '100%', minHeight: '400px', objectFit: 'cover', display: 'block' }} />
+                     <Image src={exampleData.afters[0]} alt="Result 1" fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} priority />
                   </div>
                 )}
               </div>
@@ -180,13 +181,13 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                     {exampleData.before.slice(1).map((bImg: string, i: number) => (
                       <div key={`b-${i}`} style={{ position: 'relative', width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
                          <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>ORIGINAL {i+2}</p>
-                         <img src={bImg} alt={`Before ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                         <Image src={bImg} alt={`Before ${i+2}`} fill sizes="(max-width: 768px) 50vw, 33vw" style={{ objectFit: 'cover', opacity: 0.8 }} />
                       </div>
                     ))}
                     {exampleData.afters.slice(1).map((aImg: string, i: number) => (
                       <div key={`a-${i}`} style={{ position: 'relative', width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
                          <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>AI RESULT {i+2}</p>
-                         <img src={aImg} alt={`Result ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                         <Image src={aImg} alt={`Result ${i+2}`} fill sizes="(max-width: 768px) 50vw, 33vw" style={{ objectFit: 'cover' }} />
                       </div>
                     ))}
                   </div>
@@ -439,7 +440,7 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                       {sub.name}
                     </span>
                     <span style={{ color: hasExample ? cat.border : '#555', fontSize: '0.85rem', fontWeight: 600, marginTop: '2px' }}>
-                      {hasExample ? 'View AI Example ✨' : 'Coming Soon'}
+                      {hasExample ? 'View AI Example ✨' : 'Available Mode'}
                     </span>
                   </div>
                   
