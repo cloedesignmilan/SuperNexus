@@ -38,6 +38,21 @@ export async function POST(req: NextRequest) {
     // --- AUTENTICAZIONE CRM CLIENTE E CAMBIO ACCOUNT DINAMICO ---
     const incomingText = update?.message?.text?.trim() || "";
     
+    // --- RECUPERO PIN VIA EMAIL ---
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (incomingText && emailRegex.test(incomingText)) {
+        const userByEmail = await prisma.user.findUnique({
+            where: { email: incomingText.toLowerCase() }
+        });
+        
+        if (userByEmail && userByEmail.bot_pin) {
+            await bot.telegram.sendMessage(globalChatId, `✅ **PIN Recovered**\n\nYour Secret PIN is: \`${userByEmail.bot_pin}\`\n\nType this PIN now to log in.`, { parse_mode: 'Markdown' });
+        } else {
+            await bot.telegram.sendMessage(globalChatId, `❌ **Email non trovata**\n\nNon abbiamo trovato nessun account associato a questa email. Assicurati di averla digitata correttamente o registrati sul nostro sito.`, { parse_mode: 'Markdown' });
+        }
+        return NextResponse.json({ ok: true });
+    }
+
     // Controlla se il messaggio in ingresso è un PIN valido per il cambio account (o il primo bind)
     let possiblePin = incomingText;
     if (incomingText.startsWith('/start ')) {
@@ -92,7 +107,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!existingUser) {
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal 6-character PIN provided by the agency to unlock your client area.`, { parse_mode: 'Markdown' });
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal 6-character PIN provided by the agency to unlock your client area.\n\n_Forgot your PIN? Simply type the email you used to register right here in the chat._`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
