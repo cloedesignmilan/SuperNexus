@@ -5,7 +5,6 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
-import DynamicShowcase from '@/components/DynamicShowcase';
 import ShowcaseCategories from '@/components/ShowcaseCategories';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
@@ -256,31 +255,6 @@ export default async function LandingPage() {
         </p>
 
         <ShowcaseCategories showcaseData={showcaseData} />
-
-        <div id="explore-examples" style={{ textAlign: 'center', marginTop: '6rem', marginBottom: '4rem', padding: '0 20px' }}>
-          <h2 style={{ 
-            fontSize: 'clamp(2rem, 4vw, 3rem)', 
-            fontWeight: 800, 
-            letterSpacing: '-0.03em', 
-            background: 'linear-gradient(to right, #fff, #888)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            marginBottom: '1rem'
-          }}>
-            Endless Possibilities
-          </h2>
-          <p style={{ 
-            fontSize: '1.2rem', 
-            color: '#888', 
-            maxWidth: '600px', 
-            margin: '0 auto',
-            lineHeight: 1.6
-          }}>
-            Explore a few examples of how we transform simple product photos into stunning editorial campaigns and lifestyle scenes.
-          </p>
-        </div>
-
-        <DynamicShowcase showcaseData={showcaseData} />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}
