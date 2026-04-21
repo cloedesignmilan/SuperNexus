@@ -257,7 +257,7 @@ export default async function LandingPage() {
 
         <ShowcaseCategories />
 
-        <div style={{ textAlign: 'center', marginTop: '6rem', marginBottom: '4rem', padding: '0 20px' }}>
+        <div id="explore-examples" style={{ textAlign: 'center', marginTop: '6rem', marginBottom: '4rem', padding: '0 20px' }}>
           <h2 style={{ 
             fontSize: 'clamp(2rem, 4vw, 3rem)', 
             fontWeight: 800, 
