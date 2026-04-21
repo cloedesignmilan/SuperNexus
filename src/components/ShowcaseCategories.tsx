@@ -330,7 +330,7 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                         }}>
                           {exampleData.afters.map((aImg: string, i: number) => (
                             <div key={i} style={{ position: 'relative', width: '100%', height: i === 0 ? 'auto' : '250px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
-                               <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: i === 0 ? 'auto' : '100%', maxHeight: i === 0 ? '800px' : 'none', objectFit: i === 0 ? 'contain' : 'cover', display: 'block' }} />
+                               <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: i === 0 ? 'auto' : '100%', objectFit: i === 0 ? 'cover' : 'cover', display: 'block' }} />
                                <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: `1px solid ${cat.color.replace('0.5', '0.3')}` }}>AI Generation {i+1}</div>
                             </div>
                           ))}
