@@ -181,14 +181,25 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
         }
       `}</style>
 
-      {/* INTRO HEADER */}
-      <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-        <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
-          Explore AI Generative Modes
-        </h2>
-        <p style={{ color: '#888', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
-          See exactly how SuperNexus adapts to every fashion category. Each mode is engineered with hyper-tailored prompts, specialized studio lighting, and realistic environments.
-        </p>
+      {/* INTRO HEADER (2 COLUMNS) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', marginBottom: '6rem', alignItems: 'flex-start' }}>
+        <div style={{ textAlign: 'left' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', marginBottom: '1rem', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            From Box to Web<br/>in Seconds.
+          </h2>
+          <p style={{ color: '#888', fontSize: '1.2rem', lineHeight: 1.6 }}>
+            Transform raw snapshots into high-end editorial campaigns instantly. Generate 1 professional photo in under 30 seconds, or a full batch of 5 in just two minutes. The ultimate workflow for e-commerce catalogs, Instagram styling, and high-converting Facebook ads.
+          </p>
+        </div>
+        
+        <div style={{ textAlign: 'left', paddingLeft: '2rem', borderLeft: '1px solid rgba(255,255,255,0.1)' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', marginBottom: '1rem', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            Explore AI<br/>Generative Modes
+          </h2>
+          <p style={{ color: '#888', fontSize: '1.2rem', lineHeight: 1.6 }}>
+            See exactly how SuperNexus adapts to every fashion category. Each mode is engineered with hyper-tailored prompts, specialized studio lighting, and realistic 3D environments.
+          </p>
+        </div>
       </div>
 
       {/* CATEGORY BLOCKS */}

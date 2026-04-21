@@ -248,11 +248,7 @@ export default async function LandingPage() {
       <TargetAudience />
 
       {/* SHOWCASE DA ZERO */}
-      <section id="showcase" style={{ padding: '4rem 0', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
-        <h2 className="section-title" style={{ color: '#fff', textAlign: 'center' }}>From Box to Web in Seconds.</h2>
-        <p style={{ fontSize: '1.2rem', color: '#aaa', marginBottom: '3rem', textAlign: 'center', maxWidth: '800px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
-          Transform raw snapshots into high-end editorial campaigns instantly. Generate 1 professional photo in under 30 seconds, or a full batch of 5 in just two minutes. The ultimate workflow for e-commerce catalogs, Instagram styling, and high-converting Facebook ads.
-        </p>
+      <section id="showcase" style={{ padding: '6rem 0', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
 
         <ShowcaseCategories showcaseData={showcaseData} />
       </section>
