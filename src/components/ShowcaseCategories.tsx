@@ -135,6 +135,10 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
             transform: translateY(0);
           }
         }
+        @keyframes glowPulse {
+          0% { transform: scale(1); filter: brightness(1); }
+          100% { transform: scale(1.1); filter: brightness(1.3); }
+        }
         .macro-header {
           position: relative;
           height: 280px;
@@ -249,44 +253,75 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
               gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
               gap: '1.5rem' 
             }}>
-              {cat.subcategories.map(sub => (
+              {cat.subcategories.map(sub => {
+                const hasExample = !!sub.showcaseId;
+                const isActive = activeExample?.subName === sub.name;
+                return (
                 <div key={sub.name} className="subcategory-card" style={{ 
-                  boxShadow: `0 4px 20px rgba(0,0,0,0.3)` 
+                  boxShadow: isActive ? `0 10px 30px ${cat.color.replace('0.5', '0.3')}` : `0 4px 20px rgba(0,0,0,0.3)`,
+                  borderColor: isActive ? cat.border : 'rgba(255,255,255,0.08)',
+                  transform: isActive ? 'translateY(-2px)' : 'none',
+                  background: isActive ? '#1a1a1a' : '#151515'
                 }}
                 onClick={() => {
-                  if (activeExample?.subName === sub.name) {
-                    setActiveExample(null); // Toggle off
+                  if (isActive) {
+                    setActiveExample(null);
                   } else {
                     setActiveExample({ catIndex: index, subName: sub.name, showcaseId: sub.showcaseId });
                   }
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = cat.border;
-                  e.currentTarget.style.boxShadow = `0 10px 30px ${cat.color.replace('0.5', '0.2')}`;
+                  if (!isActive) {
+                    e.currentTarget.style.borderColor = hasExample ? cat.border : 'rgba(255,255,255,0.2)';
+                    e.currentTarget.style.boxShadow = hasExample ? `0 10px 30px ${cat.color.replace('0.5', '0.2')}` : `0 8px 25px rgba(0,0,0,0.4)`;
+                    e.currentTarget.style.transform = 'translateY(-3px)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
-                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                  if (!isActive) {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                    e.currentTarget.style.transform = 'none';
+                  }
                 }}>
                   <div style={{ 
-                    background: cat.color.replace('0.5', '0.15'), 
+                    background: hasExample ? cat.color.replace('0.5', '0.2') : 'rgba(255,255,255,0.05)', 
                     padding: '0.9rem', 
                     borderRadius: '16px', 
-                    color: '#fff',
-                    border: `1px solid ${cat.color.replace('0.5', '0.3')}`
+                    color: hasExample ? '#fff' : '#888',
+                    border: `1px solid ${hasExample ? cat.color.replace('0.5', '0.4') : 'rgba(255,255,255,0.1)'}`
                   }}>
                     {React.cloneElement(sub.icon as React.ReactElement<any>, { size: 24 })}
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={{ color: '#fff', fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.01em' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <span style={{ color: hasExample ? '#fff' : '#aaa', fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.01em' }}>
                       {sub.name}
                     </span>
-                    <span style={{ color: '#666', fontSize: '0.85rem', fontWeight: 500, marginTop: '2px' }}>
-                      AI Generative Mode
+                    <span style={{ color: hasExample ? cat.border : '#555', fontSize: '0.85rem', fontWeight: 600, marginTop: '2px' }}>
+                      {hasExample ? 'View AI Example ✨' : 'Coming Soon'}
                     </span>
                   </div>
+                  
+                  {/* WOW EFFECT BADGE for linked examples */}
+                  {hasExample && (
+                     <div style={{
+                       background: `linear-gradient(135deg, ${cat.border}, transparent)`,
+                       width: '32px',
+                       height: '32px',
+                       borderRadius: '50%',
+                       display: 'flex',
+                       alignItems: 'center',
+                       justifyContent: 'center',
+                       boxShadow: `0 0 15px ${cat.color.replace('0.5', '0.5')}`,
+                       animation: isActive ? 'none' : 'glowPulse 2s infinite alternate'
+                     }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '2px' }}>
+                           <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                     </div>
+                  )}
                 </div>
-              ))}
+              )})}
             </div>
 
             {/* INLINE EXAMPLE REVEAL */}
