@@ -77,6 +77,8 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Bridal Collection", icon: <Sparkles size={12} /> },
       { name: "Groom Collection", icon: <UserCheck size={12} /> },
+      { name: "Bridal Story", icon: <ImageIcon size={12} /> },
+      { name: "Groom Story", icon: <Camera size={12} /> },
     ]
   },
   {
