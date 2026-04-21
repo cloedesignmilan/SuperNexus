@@ -119,7 +119,7 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
     if (activeExample?.catIndex !== index) return null;
     
     return (
-      <div style={{
+      <div id={`reveal-${activeExample.subName.replace(/\s+/g, '-')}`} className="example-reveal" style={{
         marginTop: '2rem',
         background: '#111',
         border: `1px solid ${cat.border}`,
@@ -392,11 +392,23 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                   transform: isActive ? 'translateY(-2px)' : 'none',
                   background: isActive ? '#1a1a1a' : '#151515'
                 }}
-                onClick={() => {
+                onClick={(e) => {
                   if (isActive) {
                     setActiveExample(null);
                   } else {
+                    // Record the card's current absolute position
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const absoluteY = rect.top + window.scrollY;
+                    
                     setActiveExample({ catIndex: index, subName: sub.name, showcaseId: sub.showcaseId });
+                    
+                    // After React renders the new expanded layout, smoothly anchor the card
+                    setTimeout(() => {
+                       window.scrollTo({
+                         top: absoluteY - 120, // Leave some breathing room for fixed headers
+                         behavior: 'smooth'
+                       });
+                    }, 50);
                   }
                 }}
                 onMouseEnter={(e) => {
