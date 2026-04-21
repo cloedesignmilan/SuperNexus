@@ -20,11 +20,11 @@ export function buildCreatorPrompt(
   blocks.push("COMMERCIAL E-COMMERCE DIRECTIVE: The primary goal of this image is TO SELL THE PRODUCT. The absolute maximum focus, extreme crispness, and photographic emphasis MUST be placed on the exact details, shape, color, and textile quality of the main garment. Do not let backgrounds or accessories steal the focus. Flawless presentation of the product is your ultimate priority.");
 
   // 2. SCENARIO / ENVIRONMENT / VARIATION PROMPT (ABSOLUTE COMPOSITION OVERRIDE)
-  blocks.push(`### ABSOLUTE COMPOSITION & VARIATION DIRECTIVE ###\nCRITICAL: The following instruction dictates the EXACT layout, folding, rotation, background, and physical arrangement of the product. This instruction OVERRIDES the visual layout of the input image. You MUST force the garment into this specific state.\n\n-> ${dbSceneText} <-\n`);
+  blocks.push(`### ABSOLUTE COMPOSITION & VARIATION DIRECTIVE ###\nCRITICAL: The following instruction dictates the EXACT layout, folding, rotation, background, environment, and physical arrangement of the product. This instruction OVERRIDES the visual layout of the input image. You MUST force the garment into this specific state and completely IGNORE the background or setting of the original image.\n\n-> ${dbSceneText} <-\n`);
   if (modifiers.cameraAngle) blocks.push(`CAMERA ANGLE: ${modifiers.cameraAngle}`);
 
   // 3. PRESERVATION RULES (Il Cuore)
-  let preservation = "STRICT DESIGN PRESERVATION RULES:\nYou must preserve the exact textile design, color, pattern, logos, prints, and materials from the reference image.\nCRITICAL: Do NOT preserve the flat 2D layout or shape of the input image if the VARIATION DIRECTIVE requests a different pose, fold, or angle. Adapt the 3D shape to the requested scene while keeping the design identical.\n";
+  let preservation = "STRICT DESIGN PRESERVATION RULES:\nYou must preserve the exact textile design, color, pattern, logos, prints, and materials from the reference image.\nCRITICAL: Do NOT preserve the flat 2D layout, original pose, or original background of the input image. You MUST place the preserved garment into the new environment requested in the VARIATION DIRECTIVE.\n";
   const cons = inspectorData?.preservation_constraints || {};
   const cdetails = cons.critical_details || inspectorData?.legacy_creator_data?.short_description || "Follow original item closely";
   const mcolor = cons.main_color || inspectorData?.legacy_creator_data?.color;
