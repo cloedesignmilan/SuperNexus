@@ -283,9 +283,10 @@ REGOLE AGGIUNTIVE TASSATIVE:
             await new Promise(r => setTimeout(r, idx * 4000));
             
             totalPromptsAttempted++;
-            const currentAngle = cameraAngles[idx % cameraAngles.length];
-            const currentPose = shuffledPoses[idx % shuffledPoses.length];
-            const currentLighting = shuffledLighting[idx % shuffledLighting.length];
+            const isStoryMode = subcategoryObj.name.includes("Story");
+            const currentAngle = isStoryMode ? undefined : cameraAngles[idx % cameraAngles.length];
+            const currentPose = isStoryMode ? undefined : shuffledPoses[idx % shuffledPoses.length];
+            const currentLighting = isStoryMode ? undefined : shuffledLighting[idx % shuffledLighting.length];
 
             const modifiers = {
                 gender: genderStr === "FEMALE" ? `stunningly beautiful high-end fashion female top model (${ageBracket} years old), flawless photorealistic skin, editorial high-fashion portrait, STRICTLY NO TEXT NO MAGAZINES` :
@@ -295,8 +296,8 @@ REGOLE AGGIUNTIVE TASSATIVE:
                 bottomType: confirmedBottom || null,
                 customBrand: confirmedBrand || null,
                 cameraAngle: currentAngle,
-                pose: isShoesCategory ? undefined : currentPose,
-                lighting: isShoesCategory ? undefined : currentLighting
+                pose: (isShoesCategory || isStoryMode) ? undefined : currentPose,
+                lighting: (isShoesCategory || isStoryMode) ? undefined : currentLighting
             };
 
             const variationSpecificPrompt = customVariationPrompts[idx];
