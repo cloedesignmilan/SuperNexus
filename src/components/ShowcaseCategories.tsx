@@ -307,34 +307,36 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                       <p style={{ color: '#ccc', fontStyle: 'italic', margin: 0, fontSize: '1rem', borderLeft: `3px solid ${cat.border}`, paddingLeft: '1rem' }}>"{exampleData.desc}"</p>
                       
-                      {/* BEFORE IMAGES */}
-                      <div>
-                        <p style={{ color: '#aaa', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>ORIGINAL WAREHOUSE PHOTO{exampleData.before.length > 1 ? 'S' : ''}</p>
-                        <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
-                          {exampleData.before.map((bImg: string, i: number) => (
-                            <img key={i} src={bImg} alt={`Before ${i+1}`} style={{ width: '180px', borderRadius: '12px', objectFit: 'cover', height: '240px', opacity: 0.8, boxShadow: '0 4px 15px rgba(0,0,0,0.5)' }} />
-                          ))}
+                      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                        
+                        {/* LEFT COLUMN: BEFORE IMAGES */}
+                        <div style={{ flex: '1 1 calc(50% - 1rem)', minWidth: '300px' }}>
+                          <p style={{ color: '#aaa', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>ORIGINAL WAREHOUSE PHOTO{exampleData.before.length > 1 ? 'S' : ''}</p>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+                            {exampleData.before.map((bImg: string, i: number) => (
+                              <div key={i} style={{ position: 'relative', width: '100%', height: i === 0 ? '500px' : '200px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                                 <img src={bImg} alt={`Before ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.9 }} />
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* AFTER IMAGES */}
-                      <div>
-                        <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                           <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}` }} />
-                           AI RESULTS
-                        </p>
-                        <div style={{ 
-                          display: 'grid', 
-                          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-                          gap: '1rem' 
-                        }}>
-                          {exampleData.afters.map((aImg: string, i: number) => (
-                            <div key={i} style={{ position: 'relative', width: '100%', height: i === 0 ? '500px' : '250px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                               <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                               <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: `1px solid ${cat.color.replace('0.5', '0.3')}` }}>AI Generation {i+1}</div>
-                            </div>
-                          ))}
+                        {/* RIGHT COLUMN: AFTER IMAGES */}
+                        <div style={{ flex: '1 1 calc(50% - 1rem)', minWidth: '300px' }}>
+                          <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                             <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}` }} />
+                             AI RESULTS
+                          </p>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+                            {exampleData.afters.map((aImg: string, i: number) => (
+                              <div key={i} style={{ position: 'relative', width: '100%', height: i === 0 ? '500px' : '200px', gridColumn: i === 0 ? '1 / -1' : 'auto', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', background: '#050505' }}>
+                                 <img src={aImg} alt={`Result ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                 <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', padding: '0.4rem 0.8rem', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: `1px solid ${cat.color.replace('0.5', '0.3')}` }}>AI Generation {i+1}</div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
+
                       </div>
 
                     </div>
