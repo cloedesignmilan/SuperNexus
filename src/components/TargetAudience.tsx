@@ -51,13 +51,13 @@ export default function TargetAudience() {
   ];
 
   return (
-    <section style={{ padding: '6rem 5%', background: '#fff', color: '#111' }}>
+    <section style={{ padding: '6rem 5%', background: '#050505', color: '#fff', borderBottom: '1px solid #222' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1rem', color: '#111' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1rem', color: '#fff' }}>
             Perfect for:
           </h2>
-          <p style={{ fontSize: '1.2rem', color: '#666', maxWidth: '600px', margin: '0 auto' }}>
+          <p style={{ fontSize: '1.2rem', color: '#aaa', maxWidth: '600px', margin: '0 auto' }}>
             Tailor-made for fashion entrepreneurs and professionals who want to scale their online sales without expensive external agencies.
           </p>
         </div>
@@ -72,16 +72,16 @@ export default function TargetAudience() {
         }}>
           {audiences.map((item, index) => (
             <div key={index} style={{
-              background: '#f9f9f9',
+              background: '#111',
               borderRadius: '24px',
               padding: '2.5rem 2rem 2.5rem',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              border: '1px solid rgba(0,0,0,0.03)',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
+              border: '1px solid rgba(255,255,255,0.08)',
               position: 'sticky',
               top: `calc(120px + ${index * 16}px)`,
               display: 'flex',
               flexDirection: 'column',
-              boxShadow: '0 -10px 30px rgba(0,0,0,0.05)',
+              boxShadow: '0 -10px 30px rgba(0,0,0,0.5)',
               zIndex: index + 1,
               willChange: 'transform',
               transform: 'translateZ(0)'
@@ -89,7 +89,7 @@ export default function TargetAudience() {
               
               <div style={{ 
                 width: '60px', height: '60px', 
-                background: '#111', 
+                background: '#050505', 
                 borderRadius: '16px', 
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 color: item.color,
@@ -100,11 +100,11 @@ export default function TargetAudience() {
                 {item.icon}
               </div>
               
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.8rem', letterSpacing: '-0.01em' }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.8rem', letterSpacing: '-0.01em', color: '#fff' }}>
                 {item.title}
               </h3>
               
-              <p style={{ color: '#666', fontSize: '1.05rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
+              <p style={{ color: '#aaa', fontSize: '1.05rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
                 {item.description}
               </p>
 
@@ -121,29 +121,31 @@ export default function TargetAudience() {
                 </div>
                 <div className={caveat.className} style={{ 
                   fontSize: '2.4rem', 
-                  color: '#111', 
+                  color: '#fff', 
                   transform: 'rotate(-6deg)',
                   display: 'inline-block',
                   lineHeight: '1.1',
                   marginTop: '15px',
-                  position: 'relative'
+                  position: 'relative',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.5)'
                 }}>
                   {/* Fake marker highlight behind text */}
                   <span style={{
                     position: 'absolute',
                     inset: '4px -8px',
                     background: item.color,
-                    opacity: 0.2,
+                    opacity: 0.3,
                     borderRadius: '8px',
                     transform: 'rotate(2deg)',
-                    zIndex: -1
+                    zIndex: -1,
+                    boxShadow: `0 0 20px ${item.color}40`
                   }} />
                   {item.handwrittenTip}
                 </div>
               </div>
 
               <div style={{ position: 'absolute', top: '2rem', right: '2rem', opacity: 0.05, pointerEvents: 'none' }}>
-                <CheckCircle2 size={100} style={{ transform: 'translate(40%, -40%)' }} />
+                <CheckCircle2 size={100} style={{ transform: 'translate(40%, -40%)', color: '#fff' }} />
               </div>
             </div>
           ))}
@@ -155,8 +157,9 @@ export default function TargetAudience() {
         <style dangerouslySetInnerHTML={{__html: `
           .target-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08) !important;
-            background: #ffffff !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8) !important;
+            background: #151515 !important;
+            border-color: rgba(255,255,255,0.2) !important;
           }
         `}} />
       </div>
