@@ -315,8 +315,8 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                        boxShadow: `0 0 15px ${cat.color.replace('0.5', '0.5')}`,
                        animation: isActive ? 'none' : 'glowPulse 2s infinite alternate'
                      }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '2px' }}>
-                           <polyline points="9 18 15 12 9 6"></polyline>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop: '2px' }}>
+                           <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                      </div>
                   )}
