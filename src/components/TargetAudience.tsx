@@ -37,7 +37,7 @@ export default function TargetAudience() {
   ];
 
   return (
-    <section style={{ padding: '8rem 5%', background: '#030303', color: '#fff', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #111' }}>
+    <section style={{ padding: '8rem 5%', background: '#151515', color: '#fff', position: 'relative', overflow: 'hidden', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
        {/* Background ambient glow */}
        <div style={{ position: 'absolute', top: '10%', left: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(168,85,247,0.03) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
        <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(34,211,238,0.03) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
@@ -57,8 +57,8 @@ export default function TargetAudience() {
            </p>
          </div>
          
-         {/* 2x2 WOW GRID */}
-         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+         {/* 4-COLUMN WOW GRID */}
+         <div className="wow-grid">
             {audiences.map((item, i) => (
                <div key={i} className="wow-card" style={{ '--theme-color': item.color } as React.CSSProperties}>
                   <div className="wow-card-inner">
@@ -72,7 +72,7 @@ export default function TargetAudience() {
                      
                      {/* Elegant Pill Badge */}
                      <div className="badge-wrapper">
-                        <div className={caveat.className} style={{ fontSize: '1.6rem', zIndex: 2, position: 'relative', lineHeight: 1 }}>
+                        <div className={caveat.className} style={{ fontSize: '1.3rem', zIndex: 2, position: 'relative', lineHeight: 1 }}>
                            {item.handwrittenTip}
                         </div>
                      </div>
@@ -88,6 +88,22 @@ export default function TargetAudience() {
        </div>
 
        <style dangerouslySetInnerHTML={{__html: `
+         .wow-grid {
+           display: grid;
+           grid-template-columns: repeat(4, 1fr);
+           gap: 1.5rem;
+         }
+         @media (max-width: 1024px) {
+           .wow-grid {
+             grid-template-columns: repeat(2, 1fr);
+           }
+         }
+         @media (max-width: 640px) {
+           .wow-grid {
+             grid-template-columns: 1fr;
+           }
+         }
+
          .wow-card {
            position: relative;
            border-radius: 32px;
@@ -130,10 +146,10 @@ export default function TargetAudience() {
          }
 
          .wow-card-inner {
-           background: #080808;
+           background: #1a1a1a;
            border-radius: 31px;
            height: 100%;
-           padding: 3.5rem 3rem;
+           padding: 2.5rem 1.8rem;
            position: relative;
            overflow: hidden;
            display: flex;
@@ -162,16 +178,16 @@ export default function TargetAudience() {
          }
 
          .icon-wrapper {
-           width: 65px;
-           height: 65px;
-           border-radius: 20px;
+           width: 55px;
+           height: 55px;
+           border-radius: 16px;
            background: rgba(255,255,255,0.03);
            border: 1px solid rgba(255,255,255,0.05);
            display: flex;
            align-items: center;
            justify-content: center;
            color: var(--theme-color);
-           margin-bottom: 2.5rem;
+           margin-bottom: 2rem;
            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
          }
@@ -184,26 +200,26 @@ export default function TargetAudience() {
          }
 
          .card-title {
-           font-size: 1.8rem;
+           font-size: 1.5rem;
            font-weight: 800;
            letter-spacing: -0.02em;
-           margin-bottom: 1.2rem;
+           margin-bottom: 1rem;
            color: #fff;
            transition: color 0.3s ease;
          }
 
          .card-desc {
            color: #888;
-           font-size: 1.1rem;
-           line-height: 1.6;
-           margin-bottom: 3rem;
+           font-size: 1rem;
+           line-height: 1.5;
+           margin-bottom: 2.5rem;
            flex: 1;
          }
 
          .badge-wrapper {
            display: inline-flex;
            align-items: center;
-           padding: 0.8rem 1.8rem;
+           padding: 0.6rem 1.2rem;
            background: rgba(255,255,255,0.03);
            border: 1px solid rgba(255,255,255,0.05);
            border-radius: 100px;
@@ -223,8 +239,8 @@ export default function TargetAudience() {
 
          .corner-arrow {
            position: absolute;
-           top: 3rem;
-           right: 3rem;
+           top: 2rem;
+           right: 2rem;
            color: rgba(255,255,255,0.1);
            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
            transform: scale(0.8);
