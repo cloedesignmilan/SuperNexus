@@ -252,29 +252,32 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
               <div style={{ 
                 position: 'relative', 
                 zIndex: 10, 
-                padding: '0 4rem', 
+                padding: '0 clamp(1.5rem, 5vw, 4rem)', 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: '2.5rem', 
+                gap: 'clamp(1rem, 3vw, 2.5rem)', 
                 height: '100%' 
               }}>
                 <div style={{ 
-                  padding: '1.2rem', 
+                  padding: 'clamp(0.8rem, 2vw, 1.2rem)', 
                   background: 'rgba(255,255,255,0.05)', 
                   backdropFilter: 'blur(10px)',
                   borderRadius: '24px', 
                   border: `1px solid ${cat.border}`, 
-                  boxShadow: `0 0 40px ${cat.color.replace('0.5', '0.4')}`
+                  boxShadow: `0 0 40px ${cat.color.replace('0.5', '0.4')}`,
+                  flexShrink: 0
                 }}>
-                  {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 48 })}
+                  {React.cloneElement(cat.icon as React.ReactElement<any>, { 
+                    style: { width: 'clamp(32px, 8vw, 48px)', height: 'clamp(32px, 8vw, 48px)' } 
+                  })}
                 </div>
-                <div>
-                  <h3 style={{ fontSize: '3.5rem', fontWeight: 800, color: '#fff', margin: 0, textShadow: '0 4px 20px rgba(0,0,0,0.5)', letterSpacing: '-0.02em' }}>
+                <div style={{ minWidth: 0, wordBreak: 'break-word' }}>
+                  <h3 style={{ fontSize: 'clamp(2rem, 8vw, 3.5rem)', fontWeight: 800, color: '#fff', margin: 0, textShadow: '0 4px 20px rgba(0,0,0,0.5)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                     {cat.name}
                   </h3>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '0.8rem' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}` }} />
-                    <span style={{ color: '#ccc', fontSize: '1.2rem', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '0.8rem', flexWrap: 'wrap' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: cat.border, boxShadow: `0 0 10px ${cat.border}`, flexShrink: 0 }} />
+                    <span style={{ color: '#ccc', fontSize: 'clamp(0.85rem, 3vw, 1.2rem)', fontWeight: 500, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                       {cat.subcategories.length} Business Modes Available
                     </span>
                   </div>
