@@ -1,10 +1,34 @@
-import React from 'react';
+"use client";
+import React, { useEffect, useRef } from 'react';
 import { Store, ShoppingBag, Globe, Camera, ArrowUpRight } from 'lucide-react';
 import { Caveat } from 'next/font/google';
 
 const caveat = Caveat({ subsets: ['latin'], weight: '700' });
 
 export default function TargetAudience() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Calculate a tiny delay if multiple cards appear at once
+          const delay = Array.from(entry.target.parentElement?.children || []).indexOf(entry.target) * 150;
+          setTimeout(() => {
+            entry.target.classList.add('wow-flash-active');
+          }, delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+    if (containerRef.current) {
+      const cards = containerRef.current.querySelectorAll('.wow-card');
+      cards.forEach(card => observer.observe(card));
+    }
+
+    return () => observer.disconnect();
+  }, []);
   const audiences = [
     {
       title: "Clothing Stores",
@@ -112,6 +136,18 @@ export default function TargetAudience() {
            cursor: pointer;
            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
            isolation: isolate;
+           opacity: 0;
+           transform: translateY(30px) scale(0.95);
+         }
+         
+         .wow-flash-active {
+           animation: flashWow 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+         }
+
+         @keyframes flashWow {
+           0% { opacity: 0; transform: translateY(30px) scale(0.95); filter: brightness(0.5); }
+           40% { opacity: 1; transform: translateY(-5px) scale(1.02); filter: brightness(1.3); box-shadow: 0 0 50px var(--theme-color); }
+           100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); box-shadow: none; }
          }
          
          /* The animated gradient border */
