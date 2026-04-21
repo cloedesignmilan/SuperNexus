@@ -96,10 +96,23 @@ const CATEGORY_STRUCTURE = [
       { name: "Holiday Season", icon: <Heart size={12} /> },
     ]
   },
+  {
+    name: "Swimwear Collection",
+    shortName: "Swimwear",
+    icon: <Sun size={20} className="text-cyan-400" />,
+    color: "rgba(34, 211, 238, 0.5)",
+    border: "rgba(34, 211, 238, 0.8)",
+    bgImage: "/prove/Donna/Costumi/In spiaggia/1.jpeg",
+    subcategories: [
+      { name: "E-Commerce Clean", showcaseId: "swimwear-e-commerce-clean", icon: <ShoppingBag size={12} /> },
+      { name: "Poolside Lifestyle", showcaseId: "swimwear-poolside-lifestyle", icon: <Sun size={12} /> },
+      { name: "Fitting Room UGC", showcaseId: "swimwear-fitting-room-ugc", icon: <Smartphone size={12} /> },
+    ]
+  }
 ];
 
 export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData?: any[] }) {
-  const displayOrder = [2, 3, 0, 1, 4, 5]; // Women(2), Men(3), T-Shirts(0), Footwear(1), Bridal(4), Kids(5)
+  const displayOrder = [2, 3, 0, 1, 6, 4, 5]; // Women(2), Men(3), T-Shirts(0), Footwear(1), Swim(6), Bridal(4), Kids(5)
   const [activeExample, setActiveExample] = useState<{catIndex: number, subName: string, showcaseId?: string} | null>(null);
 
   return (
