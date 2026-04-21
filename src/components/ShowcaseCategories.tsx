@@ -337,13 +337,13 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
                           <p style={{ color: cat.border, fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.1em', marginBottom: '0.8rem' }}>MORE VARIATIONS</p>
                           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
                             {exampleData.before.slice(1).map((bImg: string, i: number) => (
-                              <div key={`b-${i}`} style={{ position: 'relative', width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+                              <div key={`b-${i}`} style={{ position: 'relative', width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
                                  <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>ORIGINAL {i+2}</p>
                                  <img src={bImg} alt={`Before ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
                               </div>
                             ))}
                             {exampleData.afters.slice(1).map((aImg: string, i: number) => (
-                              <div key={`a-${i}`} style={{ position: 'relative', width: '100%', height: '250px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+                              <div key={`a-${i}`} style={{ position: 'relative', width: '100%', height: '350px', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
                                  <p style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', zIndex: 10, background: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.5rem', borderRadius: '10px', fontSize: '0.6rem', color: '#fff' }}>AI RESULT {i+2}</p>
                                  <img src={aImg} alt={`Result ${i+2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
