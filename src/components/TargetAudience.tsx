@@ -1,168 +1,239 @@
 import React from 'react';
-import { Store, ShoppingBag, Globe, Camera, CheckCircle2 } from 'lucide-react';
+import { Store, ShoppingBag, Globe, Camera, ArrowUpRight } from 'lucide-react';
 import { Caveat } from 'next/font/google';
 
 const caveat = Caveat({ subsets: ['latin'], weight: '700' });
-
-// Simple hand-drawn SVG arrow
-const ScribbleArrow = ({ color }: { color: string }) => (
-  <svg width="60" height="60" viewBox="0 0 100 100" style={{ transform: 'rotate(-10deg)' }}>
-    <path 
-      d="M20 70 Q 50 20, 80 40 M 65 25 L 80 40 L 60 55" 
-      fill="transparent" 
-      stroke={color} 
-      strokeWidth="5" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-    />
-  </svg>
-);
 
 export default function TargetAudience() {
   const audiences = [
     {
       title: "Clothing Stores",
       description: "Upload your entire new collection to your website in a fraction of the time and eliminate studio photography costs.",
-      icon: <Store size={32} />,
-      color: "#a3cc00", // Darker neon yellow for white bg visibility
+      icon: <Store size={28} />,
+      color: "#a3cc00", // Neon yellow/green
       handwrittenTip: "Perfect for T-Shirts!"
     },
     {
-      title: "Outlet Stores, eBay, Etsy",
-      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on marketplaces.",
-      icon: <ShoppingBag size={32} />,
+      title: "Marketplace Sellers",
+      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on eBay, Etsy, and Outlet stores.",
+      icon: <ShoppingBag size={28} />,
       color: "#ff5470", // Neon Pink
       handwrittenTip: "Perfect for Footwear!"
     },
     {
       title: "Fashion E-commerce",
-      description: "Skyrocket your conversion rates with consistent, premium, and fully-branded imagery.",
-      icon: <Globe size={32} />,
-      color: "#00b3a6", // Darker cyan for visibility
+      description: "Skyrocket your conversion rates with consistent, premium, and fully-branded editorial imagery.",
+      icon: <Globe size={28} />,
+      color: "#00b3a6", // Neon cyan
       handwrittenTip: "Perfect for Combined Outfits!"
     },
     {
-      title: "Instagram Sellers",
-      description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate purchases.",
-      icon: <Camera size={32} />,
-      color: "#9933ff", // Darker purple for visibility
+      title: "Instagram Creators",
+      description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate engagement and purchases.",
+      icon: <Camera size={28} />,
+      color: "#9933ff", // Neon purple
       handwrittenTip: "Perfect for UGC Content!"
     }
   ];
 
   return (
-    <section style={{ padding: '6rem 5%', background: '#050505', color: '#fff', borderBottom: '1px solid #222' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <h2 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1rem', color: '#fff' }}>
-            Perfect for:
-          </h2>
-          <p style={{ fontSize: '1.2rem', color: '#aaa', maxWidth: '600px', margin: '0 auto' }}>
-            Tailor-made for fashion entrepreneurs and professionals who want to scale their online sales without expensive external agencies.
-          </p>
-        </div>
+    <section style={{ padding: '8rem 5%', background: '#030303', color: '#fff', position: 'relative', overflow: 'hidden', borderBottom: '1px solid #111' }}>
+       {/* Background ambient glow */}
+       <div style={{ position: 'absolute', top: '10%', left: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(168,85,247,0.03) 0%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+       <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(34,211,238,0.03) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
 
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column',
-          gap: '20vh', // Reduced gap between cards to make them stack faster
-          paddingBottom: '2rem', 
-          maxWidth: '800px',
-          margin: '0 auto'
-        }}>
-          {audiences.map((item, index) => (
-            <div key={index} style={{
-              background: '#111',
-              borderRadius: '24px',
-              padding: '2.5rem 2rem 2.5rem',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease',
-              border: '1px solid rgba(255,255,255,0.08)',
-              position: 'sticky',
-              top: `calc(120px + ${index * 16}px)`,
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: '0 -10px 30px rgba(0,0,0,0.5)',
-              zIndex: index + 1,
-              willChange: 'transform',
-              transform: 'translateZ(0)'
-            }} className="target-card">
-              
-              <div style={{ 
-                width: '60px', height: '60px', 
-                background: '#050505', 
-                borderRadius: '16px', 
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: item.color,
-                marginBottom: '1.5rem',
-                boxShadow: `0 8px 25px ${item.color}40`,
-                border: `1px solid ${item.color}80`
-              }}>
-                {item.icon}
-              </div>
-              
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.8rem', letterSpacing: '-0.01em', color: '#fff' }}>
-                {item.title}
-              </h3>
-              
-              <p style={{ color: '#aaa', fontSize: '1.05rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
-                {item.description}
-              </p>
+       <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+         {/* HEADER */}
+         <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+           <div style={{ display: 'inline-block', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', marginBottom: '1.5rem', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.1em', color: '#aaa' }}>
+              TAILOR-MADE FOR YOU
+           </div>
+           <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1.5rem', lineHeight: 1.1 }}>
+             An absolute game-changer<br/>
+             <span style={{ color: '#666' }}>for fashion entrepreneurs.</span>
+           </h2>
+           <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
+             Whether you run a local boutique or a global fashion empire, SuperNexus AI gives you the power of a high-end photography studio right on your smartphone.
+           </p>
+         </div>
+         
+         {/* 2x2 WOW GRID */}
+         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
+            {audiences.map((item, i) => (
+               <div key={i} className="wow-card" style={{ '--theme-color': item.color } as React.CSSProperties}>
+                  <div className="wow-card-inner">
+                     {/* Floating Glowing Icon */}
+                     <div className="icon-wrapper">
+                        {item.icon}
+                     </div>
+                     
+                     <h3 className="card-title">{item.title}</h3>
+                     <p className="card-desc">{item.description}</p>
+                     
+                     {/* Elegant Pill Badge */}
+                     <div className="badge-wrapper">
+                        <div className={caveat.className} style={{ fontSize: '1.6rem', zIndex: 2, position: 'relative', lineHeight: 1 }}>
+                           {item.handwrittenTip}
+                        </div>
+                     </div>
+                     
+                     {/* Corner Arrow */}
+                     <div className="corner-arrow">
+                        <ArrowUpRight size={28} strokeWidth={2.5} />
+                     </div>
+                  </div>
+               </div>
+            ))}
+         </div>
+       </div>
 
-              {/* Huge Notebook-style Hand-drawn section */}
-              <div style={{ 
-                marginTop: '1.5rem', 
-                position: 'relative',
-                display: 'flex', 
-                alignItems: 'flex-start',
-                zIndex: 10
-              }}>
-                <div style={{ position: 'relative', top: '10px', left: '-10px' }}>
-                  <ScribbleArrow color={item.color} />
-                </div>
-                <div className={caveat.className} style={{ 
-                  fontSize: '2.4rem', 
-                  color: '#fff', 
-                  transform: 'rotate(-6deg)',
-                  display: 'inline-block',
-                  lineHeight: '1.1',
-                  marginTop: '15px',
-                  position: 'relative',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.5)'
-                }}>
-                  {/* Fake marker highlight behind text */}
-                  <span style={{
-                    position: 'absolute',
-                    inset: '4px -8px',
-                    background: item.color,
-                    opacity: 0.3,
-                    borderRadius: '8px',
-                    transform: 'rotate(2deg)',
-                    zIndex: -1,
-                    boxShadow: `0 0 20px ${item.color}40`
-                  }} />
-                  {item.handwrittenTip}
-                </div>
-              </div>
+       <style dangerouslySetInnerHTML={{__html: `
+         .wow-card {
+           position: relative;
+           border-radius: 32px;
+           padding: 1px; /* Very thin gradient border */
+           background: rgba(255,255,255,0.05);
+           cursor: pointer;
+           transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+           isolation: isolate;
+         }
+         
+         /* The animated gradient border */
+         .wow-card::before {
+           content: '';
+           position: absolute;
+           inset: 0;
+           border-radius: 32px;
+           padding: 1px;
+           background: linear-gradient(135deg, var(--theme-color) 0%, transparent 50%, var(--theme-color) 100%);
+           background-size: 200% 200%;
+           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           -webkit-mask-composite: xor;
+           mask-composite: exclude;
+           opacity: 0;
+           transition: opacity 0.5s ease;
+           z-index: -1;
+         }
+         
+         .wow-card:hover {
+           transform: translateY(-10px) scale(1.02);
+         }
+         .wow-card:hover::before {
+           opacity: 1;
+           animation: borderDance 3s linear infinite;
+         }
+         
+         @keyframes borderDance {
+           0% { background-position: 0% 50%; }
+           50% { background-position: 100% 50%; }
+           100% { background-position: 0% 50%; }
+         }
 
-              <div style={{ position: 'absolute', top: '2rem', right: '2rem', opacity: 0.05, pointerEvents: 'none' }}>
-                <CheckCircle2 size={100} style={{ transform: 'translate(40%, -40%)', color: '#fff' }} />
-              </div>
-            </div>
-          ))}
-          
-          {/* Spacer to extend the container track, keeping the 4th card sticky until the next section arrives to push it up */}
-          <div style={{ height: '40vh', pointerEvents: 'none' }} />
-        </div>
+         .wow-card-inner {
+           background: #080808;
+           border-radius: 31px;
+           height: 100%;
+           padding: 3.5rem 3rem;
+           position: relative;
+           overflow: hidden;
+           display: flex;
+           flex-direction: column;
+           z-index: 1;
+         }
+         
+         /* Internal Glowing Orb */
+         .wow-card-inner::after {
+           content: '';
+           position: absolute;
+           top: -100px;
+           right: -100px;
+           width: 300px;
+           height: 300px;
+           background: var(--theme-color);
+           filter: blur(100px);
+           opacity: 0.03;
+           transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+           border-radius: 50%;
+           z-index: -1;
+         }
+         .wow-card:hover .wow-card-inner::after {
+           opacity: 0.15;
+           transform: scale(1.2) translate(-20px, 20px);
+         }
 
-        <style dangerouslySetInnerHTML={{__html: `
-          .target-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.8) !important;
-            background: #151515 !important;
-            border-color: rgba(255,255,255,0.2) !important;
-          }
-        `}} />
-      </div>
+         .icon-wrapper {
+           width: 65px;
+           height: 65px;
+           border-radius: 20px;
+           background: rgba(255,255,255,0.03);
+           border: 1px solid rgba(255,255,255,0.05);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           color: var(--theme-color);
+           margin-bottom: 2.5rem;
+           transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+           box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+         }
+         .wow-card:hover .icon-wrapper {
+           background: var(--theme-color);
+           color: #000;
+           transform: scale(1.1) rotate(-5deg);
+           box-shadow: 0 15px 40px var(--theme-color);
+           border-color: transparent;
+         }
+
+         .card-title {
+           font-size: 1.8rem;
+           font-weight: 800;
+           letter-spacing: -0.02em;
+           margin-bottom: 1.2rem;
+           color: #fff;
+           transition: color 0.3s ease;
+         }
+
+         .card-desc {
+           color: #888;
+           font-size: 1.1rem;
+           line-height: 1.6;
+           margin-bottom: 3rem;
+           flex: 1;
+         }
+
+         .badge-wrapper {
+           display: inline-flex;
+           align-items: center;
+           padding: 0.8rem 1.8rem;
+           background: rgba(255,255,255,0.03);
+           border: 1px solid rgba(255,255,255,0.05);
+           border-radius: 100px;
+           align-self: flex-start;
+           position: relative;
+           overflow: hidden;
+           color: #aaa;
+           transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+         }
+         .wow-card:hover .badge-wrapper {
+           background: var(--theme-color);
+           color: #000;
+           border-color: transparent;
+           transform: translateY(-5px) rotate(-2deg);
+           box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+         }
+
+         .corner-arrow {
+           position: absolute;
+           top: 3rem;
+           right: 3rem;
+           color: rgba(255,255,255,0.1);
+           transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+           transform: scale(0.8);
+         }
+         .wow-card:hover .corner-arrow {
+           color: var(--theme-color);
+           transform: translate(10px, -10px) scale(1);
+         }
+       `}} />
     </section>
   );
 }
