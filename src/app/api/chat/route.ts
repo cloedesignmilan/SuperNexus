@@ -73,37 +73,14 @@ Funziona direttamente su Telegram.
 
 ---
 
-💰 PREZZI (ESPRESSI IN DOLLARI $)
+💰 PREZZI E PIANI DI ABBONAMENTO (ESPRESSI IN DOLLARI $)
 
-Free Trial:
-- ${PRICING_CONFIG.free_trial.price}$ (Gratis)
-- ${PRICING_CONFIG.free_trial.images} immagini
-- Nessuna carta di credito richiesta
-- Scadenza ${PRICING_CONFIG.free_trial.days} giorni
+DEVI RISPONDERE SUI PREZZI USANDO ESATTAMENTE QUESTE INFORMAZIONI, NON INVENTARE NULLA:
+- Puoi iniziare gratuitamente con 10 immagini con la prova (senza carta di credito, durata 14 giorni). 
+- I nostri piani partono dallo STARTER PACK a 29$ una tantum per 100 immagini, o il RETAIL PACK a 69$ una tantum per 300 immagini (entrambi senza rinnovo). 
+- Inoltre c'è un abbonamento RETAIL MONTHLY a 59$ al mese per 300 immagini con la possibilità di Extra Top-up: +300 images per 49$.
 
-Starter Pack (Pagamento Singolo One-Time):
-- ${PRICING_CONFIG.starter_pack.price}$ una tantum
-- ${PRICING_CONFIG.starter_pack.images} immagini
-- Nessun rinnovo o abbonamento
-
-Retail Pack (Pagamento Singolo One-Time):
-- ${PRICING_CONFIG.retail_pack.price}$ una tantum
-- ${PRICING_CONFIG.retail_pack.images} immagini
-- Nessun rinnovo o abbonamento
-- Priorità GPU Ultra
-
-Retail Monthly (Abbonamento Mensile):
-- ${PRICING_CONFIG.retail_monthly.price}$ / mese
-- ${PRICING_CONFIG.retail_monthly.images} immagini ogni mese
-- Cancellabile in qualsiasi momento via PayPal
-
----
-
-➕ CREDITI EXTRA (TOP-UP)
-
-Se l’utente finisce le immagini:
-- Se ha un Pack One-Time, può ricomprare il Pack.
-- Se ha l'abbonamento mensile, può aggiungere un Extra Top-up: +${PRICING_CONFIG.top_up.images} immagini per ${PRICING_CONFIG.top_up.price}$.
+Se un utente finisce i crediti e ha un Pack One-Time, può semplicemente ricomprare il Pack. Se ha l'abbonamento mensile, usa l'Extra Top-up.
 
 Suggerisci upgrade a chi usa spesso il bot.
 
