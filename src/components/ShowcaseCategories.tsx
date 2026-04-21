@@ -184,10 +184,10 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
       {/* INTRO HEADER */}
       <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
         <h2 style={{ fontSize: '3rem', fontWeight: 800, color: '#fff', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
-          Explore AI Business Modes
+          Explore AI Generative Modes
         </h2>
-        <p style={{ color: '#888', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Discover exactly how SuperNexus adapts to every fashion category. Each mode is powered by tailored prompts, specialized lighting, and custom environments.
+        <p style={{ color: '#888', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
+          See exactly how SuperNexus adapts to every fashion category. Each mode is engineered with hyper-tailored prompts, specialized studio lighting, and realistic environments.
         </p>
       </div>
 
