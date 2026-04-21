@@ -180,10 +180,13 @@ REGOLE AGGIUNTIVE TASSATIVE:
              targetVariationCodes.push(variation.variation_code);
          }
     } else {
-         // Fallback se la sottocategoria non ha variazioni, ne simuliamo una
-         targetScenes.push("Default Variation");
-         customVariationPrompts.push("Standard photorealistic composition.");
-         targetVariationCodes.push("default_var");
+         // Fallback se la sottocategoria non ha variazioni, simuliamo N variazioni
+         const count = imgCount || 7; // Utente ha chiesto 7 immagini per queste categorie
+         for (let i = 0; i < count; i++) {
+             targetScenes.push(`Variation ${i+1}`);
+             customVariationPrompts.push("Standard photorealistic composition.");
+             targetVariationCodes.push(`var_${i+1}`);
+         }
     }
     
     // PERSONA LOCK GENERATOR (Coerenza facciale del Batch)
