@@ -50,6 +50,7 @@ const CATEGORY_STRUCTURE = [
       { name: "Mature Sophistication", icon: <Heart size={12} /> },
       { name: "Gym & Fitness", icon: <Sun size={12} /> },
       { name: "Outfit Coordination", icon: <ImageIcon size={12} /> },
+      { name: "Curvy", icon: <Star size={12} /> },
     ]
   },
   {
