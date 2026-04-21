@@ -104,6 +104,7 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(34, 211, 238, 0.8)",
     bgImage: "/prove/Donna/Costumi/In spiaggia/1.jpeg",
     subcategories: [
+      { name: "E-Commerce Clean", icon: <ShoppingBag size={12} /> },
       { name: "Poolside Lifestyle", showcaseId: "swimwear-poolside-lifestyle", icon: <Sun size={12} /> },
       { name: "Fitting Room UGC", showcaseId: "swimwear-fitting-room-ugc", icon: <Smartphone size={12} /> },
     ]
