@@ -250,9 +250,7 @@ body {
   gap: 8px;
 }
 
-.landing-logo span {
-  color: #0085FF; /* Apple/Family blue accent */
-}
+
 
 /* Typography Base */
 .section-title {
@@ -287,7 +285,7 @@ body {
 .hero-orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(0, 133, 255, 0.4), transparent 60%);
+  background: radial-gradient(circle, rgba(204, 255, 0, 0.4), transparent 60%);
   top: -100px;
   left: -100px;
 }
@@ -295,7 +293,7 @@ body {
 .hero-orb-2 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(255, 10, 179, 0.3), transparent 60%);
+  background: radial-gradient(circle, rgba(170, 255, 0, 0.3), transparent 60%);
   bottom: -150px;
   right: -50px;
   animation-delay: -5s;
@@ -304,7 +302,7 @@ body {
 .hero-orb-3 {
   width: 700px;
   height: 700px;
-  background: radial-gradient(circle, rgba(0, 255, 200, 0.3), transparent 60%);
+  background: radial-gradient(circle, rgba(221, 255, 51, 0.3), transparent 60%);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -397,16 +395,19 @@ body {
   line-height: 1.05;
   margin-bottom: 1.5rem;
   letter-spacing: -0.05em;
-  color: #111111;
+  color: #ffffff;
+  text-shadow: 0 8px 20px rgba(0,0,0,0.9);
 }
 
 .animated-gradient-text {
-  background: linear-gradient(90deg, #0085FF, #FF007A, #0085FF);
+  background: linear-gradient(90deg, #ccff00, #ffffff, #aaff00, #ccff00);
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: shine 4s linear infinite;
+  animation: shine 3s linear infinite;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.9));
+  text-shadow: none !important;
 }
 
 @keyframes shine {
@@ -415,12 +416,19 @@ body {
 
 .hero-subtitle {
   font-size: 1.4rem;
-  color: #333333;
-  font-weight: 500;
-  line-height: 1.5;
-  max-width: 600px;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.6;
+  max-width: 700px;
   margin: 0 auto 3.5rem;
-  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.5rem 2rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .btn-hero-glow {
@@ -443,6 +451,15 @@ body {
 .btn-hero-glow:hover::after {
   opacity: 1;
   animation: rotateGlow 3s linear infinite;
+}
+
+.btn-animated-gradient {
+  background: linear-gradient(90deg, #ccff00, #aaff00, #ccff00);
+  background-size: 200% auto;
+  animation: shine 3s linear infinite;
+  border: none;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(204, 255, 0, 0.4);
 }
 
 /* BUTTONS */

@@ -50,7 +50,7 @@ export default async function LandingPage() {
       {/* HEADER */}
       <header className="landing-header" id="top">
         <a href="/" className="landing-logo" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
-          SuperNexus <span>AI</span>
+          SuperNexus <span className="animated-gradient-text">AI</span>
         </a>
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           {/* Conversion Focus */}
@@ -74,15 +74,13 @@ export default async function LandingPage() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
-            <a href="#pricing" className="stagger-anim" style={{ 
+            <a href="#pricing" className="stagger-anim btn-animated-gradient" style={{ 
               padding: '0.6rem 1.5rem', 
               fontSize: '0.9rem', 
               fontWeight: 800,
-              background: '#ccff00', 
-              color: '#000',
               borderRadius: '30px',
               textDecoration: 'none',
-              boxShadow: '0 4px 15px rgba(204,255,0,0.3)',
+              boxShadow: '0 4px 15px rgba(0, 133, 255, 0.4)',
               animationDelay: '0.8s'
             }}>
               Try it Free
@@ -123,8 +121,8 @@ export default async function LandingPage() {
               transform: translateY(-2px);
             }
             .glow-link:hover .glow-icon {
-              stroke: #0085FF;
-              filter: drop-shadow(0 0 8px rgba(0, 133, 255, 0.6));
+              stroke: #ccff00;
+              filter: drop-shadow(0 0 8px rgba(204, 255, 0, 0.6));
               transform: scale(1.1);
             }
             @media (max-width: 1024px) {
@@ -224,7 +222,7 @@ export default async function LandingPage() {
             ✨ Create Photos that actually sell
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
-            <TrackedLink href="/registrazione?plan=free_trial" className="btn-primary btn-hero-glow" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
+            <TrackedLink href="/registrazione?plan=free_trial" className="btn-primary btn-hero-glow btn-animated-gradient" style={{ fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
               Start 10-Image Free Trial
             </TrackedLink>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>

@@ -49,7 +49,8 @@ export default function ChatBot() {
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
-          style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999, background: '#ccff00', color: '#000', width: '60px', height: '60px', borderRadius: '30px', border: 'none', boxShadow: '0 4px 20px rgba(204,255,0,0.4)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          className="btn-animated-gradient"
+          style={{ position: 'fixed', bottom: '30px', right: '30px', zIndex: 9999, width: '60px', height: '60px', borderRadius: '30px', boxShadow: '0 4px 20px rgba(0, 133, 255, 0.4)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <MessageCircle size={28} />
         </button>
