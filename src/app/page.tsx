@@ -180,35 +180,51 @@ export default async function LandingPage() {
         </nav>
       </header>
 
-      {/* HERO SECTION */}
+      {/* SPECTACULAR HERO SECTION */}
       <section className="hero-section" style={{ position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', minWidth: '1000px', height: '100%', zIndex: 0, opacity: 0.08, mixBlendMode: 'multiply', pointerEvents: 'none' }}>
-           <img src="/hero-bg.png" alt="Magical Flow" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+        
+        {/* Fabric Background Layer (Animated & Highly Visible) */}
+        <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '120%', height: '120%', zIndex: 0, opacity: 0.5, pointerEvents: 'none', animation: 'fabricFlow 30s ease-in-out infinite alternate' }}>
+           <img src="/hero-fabric.png" alt="Luxury Fabric Flow" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', filter: 'contrast(1.2)' }} />
         </div>
 
+        {/* Dynamic Glowing Orbs Background */}
+        <div className="hero-orb hero-orb-1"></div>
+        <div className="hero-orb hero-orb-2"></div>
+        <div className="hero-orb hero-orb-3"></div>
+
         <div className="hero-content" style={{ position: 'relative', zIndex: 10 }}>
-          <h1 className="hero-title">
+          
+          {/* Floating 3D Cards */}
+          <div className="floating-glass-card float-card-1 hide-mobile">
+            <span style={{ fontSize: '1.5rem' }}>✨</span> AI Processing
+          </div>
+          <div className="floating-glass-card float-card-2 hide-mobile">
+            <span style={{ fontSize: '1.5rem' }}>🚀</span> +300% Sales
+          </div>
+
+          <h1 className="hero-title fade-up-enter delay-1">
             Fewer boring hangers.<br />
-            <span>More online sales.</span>
+            <span className="animated-gradient-text">More online sales.</span>
           </h1>
-          <p className="hero-subtitle">
+          <p className="hero-subtitle fade-up-enter delay-2">
             The indispensable AI software for Boutiques and Clothing Stores. Snap a quick photo of the garment in your warehouse and instantly get a hyper-realistic shooting perfect for Facebook, Instagram, and your E-Commerce.
           </p>
-          <div style={{ 
-            background: 'linear-gradient(135deg, #111, #222)', 
-            display: 'inline-block', 
-            padding: '0.8rem 1.8rem', 
-            borderRadius: '50px', 
+          <h2 className="fade-up-enter delay-3" style={{ 
+            fontSize: '2rem', 
+            fontWeight: '800', 
             marginBottom: '3rem', 
-            border: '1px solid rgba(0,0,0,0.8)',
-            boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+            letterSpacing: '-0.02em',
+            textTransform: 'uppercase',
+            background: 'linear-gradient(90deg, #111, #444)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            display: 'inline-block'
           }}>
-            <p style={{ fontSize: '1.15rem', fontWeight: '800', color: '#fff', margin: 0, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
-              ✨ Create Photos that actually sell
-            </p>
-          </div>
-          <div className="hero-buttons">
-            <TrackedLink href="/registrazione?plan=free_trial" className="btn-primary" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
+            ✨ Create Photos that actually sell
+          </h2>
+          <div className="hero-buttons fade-up-enter delay-4">
+            <TrackedLink href="/registrazione?plan=free_trial" className="btn-primary btn-hero-glow" style={{ background: '#0085FF', color: '#fff', fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
               Start 10-Image Free Trial
             </TrackedLink>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
