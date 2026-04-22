@@ -38,6 +38,13 @@ export function buildCreatorPrompt(
   if (cons.lapel_style) preservation += `- Collar/Lapel Style: ${cons.lapel_style}\n`;
   if (cons.pattern) preservation += `- Pattern: ${cons.pattern}\n`;
   if (cons.accessories) preservation += `- Accessories to Clone: MUST INCLUDE EXACTLY ${cons.accessories}\n`;
+  
+  // Strict color rule for T-shirts and Flat Lays
+  const isTshirtOrFlatLay = categoryName.toLowerCase().includes("t-shirt") || dbSceneText.toLowerCase().includes("flat lay") || dbSceneText.toLowerCase().includes("flatlay") || categoryName.toLowerCase().includes("maglie");
+  if (isTshirtOrFlatLay) {
+      preservation += `\nABSOLUTE COLOR HARD RULE: You MUST STRICTLY maintain the ORIGINAL EXACT COLOR of the item as it appears in the customer's input photo. NEVER change, alter, wash out, or modify the color tone. Exact color matching is mandatory.\n`;
+  }
+  
   blocks.push(preservation);
 
   // 4. STYLE / CATEGORY FOCUS
