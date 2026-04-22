@@ -315,8 +315,8 @@ export async function POST(req: NextRequest) {
                 action = `Q|1|${subId}|${cbKey}|X`;
             } else if (isTshirtUgc) {
                  const buttons = [
-                    [Markup.button.callback("Man 👨", `GENDER|MAN|${subId}|${cbKey}`)],
-                    [Markup.button.callback("Woman 👩", `GENDER|WOMAN|${subId}|${cbKey}`)]
+                    [Markup.button.callback("Man 👨", `G|M|${subId}|${cbKey}`)],
+                    [Markup.button.callback("Woman 👩", `G|W|${subId}|${cbKey}`)]
                  ];
                  await bot.telegram.editMessageText(globalChatId, msgId, undefined, "✨ Perfect. Who is the model for this UGC shot?", { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) });
                  return NextResponse.json({ ok: true });
@@ -425,13 +425,14 @@ REGOLE TASSATIVE:
         }
 
         // SCELTA GENDER UGC -> CHIEDI QUANTITÀ
-        if (action.startsWith('GENDER|')) {
+        if (action.startsWith('G|')) {
             const parts = action.split('|');
-            const gender = parts[1]; // MAN or WOMAN
+            const gender = parts[1]; // M or W
             const subId = parts[2];
             const cbKey = parts[3];
 
-            const clarification = gender === 'MAN' ? 'UGC_MAN' : 'X';
+            const clarification = gender === 'M' ? 'UGC_MAN' : 'X';
+            const genderName = gender === 'M' ? 'Man' : 'Woman';
             
             const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
             const isStoryMode = subcat && subcat.name.includes("Story");
@@ -453,7 +454,7 @@ REGOLE TASSATIVE:
             }
 
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
-                `✨ Great! A **${gender.toLowerCase()}**'s UGC shot.\nHow many photos do you want to generate?`, 
+                `✨ Great! A **${genderName.toLowerCase()}**'s UGC shot.\nHow many photos do you want to generate?`, 
                 { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
             );
             return NextResponse.json({ ok: true });
