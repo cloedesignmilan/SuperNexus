@@ -299,10 +299,18 @@ export async function POST(req: NextRequest) {
 
             const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
             const isMagazine = subcat && (subcat.name.includes("Cover") || subcat.name.includes("Magazine"));
+            const isTshirtUgc = subcat && subcat.name.toLowerCase().includes("ugc") && (subcat.business_mode_id.toLowerCase().includes("t-shirt") || subcat.id.toLowerCase().includes("t-shirt"));
 
             if (isMagazine) {
                 // Bypass disambiguation and quantity selection, force 1 photo generation
                 action = `Q|1|${subId}|${cbKey}|X`;
+            } else if (isTshirtUgc) {
+                 const buttons = [
+                    [Markup.button.callback("Man 👨", `GENDER|MAN|${subId}|${cbKey}`)],
+                    [Markup.button.callback("Woman 👩", `GENDER|WOMAN|${subId}|${cbKey}`)]
+                 ];
+                 await bot.telegram.editMessageText(globalChatId, msgId, undefined, "✨ Perfect. Who is the model for this UGC shot?", { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) });
+                 return NextResponse.json({ ok: true });
             } else {
                 // Feedback immediato loading e pre-analisi IA
             await bot.telegram.editMessageText(globalChatId, msgId, undefined, "👀 *Analyzing garment geometry...*", { parse_mode: "Markdown" });
@@ -405,6 +413,41 @@ REGOLE TASSATIVE:
             );
             return NextResponse.json({ ok: true });
             } // Chiude l'else di isMagazine
+        }
+
+        // SCELTA GENDER UGC -> CHIEDI QUANTITÀ
+        if (action.startsWith('GENDER|')) {
+            const parts = action.split('|');
+            const gender = parts[1]; // MAN or WOMAN
+            const subId = parts[2];
+            const cbKey = parts[3];
+
+            const clarification = gender === 'MAN' ? 'UGC_MAN' : 'X';
+            
+            const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
+            const isStoryMode = subcat && subcat.name.includes("Story");
+            
+            let buttons = [
+                [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${clarification}`), Markup.button.callback("3 Photos 🔥", `Q|3|${subId}|${cbKey}|${clarification}`)],
+                isStoryMode
+                    ? [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${clarification}`), Markup.button.callback("7 Photos 🎬", `Q|7|${subId}|${cbKey}|${clarification}`)]
+                    : [Markup.button.callback("5 Photos 🚀", `Q|5|${subId}|${cbKey}|${clarification}`)]
+            ];
+
+            if (existingUser.paypal_subscription_id?.startsWith("free_trial")) {
+                buttons = [
+                    [Markup.button.callback("1 Photo ⚡", `Q|1|${subId}|${cbKey}|${clarification}`)],
+                    isStoryMode
+                        ? [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 7 Photos (Pro)", `UPSELL`)]
+                        : [Markup.button.callback("🔒 3 Photos (Pro)", `UPSELL`), Markup.button.callback("🔒 5 Photos (Pro)", `UPSELL`)]
+                ];
+            }
+
+            await bot.telegram.editMessageText(globalChatId, msgId, undefined, 
+                `✨ Great! A **${gender.toLowerCase()}**'s UGC shot.\nHow many photos do you want to generate?`, 
+                { parse_mode: "Markdown", ...Markup.inlineKeyboard(buttons) }
+            );
+            return NextResponse.json({ ok: true });
         }
 
         // SCELTA DISAMBIGUAZIONE -> CHIEDI QUANTITÀ
@@ -610,7 +653,7 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : ''}
+${userClarification === 'UGC_MAN' ? `8. CLARIFICATION FROM THE USER: The user has explicitly requested a MALE model for this shot. YOU MUST STRICTLY USE A HANDSOME 20-25 YEAR OLD BOY. ABSOLUTELY NO FEMALE MODELS. You MUST adapt the fit of the t-shirt to a male body.` : (userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : '')}
 ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
                     const activeModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }});
