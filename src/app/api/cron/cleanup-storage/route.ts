@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
+import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300; // 5 Minuti massimo
@@ -17,8 +18,9 @@ export async function GET(request: Request) {
 
     try {
         const BUCKETS = ['telegram-uploads', 'telegram-outputs'];
-        const FORTY_EIGHT_HOURS_MS = 24 * 60 * 60 * 1000;
+        const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
         const now = new Date().getTime();
+        const cutoffDate = new Date(now - TWENTY_FOUR_HOURS_MS);
         
         let totalDeleted = 0;
         let totalScanned = 0;
@@ -60,7 +62,7 @@ export async function GET(request: Request) {
                  if (!file.metadata) continue; 
 
                  const fileDate = new Date(file.created_at).getTime();
-                 if (now - fileDate > FORTY_EIGHT_HOURS_MS) {
+                 if (fileDate < cutoffDate.getTime()) {
                      filesToDelete.push(file.name);
                  }
             }
@@ -88,9 +90,20 @@ export async function GET(request: Request) {
             totalDeleted += deletedInBucket;
         }
 
+        // DATABASE CLEANUP
+        const dbCleanupResult = await prisma.generationJob.deleteMany({
+            where: {
+                createdAt: {
+                    lt: cutoffDate
+                }
+            }
+        });
+        console.log(`[DB-CLEANUP] Rimossi ${dbCleanupResult.count} Job vecchi di oltre 24h dal database.`);
+
         return NextResponse.json({ 
-            message: `Pulizia di entrambi i bucket conclusa.`, 
-            deleted_count: totalDeleted,
+            message: `Pulizia conclusa con successo.`, 
+            deleted_storage_files: totalDeleted,
+            deleted_db_jobs: dbCleanupResult.count,
             target_scanned: totalScanned 
         });
 
