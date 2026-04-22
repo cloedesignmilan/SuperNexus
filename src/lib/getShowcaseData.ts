@@ -116,6 +116,14 @@ export const CATEGORIES = [
     "folderPath": "/prove/Donna/Outfit Coordination"
   },
   {
+    "id": "women's fashion-curvy",
+    "category": "Women's Fashion",
+    "subcategory": "Curvy",
+    "useCases": ["E-Commerce", "Instagram", "Catalog"],
+    "desc": "Showcase your fashion on realistic curvy models, perfect for inclusive e-commerce and social media.",
+    "folderPath": "/prove/Donna/Curvy"
+  },
+  {
     "id": "bridal-bridal-collection",
     "category": "Bridal",
     "subcategory": "Romantic Venue",
