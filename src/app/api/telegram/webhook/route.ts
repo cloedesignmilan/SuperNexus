@@ -869,7 +869,10 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 const extraCreditsConsumed = Math.max(0, totalGenAfterThis - baseAllowance);
                 const remainingExtra = Math.max(0, extraCreditsOwned - extraCreditsConsumed);
 
-                const completeMsg = `✅ **Generation Complete!**\n\nHere are the photographs of the clothing item in the requested style:\n_You have **${remainingMonthly}** images left from your monthly plan and **${remainingExtra}** images from extra credits._`;
+                const publicGalleryUrl = pendingJobId ? `https://www.supernexusai.com/gallery/${pendingJobId}` : "";
+                const marketingText = publicGalleryUrl ? `\n\n---\n**SHARE WITH CLIENTS:**\n\nHey 👋\nQuick one — I created some ready-to-use product images for your store using our AI.\n\nThey’re designed to:\n✔ look more premium\n✔ increase engagement\n✔ boost conversions\n\nYou can use them for free.\n\nSee how it works:\n👉 ${publicGalleryUrl}\n\nHappy to generate more for your products.\n---` : "";
+                
+                const completeMsg = `✅ **Generation Complete!**\n\nHere are the photographs of the clothing item in the requested style:\n_You have **${remainingMonthly}** images left from your monthly plan and **${remainingExtra}** images from extra credits._${marketingText}`;
 
                 // Se ci sono più di 1 foto inviamo un album
                 if (mediaGroup.length > 1) {
