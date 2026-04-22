@@ -297,9 +297,18 @@ export async function POST(req: NextRequest) {
             const cbKey = parts[2];
             const actualBasePrefix = getBasePrefix(cbKey);
 
-            const subcat = await prisma.subcategory.findUnique({ where: { id: subId }});
+            const subcat = await prisma.subcategory.findUnique({ 
+                where: { id: subId },
+                include: { business_mode: { include: { category: true } } }
+            });
             const isMagazine = subcat && (subcat.name.includes("Cover") || subcat.name.includes("Magazine"));
-            const isTshirtUgc = subcat && subcat.name.toLowerCase().includes("ugc") && (subcat.business_mode_id.toLowerCase().includes("t-shirt") || subcat.id.toLowerCase().includes("t-shirt"));
+            const isTshirtUgc = subcat && subcat.name.toLowerCase().includes("ugc") && 
+                (subcat.business_mode?.name.toLowerCase().includes("t-shirt") || 
+                 subcat.business_mode?.category?.name.toLowerCase().includes("t-shirt") ||
+                 subcat.business_mode?.name.toLowerCase().includes("tshirt") || 
+                 subcat.business_mode?.category?.name.toLowerCase().includes("tshirt") ||
+                 subcat.business_mode_id.toLowerCase().includes("t-shirt") || 
+                 subcat.id.toLowerCase().includes("t-shirt"));
 
             if (isMagazine) {
                 // Bypass disambiguation and quantity selection, force 1 photo generation
