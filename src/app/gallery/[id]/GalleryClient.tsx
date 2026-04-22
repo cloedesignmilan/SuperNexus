@@ -112,6 +112,11 @@ export default function GalleryClient({ jobId, originalImage, generatedImages, s
                     <span className="text-zinc-200 font-medium">{generatedImages.length}</span>
                   </div>
                 </div>
+                <div className="mt-6 p-4 rounded-xl bg-[#00f0ff]/5 border border-[#00f0ff]/10">
+                  <p className="text-xs text-[#00f0ff]/80 leading-relaxed">
+                    <strong className="text-[#00f0ff] font-semibold">Note:</strong> These images will only be available for a few hours. Please use the free download option if you wish to keep them.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
