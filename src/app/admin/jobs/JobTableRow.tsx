@@ -112,25 +112,51 @@ export default function JobTableRow({ job }: { job: any }) {
                 {/* ACTION ASSET */}
                 <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right' }}>
                     {canExpand ? (
-                        <button 
-                            onClick={() => setIsExpanded(!isExpanded)}
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '6px',
-                                background: isExpanded ? 'rgba(255,255,255,0.1)' : 'rgba(230, 46, 191, 0.15)',
-                                color: isExpanded ? 'white' : 'var(--color-primary)',
-                                border: `1px solid ${isExpanded ? 'rgba(255,255,255,0.2)' : 'rgba(230, 46, 191, 0.3)'}`,
-                                padding: '8px 14px',
-                                borderRadius: '8px',
-                                fontSize: '0.75rem',
-                                fontWeight: 600,
-                                cursor: 'pointer',
-                                transition: 'all 0.2s'
-                            }}
-                        >
-                            {isExpanded ? 'Chiudi' : '👀 Visualizza Galleria'}
-                        </button>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '8px' }}>
+                            {hasOutputs && (
+                                <button 
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(`https://www.supernexusai.com/gallery/${job.id}`);
+                                        alert("Link galleria copiato negli appunti!");
+                                    }}
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        background: 'rgba(0, 240, 255, 0.1)',
+                                        color: '#00f0ff',
+                                        border: '1px solid rgba(0, 240, 255, 0.3)',
+                                        padding: '8px 14px',
+                                        borderRadius: '8px',
+                                        fontSize: '0.75rem',
+                                        fontWeight: 600,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    🔗 Copia Link
+                                </button>
+                            )}
+                            <button 
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    background: isExpanded ? 'rgba(255,255,255,0.1)' : 'rgba(230, 46, 191, 0.15)',
+                                    color: isExpanded ? 'white' : 'var(--color-primary)',
+                                    border: `1px solid ${isExpanded ? 'rgba(255,255,255,0.2)' : 'rgba(230, 46, 191, 0.3)'}`,
+                                    padding: '8px 14px',
+                                    borderRadius: '8px',
+                                    fontSize: '0.75rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {isExpanded ? 'Chiudi' : '👀 Visualizza Galleria'}
+                            </button>
+                        </div>
                     ) : (
                         <span style={{ color: 'var(--color-text-muted)' }}>Nessun Asset</span>
                     )}
