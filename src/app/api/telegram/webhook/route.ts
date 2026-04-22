@@ -799,6 +799,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 let totalTokensIn = 0;
                 let totalTokensOut = 0;
 
+                let errorMessages: string[] = [];
                 for (const outcome of responses) {
                     if (outcome.status === 'fulfilled') {
                         const result = outcome.value;
@@ -819,6 +820,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                         }
                     } else {
                         console.error('Una delle generazioni multiple ha fallito definitivamente:', outcome.reason);
+                        errorMessages.push(outcome.reason?.message || outcome.reason?.toString() || "Unknown error");
                     }
                 }
 
@@ -828,7 +830,8 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 }
 
                 if (generatedBase64s.length === 0) {
-                     throw new Error("All API calls failed. Please try again with a smaller amount.");
+                     const uniqueErrors = Array.from(new Set(errorMessages)).join(" | ");
+                     throw new Error(`Generation failed: ${uniqueErrors || "No specific error provided by the AI provider."}`);
                 }
 
                 const { Input } = require('telegraf');
