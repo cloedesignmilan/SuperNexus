@@ -93,6 +93,7 @@ model Subcategory {
   is_active              Boolean  @default(true)
   strict_reference_mode  Boolean  @default(false)
   active_model           String?
+  scene_variance_active  Boolean?
   
   // Campi integrati da ex PromptTemplateSettings
   base_prompt_prefix      String?  @db.Text

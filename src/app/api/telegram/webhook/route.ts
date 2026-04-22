@@ -697,7 +697,10 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                     let backupOutputsEnabled = false;
                     try {
                         const varianceSetting = await (prisma as any).setting.findUnique({ where: { key: 'AI_SCENE_VARIANCE_ENABLED' }});
-                        varianceEnabled = varianceSetting?.value === 'true';
+                        const globalVariance = varianceSetting?.value === 'true';
+                        varianceEnabled = subcat.scene_variance_active !== null 
+                            ? subcat.scene_variance_active 
+                            : globalVariance;
                         
                         const backupSetting = await (prisma as any).setting.findUnique({ where: { key: 'SAVE_GENERATION_OUTPUTS_ENABLED' }});
                         backupOutputsEnabled = backupSetting?.value !== 'false'; // default true

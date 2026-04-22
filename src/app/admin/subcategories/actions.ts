@@ -318,3 +318,11 @@ export async function updateSubcategoryModel(id: string, model: string | null) {
   });
   revalidatePath(`/admin/subcategories/${id}`);
 }
+
+export async function updateSubcategorySceneVariance(subcategoryId: string, value: boolean | null) {
+  await prisma.subcategory.update({
+    where: { id: subcategoryId },
+    data: { scene_variance_active: value }
+  });
+  revalidatePath("/admin/subcategories");
+}

@@ -5,6 +5,7 @@ import { AnalyzeButton } from "../analyze-btn";
 import { ValidationCheckCard } from "../ValidationCheckCard";
 import StrictReferenceToggle from "../StrictReferenceToggle";
 import SubcategoryModelToggle from "../SubcategoryModelToggle";
+import SubcategorySceneToggle from "../SubcategorySceneToggle";
 
 export const dynamic = 'force-dynamic';
 
@@ -69,8 +70,10 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
                    {subcat.max_images_allowed}
                  </div>
                </div>
-               <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '15px' }}>
                   <SubcategoryModelToggle subcategoryId={subcat.id} initialModel={subcat.active_model} />
+                  <SubcategorySceneToggle subcategoryId={subcat.id} initialValue={subcat.scene_variance_active} />
+                  <StrictReferenceToggle subcategoryId={subcat.id} currentStatus={subcat.strict_reference_mode} />
                </div>
              </div>
           </div>
