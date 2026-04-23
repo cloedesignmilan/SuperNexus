@@ -44,15 +44,6 @@ export default async function LandingPage() {
   const showcaseData = await getShowcaseData();
   const metrics = getDynamicMetrics();
 
-  const heroVideos = [
-    "/Video/designer75_httpss.mj.runYMY6Maeko6w_--ar_191256_--video_1_32b3c7ae-1fe4-476f-8776-1fdbdd0dee51_1.mp4",
-    "/Video/designer75_httpss.mj.runS0QC5hVQ6-E_--ar_191256_--video_1_44c34750-f958-403d-9bb2-a8bd0204b105_1.mp4",
-    "/Video/designer75_httpss.mj.runPRKSMFgxRik_--ar_191256_--video_1_1811472c-dc8b-4981-9869-4e5a1c1bbf8d_1.mp4",
-    "/Video/designer75_httpss.mj.runp4ugljuoJxk_--ar_191256_--video_1_49f7930d-d3ff-4fbf-93ed-5b39e71b63ff_1.mp4",
-    "/Video/designer75_httpss.mj.runtxzmqOy5OKY_--ar_191256_--video_1_1465fdd4-91bb-4f55-b266-84f92a14f1d0_2.mp4",
-    "/Video/designer75_httpss.mj.runfU7Od8Pa4Ao_--ar_191256_--video_1_5a0c929f-141d-4274-8941-d6d16508d489_1.mp4"
-  ];
-
   return (
     <div className="landing-container">
       <ChatBot />
@@ -193,18 +184,15 @@ export default async function LandingPage() {
         {/* Dynamic Video Fast Carousel Background */}
         <div className="dynamic-video-carousel-container">
           <div className="video-carousel-track">
-            {heroVideos.map((src, i) => (
-              <video 
-                key={`hero-vid-${i}`} 
-                src={encodeURI(src)} 
-                autoPlay 
-                loop 
-                muted 
-                playsInline 
-                preload="auto"
-                className={`carousel-video`} 
-              />
-            ))}
+            <video 
+              src="/Video/hero-compresso.mp4" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              preload="auto"
+              className="carousel-video" 
+            />
           </div>
         </div>
 
