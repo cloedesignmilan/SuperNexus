@@ -184,6 +184,7 @@ export default async function LandingPage() {
         {/* Dynamic Video Fast Carousel Background */}
         <div className="dynamic-video-carousel-container">
           <div className="video-carousel-track">
+            {/* Desktop Video */}
             <video 
               src="/Video/hero-compresso.mp4" 
               autoPlay 
@@ -191,7 +192,17 @@ export default async function LandingPage() {
               muted 
               playsInline 
               preload="auto"
-              className="carousel-video" 
+              className="carousel-video desktop-video" 
+            />
+            {/* Mobile Video */}
+            <video 
+              src="/Video/hero-compresso-mobile.mp4" 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              preload="auto"
+              className="carousel-video mobile-video" 
             />
           </div>
         </div>

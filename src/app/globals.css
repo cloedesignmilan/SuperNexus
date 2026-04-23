@@ -343,6 +343,25 @@ body {
   height: 100%;
   object-fit: cover;
   opacity: 1; /* Video is natively playing with built-in cuts */
+  filter: contrast(1.15) saturate(1.1); /* Increases perceived sharpness and color pop */
+}
+
+/* Responsive Video Toggles */
+.carousel-video.desktop-video {
+  display: block;
+}
+
+.carousel-video.mobile-video {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .carousel-video.desktop-video {
+    display: none;
+  }
+  .carousel-video.mobile-video {
+    display: block;
+  }
 }
 
 .hero-content {
