@@ -105,7 +105,7 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(34, 211, 238, 0.8)",
     bgImage: "/prove/Donna/Costumi/In spiaggia/1.jpeg",
     subcategories: [
-      { name: "E-Commerce Clean", icon: <ShoppingBag size={12} /> },
+      { name: "E-Commerce Clean", showcaseId: "swimwear-e-commerce-clean", icon: <ShoppingBag size={12} /> },
       { name: "Poolside Lifestyle", showcaseId: "swimwear-poolside-lifestyle", icon: <Sun size={12} /> },
       { name: "Fitting Room UGC", showcaseId: "swimwear-fitting-room-ugc", icon: <Smartphone size={12} /> },
     ]
@@ -142,7 +142,10 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
         </div>
         
         {(() => {
-          const exampleData = showcaseData.find((d: any) => (activeExample.showcaseId && d.id === activeExample.showcaseId) || d.subcategory === activeExample.subName || d.category === activeExample.subName);
+          const exampleData = showcaseData.find((d: any) => {
+            if (activeExample.showcaseId) return d.id === activeExample.showcaseId;
+            return d.subcategory === activeExample.subName || d.category === activeExample.subName;
+          });
           if (!exampleData) return <p style={{ color: '#888' }}>Example coming soon for this specific mode...</p>;
           
           return (

@@ -371,35 +371,38 @@ body {
   margin: 0 auto;
 }
 
-/* Floating Glassmorphism Cards */
 .floating-glass-card {
   position: absolute;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  border-radius: 24px;
-  padding: 1.2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1rem 1.5rem;
   z-index: 5;
   display: flex;
   align-items: center;
   gap: 12px;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #111;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: -0.01em;
   animation: float 6s ease-in-out infinite;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .float-card-1 {
-  top: 15%;
-  left: -5%;
+  top: -5%;
+  left: -25%;
   transform: rotate(-5deg);
 }
 
 .float-card-2 {
-  top: 40%;
-  right: -10%;
+  top: 55%;
+  right: -25%;
   transform: rotate(3deg);
   animation-delay: -3s;
 }

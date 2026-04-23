@@ -33,7 +33,7 @@ export const CATEGORIES = [
     "subcategory": "E-Commerce Clean",
     "useCases": ["Amazon", "Shopify", "Catalog"],
     "desc": "Perfectly lit, distraction-free catalog shots to maximize conversion rates.",
-    "folderPath": "/prove/Donna/Costumi/Catalogo"
+    "folderPath": "/prove/Donna/Costumi/E-Commerce Clean Example"
   },
   {
     "id": "swimwear-poolside-lifestyle",
