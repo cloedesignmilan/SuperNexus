@@ -324,7 +324,7 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
       {displayOrder.map((catIdx, index) => {
         const cat = CATEGORY_STRUCTURE[catIdx];
         return (
-          <div key={cat.name} className="category-block" style={{ animationDelay: `${index * 0.1}s` }}>
+          <div key={cat.name} id={`category-${cat.shortName.toLowerCase().replace(/[^a-z0-9]/g, '-')}`} className="category-block" style={{ animationDelay: `${index * 0.1}s` }}>
             
             {/* MACRO HEADER */}
             <div className="macro-header">

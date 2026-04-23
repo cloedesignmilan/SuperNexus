@@ -63,14 +63,14 @@ export default async function LandingPage() {
             flexWrap: 'wrap',
             justifyContent: 'center'
           }} className="desktop-only-nav">
-             <a href="#t-shirt-and-knitwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> T-Shirts</a>
-             <a href="#swimwear-e-commerce-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> Swimwear</a>
-             <a href="#footwear-and-sneakers-product-clean" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> Footwear</a>
-             <a href="#women's-fashion-outfit-coordination" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Outfits</a>
-             <a href="#bridal-bridal-collection" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Bridal</a>
-             <a href="#men's-apparel-executive-lifestyle" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={14} color="#000000" className="glow-icon" /> Men's Suits</a>
-             <a href="#kids-collection-elegant-event" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={14} color="#000000" className="glow-icon" /> Kids</a>
-             <a href="#women's-fashion-runway-editorial" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Runway</a>
+             <a href="#category-t-shirts" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> T-Shirts</a>
+             <a href="#category-swimwear" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> Swimwear</a>
+             <a href="#category-footwear" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> Footwear</a>
+             <a href="#category-women" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Outfits</a>
+             <a href="#category-bridal" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Bridal</a>
+             <a href="#category-men" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={14} color="#000000" className="glow-icon" /> Men's Suits</a>
+             <a href="#category-kids" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={14} color="#000000" className="glow-icon" /> Kids</a>
+             <a href="#category-women" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Runway</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
