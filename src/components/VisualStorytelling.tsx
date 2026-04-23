@@ -30,7 +30,7 @@ export default function VisualStorytelling() {
           zIndex: 0,
         }}
       >
-        <source src="/Video/video-breve.4mp4-compresso.mp4" type="video/mp4" />
+        <source src="/Video/video-breve-compresso.mp4" type="video/mp4" />
       </video>
     </section>
   );
