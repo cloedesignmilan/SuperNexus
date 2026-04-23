@@ -52,6 +52,14 @@ export const CATEGORIES = [
     "folderPath": "/prove/Donna/Costumi/UGC"
   },
   {
+    "id": "footwear-womens-sneakers",
+    "category": "Footwear & Sneakers",
+    "subcategory": "Women's Sneakers",
+    "useCases": ["E-Commerce", "Social Media", "Lookbook"],
+    "desc": "Showcase your sneakers in stunning, realistic environments. From crisp studio shots to dynamic urban lifestyles.",
+    "folderPath": "/prove/Footwear/Sneakers"
+  },
+  {
     "id": "footwear & sneakers-product-clean",
     "category": "Footwear & Sneakers",
     "subcategory": "Product Clean",
