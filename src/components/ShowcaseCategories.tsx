@@ -114,11 +114,7 @@ const CATEGORY_STRUCTURE = [
 
 export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData?: any[] }) {
   const displayOrder = [2, 3, 0, 1, 6, 4, 5]; // Women(2), Men(3), T-Shirts(0), Footwear(1), Swim(6), Bridal(4), Kids(5)
-  const [activeExample, setActiveExample] = useState<{catIndex: number, subName: string, showcaseId?: string} | null>({
-    catIndex: 2,
-    subName: "Luxury Villa",
-    showcaseId: "women's fashion-luxury-villa-shoot"
-  });
+  const [activeExample, setActiveExample] = useState<{catIndex: number, subName: string, showcaseId?: string} | null>(null);
 
   const renderExampleReveal = (cat: any, index: number) => {
     if (activeExample?.catIndex !== index) return null;
