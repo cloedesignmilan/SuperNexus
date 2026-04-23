@@ -13,24 +13,45 @@ export default function VisualStorytelling() {
       overflow: 'hidden',
       background: '#000'
     }}>
-      {/* Background Video */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .video-desktop { display: none; }
+        .video-mobile { display: block; }
+        @media (min-width: 768px) {
+          .video-desktop { display: block; }
+          .video-mobile { display: none; }
+        }
+        .bg-video {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transform: translate(-50%, -50%);
+          z-index: 0;
+        }
+      `}} />
+
+      {/* Background Video - Desktop */}
       <video
+        className="video-desktop bg-video"
         autoPlay
         loop
         muted
         playsInline
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 0,
-        }}
       >
         <source src="/Video/video-breve-compresso.mp4" type="video/mp4" />
+      </video>
+
+      {/* Background Video - Mobile */}
+      <video
+        className="video-mobile bg-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/Video/video-breve-mobile-compresso.mp4" type="video/mp4" />
       </video>
     </section>
   );
