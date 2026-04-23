@@ -227,6 +227,16 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
           0% { transform: scale(1); filter: brightness(1); }
           100% { transform: scale(1.1); filter: brightness(1.3); }
         }
+        @keyframes attentionGlow {
+          0% { box-shadow: 0 0 0px transparent; border-color: rgba(255,255,255,0.08); transform: translateY(0); }
+          50% { box-shadow: 0 0 40px var(--glow-color); border-color: var(--border-color); transform: translateY(-5px); }
+          100% { box-shadow: 0 0 0px transparent; border-color: rgba(255,255,255,0.08); transform: translateY(0); }
+        }
+        @keyframes sequenceGlow {
+          0% { box-shadow: 0 0 0px transparent; border-color: rgba(255,255,255,0.08); transform: translateY(0); }
+          50% { box-shadow: 0 0 40px var(--glow-color); border-color: var(--border-color); transform: translateY(-5px); background: #2a2a2a; }
+          100% { box-shadow: 0 0 0px transparent; border-color: rgba(255,255,255,0.08); transform: translateY(0); background: #151515; }
+        }
         .macro-header {
           position: relative;
           height: 280px;
@@ -385,17 +395,33 @@ export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData
               gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
               gap: '1.5rem' 
             }}>
-              {cat.subcategories.map(sub => {
+              {cat.subcategories.map((sub: any, subIndex: number) => {
                 const hasExample = !!sub.showcaseId;
                 const isActive = activeExample?.subName === sub.name;
+                
+                const delay = subIndex * 0.15; // 150ms staggered wave
+                const totalSequenceTime = cat.subcategories.length * 0.15 + 0.5;
+                
+                let animationStyle = 'none';
+                if (!isActive) {
+                  if (subIndex === 0) {
+                    animationStyle = `sequenceGlow 0.5s ease-in-out ${delay}s, attentionGlow 2.5s infinite ease-in-out ${totalSequenceTime}s`;
+                  } else {
+                    animationStyle = `sequenceGlow 0.5s ease-in-out ${delay}s`;
+                  }
+                }
+
                 return (
                   <React.Fragment key={sub.name}>
                     <div className="subcategory-card" style={{ 
+                  '--glow-color': cat.color.replace('0.5', '0.6'),
+                  '--border-color': cat.border,
                   boxShadow: isActive ? `0 10px 30px ${cat.color.replace('0.5', '0.3')}` : `0 4px 20px rgba(0,0,0,0.3)`,
                   borderColor: isActive ? cat.border : 'rgba(255,255,255,0.08)',
                   transform: isActive ? 'translateY(-2px)' : 'none',
-                  background: isActive ? '#1a1a1a' : '#151515'
-                }}
+                  background: isActive ? '#1a1a1a' : '#151515',
+                  animation: animationStyle
+                } as React.CSSProperties}
                 onClick={(e) => {
                   if (isActive) {
                     setActiveExample(null);
