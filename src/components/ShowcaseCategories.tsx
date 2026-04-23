@@ -32,8 +32,8 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Women's Sneakers", showcaseId: "footwear-womens-sneakers", icon: <Star size={12} /> },
       { name: "Product Clean", showcaseId: "footwear & sneakers-product-clean", icon: <ShoppingBag size={12} /> },
-      { name: "Elegant Heels", icon: <Sparkles size={12} /> },
-      { name: "On Feet Urban", icon: <MapPin size={12} /> },
+      { name: "Elegant Heels", showcaseId: "footwear-elegant-heels", icon: <Sparkles size={12} /> },
+      { name: "On Feet Urban", showcaseId: "footwear-on-feet-urban", icon: <MapPin size={12} /> },
     ]
   },
   {
@@ -62,8 +62,8 @@ const CATEGORY_STRUCTURE = [
     border: "rgba(16, 185, 129, 0.8)",
     bgImage: "/prove/Uomo/Street Style/BE25B3F8-3623-4189-988E-AF4258A61ADA.jpeg",
     subcategories: [
-      { name: "Ecommerce Studio", icon: <ShoppingBag size={12} /> },
-      { name: "Street Style", icon: <MapPin size={12} /> },
+      { name: "Ecommerce Studio", showcaseId: "mens-apparel-ecommerce-studio", icon: <ShoppingBag size={12} /> },
+      { name: "Street Style", showcaseId: "mens-apparel-street-style", icon: <MapPin size={12} /> },
       { name: "Silver Fox Luxury", showcaseId: "men's apparel-silver-fox-luxury", icon: <Star size={12} /> },
       { name: "Executive Lifestyle", showcaseId: "men's apparel-executive-lifestyle", icon: <Building size={12} /> },
     ]
@@ -78,8 +78,8 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Bridal Collection", showcaseId: "bridal-bridal-collection", icon: <Sparkles size={12} /> },
       { name: "Groom Collection", showcaseId: "groom & formal-groom-collection", icon: <UserCheck size={12} /> },
-      { name: "Bridal Story", icon: <ImageIcon size={12} /> },
-      { name: "Groom Story", icon: <Camera size={12} /> },
+      { name: "Bridal Story", showcaseId: "bridal-bridal-story", icon: <ImageIcon size={12} /> },
+      { name: "Groom Story", showcaseId: "bridal-groom-story", icon: <Camera size={12} /> },
     ]
   },
   {
@@ -92,9 +92,9 @@ const CATEGORY_STRUCTURE = [
     subcategories: [
       { name: "Elegant Event", showcaseId: "kids collection-elegant-event", icon: <Star size={12} /> },
       { name: "Playful Lifestyle", showcaseId: "kids collection-playful-lifestyle", icon: <Trees size={12} /> },
-      { name: "Back to School", icon: <Building size={12} /> },
-      { name: "First Communion", icon: <Sparkles size={12} /> },
-      { name: "Holiday Season", icon: <Heart size={12} /> },
+      { name: "Back to School", showcaseId: "kids-back-to-school", icon: <Building size={12} /> },
+      { name: "First Communion", showcaseId: "kids-first-communion", icon: <Sparkles size={12} /> },
+      { name: "Holiday Season", showcaseId: "kids-holiday-season", icon: <Heart size={12} /> },
     ]
   },
   {
