@@ -93,10 +93,13 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
         setResults(data.results)
         setStep(5) // Results view
       } else {
-        setError(data.error || 'Generation failed. Check your credits.')
+        const errorMsg = data.details && data.details.length > 0 
+          ? `${data.error}: ${data.details.join(', ')}` 
+          : (data.error || 'Generation failed. Check your credits.')
+        setError(errorMsg)
       }
-    } catch (err) {
-      setError('Network error during generation')
+    } catch (err: any) {
+      setError('Network error during generation: ' + err.message)
     } finally {
       setIsGenerating(false)
     }
