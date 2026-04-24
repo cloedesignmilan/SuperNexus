@@ -1110,7 +1110,7 @@ body {
   border-radius: 28px;
   overflow: hidden;
   position: relative;
-  aspect-ratio: 9/19.5;
+  aspect-ratio: 9/16;
 }
 .phone-image {
   width: 100%;
