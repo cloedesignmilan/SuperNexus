@@ -210,7 +210,10 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
       {/* STEP 2: CATEGORY */}
       {step === 2 && (
         <div>
-          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Seleziona Macrocategoria</h3>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Macro Category</h3>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Macrocategoria</div>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
             {taxonomy.map((cat: any) => {
               const ui = getCategoryUI(cat.name);
@@ -239,7 +242,10 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
       {/* STEP 3: BUSINESS MODE */}
       {step === 3 && selectedCat && (
         <div>
-          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Seleziona Categoria</h3>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Category</h3>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Categoria</div>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
             {selectedCat.business_modes.map((mode: any) => (
               <button key={mode.id} className="glass-panel hover-glow" onClick={() => { setSelectedMode(mode); setStep(4); }}
@@ -255,7 +261,10 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
       {/* STEP 4: SUBCATEGORY & GENERATE */}
       {step === 4 && selectedMode && (
         <div>
-          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Seleziona Sottocategoria</h3>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Subcategory</h3>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Sottocategoria</div>
+          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
             {selectedMode.subcategories.map((sub: any) => (
               <button key={sub.id} className={`glass-panel ${selectedSubcat?.id === sub.id ? 'active-border' : ''}`} onClick={() => setSelectedSubcat(sub)}
