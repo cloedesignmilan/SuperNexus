@@ -1,18 +1,21 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 export default function AuthButtons() {
   const [loading, setLoading] = useState(false)
   const supabase = createClient()
+  const searchParams = useSearchParams()
+  const plan = searchParams.get('plan')
 
   const handleOAuthLogin = async (provider: 'google' | 'apple') => {
     setLoading(true)
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/callback${plan ? `?plan=${plan}` : ''}`,
       },
     })
     

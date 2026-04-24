@@ -1,4 +1,5 @@
 import AuthButtons from './AuthButtons'
+import { Suspense } from 'react'
 import "../admin.css" // Reusing glass styles
 
 export default function AuthPage() {
@@ -18,7 +19,9 @@ export default function AuthPage() {
             </p>
           </div>
 
-          <AuthButtons />
+          <Suspense fallback={<div style={{ textAlign: 'center', padding: '1rem', color: '#888' }}>Loading secure login...</div>}>
+            <AuthButtons />
+          </Suspense>
           
           <div style={{ marginTop: '2rem', textAlign: 'center', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
             By signing in, you agree to our Terms of Service and Privacy Policy.

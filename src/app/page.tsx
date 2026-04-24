@@ -241,7 +241,7 @@ export default async function LandingPage() {
             ✨ Create Photos that actually sell
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
-            <TrackedLink href="/registrazione?plan=free_trial" className="btn-primary btn-hero-glow btn-animated-gradient" style={{ fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
+            <TrackedLink href="/auth?plan=free_trial" className="btn-primary btn-hero-glow btn-animated-gradient" style={{ fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
               Start 10-Image Free Trial
             </TrackedLink>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
@@ -294,10 +294,10 @@ export default async function LandingPage() {
           {/* BENTO 1 */}
           <div className="bento-card bento-half">
             <div className="bento-icon"><Smartphone /></div>
-            <h3 className="bento-title">Everything via chat.</h3>
-            <p className="bento-subtitle">Send the photo on Telegram, get perfect versions back. No complicated website to learn and no app to install on your device.</p>
+            <h3 className="bento-title">Everything via Web App.</h3>
+            <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
-              <AnimatedTelegramMockup />
+              <PhoneMockup />
             </div>
           </div>
 
@@ -351,11 +351,11 @@ export default async function LandingPage() {
             
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
               <li><CheckCircle2 size={24} color="#ff0ab3" /> <strong style={{ fontSize: '1.1rem' }}>10 Free AI Generations</strong></li>
-              <li><CheckCircle2 size={24} color="#ff0ab3" /> <span>1-Click Telegram Setup</span></li>
+              <li><CheckCircle2 size={24} color="#ff0ab3" /> <span>Instant Web App Setup</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <Link href="/registrazione?plan=free_trial" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,10,179,0.4)', borderRadius: '12px' }}>Start Free Trial Now</Link>
+                <Link href="/auth?plan=free_trial" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,10,179,0.4)', borderRadius: '12px' }}>Start Free Trial Now</Link>
             </div>
           </div>
           
@@ -366,14 +366,14 @@ export default async function LandingPage() {
             <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.starter_pack.price}<span style={{ color: '#888' }}>/one-time</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> <strong>{PRICING_CONFIG.starter_pack.images} images</strong></li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Telegram Bot Access</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Web App Dashboard Access</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Instant Setup</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> No recurring fees</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <Link href="/registrazione?plan=starter_pack" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Starter Pack</Link>
+            <Link href="/auth?plan=starter_pack" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Starter Pack</Link>
           </div>
 
           {/* Retail Pack */}
@@ -390,7 +390,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <Link href="/registrazione?plan=retail_pack" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Retail Pack</Link>
+            <Link href="/auth?plan=retail_pack" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Retail Pack</Link>
           </div>
 
           {/* Retail Subscription */}
@@ -412,7 +412,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
               Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
             </div>
-            <Link href="/registrazione?plan=retail_monthly" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Subscribe Now</Link>
+            <Link href="/auth?plan=retail_monthly" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Subscribe Now</Link>
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
@@ -475,7 +475,7 @@ export default async function LandingPage() {
             <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Contact Support</a>
                 <span style={{ color: '#222' }}>•</span>
-                <Link href="/registrazione?plan=free_trial" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Start Free Trial</Link>
+                <Link href="/auth?plan=free_trial" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Start Free Trial</Link>
                 <span style={{ color: '#222' }}>•</span>
                 <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Terms & Privacy</Link>
             </div>

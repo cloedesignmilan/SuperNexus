@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { processRegistrationFrontend } from "./actions";
+import { applyPlanToExistingUser } from "./actions";
 
 interface PayPalCheckoutProps {
     email: string;
     planName: string;
+    onSuccess: () => void;
 }
 
-export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps) {
+export default function PayPalCheckout({ email, planName, onSuccess }: PayPalCheckoutProps) {
     const [isPending, setIsPending] = useState(false);
     const [error, setError] = useState("");
 
@@ -33,7 +34,7 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
     const createSubscription = async (data: any, actions: any) => {
         const planId = getPlanId();
         if (!planId || planId.includes("placeholder")) {
-            setError("Errore di configurazione: Nessun Plan ID trovato per questo abbonamento.");
+            setError("Config error: No Plan ID found.");
             return null;
         }
         return actions.subscription.create({ plan_id: planId });
@@ -49,14 +50,16 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
             });
             const subData = await response.json();
             if (response.ok && subData.success) {
-                await processRegistrationFrontend(email, planName, data.subscriptionID);
+                const res = await applyPlanToExistingUser(email, planName, data.subscriptionID);
+                if (res.error) setError(res.error);
+                else onSuccess();
             } else {
-                setError("Errore attivazione abbonamento: " + (subData.error || "Sconosciuto"));
+                setError("Subscription activation error: " + (subData.error || "Unknown"));
                 setIsPending(false);
             }
         } catch (err) {
             console.error(err);
-            setError("Errore durante la finalizzazione dell'abbonamento.");
+            setError("Error during checkout.");
             setIsPending(false);
         }
     };
@@ -83,24 +86,26 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
             });
             const orderData = await response.json();
             if (response.ok && orderData.success) {
-                await processRegistrationFrontend(email, planName, data.orderID);
+                const res = await applyPlanToExistingUser(email, planName, data.orderID);
+                if (res.error) setError(res.error);
+                else onSuccess();
             } else {
-                setError("Errore completamento ordine: " + (orderData.error || "Sconosciuto"));
+                setError("Order error: " + (orderData.error || "Unknown"));
                 setIsPending(false);
             }
         } catch (err) {
             console.error(err);
-            setError("Errore durante la finalizzazione dell'ordine.");
+            setError("Error during checkout.");
             setIsPending(false);
         }
     };
 
     if (error) {
-        return <div style={{ color: "var(--red-500)", padding: "10px", background: "rgba(255,0,0,0.1)", borderRadius: "8px" }}>{error}</div>;
+        return <div style={{ color: "#ef4444", padding: "10px", background: "rgba(239,68,68,0.1)", borderRadius: "8px" }}>{error}</div>;
     }
 
     if (isPending) {
-        return <div style={{ padding: "20px", color: "var(--cyan-500)", fontWeight: "bold" }}>Elaborazione Pagamento in Corso... Attivazione Profilo...</div>;
+        return <div style={{ padding: "20px", color: "#06b6d4", fontWeight: "bold" }}>Processing payment... Setting up account...</div>;
     }
 
     const initialOptions = {
@@ -110,8 +115,6 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
         vault: isSubscription ? true : false,
     };
 
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email?.trim() || "");
-
     return (
         <PayPalScriptProvider options={initialOptions}>
             {isSubscription ? (
@@ -119,18 +122,13 @@ export default function PayPalCheckout({ email, planName }: PayPalCheckoutProps)
                     createSubscription={createSubscription} 
                     onApprove={onApproveSubscription} 
                     style={{ layout: "vertical", color: "gold", shape: "pill" }}
-                    disabled={!isEmailValid}
                 />
             ) : (
                 <PayPalButtons 
                     createOrder={createOrder} 
                     onApprove={onApproveOrder} 
                     style={{ layout: "vertical", color: "gold", shape: "pill" }}
-                    disabled={!isEmailValid}
                 />
-            )}
-            {!isEmailValid && (
-                <p style={{ color: "#ff5e00", fontSize: "0.85rem", marginTop: "10px" }}>Inserisci un indirizzo Email valido in alto per sbloccare il bottone.</p>
             )}
         </PayPalScriptProvider>
     );
