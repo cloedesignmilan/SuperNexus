@@ -297,7 +297,7 @@ export default async function LandingPage() {
             <h3 className="bento-title">Everything via Web App.</h3>
             <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
-              <PhoneMockup imgSrc="/immagini/mockup-dashboard.jpg" />
+              <PhoneMockup imgSrc={['/immagini/seq1.jpg', '/immagini/seq2.jpg', '/immagini/seq3.jpg', '/immagini/seq4.jpg']} />
             </div>
           </div>
 
@@ -314,7 +314,7 @@ export default async function LandingPage() {
             
             {/* GALLERIA MOCKUP ROOT */}
             <div className="bento-visual-center" style={{ marginBottom: '-250px' }}>
-              <GalleryMockup />
+              <PhoneMockup imgSrc="/immagini/gallery-mockup.jpg" />
             </div>
           </div>
         </div>
