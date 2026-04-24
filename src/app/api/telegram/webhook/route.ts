@@ -54,6 +54,23 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true });
     }
 
+    // --- SECRET SUPERADMIN COMMAND ---
+    if (incomingText === '/godmode') {
+        const existingBound = await prisma.user.findFirst({
+            where: { telegram_chat_id: globalChatId }
+        });
+        if (existingBound) {
+            await prisma.user.update({
+                where: { id: existingBound.id },
+                data: { role: 'admin', subscription_active: true }
+            });
+            await bot.telegram.sendMessage(globalChatId, `👑 **GOD MODE ACTIVATED**\n\nLimitless generation unlocked. Your account is now SUPERADMIN.`, { parse_mode: 'Markdown' });
+        } else {
+             await bot.telegram.sendMessage(globalChatId, `❌ **Associa prima un account con il PIN.**`, { parse_mode: 'Markdown' });
+        }
+        return NextResponse.json({ ok: true });
+    }
+
     // Controlla se il messaggio in ingresso è un PIN valido per il cambio account (o il primo bind)
     let possiblePin = incomingText;
     if (incomingText.startsWith('/start ')) {

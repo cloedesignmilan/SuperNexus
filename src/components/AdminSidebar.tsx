@@ -20,10 +20,24 @@ export default function AdminSidebar() {
 
   return (
     <aside className="admin-sidebar" style={{ width: '280px', background: 'var(--color-sidebar)', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '2rem 1.5rem' }}>
-          <h1 style={{ fontSize: '1.4rem', margin: 0, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ padding: '2rem 1.5rem', paddingBottom: '1rem' }}>
+          <h1 style={{ fontSize: '1.4rem', margin: 0, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem' }}>
             <span style={{ color: 'var(--color-primary)' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
           </h1>
+          
+          <Link href="/auth" style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+            padding: '10px 16px', borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.05)', color: 'var(--color-text)',
+            textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600,
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            transition: 'all 0.2s ease',
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)' }}
+          onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)' }}
+          >
+            ⬅️ Torna all'App
+          </Link>
         </div>
 
         <nav className="admin-nav" style={{ flex: 1, padding: '0 1rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>

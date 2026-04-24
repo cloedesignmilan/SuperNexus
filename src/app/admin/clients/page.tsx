@@ -7,7 +7,6 @@ export const dynamic = 'force-dynamic';
 
 export default async function ClientsPage() {
   const users = await prisma.user.findMany({
-    where: { role: { not: "admin" } },
     orderBy: { createdAt: "desc" },
     include: {
       jobs: {
