@@ -46,6 +46,8 @@ export default function AuthButtons() {
         Sign in with Google
       </button>
 
+      {/* Placeholder for Apple - Requires Apple Developer Account ($99/yr) to configure */}
+      {/* 
       <button 
         onClick={() => handleOAuthLogin('apple')}
         disabled={loading}
@@ -62,6 +64,7 @@ export default function AuthButtons() {
         </svg>
         Sign in with Apple
       </button>
+      */}
     </div>
   )
 }
