@@ -27,19 +27,8 @@ export async function GET(request: Request) {
         })
 
         if (!dbUser) {
-          // New user! Create them in our system with default allowances
-          dbUser = await prisma.user.create({
-            data: {
-              email,
-              role: 'user',
-              bot_pin: Math.random().toString(36).substring(2, 8).toUpperCase(), // Generate a random 6 char PIN
-              images_allowance: 10, // Default Free Trial amount
-              images_generated: 0,
-              base_allowance: 10,
-              subscription_active: true,
-              paypal_subscription_id: 'free_trial_oauth'
-            }
-          })
+          // Registrations are temporarily paused. Do not create new users.
+          return NextResponse.redirect(`${origin}/auth?error=registrations_paused`)
         }
       }
 
