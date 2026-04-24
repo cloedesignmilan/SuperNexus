@@ -297,7 +297,7 @@ export default async function LandingPage() {
             <h3 className="bento-title">Everything via Web App.</h3>
             <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
-              <PhoneMockup />
+              <PhoneMockup imgSrc="/dopo_1.png" />
             </div>
           </div>
 
