@@ -28,8 +28,8 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
   return (
     <div>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Business Modes</h1>
-        <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Gestione dei contesti di business (es. Boutique, Brand eCommerce, Negozio Vetrina).</p>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Categorie</h1>
+        <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Gestione delle categorie (ex Business Modes) all'interno delle Macrocategorie.</p>
       </div>
 
       {/* FILTRI MACROCATEGORIA */}
@@ -47,7 +47,7 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
         {/* Form Creazione */}
         <div>
           <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Modello</h2>
+            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuova Categoria</h2>
             <form action={createBusinessMode} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               
               <div>
@@ -61,7 +61,7 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
               </div>
 
               <div>
-                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Nome Modello D'uso</label>
+                <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Nome Categoria</label>
                 <input type="text" name="name" required placeholder="Es. T-Shirt Brand, Luxury Boutique" className="input-glass" />
               </div>
               
@@ -76,7 +76,7 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
               </div>
 
               <button type="submit" className="btn-primary btn-action-purple" style={{ marginTop: '0.5rem' }}>
-                Crea Modello
+                Crea Categoria
               </button>
             </form>
           </div>
@@ -86,7 +86,7 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem', alignContent: 'start' }}>
           {modes.length === 0 ? (
             <div className="admin-card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', gridColumn: '1 / -1' }}>
-              Nessun Business Mode registrato. Inizia creandolo dal form di lato.
+              Nessuna Categoria registrata. Inizia creandone una dal form di lato.
             </div>
           ) : (
             modes.map((mode: any) => (

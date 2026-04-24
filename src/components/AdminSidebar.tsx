@@ -11,7 +11,7 @@ export default function AdminSidebar() {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: <Copyright size={18} /> },
     { href: "/admin/categories", label: "Macrocategorie", icon: <Box size={18} /> },
-    { href: "/admin/business-modes", label: "Business Modes", icon: <Box size={18} /> },
+    { href: "/admin/business-modes", label: "Categorie", icon: <Box size={18} /> },
     { href: "/admin/subcategories", label: "Sottocategorie & Asset", icon: <Share2 size={18} /> },
     { href: "/admin/clients", label: "CRM & Clienti", icon: <Users size={18} /> },
     { href: "/admin/jobs", label: "Generazioni AI", icon: <Zap size={18} /> },

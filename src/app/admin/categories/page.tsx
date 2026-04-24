@@ -95,7 +95,7 @@ export default async function CategoriesPage() {
                 <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'var(--color-text)' }}>{cat.name}</h3>
                   <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
-                    {cat._count.business_modes} Business Modes
+                    {cat._count.business_modes} Categorie
                   </div>
                   
                   {cat.description && (
