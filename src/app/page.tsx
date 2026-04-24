@@ -73,7 +73,17 @@ export default async function LandingPage() {
              <a href="#category-women" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Runway</a>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <a href="/login" className="stagger-anim" style={{ 
+              color: '#ffffff', 
+              textDecoration: 'none', 
+              fontSize: '0.95rem', 
+              fontWeight: 600,
+              animationDelay: '0.75s',
+              opacity: 0.9
+            }}>
+              Login
+            </a>
             <a href="#pricing" className="stagger-anim btn-animated-gradient" style={{ 
               padding: '0.6rem 1.5rem', 
               fontSize: '0.9rem', 
