@@ -42,7 +42,7 @@ export default function PhoneMockup({ imgSrc, label, className = '' }: PhoneMock
           ))}
           
           {/* Overlay text in English for the native iOS popup on seq1.jpg */}
-          {images.length > 1 && currentIndex === 0 && images[0].includes('seq1') && (
+          {images.length > 1 && currentIndex === 0 && images[0].includes('seq01') && (
             <div style={{
               position: 'absolute',
               bottom: '22%',
