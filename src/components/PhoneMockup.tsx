@@ -41,37 +41,7 @@ export default function PhoneMockup({ imgSrc, label, className = '' }: PhoneMock
             />
           ))}
           
-          {/* Overlay text in English for the native iOS popup on seq1.jpg */}
-          {images.length > 1 && currentIndex === 0 && images[0].includes('seq01') && (
-            <div style={{
-              position: 'absolute',
-              bottom: '22%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background: '#f1f1f1',
-              color: 'black',
-              padding: '1.5rem',
-              borderRadius: '24px',
-              width: '80%',
-              zIndex: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1rem',
-              boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
-              fontSize: '0.95rem',
-              fontWeight: 500
-            }}>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                 <span>🖼️</span> Photo Library
-               </div>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                 <span>📷</span> Take Photo
-               </div>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                 <span>📁</span> Choose File
-               </div>
-            </div>
-          )}
+
         </div>
       </div>
     </div>
