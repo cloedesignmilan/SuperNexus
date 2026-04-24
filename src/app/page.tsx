@@ -251,9 +251,9 @@ export default async function LandingPage() {
             ✨ Create Photos that actually sell
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
-            <TrackedLink href="/auth?plan=free_trial" className="btn-primary btn-hero-glow btn-animated-gradient" style={{ fontWeight: '800', whiteSpace: 'nowrap' }} eventName="InitiateCheckout">
-              Start 10-Image Free Trial
-            </TrackedLink>
+            <button disabled className="btn-primary btn-hero-glow" style={{ fontWeight: '800', whiteSpace: 'nowrap', opacity: 0.5, cursor: 'not-allowed' }}>
+              Maintenance In Progress
+            </button>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
             </a>
@@ -365,7 +365,7 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <Link href="/auth?plan=free_trial" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', transition: 'all 0.2s', fontSize: '1.1rem', boxShadow: '0 4px 15px rgba(255,10,179,0.4)', borderRadius: '12px' }}>Start Free Trial Now</Link>
+                <button disabled className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', opacity: 0.5, cursor: 'not-allowed' }}>Maintenance In Progress</button>
             </div>
           </div>
           
@@ -383,7 +383,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <Link href="/auth?plan=starter_pack" className="btn-secondary hover-scale" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Starter Pack</Link>
+            <button disabled className="btn-secondary" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
           </div>
 
           {/* Retail Pack */}
@@ -400,7 +400,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <Link href="/auth?plan=retail_pack" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Get Retail Pack</Link>
+            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
           </div>
 
           {/* Retail Subscription */}
@@ -422,7 +422,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
               Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
             </div>
-            <Link href="/auth?plan=retail_monthly" className="btn-secondary hover-scale" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', transition: 'transform 0.2s' }}>Subscribe Now</Link>
+            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
@@ -485,7 +485,7 @@ export default async function LandingPage() {
             <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Contact Support</a>
                 <span style={{ color: '#222' }}>•</span>
-                <Link href="/auth?plan=free_trial" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Start Free Trial</Link>
+                <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>Temporarily Paused</span>
                 <span style={{ color: '#222' }}>•</span>
                 <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Terms & Privacy</Link>
             </div>
