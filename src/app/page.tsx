@@ -74,7 +74,7 @@ export default async function LandingPage() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <a href="/login" className="stagger-anim" style={{ 
+            <a href="/auth" className="stagger-anim" style={{ 
               color: '#ffffff', 
               textDecoration: 'none', 
               fontSize: '0.95rem', 
