@@ -58,7 +58,7 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
     if (isGenerating) {
       interval = setInterval(() => {
         setTipIndex((prev) => (prev + 1) % LOADING_TIPS.length);
-      }, 5000);
+      }, 20000);
     }
     return () => clearInterval(interval);
   }, [isGenerating]);
