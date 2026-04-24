@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { LogOut, Home, Image as ImageIcon } from 'lucide-react'
+import { LogOut, Home, Image as ImageIcon, User } from 'lucide-react'
 import Link from 'next/link'
 import "../admin.css"
 
@@ -45,6 +45,10 @@ export default async function DashboardLayout({
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.02)', padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
+             <User size={14} /> {dbUser.email}
+          </div>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px' }}>
              <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Credits:</span>
              <span style={{ fontWeight: 800, color: 'var(--color-primary)' }}>{remaining}</span>
