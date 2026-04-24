@@ -1,9 +1,12 @@
 import { prisma } from '@/lib/prisma'
 import DashboardWizard from './DashboardWizard'
+import { unstable_noStore as noStore } from 'next/cache'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function DashboardPage() {
+  noStore()
   // Fetch full active taxonomy to pass to the client component
   const taxonomy = await prisma.category.findMany({
     where: { is_active: true },
