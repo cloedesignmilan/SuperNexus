@@ -1,10 +1,28 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { Upload, ChevronRight, Loader2, CheckCircle2, Image as ImageIcon } from 'lucide-react'
+import { Upload, ChevronRight, Loader2, CheckCircle2, Image as ImageIcon, User, Sparkles, Smile, Shirt, ShoppingBag } from 'lucide-react'
 import "../admin.css" // Reusing styling variables
 
 type Taxonomy = any // Fast typing for the complex Prisma result
+
+const getCategoryUI = (name: string) => {
+  const match = name.match(/\((.*?)\)/);
+  const englishName = match ? match[1] : name;
+  const mainName = match ? name.split(' (')[0] : name;
+  
+  let icon = <ImageIcon size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  
+  const lowerName = name.toLowerCase();
+  if (lowerName.includes('donna') || lowerName.includes('women')) icon = <User size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  else if (lowerName.includes('uomo') || lowerName.includes('men')) icon = <User size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  else if (lowerName.includes('sposa') || lowerName.includes('bridal')) icon = <Sparkles size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  else if (lowerName.includes('bambino') || lowerName.includes('kid')) icon = <Smile size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  else if (lowerName.includes('t-shirt') || lowerName.includes('shirt')) icon = <Shirt size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+  else if (lowerName.includes('calzature') || lowerName.includes('footwear')) icon = <ShoppingBag size={32} strokeWidth={1.5} color="var(--color-primary)" />;
+
+  return { englishName, mainName, icon };
+}
 
 export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) {
   const [step, setStep] = useState<number>(1)
@@ -132,13 +150,26 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
       {step === 2 && (
         <div>
           <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Select Category</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-            {taxonomy.map((cat: any) => (
-              <button key={cat.id} className="glass-panel hover-glow" onClick={() => { setSelectedCat(cat); setStep(3); }}
-                style={{ padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}>
-                {cat.name}
-              </button>
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
+            {taxonomy.map((cat: any) => {
+              const ui = getCategoryUI(cat.name);
+              return (
+                <button key={cat.id} className="glass-panel hover-glow" onClick={() => { setSelectedCat(cat); setStep(3); }}
+                  style={{ 
+                    padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', 
+                    borderRadius: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
+                    cursor: 'pointer', transition: 'all 0.2s' 
+                  }}>
+                  {ui.icon}
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600 }}>{ui.englishName}</div>
+                    {ui.englishName !== ui.mainName && (
+                       <div style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '0.25rem' }}>{ui.mainName}</div>
+                    )}
+                  </div>
+                </button>
+              )
+            })}
           </div>
           <button onClick={() => setStep(1)} style={{ marginTop: '2rem', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back to Upload</button>
         </div>
