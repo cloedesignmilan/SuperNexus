@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Upload, ChevronRight, Loader2, CheckCircle2, Image as ImageIcon, User, Sparkles, Smile, Shirt, ShoppingBag, Download } from 'lucide-react'
 import "../admin.css" // Reusing styling variables
 
@@ -24,6 +24,15 @@ const getCategoryUI = (name: string) => {
   return { englishName, mainName, icon };
 }
 
+const LOADING_TIPS = [
+  "💡 E-commerce Tip: Flat lay photography increases Add-to-Cart conversions by 15% when used as secondary product images.",
+  "📈 Social Media Manager: UGC-style (User Generated Content) photos get 40% more engagement on Instagram than pure catalog shots.",
+  "👔 Buyer Advice: Including close-up macro shots of fabrics reduces return rates by building trust in the material quality.",
+  "🛍️ E-commerce Tip: Consistent lighting across your entire catalog increases perceived brand value and justifies higher price points.",
+  "✨ Social Media Manager: Behind-the-scenes or 'fitting room' style aesthetic builds authenticity and creates a stronger community bond.",
+  "🎯 Buyer Advice: Showing the same item in multiple environments (studio + lifestyle) helps customers visualize the product in their daily life."
+]
+
 export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) {
   const [step, setStep] = useState<number>(1)
   
@@ -41,6 +50,18 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
   const [isGenerating, setIsGenerating] = useState(false)
   const [results, setResults] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
+  
+  const [tipIndex, setTipIndex] = useState(0)
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isGenerating) {
+      interval = setInterval(() => {
+        setTipIndex((prev) => (prev + 1) % LOADING_TIPS.length);
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [isGenerating]);
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -278,6 +299,35 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
               {isGenerating ? <><Loader2 className="spin" size={20} /> Processing...</> : <><ImageIcon size={20} /> Generate AI Photo</>}
             </button>
           </div>
+
+          {/* Tips display while loading */}
+          {isGenerating && (
+            <div style={{ 
+              marginTop: '3rem', 
+              padding: '2rem', 
+              background: 'rgba(255,255,255,0.03)', 
+              borderRadius: '16px', 
+              border: '1px solid rgba(255,255,255,0.05)',
+              textAlign: 'center',
+              animation: 'fadeIn 0.5s ease-in-out'
+            }}>
+              <Loader2 className="spin" size={32} color="var(--color-primary)" style={{ margin: '0 auto 1rem auto' }} />
+              <div style={{ 
+                color: 'var(--color-text)', 
+                fontSize: '1.1rem', 
+                fontWeight: 500,
+                minHeight: '3rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'opacity 0.5s ease-in-out'
+              }}>
+                <span key={tipIndex} style={{ animation: 'fadeIn 1s ease-in-out' }}>
+                  {LOADING_TIPS[tipIndex]}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
