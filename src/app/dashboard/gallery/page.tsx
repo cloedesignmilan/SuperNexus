@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { prisma } from '@/lib/prisma'
+import GalleryCard from './GalleryCard'
 import "../../admin.css"
 
 export const dynamic = 'force-dynamic'
@@ -73,25 +74,7 @@ export default async function GalleryPage() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
           {userImages.map((url, i) => (
-            <div key={i} className="glass-panel hover-glow" style={{ padding: '1rem', borderRadius: '16px', overflow: 'hidden' }}>
-              <img 
-                src={url} 
-                alt="AI Generated Output" 
-                style={{ width: '100%', height: 'auto', borderRadius: '8px', display: 'block' }} 
-              />
-              <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
-                <a 
-                  href={url} 
-                  download 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="btn-secondary"
-                  style={{ textDecoration: 'none', display: 'inline-block', width: '100%', textAlign: 'center', padding: '0.75rem' }}
-                >
-                  Download HD
-                </a>
-              </div>
-            </div>
+            <GalleryCard key={i} url={url} />
           ))}
         </div>
       )}
