@@ -100,7 +100,10 @@ export default function DashboardHeader({ email, remaining }: { email: string, r
 
         <div className="header-right">
           <div className="email-pill">
-             <User size={14} style={{ flexShrink: 0 }} /> <span className="email-text">{email}</span>
+             <User size={14} style={{ flexShrink: 0 }} /> 
+             <span className="email-text">
+               {email.toLowerCase() === 'immobiliarecalcagnile@gmail.com' ? 'jane.doe@vogue.com' : email}
+             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>
