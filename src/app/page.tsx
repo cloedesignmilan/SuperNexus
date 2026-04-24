@@ -297,7 +297,7 @@ export default async function LandingPage() {
             <h3 className="bento-title">Everything via Web App.</h3>
             <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
-              <PhoneMockup imgSrc={['/immagini/seq1.jpg', '/immagini/seq2.jpg', '/immagini/seq3.jpg', '/immagini/seq4.jpg']} />
+              <PhoneMockup imgSrc={['/immagini/seq1.jpg', '/immagini/seq5.jpg', '/immagini/seq2.jpg', '/immagini/seq3.jpg', '/immagini/seq4.jpg', '/immagini/seq7.jpg', '/immagini/seq6.jpg']} />
             </div>
           </div>
 
