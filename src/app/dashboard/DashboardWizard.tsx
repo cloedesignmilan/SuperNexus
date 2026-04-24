@@ -35,6 +35,7 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
   const [selectedCat, setSelectedCat] = useState<any>(null)
   const [selectedMode, setSelectedMode] = useState<any>(null)
   const [selectedSubcat, setSelectedSubcat] = useState<any>(null)
+  const [qty, setQty] = useState<number>(1)
   
   const [isUploading, setIsUploading] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -109,7 +110,7 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
         body: JSON.stringify({
           subcategoryId: selectedSubcat.id,
           imageUrls: [uploadedUrl],
-          qty: 1, // Start with 1 for Web MVP
+          qty: qty,
           isOutfit: false
         })
       })
@@ -148,6 +149,16 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
       {error && (
         <div style={{ padding: '1rem', background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center' }}>
           {error}
+        </div>
+      )}
+
+      {/* Uploaded Image Preview Thumbnail */}
+      {step > 1 && previewUrl && step < 5 && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+          <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 20px rgba(0,0,0,0.4)' }}>
+            <img src={previewUrl} alt="Uploaded Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.6)', padding: '4px', textAlign: 'center', fontSize: '0.7rem', color: '#ccff00', fontWeight: 'bold', backdropFilter: 'blur(4px)' }}>✓ CARICATA</div>
+          </div>
         </div>
       )}
 
@@ -232,6 +243,34 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
               </button>
             ))}
           </div>
+
+          {selectedSubcat && (
+            <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
+              <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>How many variations?</h4>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                {[1, 3, 5].map((num) => (
+                  <button 
+                    key={num}
+                    onClick={() => setQty(num)}
+                    className={`glass-panel ${qty === num ? 'active-border' : ''}`}
+                    style={{
+                      padding: '1rem 2rem', 
+                      borderRadius: '12px',
+                      fontSize: '1.2rem',
+                      fontWeight: 'bold',
+                      background: qty === num ? 'rgba(var(--color-primary-rgb), 0.2)' : 'rgba(255,255,255,0.05)',
+                      border: qty === num ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)',
+                      color: 'var(--color-text)',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <button onClick={() => setStep(3)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back</button>
