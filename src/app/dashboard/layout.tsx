@@ -27,10 +27,11 @@ export default async function DashboardLayout({
   }
 
   const remaining = Math.max(0, dbUser.images_allowance - dbUser.images_generated);
+  const isAdmin = dbUser.role === 'admin';
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-bg)' }}>
-      <DashboardHeader email={dbUser.email || ''} remaining={remaining} />
+      <DashboardHeader email={dbUser.email || ''} remaining={remaining} isAdmin={isAdmin} />
 
       <main style={{ flex: 1, padding: '2rem', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         {children}

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { LogOut, Home, Image as ImageIcon, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
-export default function DashboardHeader({ email, remaining }: { email: string, remaining: number }) {
+export default function DashboardHeader({ email, remaining, isAdmin = false }: { email: string, remaining: number, isAdmin?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -100,15 +100,15 @@ export default function DashboardHeader({ email, remaining }: { email: string, r
 
         <div className="header-right">
           <div className="email-pill">
-             <User size={14} style={{ flexShrink: 0 }} /> 
+             {isAdmin ? <span title="SuperAdmin" style={{ cursor: 'help' }}>👑</span> : <User size={14} style={{ flexShrink: 0 }} />} 
              <span className="email-text">
                {email.toLowerCase() === 'immobiliarecalcagnile@gmail.com' ? 'jane.doe@vogue.com' : email}
              </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap' }}>
-             <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Credits:</span>
-             <span style={{ fontWeight: 800, color: 'var(--color-primary)' }}>{remaining}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: isAdmin ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap', border: isAdmin ? '1px solid rgba(255, 215, 0, 0.3)' : 'none' }}>
+             <span style={{ fontSize: '0.8rem', color: isAdmin ? '#ffd700' : 'var(--color-text-muted)' }}>{isAdmin ? 'God Mode:' : 'Credits:'}</span>
+             <span style={{ fontWeight: 800, color: isAdmin ? '#ffd700' : 'var(--color-primary)', fontSize: isAdmin ? '1.2rem' : '1rem' }}>{isAdmin ? '∞' : remaining}</span>
           </div>
 
           <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: 600 }}>
