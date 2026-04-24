@@ -1,0 +1,206 @@
+'use client'
+
+import { useState, useRef } from 'react'
+import { Upload, ChevronRight, Loader2, CheckCircle2, Image as ImageIcon } from 'lucide-react'
+import "../admin.css" // Reusing styling variables
+
+type Taxonomy = any // Fast typing for the complex Prisma result
+
+export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) {
+  const [step, setStep] = useState<number>(1)
+  
+  // State
+  const [file, setFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
+  
+  const [selectedCat, setSelectedCat] = useState<any>(null)
+  const [selectedMode, setSelectedMode] = useState<any>(null)
+  const [selectedSubcat, setSelectedSubcat] = useState<any>(null)
+  
+  const [isUploading, setIsUploading] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [results, setResults] = useState<string[]>([])
+  const [error, setError] = useState<string | null>(null)
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0]
+      setFile(selected)
+      setPreviewUrl(URL.createObjectURL(selected))
+      
+      // Auto-upload
+      setIsUploading(true)
+      const formData = new FormData()
+      formData.append('file', selected)
+      
+      try {
+        const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
+        const data = await res.json()
+        if (data.url) {
+          setUploadedUrl(data.url)
+          setStep(2) // Move to category selection
+        } else {
+          setError('Failed to upload image')
+        }
+      } catch (err) {
+        setError('Network error during upload')
+      } finally {
+        setIsUploading(false)
+      }
+    }
+  }
+
+  const handleGenerate = async () => {
+    if (!uploadedUrl || !selectedSubcat) return
+    setIsGenerating(true)
+    setError(null)
+    
+    try {
+      const res = await fetch('/api/web/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subcategoryId: selectedSubcat.id,
+          imageUrls: [uploadedUrl],
+          qty: 1, // Start with 1 for Web MVP
+          isOutfit: false
+        })
+      })
+      
+      const data = await res.json()
+      if (data.success && data.results) {
+        setResults(data.results)
+        setStep(5) // Results view
+      } else {
+        setError(data.error || 'Generation failed. Check your credits.')
+      }
+    } catch (err) {
+      setError('Network error during generation')
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
+  return (
+    <div className="glass-panel" style={{ padding: '2rem', borderRadius: '24px', overflow: 'hidden', position: 'relative' }}>
+      
+      {/* Progress Steps Header */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '3rem' }}>
+        {[1, 2, 3, 4, 5].map((s) => (
+           <div key={s} style={{ 
+             width: '40px', height: '4px', borderRadius: '2px',
+             background: step >= s ? 'var(--color-primary)' : 'rgba(255,255,255,0.1)',
+             transition: 'all 0.3s'
+           }} />
+        ))}
+      </div>
+
+      {error && (
+        <div style={{ padding: '1rem', background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center' }}>
+          {error}
+        </div>
+      )}
+
+      {/* STEP 1: UPLOAD */}
+      {step === 1 && (
+        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+          <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+          <button 
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            style={{
+              background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.2)',
+              borderRadius: '24px', padding: '4rem 2rem', width: '100%', maxWidth: '400px', margin: '0 auto',
+              cursor: isUploading ? 'not-allowed' : 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
+              transition: 'all 0.2s'
+            }}
+            className="hover-glow"
+          >
+            {isUploading ? <Loader2 size={48} className="spin" color="var(--color-primary)" /> : <Upload size={48} color="var(--color-text-muted)" />}
+            <div style={{ color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600 }}>
+              {isUploading ? 'Uploading securely...' : 'Tap to Upload Product'}
+            </div>
+            <div style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>High quality flat-lay or mannequin</div>
+          </button>
+        </div>
+      )}
+
+      {/* STEP 2: CATEGORY */}
+      {step === 2 && (
+        <div>
+          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Select Category</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+            {taxonomy.map((cat: any) => (
+              <button key={cat.id} className="glass-panel hover-glow" onClick={() => { setSelectedCat(cat); setStep(3); }}
+                style={{ padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}>
+                {cat.name}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setStep(1)} style={{ marginTop: '2rem', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back to Upload</button>
+        </div>
+      )}
+
+      {/* STEP 3: BUSINESS MODE */}
+      {step === 3 && selectedCat && (
+        <div>
+          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Select Format</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
+            {selectedCat.business_modes.map((mode: any) => (
+              <button key={mode.id} className="glass-panel hover-glow" onClick={() => { setSelectedMode(mode); setStep(4); }}
+                style={{ padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1.1rem', fontWeight: 600, cursor: 'pointer' }}>
+                {mode.name}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setStep(2)} style={{ marginTop: '2rem', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back</button>
+        </div>
+      )}
+
+      {/* STEP 4: SUBCATEGORY & GENERATE */}
+      {step === 4 && selectedMode && (
+        <div>
+          <h3 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.5rem' }}>Select Style</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
+            {selectedMode.subcategories.map((sub: any) => (
+              <button key={sub.id} className={`glass-panel ${selectedSubcat?.id === sub.id ? 'active-border' : ''}`} onClick={() => setSelectedSubcat(sub)}
+                style={{ padding: '1.5rem 1rem', border: selectedSubcat?.id === sub.id ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)', background: selectedSubcat?.id === sub.id ? 'rgba(var(--color-primary-rgb), 0.1)' : 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}>
+                {sub.name}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <button onClick={() => setStep(3)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back</button>
+            <button onClick={handleGenerate} disabled={!selectedSubcat || isGenerating} className="btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: (!selectedSubcat || isGenerating) ? 0.5 : 1 }}>
+              {isGenerating ? <><Loader2 className="spin" size={20} /> Processing...</> : <><ImageIcon size={20} /> Generate AI Photo</>}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 5: RESULTS */}
+      {step === 5 && (
+        <div style={{ textAlign: 'center' }}>
+          <h3 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary)' }}>Mission Accomplished ✨</h3>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>Your professional photos are ready.</p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+            {results.map((url, i) => (
+              <div key={i} style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <img src={url} alt="Generated result" style={{ width: '100%', height: 'auto', display: 'block' }} />
+              </div>
+            ))}
+          </div>
+
+          <button onClick={() => { setStep(1); setFile(null); setUploadedUrl(null); setResults([]); setSelectedCat(null); setSelectedMode(null); setSelectedSubcat(null); }} className="btn-secondary" style={{ padding: '1rem 3rem' }}>
+            Generate Another Output
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
