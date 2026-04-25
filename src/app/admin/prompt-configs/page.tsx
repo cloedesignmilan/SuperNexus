@@ -164,68 +164,80 @@ export default function PromptConfigsAdmin() {
   const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene || c.scene === null)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto text-gray-100">
-      <div className="flex justify-between items-center mb-8">
+    <div>
+      <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Prompt Configs</h1>
-          <p className="text-gray-400 mt-2">Manage AI generation prompts via Database.</p>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'white' }}>Prompt Configs</h1>
+          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Manage AI generation prompts via Database.</p>
         </div>
-        <div className="flex gap-4">
+        <div style={{ display: 'flex', gap: '1rem' }}>
           <input 
             type="file" 
             accept=".json" 
-            className="hidden" 
+            style={{ display: 'none' }}
             ref={fileInputRef} 
             onChange={handleImport} 
           />
-          <button onClick={() => fileInputRef.current?.click()} className="flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 text-white font-medium">
-            <Upload className="w-4 h-4" /> Import JSON
+          <button 
+            onClick={() => fileInputRef.current?.click()} 
+            style={{ 
+              padding: '0.8rem 1.5rem', background: 'rgba(0,210,255,0.2)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+            }}
+          >
+            <Upload size={18} /> Import JSON
           </button>
-          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">
-            <Download className="w-4 h-4" /> Export JSON
+          <button 
+            onClick={handleExport} 
+            style={{ 
+              padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+            }}
+          >
+            <Download size={18} /> Export JSON
           </button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-gray-900 p-4 rounded-xl mb-8 flex gap-4 border border-gray-800">
-        <div>
-          <label className="block text-xs text-gray-500 mb-1">Category</label>
+      <div className="admin-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+        <div style={{ flex: 1, minWidth: '150px' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category</label>
           <select 
             value={filterCat} 
             onChange={(e) => setFilterCat(e.target.value)}
-            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+            style={{ width: '100%', padding: '0.8rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none' }}
           >
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <div>
-          <label className="block text-xs text-gray-500 mb-1">Mode</label>
+        <div style={{ flex: 1, minWidth: '150px' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mode</label>
           <select 
             value={filterMode} 
             onChange={(e) => setFilterMode(e.target.value)}
-            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+            style={{ width: '100%', padding: '0.8rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none' }}
           >
             {modes.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
         </div>
-        <div>
-          <label className="block text-xs text-gray-500 mb-1">Scene</label>
+        <div style={{ flex: 1, minWidth: '150px' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Scene</label>
           <select 
             value={filterScene} 
             onChange={(e) => setFilterScene(e.target.value)}
-            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+            style={{ width: '100%', padding: '0.8rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', outline: 'none' }}
           >
             {scenes.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
-        <div className="ml-auto flex items-end">
+        <div>
           <button 
             onClick={handleCreate}
             disabled={saving}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            style={{ 
+              padding: '0.8rem 1.5rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', opacity: saving ? 0.7 : 1
+            }}
           >
-            <Plus className="w-4 h-4" /> Add Shot
+            <Plus size={18} /> Add Shot
           </button>
         </div>
       </div>
@@ -236,17 +248,17 @@ export default function PromptConfigsAdmin() {
       ) : (
         <div className="space-y-6">
           {filteredConfigs.length === 0 ? (
-            <div className="text-center py-12 bg-gray-900 rounded-xl border border-gray-800">
-              <p className="text-gray-400">No prompt shots found for this selection.</p>
-              <p className="text-sm text-gray-500 mt-2">The AI will fallback to local JSON configs if they exist.</p>
+            <div style={{ textAlign: 'center', padding: '3rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', border: '1px solid var(--color-card-border)' }}>
+              <p style={{ color: 'var(--color-text-muted)' }}>No prompt shots found for this selection.</p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginTop: '0.5rem', opacity: 0.8 }}>The AI will fallback to local JSON configs if they exist.</p>
             </div>
           ) : (
             filteredConfigs.map((shot, idx) => (
-              <div key={shot.id} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg transition-all focus-within:ring-2 focus-within:ring-blue-500/50">
+              <div key={shot.id} className="admin-card" style={{ overflow: 'hidden', transition: 'all 0.2s ease', border: '1px solid var(--color-card-border)' }}>
                 
                 {/* Header Row */}
-                <div className="bg-gray-800/50 p-4 flex items-center gap-4 border-b border-gray-800">
-                  <div className="bg-blue-900/50 text-blue-400 font-mono font-bold px-3 py-1 rounded-md text-sm border border-blue-800">
+                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', borderBottom: '1px solid var(--color-card-border)' }}>
+                  <div style={{ background: 'rgba(0,210,255,0.1)', color: 'var(--color-secondary)', fontFamily: 'monospace', fontWeight: 700, padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.9rem', border: '1px solid rgba(0,210,255,0.2)' }}>
                     Shot {shot.shotNumber}
                   </div>
                   <input 
@@ -259,10 +271,11 @@ export default function PromptConfigsAdmin() {
                       setConfigs(newConfigs);
                     }}
                     className="bg-transparent text-lg font-bold text-white border-none focus:ring-0 w-64 p-0 placeholder-gray-600"
+                    style={{ background: 'transparent', fontSize: '1.2rem', fontWeight: 700, color: 'white', border: 'none', outline: 'none', width: '250px' }}
                     placeholder="Shot Name..."
                   />
-                  <div className="ml-auto flex items-center gap-2">
-                    <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer mr-4">
+                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-text-muted)', cursor: 'pointer', marginRight: '1rem' }}>
                       <input 
                         type="checkbox" 
                         checked={shot.isActive}
@@ -272,70 +285,70 @@ export default function PromptConfigsAdmin() {
                           if (s) s.isActive = e.target.checked;
                           setConfigs(newConfigs);
                         }}
-                        className="rounded bg-gray-800 border-gray-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900" 
+                        style={{ accentColor: 'var(--color-secondary)', width: '16px', height: '16px' }}
                       />
                       Active
                     </label>
-                    <button onClick={() => handleUpdate(shot)} className="p-2 text-green-400 hover:bg-green-400/10 rounded-lg transition-colors" title="Save Changes">
-                      <Save className="w-4 h-4" />
+                    <button onClick={() => handleUpdate(shot)} style={{ padding: '0.5rem', color: 'var(--color-success)', background: 'rgba(0,224,143,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Save Changes">
+                      <Save size={16} />
                     </button>
-                    <button onClick={() => handleDuplicate(shot)} className="p-2 text-blue-400 hover:bg-blue-400/10 rounded-lg transition-colors" title="Duplicate Shot">
-                      <Copy className="w-4 h-4" />
+                    <button onClick={() => handleDuplicate(shot)} style={{ padding: '0.5rem', color: 'var(--color-secondary)', background: 'rgba(0,210,255,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Duplicate Shot">
+                      <Copy size={16} />
                     </button>
-                    <button onClick={() => handleDelete(shot.id)} className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors" title="Delete Shot">
-                      <Trash2 className="w-4 h-4" />
+                    <button onClick={() => handleDelete(shot.id)} style={{ padding: '0.5rem', color: 'var(--color-danger)', background: 'rgba(255,77,109,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Delete Shot">
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </div>
 
                 {/* Editor Body */}
-                <div className="p-4 grid grid-cols-12 gap-4">
+                <div style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '250px 1fr', gap: '1.5rem' }}>
                   {/* Meta Params */}
-                  <div className="col-span-3 space-y-4 pr-4 border-r border-gray-800">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', paddingRight: '1.5rem', borderRight: '1px solid var(--color-card-border)' }}>
                     <div>
-                      <label className="block text-xs font-mono text-gray-500 mb-1">presentation</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>presentation</label>
                       <input type="text" value={shot.presentation} onChange={(e) => {
                         const newConfigs = [...configs];
                         const s = newConfigs.find(c => c.id === shot.id);
                         if (s) s.presentation = e.target.value;
                         setConfigs(newConfigs);
-                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white" />
+                      }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }} />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-gray-500 mb-1">shot_number</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>shot_number</label>
                       <input type="number" value={shot.shotNumber} onChange={(e) => {
                         const newConfigs = [...configs];
                         const s = newConfigs.find(c => c.id === shot.id);
                         if (s) s.shotNumber = Number(e.target.value);
                         setConfigs(newConfigs);
-                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white" />
+                      }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }} />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-gray-500 mb-1">priority</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>priority</label>
                       <input type="number" value={shot.priority} onChange={(e) => {
                         const newConfigs = [...configs];
                         const s = newConfigs.find(c => c.id === shot.id);
                         if (s) s.priority = Number(e.target.value);
                         setConfigs(newConfigs);
-                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white" />
+                      }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }} />
                     </div>
                     <div>
-                      <label className="block text-xs font-mono text-gray-500 mb-1">scene</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>scene</label>
                       <select value={shot.scene || 'all'} onChange={(e) => {
                         const newConfigs = [...configs];
                         const s = newConfigs.find(c => c.id === shot.id);
                         if (s) s.scene = e.target.value;
                         setConfigs(newConfigs);
-                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white">
+                      }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }}>
                         {scenes.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
                     </div>
                   </div>
 
                   {/* Prompts */}
-                  <div className="col-span-9 space-y-4">
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     <div>
-                      <label className="block text-xs font-bold text-green-400 mb-1 tracking-wider uppercase">Positive Prompt</label>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-success)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Positive Prompt</label>
                       <textarea 
                         value={shot.positivePrompt}
                         onChange={(e) => {
@@ -345,44 +358,44 @@ export default function PromptConfigsAdmin() {
                           setConfigs(newConfigs);
                         }}
                         rows={2}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg text-sm px-3 py-2 text-gray-300 focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50"
+                        style={{ width: '100%', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(0,224,143,0.3)', borderRadius: '8px', fontSize: '0.9rem', padding: '0.8rem', color: 'white', outline: 'none', resize: 'vertical' }}
                         placeholder="E.g. T-shirt front view, facing camera..."
                       />
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4">
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                       <div>
-                        <label className="block text-xs font-bold text-red-400 mb-1 tracking-wider uppercase">Negative Prompt</label>
+                        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-danger)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Negative Prompt</label>
                         <textarea 
                           value={shot.negativePrompt}
                           onChange={(e) => {
                             const newConfigs = [...configs];
-                            const s = newConfigs.find(c => c.id === shot.id);
-                            if (s) s.negativePrompt = e.target.value;
-                            setConfigs(newConfigs);
-                          }}
-                          rows={2}
-                          className="w-full bg-gray-950 border border-gray-800 rounded-lg text-sm px-3 py-2 text-gray-300 focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50"
-                          placeholder="E.g. people, models, perspective..."
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-yellow-400 mb-1 tracking-wider uppercase">Hard Rules</label>
+                              const s = newConfigs.find(c => c.id === shot.id);
+                              if (s) s.negativePrompt = e.target.value;
+                              setConfigs(newConfigs);
+                            }}
+                            rows={2}
+                            style={{ width: '100%', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,77,109,0.3)', borderRadius: '8px', fontSize: '0.9rem', padding: '0.8rem', color: 'white', outline: 'none', resize: 'vertical' }}
+                            placeholder="E.g. people, models, perspective..."
+                          />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: '#ffd166', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hard Rules</label>
                         <textarea 
                           value={shot.hardRules}
                           onChange={(e) => {
                             const newConfigs = [...configs];
-                            const s = newConfigs.find(c => c.id === shot.id);
-                            if (s) s.hardRules = e.target.value;
-                            setConfigs(newConfigs);
-                          }}
-                          rows={2}
-                          className="w-full bg-gray-950 border border-gray-800 rounded-lg text-sm px-3 py-2 text-gray-300 focus:border-yellow-500/50 focus:ring-1 focus:ring-yellow-500/50"
-                          placeholder="E.g. STRICT FRONT VIEW, NO MODEL"
-                        />
+                              const s = newConfigs.find(c => c.id === shot.id);
+                              if (s) s.hardRules = e.target.value;
+                              setConfigs(newConfigs);
+                            }}
+                            rows={2}
+                            style={{ width: '100%', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,209,102,0.3)', borderRadius: '8px', fontSize: '0.9rem', padding: '0.8rem', color: 'white', outline: 'none', resize: 'vertical' }}
+                            placeholder="E.g. STRICT FRONT VIEW, NO MODEL"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
                 </div>
               </div>
