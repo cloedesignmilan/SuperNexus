@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Save, Trash2, Copy, Download, Upload, Check, Loader2 } from 'lucide-react';
+import { Plus, Save, Trash2, Copy, Download, Upload, Check, Loader2, Sparkles } from 'lucide-react';
 
 interface PromptConfigShot {
   id: string;
@@ -24,6 +24,7 @@ export default function PromptConfigsAdmin() {
   const [configs, setConfigs] = useState<PromptConfigShot[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [generatingPromptId, setGeneratingPromptId] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   const [filterCat, setFilterCat] = useState('t-shirt');
@@ -161,6 +162,51 @@ export default function PromptConfigsAdmin() {
     } finally {
       setSaving(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleAiGenerate = async (shotId: string, instruction: string) => {
+    if (!instruction.trim()) {
+      alert("Inserisci prima una descrizione per l'AI.");
+      return;
+    }
+    
+    setGeneratingPromptId(shotId);
+    
+    try {
+      const shot = configs.find(c => c.id === shotId);
+      if (!shot) return;
+
+      const res = await fetch('/api/admin/prompt-configs/generate-assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          instruction,
+          category: shot.category,
+          mode: shot.mode,
+          scene: shot.scene
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to generate prompt');
+      }
+
+      const data = await res.json();
+      
+      const newConfigs = [...configs];
+      const s = newConfigs.find(c => c.id === shotId);
+      if (s) {
+        s.positivePrompt = data.positivePrompt || s.positivePrompt;
+        s.negativePrompt = data.negativePrompt || s.negativePrompt;
+        s.hardRules = data.hardRules || s.hardRules;
+      }
+      setConfigs(newConfigs);
+    } catch (e) {
+      console.error(e);
+      alert("Errore durante la generazione AI.");
+    } finally {
+      setGeneratingPromptId(null);
     }
   };
 
@@ -353,6 +399,34 @@ export default function PromptConfigsAdmin() {
 
                   {/* Prompts */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    
+                    {/* AI Assistant Bar */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(230, 46, 191, 0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(230, 46, 191, 0.2)' }}>
+                      <div style={{ flex: 1 }}>
+                        <input 
+                          type="text" 
+                          placeholder="✨ Describe how you want this shot in plain language (e.g., 'a single t-shirt lying flat on a wooden table, top down view')"
+                          style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.6rem 1rem', color: 'white', outline: 'none' }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleAiGenerate(shot.id, e.currentTarget.value);
+                            }
+                          }}
+                        />
+                      </div>
+                      <button 
+                        onClick={(e) => {
+                          const input = e.currentTarget.previousElementSibling?.querySelector('input');
+                          if (input) handleAiGenerate(shot.id, input.value);
+                        }}
+                        disabled={generatingPromptId === shot.id}
+                        style={{ padding: '0.6rem 1rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: generatingPromptId === shot.id ? 'wait' : 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', opacity: generatingPromptId === shot.id ? 0.7 : 1 }}
+                      >
+                        {generatingPromptId === shot.id ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />} 
+                        Auto-Write Prompt
+                      </button>
+                    </div>
+
                     <div>
                       <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-success)', marginBottom: '0.3rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Positive Prompt</label>
                       <textarea 
