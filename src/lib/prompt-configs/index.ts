@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import tshirtConfigData from "./tshirt.json";
 import { PromptConfigRow, PromptShot } from "./types";
 
@@ -23,18 +24,47 @@ export function loadPromptConfig(category: string): PromptConfigRow[] | null {
   return registry[normCat] || null;
 }
 
-export function getPromptsForSelection({
+export async function getPromptsForSelection({
   categorySlug,
   modeSlug,
   presentationSlug,
   scene,
   quantity
-}: SelectionParams): PromptShot[] | null {
-  const config = loadPromptConfig(categorySlug);
-  if (!config) return null;
-
+}: SelectionParams): Promise<PromptShot[] | null> {
+  const normCat = categorySlug.toLowerCase().trim();
   const normMode = modeSlug.toLowerCase().trim();
   const normPres = presentationSlug.toLowerCase().trim();
+
+  try {
+      // Priority 1: Fetch from Database
+      const dbShots = await prisma.promptConfigShot.findMany({
+          where: {
+              category: normCat,
+              mode: normMode,
+              presentation: normPres,
+              isActive: true,
+          },
+          orderBy: { shotNumber: 'asc' }
+      });
+
+      if (dbShots.length > 0) {
+          let shots = dbShots.map(db => ({
+              shot_number: db.shotNumber,
+              shot_name: db.shotName,
+              positive_prompt: db.positivePrompt,
+              negative_prompt: db.negativePrompt,
+              hard_rules: db.hardRules,
+              output_goal: db.outputGoal || ""
+          }));
+          return expandShots(shots, quantity);
+      }
+  } catch(e) {
+      console.error("Database Prompt Lookup Failed", e);
+  }
+
+  // Priority 2: Fallback to JSON Configs
+  const config = loadPromptConfig(categorySlug);
+  if (!config) return null;
 
   // Find exact match
   let row = config.find(c => 
@@ -54,18 +84,18 @@ export function getPromptsForSelection({
   
   if (!row) return null;
 
-  // We could slice or filter based on quantity, but usually the row contains exactly the shots needed
-  let shots = [...row.shots];
+  return expandShots([...row.shots], quantity);
+}
+
+function expandShots(shots: PromptShot[], quantity?: number): PromptShot[] {
   if (quantity && shots.length > quantity) {
-      shots = shots.slice(0, quantity);
+      return shots.slice(0, quantity);
   } else if (quantity && shots.length < quantity) {
-      // If we need more shots than available, cycle through them
       const extra = [];
       for (let i = shots.length; i < quantity; i++) {
           extra.push(shots[i % shots.length]);
       }
-      shots = [...shots, ...extra];
+      return [...shots, ...extra];
   }
-
   return shots;
 }

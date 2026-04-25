@@ -233,3 +233,23 @@ model PromptSnippet {
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 }
+
+model PromptConfigShot {
+  id              String   @id @default(uuid())
+  category        String
+  mode            String
+  presentation    String
+  scene           String?
+  aspectRatio     String?
+  shotNumber      Int
+  shotName        String
+  positivePrompt  String   @db.Text
+  negativePrompt  String   @db.Text
+  hardRules       String   @db.Text
+  outputGoal      String?  @db.Text
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([category, mode, presentation, shotNumber])
+}

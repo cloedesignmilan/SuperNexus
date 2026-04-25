@@ -220,7 +220,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     const modeSlug = subcat.business_mode?.slug || "";
     const presentationSlug = subcat.slug || "";
     
-    const configShots = getPromptsForSelection({
+    const configShots = await getPromptsForSelection({
         categorySlug,
         modeSlug,
         presentationSlug,
