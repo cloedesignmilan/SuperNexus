@@ -29,8 +29,12 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div style={{ margin: '-3rem', minHeight: '100vh', background: '#000' }}>
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        body { overflow: hidden !important; background-color: #000 !important; }
+        main { padding: 0 !important; max-width: 100% !important; margin: 0 !important; display: flex; flex-direction: column; overflow: hidden; }
+      `}} />
       <DashboardWizard snippets={snippets} isAdmin={isAdmin} />
-    </div>
+    </>
   )
 }

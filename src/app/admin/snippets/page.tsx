@@ -44,7 +44,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
         <div>
           <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Mattoncino</h2>
-            <form action={createSnippet} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <form action={createSnippet as any} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               
               <div style={{ display: 'flex', gap: '1rem' }}>
                   <div style={{ flex: 1 }}>

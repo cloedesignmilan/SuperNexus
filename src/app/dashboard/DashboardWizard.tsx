@@ -237,8 +237,8 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
       <style dangerouslySetInnerHTML={{__html: `
         .studio-layout {
           display: flex;
-          height: 100vh;
-          width: 100vw;
+          flex: 1;
+          width: 100%;
           background: #000;
           color: #fff;
           font-family: 'Inter', sans-serif;
@@ -495,11 +495,11 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
         /* Mobile specific overrides */
         @media (max-width: 1024px) {
-          .studio-layout { flex-direction: column; overflow-y: auto; }
-          .studio-left { flex: none; height: 50vh; padding: 1rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; background: #000; z-index: 0; }
-          .studio-right { flex: none; min-height: 100vh; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; }
-          .image-frame { height: 100%; max-width: 300px; aspect-ratio: auto; }
-          .scroll-container { padding: 3rem 1.5rem; }
+          .studio-layout { flex-direction: column; overflow: hidden; }
+          .studio-left { flex: none; height: 35vh; padding: 1rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; top: 0; background: #000; z-index: 0; }
+          .studio-right { flex: 1; overflow-y: auto; min-height: 0; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; }
+          .image-frame { height: 100%; max-width: 250px; aspect-ratio: auto; }
+          .scroll-container { padding: 3rem 1.5rem; min-height: max-content; }
           .nav-dots { top: 1.5rem; right: 1.5rem; }
           .back-button { top: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
           .step-header { font-size: 2.5rem; }

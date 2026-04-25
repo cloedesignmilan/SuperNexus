@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/genai';
+
 
 // Inizializza il client Gemini
 // Se usi @google/genai potresti dover usare un adapter, ma per sicurezza usiamo il fetch diretto REST se non c'è la libreria corretta.
