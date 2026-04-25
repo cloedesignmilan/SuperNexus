@@ -583,14 +583,55 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
         @media (max-width: 1024px) {
           .studio-layout { flex-direction: column; overflow: hidden; }
-          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 0; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-          .studio-left.collapsed { height: 12dvh; min-height: 100px; }
+          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 50; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+          
+          .studio-left.collapsed { 
+            height: 72px; 
+            min-height: 72px; 
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+          }
+          
           .studio-right { flex: 1; overflow-y: auto; min-height: 0; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; -webkit-overflow-scrolling: touch; }
+          .studio-left.collapsed ~ .studio-right { margin-top: 0; border-radius: 0; }
+          
           .image-frame { height: 100%; max-width: 250px; margin: 0 auto; aspect-ratio: auto; }
+          .studio-left.collapsed .image-frame { height: 48px; width: 48px; border-radius: 8px; margin: 0; padding: 0; border: none; flex-shrink: 0; }
+          .studio-left.collapsed .image-frame img { border-radius: 8px; object-fit: cover; width: 100%; height: 100%; }
+
+          .mobile-header-content { display: none; }
+          .studio-left.collapsed .mobile-header-content { display: flex; flex: 1; justify-content: space-between; align-items: center; margin-left: 1rem; }
+
           .scroll-container { padding: 3rem 1.5rem 8rem 1.5rem; min-height: max-content; }
+          .studio-left.collapsed ~ .studio-right .scroll-container { padding-top: 5rem; }
+          
           .nav-dots { top: 1.5rem; right: 1.5rem; }
           .back-button { top: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
-          .step-header { font-size: 2.5rem; }
+          .studio-left.collapsed ~ .studio-right .nav-dots { top: 1.5rem; right: 1.5rem; }
+          .studio-left.collapsed ~ .studio-right .back-button { top: 1.2rem; left: 1.5rem; }
+
+          .step-header { font-size: 2.2rem; }
+
+          /* Cards Mobile Optimization */
+          .glass-grid { grid-template-columns: 1fr; gap: 1rem; }
+          .glass-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; height: auto; }
+          .glass-card .card-icon { margin-bottom: 0; }
+          .glass-card .card-title { font-size: 1.1rem; margin-bottom: 0; }
+          .glass-card .card-desc { display: none; }
+          .glass-card .sparkle-icon { position: static; margin-left: auto; }
+          .glass-card .conflict-warning { display: none; }
+          
+          .glass-card.selected {
+             background: rgba(59, 130, 246, 0.15);
+             border: 2px solid rgba(59, 130, 246, 0.8);
+             transform: translateY(0) scale(1.01);
+          }
         }
       `}} />
 
@@ -606,6 +647,19 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
             <ImageIcon size={64} color="rgba(255,255,255,0.1)" />
           )}
         </div>
+
+        {/* Mobile Compact Header Content */}
+        {step > 0 && step < 9 && uploadedUrl && (
+          <div className="mobile-header-content">
+            <div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>Product Uploaded</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>{analysisData ? analysisData.detectedProductType?.replace('_', ' ').toUpperCase() : 'Ready'}</div>
+            </div>
+            <button onClick={() => { setStep(0); setUploadedUrl(null); }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600 }}>
+              Change
+            </button>
+          </div>
+        )}
       </div>
 
       {/* RIGHT PANEL: Scrollable Steps */}
