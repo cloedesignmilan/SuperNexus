@@ -106,7 +106,12 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     // STYLE LOCK: Pick ONE lighting style and ONE magical seed base for the ENTIRE BATCH
     const lockedLighting = lightingModifiers[Math.floor(Math.random() * lightingModifiers.length)];
 
-    const promises = [];
+    // NEW ARCHITECTURE: Sequential Generation Loop for True Identity Lock
+    let identityReferenceBase64: string | null = null;
+    let totalTokensIn = 0;
+    let totalTokensOut = 0;
+    let generatedBase64s: string[] = [];
+    let errorMessages: string[] = [];
 
     for (let i = 0; i < qty; i++) {
         const currentPose = strictPoses[i % strictPoses.length];
@@ -119,7 +124,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         if (referenceBuffers.length > 0) {
             currentRefInline = referenceBuffers[i % referenceBuffers.length];
         }
-        
+
         // Strict vs Dynamic Branching
         if (subcat.strict_reference_mode) {
             variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
@@ -162,70 +167,80 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             aiParts.push({ text: variantPrompt });
         }
 
-        promises.push(
-            (async () => {
-                // Sfasa le chiamate di 12 secondi per evitare i 429 di Google
-                await new Promise(r => setTimeout(r, i * 12000));
-                
-                let attempt = 0;
-                let success = false;
-                let retryResult: any = null;
-
-                while (!success && attempt < 3) {
-                    attempt++;
-                    try {
-                        retryResult = await ai.models.generateContent({
-                            model: generationModel,
-                            contents: [
-                                {
-                                    role: 'user',
-                                    parts: aiParts
-                                }
-                            ],
-                            config: {
-                                // @ts-ignore
-                                imageConfig: { aspectRatio: "3:4" }
-                            }
-                        });
-                        success = true;
-                    } catch (err: any) {
-                        console.error(`Tentativo ${attempt} AI Engine fallito (Scena ${i+1}):`, err?.message);
-                        if (attempt >= 3) throw err;
-                        await new Promise(r => setTimeout(r, 6000)); // Retry backoff
-                    }
+        // TRUE IDENTITY LOCK INJECTION
+        // If this is image 2+ (i > 0) AND we successfully captured the identity from image 1
+        if (i > 0 && identityReferenceBase64) {
+            const identityPart = {
+                text: "\n[IDENTITY REFERENCE SYSTEM: Use the provided reference image directly below as the SAME person. Do NOT change facial identity. Maintain identical face, bone structure, proportions, and skin tone. Only change pose, camera angle, and framing.]\n"
+            };
+            const identityImagePart = {
+                inlineData: {
+                    data: identityReferenceBase64,
+                    mimeType: "image/jpeg"
                 }
-                return retryResult;
-            })()
-        );
-    }
+            };
+            // Unshift to put it strongly at the beginning of the context
+            aiParts.unshift(identityImagePart);
+            aiParts.unshift(identityPart);
+        }
 
-    const responses = await Promise.allSettled(promises);
-    let totalTokensIn = 0;
-    let totalTokensOut = 0;
-    let generatedBase64s: string[] = [];
-    let errorMessages: string[] = [];
+        let attempt = 0;
+        let success = false;
+        let result: any = null;
 
-    for (const outcome of responses) {
-        if (outcome.status === 'fulfilled') {
-            const result = outcome.value;
-            if (result?.usageMetadata) {
+        while (!success && attempt < 3) {
+            attempt++;
+            try {
+                result = await ai.models.generateContent({
+                    model: generationModel,
+                    contents: [
+                        {
+                            role: 'user',
+                            parts: aiParts
+                        }
+                    ],
+                    config: {
+                        // @ts-ignore
+                        imageConfig: { aspectRatio: "3:4" }
+                    }
+                });
+                success = true;
+            } catch (err: any) {
+                console.error(`Tentativo ${attempt} AI Engine fallito (Scena ${i+1}):`, err?.message);
+                if (attempt >= 3) {
+                    errorMessages.push(err?.message || err?.toString() || "Unknown error");
+                }
+                await new Promise(r => setTimeout(r, 6000)); // Retry backoff
+            }
+        }
+
+        if (success && result) {
+            if (result.usageMetadata) {
                 totalTokensIn += result.usageMetadata.promptTokenCount || 0;
                 totalTokensOut += result.usageMetadata.candidatesTokenCount || 0;
             }
-            if (result?.candidates && result.candidates.length > 0) {
+            if (result.candidates && result.candidates.length > 0) {
+                let foundImageInThisBatch = false;
                 for (const candidate of result.candidates) {
                     if (candidate.content && candidate.content.parts) {
                         for (const part of candidate.content.parts) {
                             if (part.inlineData && part.inlineData.data) {
                                 generatedBase64s.push(part.inlineData.data);
+                                // Set the identity reference from the FIRST generated image
+                                if (i === 0 && !identityReferenceBase64) {
+                                    identityReferenceBase64 = part.inlineData.data;
+                                }
+                                foundImageInThisBatch = true;
                             }
                         }
                     }
                 }
+                if (!foundImageInThisBatch) {
+                    errorMessages.push(`Nessuna immagine base64 trovata nella risposta per la scena ${i+1}`);
+                }
+            } else {
+                errorMessages.push(`Nessun candidato ritornato dall'API per la scena ${i+1}`);
             }
-        } else {
-            console.error('Una delle generazioni multiple ha fallito definitivamente:', outcome.reason);
-            errorMessages.push(outcome.reason?.message || outcome.reason?.toString() || "Unknown error");
         }
     }
 
