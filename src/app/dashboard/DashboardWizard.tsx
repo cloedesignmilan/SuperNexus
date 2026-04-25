@@ -74,6 +74,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
          nPrompt = "changed pattern, smaller pattern, larger pattern, simplified print, missing ring, changed trim, changed straps, changed ties, added accessories, sunglasses, bag, hat, jewelry, props, studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + nPrompt;
       }
 
+      if (analysisData?.detectedProductType === 'shoes' && selections['IMAGE_TYPE']?.label.includes('Catalog')) {
+         const shoesCatalogRules = "[CLEAN CATALOG MODE – SHOES (STRICT ECOMMERCE)] The uploaded shoe is the ONLY reference. CRITICAL: The shoe must be reproduced EXACTLY as in the original image. No changes allowed. PRODUCT LOCK (VERY STRICT): exact shape and proportions, exact colors and materials, exact stitching and seams, exact logo placement, exact sole structure, exact laces style and color. DO NOT: redesign, simplify, smooth details, change textures, modify branding. If the product differs → INVALID. SHOOTING STYLE: professional ecommerce packshot, clean studio background (pure white or light grey), softbox lighting (diffused, shadow soft and minimal), ultra sharp focus, no reflections, no dramatic shadows. COMPOSITION: Each image must show a DIFFERENT angle (3/4 front view, side view, top view, pair front view, back view, sole bottom view, detail close-up). FRAMING: centered product, consistent scale across images, full product visible, no cropping. BACKGROUND: pure white (#ffffff) or soft grey, no environment, no props, no people. FINAL GOAL: This must look like a real ecommerce product listing from a premium brand. Consistency and accuracy are more important than aesthetics. DISABLE AI CREATIVITY: Do not add artistic interpretation. Do not improve the design. Do not stylize the product. This is a technical reproduction, not a creative image. ";
+         fPrompt = shoesCatalogRules + fPrompt;
+         nPrompt = "redesigned product, simplified product, smooth details, changed textures, modified branding, environment, props, people, lifestyle, reflection, dramatic shadows, " + nPrompt;
+      }
+
       setFinalPrompt(fPrompt.replace(/, $/, ''));
       setNegativePrompt(nPrompt.replace(/, $/, ''));
     }
