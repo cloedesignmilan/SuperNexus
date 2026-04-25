@@ -9,7 +9,9 @@ export default function GalleryCard({ url }: { url: string }) {
       const blob = await response.blob();
       const file = new File([blob], 'supernexus_gallery.jpg', { type: blob.type || 'image/jpeg' });
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+      if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: 'SuperNexus',
@@ -18,7 +20,7 @@ export default function GalleryCard({ url }: { url: string }) {
       } else {
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'supernexus_gallery.jpg';
+        link.download = 'supernexus_image.jpg';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
