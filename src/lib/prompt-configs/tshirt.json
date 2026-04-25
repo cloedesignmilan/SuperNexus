@@ -1,0 +1,51 @@
+[
+  {
+    "category": "t-shirt",
+    "mode": "clean-catalog",
+    "presentation": "no-model",
+    "scene": "all",
+    "quantity": 5,
+    "shots": [
+      {
+        "shot_number": 1,
+        "shot_name": "Front View",
+        "positive_prompt": "T-shirt front view, facing camera, centered, clean studio background. Exact product replication.",
+        "negative_prompt": "people, models, mannequin, hands, perspective, floating",
+        "hard_rules": "STRICT FRONT VIEW, NO MODEL",
+        "output_goal": "Hero Image Ecommerce"
+      },
+      {
+        "shot_number": 2,
+        "shot_name": "Back View",
+        "positive_prompt": "T-shirt back view, rotated 180 degrees, show only back side. Clean studio. No front visible.",
+        "negative_prompt": "front print, neck hole front, people, models, mannequin",
+        "hard_rules": "180 DEGREE ROTATION, NO FRONT PRINT",
+        "output_goal": "Back View Ecommerce"
+      },
+      {
+        "shot_number": 3,
+        "shot_name": "Side Angle",
+        "positive_prompt": "T-shirt side angle, rotated 45 degrees. Show silhouette. Not front view.",
+        "negative_prompt": "front view, straight on, people, models",
+        "hard_rules": "MINIMUM 45 DEGREE ROTATION",
+        "output_goal": "Side Profile Ecommerce"
+      },
+      {
+        "shot_number": 4,
+        "shot_name": "Flat Lay",
+        "positive_prompt": "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.",
+        "negative_prompt": "mannequin, hanging, standing, perspective angle, people, shadows from standing",
+        "hard_rules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT",
+        "output_goal": "Flat Lay Ecommerce"
+      },
+      {
+        "shot_number": 5,
+        "shot_name": "Detail Close-Up",
+        "positive_prompt": "Close-up of t-shirt print or fabric. High detail, sharp focus.",
+        "negative_prompt": "full t-shirt, zoomed out, people, models",
+        "hard_rules": "MACRO SHOT, EXTREME DETAIL",
+        "output_goal": "Detail View Ecommerce"
+      }
+    ]
+  }
+]

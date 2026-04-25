@@ -1,5 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
 import { getRandomSceneForSubcategory } from "@/app/api/telegram/webhook/sceneDictionary";
+import { getPromptsForSelection } from "../prompt-configs";
+
+const GLOBAL_INVIOLABLE_RULES = `\n\n[GLOBAL INVIOLABLE RULES]
+- The product must remain an exact 1:1 replica of the reference image.
+- Do not change color, shape, print, logo, pattern, fabric, stitching, proportions or design.
+- Preserve the product identity perfectly. Do not invent details.
+- Do not add unwanted objects. Do not add text unless explicitly requested.
+- No watermark. No logo changes.
+- No distorted anatomy if a model is present.`;
 
 export interface GenerateImagesOptions {
     qty: number;
@@ -10,40 +19,6 @@ export interface GenerateImagesOptions {
     varianceEnabled: boolean;
     generationModel: string;
 }
-
-function buildTshirtPromptByShot(shot: string, basePrompt: string): string {
-    const globalRules = `\n\n--- T-SHIRT ECOMMERCE STRUCTURED SYSTEM ---
-STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image.
-No changes in color, design, proportions or print.
-NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES.
-
-CURRENT TASK:
-`;
-
-    let shotInstruction = "";
-    switch (shot) {
-        case "front":
-            shotInstruction = "T-shirt front view, facing camera, centered, clean studio background. Exact product replication.";
-            break;
-        case "back":
-            shotInstruction = "T-shirt back view, rotated 180 degrees, show only back side. Clean studio. No front visible.";
-            break;
-        case "side":
-            shotInstruction = "T-shirt side angle, rotated 45 degrees. Show silhouette. Not front view.";
-            break;
-        case "flatlay":
-            shotInstruction = "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.";
-            break;
-        case "detail":
-            shotInstruction = "Close-up of t-shirt print or fabric. High detail, sharp focus.";
-            break;
-        default:
-            shotInstruction = "T-shirt front view, clean studio background.";
-    }
-
-    return basePrompt + globalRules + shotInstruction;
-}
-
 
 export async function generateImagesWithAI({
     qty,
@@ -241,6 +216,17 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     let generatedBase64s: string[] = [];
     let errorMessages: string[] = [];
 
+    const categorySlug = subcat.business_mode?.category?.slug || "";
+    const modeSlug = subcat.business_mode?.slug || "";
+    const presentationSlug = subcat.slug || "";
+    
+    const configShots = getPromptsForSelection({
+        categorySlug,
+        modeSlug,
+        presentationSlug,
+        quantity: qty
+    });
+
     for (let i = 0; i < qty; i++) {
         const currentPose = strictPoses[i % strictPoses.length];
         let currentLighting = lockedLighting;
@@ -254,7 +240,33 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         }
 
         // Strict vs Dynamic Branching
-        if (subcat.strict_reference_mode) {
+        if (configShots && i < configShots.length) {
+            const shotInfo = configShots[i];
+            
+            variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
+CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
+[POSITIVE INSTRUCTIONS]: ${shotInfo.positive_prompt}
+[HARD RULES]: ${shotInfo.hard_rules}
+[OUTPUT GOAL]: ${shotInfo.output_goal}
+
+CRITICAL NEGATIVE PROMPT: ${shotInfo.negative_prompt}
+` + GLOBAL_INVIOLABLE_RULES;
+
+            if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push(...base64OutfitParts);
+            }
+
+            if (currentRefInline) {
+                aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting, pose, and background aesthetic. DO NOT copy the clothes from this image):" });
+                aiParts.push({ inlineData: currentRefInline });
+            }
+            aiParts.push({ text: variantPrompt });
+
+        } else if (subcat.strict_reference_mode) {
             variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
             
             if (isOutfit) {
@@ -269,20 +281,6 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
                 aiParts.push({ inlineData: currentRefInline });
             }
-            aiParts.push({ text: variantPrompt });
-        } else if (isTshirtClean) {
-            const tshirtShots = ["front", "back", "side", "flatlay", "detail"];
-            const shotType = tshirtShots[i % tshirtShots.length];
-            variantPrompt = buildTshirtPromptByShot(shotType, userPrompt);
-            
-            if (isOutfit) {
-                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
-                aiParts.push(...base64OutfitParts);
-            } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
-                aiParts.push(...base64OutfitParts);
-            }
-
             aiParts.push({ text: variantPrompt });
         } else {
             if (varianceEnabled) {
