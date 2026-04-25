@@ -6,17 +6,6 @@ import * as Icons from 'lucide-react'
 
 type Snippet = any;
 
-const PRESETS = [
-  { id: 'shopify', badge: 'Best for Shopify', badgeColor: '#10b981', label: 'Shopify Product Page', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'amazon', badge: 'Best for Amazon', badgeColor: '#f59e0b', label: 'Amazon Listing Pack', icon: 'Package', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Amazon Hero Shot', SCENE: 'Ghost Mannequin', FORMAT: '1:1', QUANTITY: '1' } },
-  { id: 'etsy_ugc', badge: 'Natural UGC', badgeColor: '#8b5cf6', label: 'Etsy T-Shirt Seller', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', PRODUCT_TYPE: 'T-Shirts / Hoodies', SCENE: 'Mirror Selfie Context', FORMAT: '9:16', QUANTITY: '3' } },
-  { id: 'physical_boutique', badge: 'Premium Look', badgeColor: '#ec4899', label: 'Store / Boutique', icon: 'Store', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'ceremony_campaign', badge: 'High Fashion', badgeColor: '#0f172a', label: 'Premium Ceremony', icon: 'Star', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Ceremony / Elegant', SCENE: 'Grand Event / Ballroom', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'shoes_ecommerce', badge: 'High Conversion', badgeColor: '#3b82f6', label: 'Shoes Ecommerce', icon: 'Activity', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Sneakers / Shoes Focus', SCENE: 'E-Commerce Flat Lay', FORMAT: '1:1', QUANTITY: '3' } },
-  { id: 'swimwear_summer', badge: 'Natural UGC', badgeColor: '#eab308', label: 'Swimwear Summer', icon: 'Sun', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', PRODUCT_TYPE: 'Swimwear / Beachwear', SCENE: 'Tropical Beach', FORMAT: '9:16', QUANTITY: '3' } },
-  { id: 'bags_premium', badge: 'Premium Look', badgeColor: '#6366f1', label: 'Bags Premium Pack', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Bags / Accessories', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'jewelry_detail', badge: 'High Conversion', badgeColor: '#14b8a6', label: 'Jewelry Detail Pack', icon: 'Watch', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Jewelry / Watches', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
-]
 
 export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snippet[], isAdmin?: boolean }) {
   const [step, setStep] = useState<number>(0)
@@ -47,7 +36,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
   // Calcola il prompt quando arriviamo allo step finale
   useEffect(() => {
-    if (step === 8) {
+    if (step === 5) {
       let fPrompt = "";
       let nPrompt = "";
 
@@ -142,25 +131,36 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     }
   }
 
-  const applyPreset = (preset: any) => {
-    const newSel = { ...selections };
-    Object.keys(preset.steps).forEach(type => {
-      const snip = snippets.find(s => s.snippet_type === type && s.label === preset.steps[type]);
-      if (snip) newSel[type] = snip;
-    });
-    setSelections(newSel);
-    if (!newSel.PRODUCT_TYPE) {
-      setStep(4);
-    } else {
-      setStep(8);
-    }
-  }
 
   const handleSnippetSelect = (type: string, snip: Snippet, stepIndex: number) => {
     setSelections({...selections, [type]: snip});
     
-    // Auto-advance logic
-    if (type !== 'QUANTITY' && stepIndex < 7) {
+    if (stepIndex === 0.75 && type === 'PRODUCT_TYPE') {
+      // Manual override of AI detection
+      setAnalysisData((prev: any) => ({
+        ...prev,
+        detectedProductType: Object.keys({
+          'swimwear': 'Swimwear / Beachwear',
+          'women_clothing': 'Clothing / Fashion',
+          'tshirt_hoodie': 'T-Shirts / Hoodies',
+          'shoes': 'Sneakers / Shoes Focus',
+          'bags': 'Bags / Accessories',
+          'jewelry': 'Jewelry / Watches'
+        }).find(k => ({
+          'swimwear': 'Swimwear / Beachwear',
+          'women_clothing': 'Clothing / Fashion',
+          'tshirt_hoodie': 'T-Shirts / Hoodies',
+          'shoes': 'Sneakers / Shoes Focus',
+          'bags': 'Bags / Accessories',
+          'jewelry': 'Jewelry / Watches'
+        })[k as keyof typeof prev] === snip.label) || 'unknown'
+      }));
+      setTimeout(() => setStep(1), 350);
+      return;
+    }
+
+    // Auto-advance logic for standard steps
+    if (type !== 'QUANTITY' && type !== 'FORMAT' && stepIndex >= 1 && stepIndex < 4) {
       setTimeout(() => {
         setStep(stepIndex + 1);
       }, 350);
@@ -197,7 +197,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
       if (data.results) {
         setResults(data.results)
-        setStep(9)
+        setStep(6)
       }
     } catch (err: any) {
       setError(err.message)
@@ -206,11 +206,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     }
   }
 
-  const renderSnippetGrid = (type: string, stepIndex: number) => {
+  const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
     // SMART FILTERING BASED ON AI ANALYSIS
-    if (analysisData && analysisData.detectedAttributes) {
+    if (analysisData && analysisData.detectedProductType) {
+      const pType = analysisData.detectedProductType;
       typeSnippets = typeSnippets.map(s => {
         let cloned = { ...s };
         const label = cloned.label.toLowerCase();
@@ -218,34 +219,31 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         let isRecommended = false;
         let isLowPriority = false;
         
-        // Match Recommendations
-        if (analysisData.detectedAttributes.recommendedScenes && type === 'SCENE') {
-          if (analysisData.detectedAttributes.recommendedScenes.some((rs: string) => label.includes(rs.toLowerCase().split(' ')[0]))) {
-            isRecommended = true;
-          }
-        }
-        if (analysisData.detectedAttributes.recommendedModelOptions && type === 'MODEL_OPTION') {
-          if (analysisData.detectedAttributes.recommendedModelOptions.some((rm: string) => label.includes(rm.toLowerCase().split(' ')[0]))) {
-            isRecommended = true;
-          }
-        }
-
-        // Match Blocked
-        if (analysisData.detectedAttributes.blockedOrLowPriorityOptions) {
-          if (analysisData.detectedAttributes.blockedOrLowPriorityOptions.some((bo: string) => label.includes(bo.toLowerCase().split(' ')[0]))) {
-            isLowPriority = true;
-          }
-        }
-        
-        // Gender Rules
-        if (type === 'MODEL_OPTION' || type === 'SCENE') {
-          const gender = analysisData.detectedAttributes.genderTarget;
-          if (gender === 'woman' && (label.includes('man') || label.includes('uomo') || label.includes('male') || label.includes('boy'))) isLowPriority = true;
-          if (gender === 'man' && (label.includes('woman') || label.includes('donna') || label.includes('female') || label.includes('girl'))) isLowPriority = true;
+        if (pType === 'swimwear') {
+           if (type === 'MODEL_OPTION' && label.includes('woman')) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('beach') || label.includes('pool') || label.includes('resort') || label.includes('summer'))) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('ceremony') || label.includes('office') || label.includes('winter') || label.includes('street'))) isLowPriority = true;
+        } else if (pType === 'shoes') {
+           if (type === 'IMAGE_GOAL' && label.includes('ecommerce')) isRecommended = true;
+           if (type === 'MODEL_OPTION' && (label.includes('on-foot') || label.includes('sole') || label.includes('3/4') || label.includes('side'))) isRecommended = true;
+           if (type === 'MODEL_OPTION' && label.includes('woman model')) isLowPriority = true;
+           if (type === 'SCENE' && label.includes('beach')) isLowPriority = true;
+        } else if (pType === 'tshirt_hoodie') {
+           if (type === 'MODEL_OPTION' && (label.includes('wearing') || label.includes('selfie') || label.includes('flat'))) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('streetwear') || label.includes('urban'))) isRecommended = true;
+        } else if (pType === 'women_clothing' || pType === 'ceremony_elegant') {
+           if (type === 'MODEL_OPTION' && label.includes('woman')) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('premium') || label.includes('ceremony') || label.includes('studio'))) isRecommended = true;
+        } else if (pType === 'bags' || pType === 'accessories') {
+           if (type === 'MODEL_OPTION' && (label.includes('hand') || label.includes('detail') || label.includes('flat'))) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('boutique') || label.includes('luxury'))) isRecommended = true;
+        } else if (pType === 'jewelry') {
+           if (type === 'MODEL_OPTION' && (label.includes('macro') || label.includes('neck') || label.includes('ear') || label.includes('hand'))) isRecommended = true;
+           if (type === 'SCENE' && (label.includes('studio') || label.includes('shine'))) isRecommended = true;
         }
 
         if (isRecommended) cloned.sort_group = '✨ AI Suggested';
-        if (isLowPriority) cloned.sort_group = 'Other styles';
+        else if (isLowPriority) cloned.sort_group = 'Other styles';
 
         return cloned;
       });
@@ -308,14 +306,29 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     )
   }
 
+  const renderSnippetGrid = (type: string, stepIndex: number) => {
+    if (type === 'FORMAT_QUANTITY') {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          <div>
+            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>1. Aspect Ratio</h3>
+            {renderSnippetGridInternal('FORMAT', stepIndex)}
+          </div>
+          <div>
+            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>2. Quantity</h3>
+            {renderSnippetGridInternal('QUANTITY', stepIndex)}
+          </div>
+        </div>
+      );
+    }
+    return renderSnippetGridInternal(type, stepIndex);
+  }
+
   const stepsData = [
-    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adapt the photographic engine to your business model.' },
-    { num: 2, type: 'IMAGE_GOAL', title: 'What is the goal?', desc: 'Select the primary objective of your imagery.' },
-    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Choose Catalog for clean shots, UGC for natural realism, or Premium for luxury.' },
-    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'What exactly are we photographing?' },
-    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Who is presenting your product?' },
-    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Define the background and environmental context.' },
-    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Choose the aspect ratio and generation volume.' },
+    { num: 1, type: 'IMAGE_GOAL', title: 'What do you want to create?', desc: 'Select the primary objective of your imagery.' },
+    { num: 2, type: 'SCENE', title: 'Choose the scene', desc: 'Define the background and environmental context.' },
+    { num: 3, type: 'MODEL_OPTION', title: 'Choose presentation', desc: 'How should the product be displayed?' },
+    { num: 4, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: 'Choose the aspect ratio and number of images.' },
   ];
 
   return (
@@ -737,12 +750,11 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                       </div>
                     )}
                   </div>
-                  
                   <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                    <button onClick={() => setStep(0.5)} className="btn-magic">
+                    <button onClick={() => setStep(1)} className="btn-magic">
                       Looks Good <ArrowRight size={18} />
                     </button>
-                    <button onClick={() => { setSelections(prev => ({...prev, PRODUCT_TYPE: null})); setStep(0.5); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.9rem', padding: '0 1.5rem' }}>
+                    <button onClick={() => { setStep(0.75); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.9rem', padding: '0 1.5rem' }}>
                       Change Type
                     </button>
                   </div>
@@ -750,54 +762,34 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
               ) : (
                 <>
                   <h2 className="step-header">Analysis Skipped</h2>
-                  <button onClick={() => setStep(0.5)} className="btn-giant">Continue <ArrowRight size={18} /></button>
+                  <button onClick={() => setStep(0.75)} className="btn-giant">Continue <ArrowRight size={18} /></button>
                 </>
               )}
             </div>
           )}
 
-          {/* STEP 0.5: PRESETS OR CUSTOM */}
-          {step === 0.5 && (
+          {/* STEP 0.75: MANUAL PRODUCT TYPE SELECTION */}
+          {step === 0.75 && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Quick Start</h2>
-              <p className="step-desc">Select a curated workflow or customize everything.</p>
-
-              <div className="glass-grid" style={{ marginBottom: '4rem' }}>
-                {PRESETS.map(p => {
-                  const IconC = (Icons as any)[p.icon] || Icons.Zap;
-                  return (
-                    <button key={p.id} onClick={() => applyPreset(p)} className="glass-card" style={{ padding: '2rem' }}>
-                      <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: p.badgeColor, color: '#fff', fontSize: '0.65rem', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase' }}>
-                        {p.badge}
-                      </div>
-                      <IconC size={32} style={{ marginBottom: '1.5rem', color: '#fff' }} />
-                      <div className="card-title" style={{ fontSize: '1.4rem' }}>{p.label}</div>
-                      <div className="card-desc">Auto-fill AI settings</div>
-                    </button>
-                  )
-                })}
-              </div>
-
-              <div style={{ textAlign: 'center' }}>
-                <button onClick={() => setStep(1)} className="btn-giant" style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  Start Custom Workflow <ArrowRight size={20} />
-                </button>
-              </div>
+              <h2 className="step-header">Product Type</h2>
+              <p className="step-desc">What exactly are we photographing?</p>
+              {renderSnippetGridInternal('PRODUCT_TYPE', 0.75)}
             </div>
           )}
 
-          {/* DYNAMIC STEPS 1-7 */}
-          {step >= 1 && step <= 7 && (
+
+          {/* DYNAMIC STEPS 1-4 */}
+          {step >= 1 && step <= 4 && (
             <div className="fade-up-enter">
               <h2 className="step-header">{stepsData[step-1].title}</h2>
               <p className="step-desc">{stepsData[step-1].desc}</p>
               
               {renderSnippetGrid(stepsData[step-1].type, step)}
               
-              {/* Only show NEXT button if it's the FORMAT step */}
-              {step === 7 && (
+              {/* Only show NEXT button if it's the FORMAT_QUANTITY step */}
+              {step === 4 && (
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setStep(8)} disabled={!selections['FORMAT']} className="btn-giant">
+                  <button onClick={() => setStep(5)} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
                     Review Configuration <ArrowRight size={20} />
                   </button>
                 </div>
@@ -805,8 +797,8 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
             </div>
           )}
 
-          {/* FINAL STEP 8: SUMMARY & EDITOR */}
-          {step === 8 && (
+          {/* FINAL STEP 5: SUMMARY & GENERATE */}
+          {step === 5 && (
             <div className="fade-up-enter">
               <h2 className="step-header">Ready</h2>
               <p className="step-desc">Your configuration is complete.</p>
@@ -814,6 +806,14 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
               <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2.5rem', marginBottom: '3rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem' }}>
                   {stepsData.map(st => {
+                    if (st.type === 'FORMAT_QUANTITY') {
+                      return (
+                        <div key={st.type}>
+                          <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>{st.title.split('?')[0]}</div>
+                          <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{selections['FORMAT']?.label || '-'} / {selections['QUANTITY']?.label || '-'}</div>
+                        </div>
+                      )
+                    }
                     const sel = selections[st.type];
                     if (!sel) return null;
                     return (
@@ -830,19 +830,11 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                 <Sparkles size={24} /> Generate {selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'}
               </button>
 
-              {isAdmin && (
-                <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fbbf24', marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.85rem', fontWeight: 700 }}>
-                    <Lock size={16} /> Admin God Mode
-                  </div>
-                  
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Positive Prompt</label>
-                  <textarea value={finalPrompt} onChange={e => setFinalPrompt(e.target.value)} className="admin-textarea" rows={4} />
-
-                  <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Negative Prompt</label>
-                  <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="admin-textarea" rows={3} />
-                </div>
-              )}
+               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}>
+                 <button onClick={handleGenerate} className="btn-magic" style={{ maxWidth: '400px' }}>
+                   Generate Images <Wand2 size={24} />
+                 </button>
+               </div>
             </div>
           )}
 
@@ -858,13 +850,13 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
           )}
 
           {/* RESULTS STEP */}
-          {step === 9 && results.length > 0 && (
+          {step === 6 && results.length > 0 && (
             <div className="fade-up-enter">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
                 <div>
                   <h2 className="step-header" style={{ marginBottom: 0 }}>Results</h2>
                 </div>
-                <button onClick={() => { setStep(0.5); setResults([]); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 2rem', color: '#fff', fontSize: '1rem' }}>
+                <button onClick={() => { setStep(1); setResults([]); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 2rem', color: '#fff', fontSize: '1rem' }}>
                   Generate More
                 </button>
               </div>
