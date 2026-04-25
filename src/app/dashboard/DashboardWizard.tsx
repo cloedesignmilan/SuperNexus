@@ -137,23 +137,18 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     
     if (stepIndex === 0.75 && type === 'PRODUCT_TYPE') {
       // Manual override of AI detection
+      const typeMap: Record<string, string> = {
+        'swimwear': 'Swimwear / Beachwear',
+        'women_clothing': 'Clothing / Fashion',
+        'tshirt_hoodie': 'T-Shirts / Hoodies',
+        'shoes': 'Sneakers / Shoes Focus',
+        'bags': 'Bags / Accessories',
+        'jewelry': 'Jewelry / Watches'
+      };
+      
       setAnalysisData((prev: any) => ({
         ...prev,
-        detectedProductType: Object.keys({
-          'swimwear': 'Swimwear / Beachwear',
-          'women_clothing': 'Clothing / Fashion',
-          'tshirt_hoodie': 'T-Shirts / Hoodies',
-          'shoes': 'Sneakers / Shoes Focus',
-          'bags': 'Bags / Accessories',
-          'jewelry': 'Jewelry / Watches'
-        }).find(k => ({
-          'swimwear': 'Swimwear / Beachwear',
-          'women_clothing': 'Clothing / Fashion',
-          'tshirt_hoodie': 'T-Shirts / Hoodies',
-          'shoes': 'Sneakers / Shoes Focus',
-          'bags': 'Bags / Accessories',
-          'jewelry': 'Jewelry / Watches'
-        })[k as keyof typeof prev] === snip.label) || 'unknown'
+        detectedProductType: Object.keys(typeMap).find(k => typeMap[k] === snip.label) || 'unknown'
       }));
       setTimeout(() => setStep(1), 350);
       return;
