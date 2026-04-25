@@ -113,19 +113,48 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             "[SHOES ANGLE 3] top view (from above)",
             "[SHOES ANGLE 4] pair front view (both shoes aligned)",
             "[SHOES ANGLE 5] back view (heel focus)",
-            "[SHOES ANGLE 6] sole bottom view",
-            "[SHOES ANGLE 7] detail close-up (logo or texture)"
-        ];
     } else if (isTshirt) {
-        strictPoses = [
-            "[T-SHIRT ANGLE 1] FRONT MODEL SHOT: Model facing camera, neutral pose, clean background",
-            "[T-SHIRT ANGLE 2] BACK MODEL SHOT: Show full back of t-shirt clearly",
-            "[T-SHIRT ANGLE 3] CLOSE-UP DETAIL: Zoom on print, texture, or fabric",
-            "[T-SHIRT ANGLE 4] FIT SHOT: Mid torso crop, showing how it fits on body",
-            "[T-SHIRT ANGLE 5] FLAT LAY: Top-down, clean background, no people",
-            "[T-SHIRT ANGLE 6] LIFESTYLE SHOT: Model in real environment (street / city / casual setting)",
-            "[T-SHIRT ANGLE 7] UGC STYLE SHOT: iPhone look, natural light, slightly imperfect framing. Feels like real person content"
-        ];
+        let isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
+        let isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
+        let isTshirtAds = userPrompt.toLowerCase().includes('ads') || userPrompt.toLowerCase().includes('scroll stopper');
+
+        if (isTshirtClean) {
+            strictPoses = [
+                "[T-SHIRT CLEAN 1] Front view (model facing camera), minimal studio background, softbox lighting, focus on product visibility",
+                "[T-SHIRT CLEAN 2] Back view (full back visible), minimal studio background",
+                "[T-SHIRT CLEAN 3] Side angle (slight rotation)",
+                "[T-SHIRT CLEAN 4] FIT FOCUS: Mid torso crop, neutral background. Show clearly how the t-shirt fits on chest, sleeves, length.",
+                "[T-SHIRT CLEAN 5] DETAIL CLOSE-UP: Macro shot, neutral background, soft detailed light. Focus on print quality, fabric texture, stitching.",
+                "[T-SHIRT CLEAN 6] Flat lay (top-down), clean background, no people"
+            ];
+        } else if (isTshirtUGC) {
+            strictPoses = [
+                "[T-SHIRT UGC 1] Mirror selfie, bedroom environment, real person vibe, authentic not polished",
+                "[T-SHIRT UGC 2] Street casual, iPhone style, handheld feeling, slight motion blur",
+                "[T-SHIRT UGC 3] Home environment, natural light only, slightly imperfect framing",
+                "[T-SHIRT UGC 4] FIT FOCUS (UGC): Mid torso crop, real life setting. Show fit on chest and sleeves naturally.",
+                "[T-SHIRT UGC 5] DETAIL (UGC): Casual close-up on fabric/print, real shadows, slight grain, not professional."
+            ];
+        } else if (isTshirtAds) {
+            strictPoses = [
+                "[T-SHIRT SCROLL STOPPER 1] Bold pose, close camera, large in frame, strong contrast, eye-catching",
+                "[T-SHIRT SCROLL STOPPER 2] Movement (walking, turning), dramatic framing, high attention",
+                "[T-SHIRT SCROLL STOPPER 3] High contrast or golden hour light, scroll stopping mood",
+                "[T-SHIRT SCROLL STOPPER 4] FIT FOCUS (ADS): Mid torso crop, dynamic angle, bold lighting on chest and fit.",
+                "[T-SHIRT SCROLL STOPPER 5] LIFESTYLE SCROLL STOPPER: Urban street, strong visual impact, aspirational real brand feeling."
+            ];
+        } else {
+            // Default T-shirt Set (Lifestyle / General)
+            strictPoses = [
+                "[T-SHIRT LIFESTYLE 1] Urban street or coffee shop, young realistic person, natural walking pose, soft shadows, modern aspirational",
+                "[T-SHIRT LIFESTYLE 2] FRONT MODEL SHOT: Model facing camera, neutral pose, casual environment",
+                "[T-SHIRT LIFESTYLE 3] FIT FOCUS: Mid torso crop, showing how it fits on body (chest, sleeves, length)",
+                "[T-SHIRT LIFESTYLE 4] BACK MODEL SHOT: Show full back of t-shirt clearly",
+                "[T-SHIRT LIFESTYLE 5] DETAIL CLOSE-UP: Macro shot on print, texture, or fabric. Ultra sharp.",
+                "[T-SHIRT LIFESTYLE 6] Casual outdoor, relaxed candid posture, natural light",
+                "[T-SHIRT LIFESTYLE 7] FLAT LAY: Top-down, clean background, no people"
+            ];
+        }
     }
     
     // STYLE LOCK: Pick ONE lighting style and ONE magical seed base for the ENTIRE BATCH
@@ -180,7 +209,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
 
             const shoeSpecificRules = isShoeCatalog ? `\n[ANGLE CONTROL SYSTEM (STRICT): Each image MUST represent a UNIQUE predefined angle. If an angle is duplicated → INVALID. If an angle is missing → INVALID.]\n[CONSISTENCY RULE: same distance from camera, same zoom level, same product size in frame, same framing margins. All images must look like part of the SAME catalog set.]\n[DIVERSITY ENFORCEMENT: Each image must be visually and technically different. Do NOT repeat similar angles or compositions.]` : "";
 
-            const tshirtSpecificRules = isTshirt ? `\n[T-SHIRT GENERATION SYSTEM (ECOMMERCE + SOCIAL READY)] OBJECTIVE: Generate a complete product image set for a t-shirt brand. STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in: color, fabric, fit, graphics, proportions. The garment must remain perfectly identical. IMAGE SET STRUCTURE (MANDATORY): Each image must follow the assigned angle (Front, Back, Close-up, Fit, Flat Lay, Lifestyle, or UGC). MODEL RULES: Realistic human, Natural skin (no plastic look), Different poses across images, Same t-shirt always identical. DIVERSITY RULE: Each image must be visually different: pose, angle, framing, composition. LIGHTING: Mix of studio + natural light. UGC must feel real (not commercial). OUTPUT: Clean, high-converting ecommerce + social image set.` : "";
+            const tshirtSpecificRules = isTshirt ? `\n[T-SHIRT CORE SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in: color, fabric, fit, graphics, proportions. The garment must remain perfectly identical. NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES. MODEL RULES: Realistic human, Natural skin texture (no plastic/AI look), Correct anatomy, No deformed hands. DIVERSITY RULE: Each image must vary pose, camera angle, framing, composition. OUTPUT QUALITY: Photorealistic, high-end fashion photography.` : "";
 
             variantPrompt = userPrompt + `\n\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction (including ruched/elastic areas), exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Do NOT invent new elements (like bows, knots, rings). Do NOT modify pattern density or distribution. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. For this bikini: the top MUST have the same ruched elastic structure, the straps MUST match exactly, the bottom pattern MUST remain identical, all seams and proportions must match the original image. If the product differs from the reference, the result is INVALID. PRIORITY: Product accuracy > model > scene > aesthetics.]\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
