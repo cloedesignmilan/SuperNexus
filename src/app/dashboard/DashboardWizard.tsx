@@ -104,7 +104,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
             if (analysisRes.success && analysisRes.analysis) {
               setAnalysisData(analysisRes.analysis)
               
-              if (analysisRes.analysis.confidence > 0.6 && analysisRes.analysis.detectedProductType) {
+              if (analysisRes.analysis.confidence >= 0.8 && analysisRes.analysis.detectedProductType) {
                 const matchMap: Record<string, string> = {
                   'swimwear': 'Swimwear / Beachwear',
                   'women_clothing': 'Clothing / Fashion',
@@ -583,7 +583,8 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
         @media (max-width: 1024px) {
           .studio-layout { flex-direction: column; overflow: hidden; }
-          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 0; }
+          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 0; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+          .studio-left.collapsed { height: 12dvh; min-height: 100px; }
           .studio-right { flex: 1; overflow-y: auto; min-height: 0; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; -webkit-overflow-scrolling: touch; }
           .image-frame { height: 100%; max-width: 250px; margin: 0 auto; aspect-ratio: auto; }
           .scroll-container { padding: 3rem 1.5rem 8rem 1.5rem; min-height: max-content; }
@@ -597,7 +598,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
       <div className="orb orb-2" />
 
       {/* LEFT PANEL: Always shows the image */}
-      <div className="studio-left">
+      <div className={`studio-left ${step > 0 && step < 9 && uploadedUrl ? 'collapsed' : ''}`}>
         <div className={`image-frame ${!uploadedUrl ? 'empty' : ''}`}>
           {uploadedUrl ? (
             <img src={uploadedUrl} alt="Uploaded product" />
@@ -675,6 +676,11 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
                          Recommended: {analysisData.detectedAttributes.recommendedScenes.slice(0, 3).join(', ')}
                        </div>
+                    )}
+                    {analysisData.confidence < 0.8 && (
+                      <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#fbbf24', background: 'rgba(251, 191, 36, 0.1)', padding: '0.75rem', borderRadius: '8px' }}>
+                        We detected this product, but you can change it if incorrect.
+                      </div>
                     )}
                   </div>
                   
