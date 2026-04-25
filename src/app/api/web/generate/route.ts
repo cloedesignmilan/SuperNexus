@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
     // Save outputs to Supabase Cloud
     const adminSupabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
     const timestamp = Date.now()
-    const outputUrls = []
+    const outputResults = []
 
     for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
         const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
@@ -123,22 +123,28 @@ export async function POST(req: NextRequest) {
         })
         if (!upErr) {
             const { data: { publicUrl } } = adminSupabase.storage.from('telegram-outputs').getPublicUrl(oFileName)
-            outputUrls.push(publicUrl)
+            
+            const metadata = aiResult.generatedMetadata[i] || { shotNumber: null, shotName: null };
+            outputResults.push({
+                url: publicUrl,
+                shotNumber: metadata.shotNumber,
+                shotName: metadata.shotName
+            })
         }
     }
 
     // Deduct Credits & Finalize Job
     await prisma.user.update({
         where: { id: dbUser.id },
-        data: { images_generated: { increment: outputUrls.length } }
+        data: { images_generated: { increment: outputResults.length } }
     })
 
     await prisma.generationJob.update({
         where: { id: newJob.id },
-        data: { status: 'completed', results_count: outputUrls.length }
+        data: { status: 'completed', results_count: outputResults.length }
     })
 
-    return NextResponse.json({ success: true, results: outputUrls, jobId: newJob.id })
+    return NextResponse.json({ success: true, results: outputResults, jobId: newJob.id })
 
   } catch (error) {
     console.error("Web Generate Error:", error)

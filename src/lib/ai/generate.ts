@@ -214,6 +214,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     let totalTokensIn = 0;
     let totalTokensOut = 0;
     let generatedBase64s: string[] = [];
+    let generatedMetadata: { shotNumber: number | null, shotName: string | null }[] = [];
     let errorMessages: string[] = [];
 
     const categorySlug = subcat.business_mode?.category?.slug || "";
@@ -239,10 +240,15 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             currentRefInline = referenceBuffers[i % referenceBuffers.length];
         }
 
+        let currentShotName: string | null = null;
+        let currentShotNumber: number | null = null;
+
         // Strict vs Dynamic Branching
         const hasValidStrictReference = subcat.strict_reference_mode && currentRefInline;
 
         if (hasValidStrictReference) {
+            currentShotName = "Strict Reference Clone";
+            currentShotNumber = i + 1;
             variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
             
             if (isOutfit) {
@@ -260,6 +266,8 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             
         } else if (configShots && i < configShots.length) {
             const shotInfo = configShots[i];
+            currentShotName = shotInfo.shot_name;
+            currentShotNumber = shotInfo.shot_number;
             
             let ecommerceBlockPositive = "";
             let ecommerceBlockNegative = "";
@@ -292,6 +300,9 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
             aiParts.push({ text: variantPrompt });
 
         } else {
+            currentShotName = "Dynamic Scene";
+            currentShotNumber = i + 1;
+            
             if (varianceEnabled) {
                 const magicalScene = getRandomSceneForSubcategory(subcat.business_mode?.category?.slug + " " + subcat.business_mode?.slug + " " + subcat.slug);
                 currentLighting += " " + magicalScene;
@@ -385,6 +396,7 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
                         for (const part of candidate.content.parts) {
                             if (part.inlineData && part.inlineData.data) {
                                 generatedBase64s.push(part.inlineData.data);
+                                generatedMetadata.push({ shotNumber: currentShotNumber, shotName: currentShotName });
                                 // Set the identity reference from the FIRST generated image
                                 if (i === 0 && !identityReferenceBase64) {
                                     identityReferenceBase64 = part.inlineData.data;
@@ -410,8 +422,9 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
 
     return {
         generatedBase64s,
+        generatedMetadata,
+        errorMessages,
         totalTokensIn,
-        totalTokensOut,
-        errorMessages
+        totalTokensOut
     };
 }

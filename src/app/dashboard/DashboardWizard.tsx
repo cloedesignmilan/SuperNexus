@@ -25,7 +25,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   const [negativePrompt, setNegativePrompt] = useState<string>('')
   
   const [isGenerating, setIsGenerating] = useState(false)
-  const [results, setResults] = useState<string[]>([])
+  const [results, setResults] = useState<any[]>([])
   const [error, setError] = useState<string | null>(null)
   
   // AI Analysis State
@@ -1024,11 +1024,29 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                 </button>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-                {results.map((url, i) => (
-                  <div key={i} style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000' }}>
-                    <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
-                  </div>
-                ))}
+                {results.map((resItem, i) => {
+                  const url = typeof resItem === 'string' ? resItem : resItem.url;
+                  const shotNum = resItem.shotNumber ? `Shot ${resItem.shotNumber}` : `Image ${i+1}`;
+                  const shotName = resItem.shotName || '';
+                  
+                  return (
+                    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: '0.1em', background: 'rgba(59, 130, 246, 0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                          {shotNum}
+                        </span>
+                        {shotName && (
+                          <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
+                            {shotName}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000' }}>
+                        <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
