@@ -117,8 +117,44 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         let isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
         let isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
         let isTshirtAds = userPrompt.toLowerCase().includes('ads') || userPrompt.toLowerCase().includes('scroll stopper');
+        let isTshirtBackPrint = userPrompt.toLowerCase().includes('back print') || userPrompt.toLowerCase().includes('back design');
+        let isTshirtNoModel = userPrompt.toLowerCase().includes('no model');
+        let isTshirtColorVariants = userPrompt.toLowerCase().includes('color variants') || userPrompt.toLowerCase().includes('different colors');
+        let isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
 
-        if (isTshirtClean) {
+        if (isTshirtBackPrint) {
+            strictPoses = [
+                "[T-SHIRT BACK PRINT 1] Show full back clearly, model turned away, design fully visible, no cropping",
+                "[T-SHIRT BACK PRINT 2] Slightly rotated back view, natural relaxed pose, back print 100% visible",
+                "[T-SHIRT BACK PRINT 3] Close-up on back print design, ultra sharp, clear details",
+                "[T-SHIRT BACK PRINT 4] Over-the-shoulder look, back print fully visible",
+                "[T-SHIRT BACK PRINT 5] Lifestyle back shot, model walking away, design clearly visible"
+            ];
+        } else if (isTshirtNoModel) {
+            strictPoses = [
+                "[T-SHIRT NO MODEL 1] Flat lay, clean studio background, perfect symmetry, perfect alignment, no wrinkles",
+                "[T-SHIRT NO MODEL 2] Ghost mannequin shot, clean studio background, perfect symmetry",
+                "[T-SHIRT NO MODEL 3] Hanger shot, clean background, focus on product shape and fit",
+                "[T-SHIRT NO MODEL 4] Flat lay close-up on fabric/stitching, ultra sharp, no wrinkles",
+                "[T-SHIRT NO MODEL 5] Ghost mannequin side angle, clean studio background"
+            ];
+        } else if (isTshirtColorVariants) {
+            strictPoses = [
+                "[T-SHIRT COLOR VARIANT 1] Front view, change ONLY base color, keep design identical, maintain same lighting and framing",
+                "[T-SHIRT COLOR VARIANT 2] Front view, change ONLY base color, keep design identical, maintain same lighting and framing",
+                "[T-SHIRT COLOR VARIANT 3] Front view, change ONLY base color, keep design identical, maintain same lighting and framing",
+                "[T-SHIRT COLOR VARIANT 4] Front view, change ONLY base color, keep design identical, maintain same lighting and framing",
+                "[T-SHIRT COLOR VARIANT 5] Front view, change ONLY base color, keep design identical, maintain same lighting and framing"
+            ];
+        } else if (isTshirtPremium) {
+            strictPoses = [
+                "[T-SHIRT PREMIUM 1] High-end minimal environment, luxury fashion editorial, confident minimal pose, soft cinematic light",
+                "[T-SHIRT PREMIUM 2] Elevated branding feel, soft cinematic light, product-focused",
+                "[T-SHIRT PREMIUM 3] Editorial close-up, luxury lighting, premium texture focus",
+                "[T-SHIRT PREMIUM 4] Minimal studio, high fashion posture, cinematic shadows",
+                "[T-SHIRT PREMIUM 5] Aspirative luxury environment, confident relaxed pose"
+            ];
+        } else if (isTshirtClean) {
             strictPoses = [
                 "[T-SHIRT CLEAN 1] Front view (model facing camera), minimal studio background, softbox lighting, focus on product visibility",
                 "[T-SHIRT CLEAN 2] Back view (full back visible), minimal studio background",
