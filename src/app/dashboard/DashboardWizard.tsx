@@ -8,9 +8,15 @@ import "../admin.css"
 type Snippet = any; // Fast typing for prisma schema
 
 const PRESETS = [
-  { id: 'shopify', label: 'Shopify Product Pack', icon: 'ShoppingCart', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'social', label: 'Social Media UGC Pack', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Content', IMAGE_TYPE: 'UGC Style', SCENE: 'Street', FORMAT: '9:16', QUANTITY: '1' } },
-  { id: 'campaign', label: 'Fashion Campaign', icon: 'Star', steps: { CLIENT_TYPE: 'Brand', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'Premium Campaign', SCENE: 'Studio', FORMAT: '4:5', QUANTITY: '5' } },
+  { id: 'shopify', label: 'Shopify Product Page', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'amazon', label: 'Amazon Listing Pack', icon: 'Package', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Amazon Hero Shot', SCENE: 'Ghost Mannequin', FORMAT: '1:1', QUANTITY: '1' } },
+  { id: 'etsy_tshirt', label: 'Etsy T-Shirt Seller', icon: 'Palette', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Etsy Artisan Vibe', PRODUCT_TYPE: 'T-Shirts / Hoodies', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'ugc_natural', label: 'UGC Natural Outfit', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', MODEL_OPTION: 'Candid Real Woman', SCENE: 'Urban Street', FORMAT: '9:16', QUANTITY: '3' } },
+  { id: 'premium_ceremony', label: 'Premium Ceremony', icon: 'Star', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Ceremony / Elegant', SCENE: 'Grand Event / Ballroom', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'shoes_ecommerce', label: 'Shoes Ecommerce', icon: 'Activity', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Sneakers / Shoes Focus', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
+  { id: 'swimwear_summer', label: 'Swimwear Summer Pack', icon: 'Sun', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Swimwear / Beachwear', SCENE: 'Tropical Beach', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'bags_premium', label: 'Bags Premium Pack', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Bags / Accessories', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'jewelry_detail', label: 'Jewelry Detail Pack', icon: 'Watch', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Jewelry / Watches', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
 ]
 
 export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
