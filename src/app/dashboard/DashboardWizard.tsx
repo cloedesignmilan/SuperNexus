@@ -202,6 +202,35 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   }
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
+    if (type === 'IMAGE_TYPE') {
+      const customOptions = [
+        { id: 'custom_model', label: 'Model Photo', description: 'Best for fashion and product visibility', icon: 'User', prompt_fragment: 'model wearing the product, high fashion editorial, professional studio photography', negative_fragment: 'flat lay, empty, mannequin' },
+        { id: 'custom_ugc', label: 'Natural / UGC', description: 'Looks like a real iPhone photo (best for social ads)', icon: 'Smartphone', prompt_fragment: 'iPhone photography, candid, natural lighting, social media UGC style, relatable lifestyle', negative_fragment: 'studio lighting, professional camera, artificial, 3d render' },
+        { id: 'custom_clean', label: 'Clean Catalog', description: 'Simple, clean product images for ecommerce', icon: 'ShoppingBag', prompt_fragment: 'ecommerce clean photography, neutral background, studio softbox lighting, highly detailed', negative_fragment: 'busy background, lifestyle, messy' },
+        { id: 'custom_ads', label: 'Ads / Scroll Stopper', description: 'High-impact images designed to grab attention', icon: 'Zap', prompt_fragment: 'high impact advertising photography, dramatic lighting, vivid colors, scroll stopping visual', negative_fragment: 'boring, flat, dull, amateur' }
+      ];
+
+      return (
+        <div className="glass-grid">
+          {customOptions.map(snip => {
+            const isSelected = selections[type]?.id === snip.id;
+            const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
+            return (
+              <button 
+                key={snip.id} 
+                onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
+                className={`glass-card ${isSelected ? 'selected' : ''}`} 
+              >
+                <IconComp size={28} className="card-icon" />
+                <div className="card-title">{snip.label}</div>
+                <div className="card-desc">{snip.description}</div>
+              </button>
+            )
+          })}
+        </div>
+      );
+    }
+
     let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
     // SMART FILTERING BASED ON AI ANALYSIS
@@ -320,10 +349,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   }
 
   const stepsData = [
-    { num: 1, type: 'IMAGE_GOAL', title: 'What do you want to create?', desc: 'Select the primary objective of your imagery.' },
-    { num: 2, type: 'SCENE', title: 'Choose the scene', desc: 'Define the background and environmental context.' },
-    { num: 3, type: 'MODEL_OPTION', title: 'Choose presentation', desc: 'How should the product be displayed?' },
-    { num: 4, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: 'Choose the aspect ratio and number of images.' },
+    { num: 1, type: 'IMAGE_TYPE', title: 'What kind of image do you want?', desc: '' },
+    { num: 2, type: 'SCENE', title: 'Choose the scene', desc: '' },
+    { num: 3, type: 'MODEL_OPTION', title: 'How should it be presented?', desc: '' },
+    { num: 4, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: '' },
   ];
 
   return (
@@ -795,11 +824,21 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
           {/* FINAL STEP 5: SUMMARY & GENERATE */}
           {step === 5 && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Ready</h2>
-              <p className="step-desc">Your configuration is complete.</p>
+              <h2 className="step-header">Ready to Generate</h2>
+              <p className="step-desc">Your product will stay 100% faithful to your original image.</p>
               
-              <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2.5rem', marginBottom: '3rem' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem' }}>
+              <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2.5rem', marginBottom: '3rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
+                {uploadedUrl && (
+                  <div style={{ width: '80px', height: '80px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
+                    <img src={uploadedUrl} alt="Product" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+                
+                <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem' }}>
+                  <div>
+                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>Product</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 500, textTransform: 'capitalize' }}>{analysisData?.detectedProductType?.replace('_', ' ') || 'Custom'}</div>
+                  </div>
                   {stepsData.map(st => {
                     if (st.type === 'FORMAT_QUANTITY') {
                       return (
@@ -821,13 +860,9 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                 </div>
               </div>
 
-              <button onClick={handleGenerate} className="btn-magic">
-                <Sparkles size={24} /> Generate {selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'}
-              </button>
-
-               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem' }}>
+               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
                  <button onClick={handleGenerate} className="btn-magic" style={{ maxWidth: '400px' }}>
-                   Generate Images <Wand2 size={24} />
+                   Generate {selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'} <Wand2 size={24} />
                  </button>
                </div>
             </div>
