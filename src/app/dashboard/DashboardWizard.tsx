@@ -602,10 +602,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
               
               {renderSnippetGrid(stepsData[step-1].type, step)}
               
-              {/* Only show NEXT button if it's the QUANTITY step or if multiple selection is needed */}
+              {/* Only show NEXT button if it's the FORMAT step */}
               {step === 7 && (
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setStep(8)} disabled={!selections['QUANTITY']} className="btn-giant">
+                  <button onClick={() => setStep(8)} disabled={!selections['FORMAT']} className="btn-giant">
                     Review Configuration <ArrowRight size={20} />
                   </button>
                 </div>
@@ -679,7 +679,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                 {results.map((url, i) => (
                   <div key={i} style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000' }}>
-                    <img src={url.startsWith('http') || url.startsWith('data:') ? url : \`data:image/jpeg;base64,\${url}\`} alt={\`Result \${i}\`} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                    <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
                   </div>
                 ))}
               </div>
