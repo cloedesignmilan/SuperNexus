@@ -67,6 +67,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
          nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, " + nPrompt;
       }
 
+      if (analysisData?.detectedProductType === 'swimwear') {
+         const swimwearRules = "This is a SWIMWEAR product (bikini). The model must clearly be wearing a bikini suitable for beach or pool environments. The scene must reflect a summer setting: tropical beach, luxury resort, poolside, or sunny outdoor environment. The bikini must remain 100% identical to the reference image: same color, same shape, same fit, same design. Do NOT modify the product in any way. Lighting must feel natural and summery. Avoid studio fashion looks that do not match swimwear context. ";
+         fPrompt = swimwearRules + fPrompt;
+         nPrompt = "studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + nPrompt;
+      }
+
       setFinalPrompt(fPrompt.replace(/, $/, ''));
       setNegativePrompt(nPrompt.replace(/, $/, ''));
     }
