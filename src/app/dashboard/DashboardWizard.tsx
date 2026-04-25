@@ -1,115 +1,89 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Upload, ChevronRight, Loader2, CheckCircle2, Image as ImageIcon, User, Sparkles, Smile, Shirt, ShoppingBag, Download } from 'lucide-react'
-import "../admin.css" // Reusing styling variables
+import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info } from 'lucide-react'
+import * as Icons from 'lucide-react'
+import "../admin.css"
 
-type Taxonomy = any // Fast typing for the complex Prisma result
+type Snippet = any; // Fast typing for prisma schema
 
-const getCategoryUI = (name: string) => {
-  const match = name.match(/\((.*?)\)/);
-  const englishName = match ? match[1] : name;
-  const mainName = match ? name.split(' (')[0] : name;
-  
-  let icon = <ImageIcon size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  
-  const lowerName = name.toLowerCase();
-  if (lowerName.includes('donna') || lowerName.includes('women')) icon = <User size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  else if (lowerName.includes('uomo') || lowerName.includes('men')) icon = <User size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  else if (lowerName.includes('sposa') || lowerName.includes('bridal')) icon = <Sparkles size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  else if (lowerName.includes('bambino') || lowerName.includes('kid')) icon = <Smile size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  else if (lowerName.includes('t-shirt') || lowerName.includes('shirt')) icon = <Shirt size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-  else if (lowerName.includes('calzature') || lowerName.includes('footwear')) icon = <ShoppingBag size={32} strokeWidth={1.5} color="var(--color-primary)" />;
-
-  return { englishName, mainName, icon };
-}
-
-const LOADING_TIPS = [
-  "💡 E-commerce Tip: Flat lay photography increases Add-to-Cart conversions by 15% when used as secondary product images.",
-  "📈 Social Media Manager: UGC-style (User Generated Content) photos get 40% more engagement on Instagram than pure catalog shots.",
-  "👔 Buyer Advice: Including close-up macro shots of fabrics reduces return rates by building trust in the material quality.",
-  "🛍️ E-commerce Tip: Consistent lighting across your entire catalog increases perceived brand value and justifies higher price points.",
-  "✨ Social Media Manager: Behind-the-scenes or 'fitting room' style aesthetic builds authenticity and creates a stronger community bond.",
-  "🎯 Buyer Advice: Showing the same item in multiple environments (studio + lifestyle) helps customers visualize the product in their daily life."
+const PRESETS = [
+  { id: 'shopify', label: 'Shopify Product Pack', icon: 'ShoppingCart', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'social', label: 'Social Media UGC Pack', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Content', IMAGE_TYPE: 'UGC Style', SCENE: 'Street', FORMAT: '9:16', QUANTITY: '1' } },
+  { id: 'campaign', label: 'Fashion Campaign', icon: 'Star', steps: { CLIENT_TYPE: 'Brand', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'Premium Campaign', SCENE: 'Studio', FORMAT: '4:5', QUANTITY: '5' } },
 ]
 
-export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) {
-  const [step, setStep] = useState<number>(1)
+export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
+  const [step, setStep] = useState<number>(0)
   
-  // State
+  // Upload State
   const [file, setFile] = useState<File | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
-  
-  const [selectedCat, setSelectedCat] = useState<any>(null)
-  const [selectedMode, setSelectedMode] = useState<any>(null)
-  const [selectedSubcat, setSelectedSubcat] = useState<any>(null)
-  const [qty, setQty] = useState<number>(1)
-  
   const [isUploading, setIsUploading] = useState(false)
+  
+  // Selections (key: snippet_type, value: snippet id)
+  const [selections, setSelections] = useState<Record<string, Snippet | null>>({
+    CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null
+  })
+
+  // Final Prompts
+  const [finalPrompt, setFinalPrompt] = useState<string>('')
+  const [negativePrompt, setNegativePrompt] = useState<string>('')
+  
   const [isGenerating, setIsGenerating] = useState(false)
   const [results, setResults] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
-  
-  const [tipIndex, setTipIndex] = useState(0)
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isGenerating) {
-      interval = setInterval(() => {
-        setTipIndex((prev) => (prev + 1) % LOADING_TIPS.length);
-      }, 20000);
-    }
-    return () => clearInterval(interval);
-  }, [isGenerating]);
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const handleDownload = async (url: string) => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const file = new File([blob], 'supernexus_generation.jpg', { type: blob.type || 'image/jpeg' });
+  // Calcola il prompt quando arriviamo allo step finale
+  useEffect(() => {
+    if (step === 8) {
+      let fPrompt = "";
+      let nPrompt = "";
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'SuperNexus',
-          text: 'Generated by SuperNexus'
-        });
-      } else {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'supernexus_generation.jpg';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-      }
-    } catch (err) {
-      console.error('Error downloading:', err);
+      // Ordiniamo le scelte per intensity (strong prima) e poi priority
+      const selectedSnippets = Object.values(selections).filter(Boolean) as Snippet[];
+      
+      selectedSnippets.sort((a, b) => {
+         const intensityScore = (val: string) => val === 'strong' ? 3 : val === 'medium' ? 2 : 1;
+         if (intensityScore(b.intensity_level) !== intensityScore(a.intensity_level)) {
+             return intensityScore(b.intensity_level) - intensityScore(a.intensity_level);
+         }
+         return a.priority_order - b.priority_order;
+      });
+
+      selectedSnippets.forEach(s => {
+         if (s.prompt_fragment) {
+            let frag = s.prompt_fragment.trim();
+            if (s.intensity_level === 'strong') frag = `((${frag}))`;
+            fPrompt += frag + ", ";
+         }
+         if (s.negative_fragment) {
+            nPrompt += s.negative_fragment.trim() + ", ";
+         }
+      });
+
+      setFinalPrompt(fPrompt.replace(/, $/, ''));
+      setNegativePrompt(nPrompt.replace(/, $/, ''));
     }
-  };
+  }, [step, selections]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selected = e.target.files[0]
       setFile(selected)
-      setPreviewUrl(URL.createObjectURL(selected))
-      
-      // Auto-upload
       setIsUploading(true)
-      const formData = new FormData()
-      formData.append('file', selected)
-      
       try {
+        const formData = new FormData()
+        formData.append('file', selected)
         const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
         const data = await res.json()
         if (data.url) {
           setUploadedUrl(data.url)
-          setStep(2) // Move to category selection
+          setStep(0.5) // Preset Selection Step
         } else {
-          setError('Failed to upload image')
+          setError(data.error || 'Upload failed')
         }
       } catch (err) {
         setError('Network error during upload')
@@ -119,260 +93,288 @@ export default function DashboardWizard({ taxonomy }: { taxonomy: Taxonomy[] }) 
     }
   }
 
+  const applyPreset = (preset: any) => {
+    const newSel = { ...selections };
+    Object.keys(preset.steps).forEach(type => {
+      // Find the snippet that matches the label
+      const snip = snippets.find(s => s.snippet_type === type && s.label === preset.steps[type]);
+      if (snip) newSel[type] = snip;
+    });
+    setSelections(newSel);
+    // Vado dritto alla scelta prodotto (che non è pre-fillata di solito)
+    if (!newSel.PRODUCT_TYPE) setStep(4);
+    else setStep(8); // Se ha tutto va al summary
+  }
+
   const handleGenerate = async () => {
-    if (!uploadedUrl || !selectedSubcat) return
+    if (!uploadedUrl) return;
     setIsGenerating(true)
     setError(null)
-    
+    setResults([])
+
     try {
+      const qtySnippet = selections['QUANTITY'];
+      const aspectRatioSnippet = selections['FORMAT'];
+      
+      const payload = {
+        imageUrl: uploadedUrl,
+        finalPrompt,
+        negativePrompt,
+        qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
+        aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
+        selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id)
+      }
+
       const res = await fetch('/api/web/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subcategoryId: selectedSubcat.id,
-          imageUrls: [uploadedUrl],
-          qty: qty,
-          isOutfit: false
-        })
+        body: JSON.stringify(payload)
       })
-      
+
       const data = await res.json()
-      if (data.success && data.results) {
+      if (!res.ok) throw new Error(data.error || 'Generation failed')
+
+      if (data.results) {
         setResults(data.results)
-        setStep(5) // Results view
-      } else {
-        const errorMsg = data.details && data.details.length > 0 
-          ? `${data.error}: ${data.details.join(', ')}` 
-          : (data.error || 'Generation failed. Check your credits.')
-        setError(errorMsg)
+        setStep(9) // Results Step
       }
     } catch (err: any) {
-      setError('Network error during generation: ' + err.message)
+      setError(err.message)
     } finally {
       setIsGenerating(false)
     }
   }
 
-  return (
-    <div className="glass-panel" style={{ padding: '2rem', borderRadius: '24px', overflow: 'hidden', position: 'relative' }}>
-      
-      {/* Progress Steps Header */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '3rem' }}>
-        {[1, 2, 3, 4, 5].map((s) => (
-           <div key={s} style={{ 
-             width: '40px', height: '4px', borderRadius: '2px',
-             background: step >= s ? 'var(--color-primary)' : 'rgba(255,255,255,0.1)',
-             transition: 'all 0.3s'
-           }} />
-        ))}
-      </div>
+  const renderSnippetGrid = (type: string) => {
+    const typeSnippets = snippets.filter(s => s.snippet_type === type);
+    
+    // Raggruppamento
+    const groups: Record<string, Snippet[]> = {};
+    typeSnippets.forEach(s => {
+       const g = s.sort_group || 'Other styles';
+       if (!groups[g]) groups[g] = [];
+       groups[g].push(s);
+    });
 
+    const order = ['Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
+    
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        {order.map(groupName => {
+          if (!groups[groupName] || groups[groupName].length === 0) return null;
+          return (
+            <div key={groupName}>
+              <h4 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+                {groupName}
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1rem' }}>
+                {groups[groupName].map(snip => {
+                  const isSelected = selections[type]?.id === snip.id;
+                  
+                  // Soft Incompatibility Check (mocked simple logic based on strings, you can expand this based on the incompatibilities field)
+                  let isWarning = false;
+                  if (snip.incompatibilities) {
+                     const incompats = snip.incompatibilities.toLowerCase();
+                     Object.values(selections).forEach(sel => {
+                        if (sel && incompats.includes(sel.label.toLowerCase())) isWarning = true;
+                     });
+                  }
+
+                  const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
+
+                  return (
+                    <button 
+                      key={snip.id} 
+                      onClick={() => setSelections({...selections, [type]: snip})} 
+                      className={`glass-panel hover-scale ${isSelected ? 'active-border' : ''}`} 
+                      style={{ padding: '1.5rem 1rem', textAlign: 'left', position: 'relative', opacity: isWarning && !isSelected ? 0.6 : 1 }}
+                    >
+                      {snip.is_recommended && <Sparkles size={16} color="var(--color-primary)" style={{ position: 'absolute', top: 10, right: 10 }} />}
+                      <IconComp size={24} color={isSelected ? 'var(--color-primary)' : 'var(--color-text-muted)'} style={{ marginBottom: '1rem' }} />
+                      <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.25rem' }}>{snip.label}</div>
+                      {snip.description && <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>{snip.description}</div>}
+                      
+                      {isWarning && (
+                         <div style={{ marginTop: '0.75rem', fontSize: '0.65rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                           <Info size={12} /> May conflict with your choices
+                         </div>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
+  const stepsData = [
+    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adattiamo il motore al tuo business model.' },
+    { num: 2, type: 'IMAGE_GOAL', title: 'What is the goal?', desc: 'Scegli l\'obiettivo primario dell\'immagine.' },
+    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Definisci l\'estetica dominante.' },
+    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'Cosa stiamo scattando?' },
+    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Scegli chi indosserà il prodotto.' },
+    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Il contesto in cui viene inserito.' },
+    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Ratio e inquadratura.' },
+  ];
+
+  return (
+    <div className="wizard-container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem 1rem' }}>
+      
       {error && (
-        <div style={{ padding: '1rem', background: 'rgba(239,68,68,0.1)', color: '#ef4444', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center' }}>
+        <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#f87171', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', textAlign: 'center' }}>
           {error}
         </div>
       )}
 
-      {/* Uploaded Image Preview Thumbnail */}
-      {step > 1 && previewUrl && step < 5 && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-          <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 20px rgba(0,0,0,0.4)' }}>
-            <img src={previewUrl} alt="Uploaded Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.6)', padding: '4px', textAlign: 'center', fontSize: '0.7rem', color: '#ccff00', fontWeight: 'bold', backdropFilter: 'blur(4px)' }}>✓ CARICATA</div>
+      {/* Progress Bar */}
+      {step > 0 && step < 9 && !isGenerating && (
+        <div style={{ marginBottom: '3rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+             <button onClick={() => setStep(Math.max(0.5, step - 1))} disabled={step === 0.5} style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+               <ChevronLeft size={16} /> Back
+             </button>
+             <span style={{ fontWeight: 600, color: 'var(--color-primary)' }}>
+                Step {Math.floor(step)} di 8
+             </span>
+             <button onClick={() => setStep(step === 7 ? 8 : step + 1)} disabled={step < 1 || !selections[stepsData[step-1]?.type]} style={{ background: 'transparent', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+               Next <ChevronRight size={16} />
+             </button>
+          </div>
+          <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+            <div style={{ width: \`\${(step / 8) * 100}%\`, height: '100%', background: 'var(--color-primary)', transition: 'width 0.4s ease' }} />
           </div>
         </div>
       )}
 
-      {/* STEP 1: UPLOAD */}
-      {step === 1 && (
-        <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-          <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
-          <button 
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            style={{
-              background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.2)',
-              borderRadius: '24px', padding: '4rem 2rem', width: '100%', maxWidth: '400px', margin: '0 auto',
-              cursor: isUploading ? 'not-allowed' : 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
-              transition: 'all 0.2s'
-            }}
-            className="hover-glow"
-          >
-            {isUploading ? <Loader2 size={48} className="spin" color="var(--color-primary)" /> : <Upload size={48} color="var(--color-text-muted)" />}
-            <div style={{ color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600 }}>
-              {isUploading ? 'Uploading securely...' : 'Tap to Upload Product'}
-            </div>
-            <div style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>High quality flat-lay or mannequin</div>
+      {/* STEP 0: UPLOAD */}
+      {step === 0 && (
+        <div className="admin-card fade-up-enter" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Benvenuto nel Nuovo Motore GenAI</h2>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem' }}>Carica la foto del tuo prodotto per iniziare il workflow professionale.</p>
+          
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
+          
+          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-primary" style={{ padding: '1.5rem 3rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '1rem', margin: '0 auto' }}>
+            {isUploading ? <><Loader2 className="animate-spin" /> Upload in corso...</> : <><Upload /> Upload Product Image</>}
           </button>
         </div>
       )}
 
-      {/* STEP 2: CATEGORY */}
-      {step === 2 && (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Macro Category</h3>
-            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Macrocategoria</div>
+      {/* STEP 0.5: PRESETS OR CUSTOM */}
+      {step === 0.5 && (
+        <div className="fade-up-enter">
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0' }}>Quick Start Presets</h3>
+            <p style={{ color: 'var(--color-text-muted)' }}>Scegli un pacchetto pre-configurato o crea il tuo set da zero.</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
-            {taxonomy.map((cat: any) => {
-              const ui = getCategoryUI(cat.name);
-              return (
-                <button key={cat.id} className="glass-panel hover-glow" onClick={() => { setSelectedCat(cat); setStep(3); }}
-                  style={{ 
-                    padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', 
-                    borderRadius: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem',
-                    cursor: 'pointer', transition: 'all 0.2s' 
-                  }}>
-                  {ui.icon}
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ color: 'var(--color-text)', fontSize: '1.2rem', fontWeight: 600 }}>{ui.englishName}</div>
-                    {ui.englishName !== ui.mainName && (
-                       <div style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '0.25rem' }}>{ui.mainName}</div>
-                    )}
-                  </div>
-                </button>
-              )
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+            {PRESETS.map(p => {
+               const IconC = (Icons as any)[p.icon] || Icons.Zap;
+               return (
+                  <button key={p.id} onClick={() => applyPreset(p)} className="glass-panel hover-glow" style={{ padding: '2rem', textAlign: 'center' }}>
+                     <IconC size={32} color="var(--color-primary)" style={{ margin: '0 auto 1rem auto' }} />
+                     <h4 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>{p.label}</h4>
+                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Auto-fill 6 steps</p>
+                  </button>
+               )
             })}
           </div>
-          <button onClick={() => setStep(1)} style={{ marginTop: '2rem', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back to Upload</button>
+
+          <div style={{ textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '3rem' }}>
+             <button onClick={() => setStep(1)} className="btn-secondary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
+                Start Custom Workflow <ChevronRight size={18} style={{ display: 'inline', verticalAlign: 'middle' }} />
+             </button>
+          </div>
         </div>
       )}
 
-      {/* STEP 3: BUSINESS MODE */}
-      {step === 3 && selectedCat && (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Category</h3>
-            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Categoria</div>
+      {/* DYNAMIC STEPS 1-7 */}
+      {step >= 1 && step <= 7 && (
+        <div className="fade-up-enter">
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0' }}>{stepsData[step-1].title}</h3>
+            <p style={{ color: 'var(--color-text-muted)' }}>{stepsData[step-1].desc}</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem' }}>
-            {selectedCat.business_modes.map((mode: any) => (
-              <button key={mode.id} className="glass-panel hover-glow" onClick={() => { setSelectedMode(mode); setStep(4); }}
-                style={{ padding: '2rem 1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1.1rem', fontWeight: 600, cursor: 'pointer' }}>
-                {mode.name}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => setStep(2)} style={{ marginTop: '2rem', background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back</button>
+
+          {renderSnippetGrid(stepsData[step-1].type)}
         </div>
       )}
 
-      {/* STEP 4: SUBCATEGORY & GENERATE */}
-      {step === 4 && selectedMode && (
-        <div>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.5rem', margin: '0 0 0.25rem 0' }}>Select Subcategory</h3>
-            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Seleziona Sottocategoria</div>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', marginBottom: '3rem' }}>
-            {selectedMode.subcategories.map((sub: any) => (
-              <button key={sub.id} className={`glass-panel ${selectedSubcat?.id === sub.id ? 'active-border' : ''}`} onClick={() => setSelectedSubcat(sub)}
-                style={{ padding: '1.5rem 1rem', border: selectedSubcat?.id === sub.id ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)', background: selectedSubcat?.id === sub.id ? 'rgba(var(--color-primary-rgb), 0.1)' : 'rgba(255,255,255,0.02)', borderRadius: '16px', color: 'var(--color-text)', fontSize: '1rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s' }}>
-                {sub.name}
-              </button>
-            ))}
-          </div>
-
-          {selectedSubcat && (
-            <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
-              <h4 style={{ marginBottom: '1rem', color: 'var(--color-text-muted)' }}>How many variations?</h4>
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                {[1, 3, 5].map((num) => (
-                  <button 
-                    key={num}
-                    onClick={() => setQty(num)}
-                    className={`glass-panel ${qty === num ? 'active-border' : ''}`}
-                    style={{
-                      padding: '1rem 2rem', 
-                      borderRadius: '12px',
-                      fontSize: '1.2rem',
-                      fontWeight: 'bold',
-                      background: qty === num ? 'rgba(var(--color-primary-rgb), 0.2)' : 'rgba(255,255,255,0.05)',
-                      border: qty === num ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)',
-                      color: 'var(--color-text)',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    {num}
-                  </button>
-                ))}
+      {/* FINAL STEP 8: SUMMARY & EDITOR */}
+      {step === 8 && (
+        <div className="fade-up-enter">
+           <h3 style={{ fontSize: '2rem', marginBottom: '2rem', textAlign: 'center' }}>Final Summary</h3>
+           
+           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
+              <div className="admin-card" style={{ padding: '1.5rem' }}>
+                 <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Your Choices</h4>
+                 {stepsData.map(st => {
+                    const sel = selections[st.type];
+                    if (!sel) return null;
+                    return (
+                       <div key={st.type} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.9rem' }}>
+                          <span style={{ color: 'var(--color-text-muted)' }}>{st.title.split('?')[0]}</span>
+                          <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>{sel.label}</span>
+                       </div>
+                    )
+                 })}
               </div>
-            </div>
-          )}
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <button onClick={() => setStep(3)} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }}>← Back</button>
-            <button onClick={handleGenerate} disabled={!selectedSubcat || isGenerating} className="btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', opacity: (!selectedSubcat || isGenerating) ? 0.5 : 1 }}>
-              {isGenerating ? <><Loader2 className="spin" size={20} /> Processing...</> : <><ImageIcon size={20} /> Generate AI Photo</>}
-            </button>
-          </div>
+              <div className="admin-card" style={{ padding: '1.5rem' }}>
+                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>
+                    <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)' }}>Advanced Prompt Editor</h4>
+                    <Settings size={18} color="var(--color-text-muted)" />
+                 </div>
 
-          {/* Tips display while loading */}
-          {isGenerating && (
-            <div style={{ 
-              marginTop: '3rem', 
-              padding: '2rem', 
-              background: 'rgba(255,255,255,0.03)', 
-              borderRadius: '16px', 
-              border: '1px solid rgba(255,255,255,0.05)',
-              textAlign: 'center',
-              animation: 'fadeIn 0.5s ease-in-out'
-            }}>
-              <Loader2 className="spin" size={32} color="var(--color-primary)" style={{ margin: '0 auto 1rem auto' }} />
-              <div style={{ 
-                color: 'var(--color-text)', 
-                fontSize: '1.1rem', 
-                fontWeight: 500,
-                minHeight: '3rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'opacity 0.5s ease-in-out'
-              }}>
-                <span key={tipIndex} style={{ animation: 'fadeIn 1s ease-in-out' }}>
-                  {LOADING_TIPS[tipIndex]}
-                </span>
+                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>I mattoncini che hai scelto hanno composto questo prompt ottimizzato. Puoi modificarlo manualmente prima di generare.</p>
+                 
+                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>PROMPT POSITIVO</label>
+                 <textarea value={finalPrompt} onChange={e => setFinalPrompt(e.target.value)} className="input-glass" rows={5} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', marginBottom: '1.5rem', border: '1px solid var(--color-primary)' }}></textarea>
+
+                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>PROMPT NEGATIVO</label>
+                 <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="input-glass" rows={2} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', borderColor: '#ef4444' }}></textarea>
+
+                 <div style={{ marginTop: '2rem', textAlign: 'right' }}>
+                    <button onClick={handleGenerate} className="btn-primary btn-hero-glow" style={{ padding: '1rem 3rem', fontSize: '1.1rem', fontWeight: 700 }}>
+                       Generate Images ✨
+                    </button>
+                 </div>
               </div>
-            </div>
-          )}
+           </div>
         </div>
       )}
 
-      {/* STEP 5: RESULTS */}
-      {step === 5 && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'var(--color-primary)' }}>Mission Accomplished ✨</h3>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>Your professional photos are ready.</p>
-          
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
+      {/* GENERATING STATE */}
+      {isGenerating && (
+        <div className="admin-card fade-up-enter" style={{ textAlign: 'center', padding: '5rem 2rem' }}>
+          <Wand2 size={64} color="var(--color-primary)" className="animate-pulse" style={{ margin: '0 auto 2rem auto' }} />
+          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', background: 'linear-gradient(90deg, #fff, var(--color-primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Compiling your masterpiece...
+          </h2>
+        </div>
+      )}
+
+      {/* RESULTS STEP */}
+      {step === 9 && results.length > 0 && (
+        <div className="fade-up-enter">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.8rem', margin: 0 }}>Risultati</h3>
+            <button onClick={() => { setStep(0.5); setResults([]); }} className="btn-secondary">Genera Altro</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
             {results.map((url, i) => (
-              <div key={i} style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
-                <img src={url} alt="Generated result" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                <button 
-                  onClick={() => handleDownload(url)}
-                  style={{
-                    position: 'absolute', bottom: '10px', right: '10px',
-                    background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.2)', color: 'white',
-                    padding: '10px 15px', borderRadius: '30px', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: '8px',
-                    fontWeight: 600, transition: 'all 0.2s', boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
-                  }}
-                  className="hover-glow"
-                >
-                  <Download size={18} /> Save
-                </button>
+              <div key={i} className="glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
+                <img src={url} alt={\`Result \${i}\`} style={{ width: '100%', height: 'auto', display: 'block' }} />
               </div>
             ))}
           </div>
-
-          <button onClick={() => { setStep(1); setFile(null); setUploadedUrl(null); setResults([]); setSelectedCat(null); setSelectedMode(null); setSelectedSubcat(null); }} className="btn-secondary" style={{ padding: '1rem 3rem' }}>
-            Generate Another Output
-          </button>
         </div>
       )}
+
     </div>
   )
 }

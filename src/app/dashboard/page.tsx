@@ -7,22 +7,12 @@ export const revalidate = 0
 
 export default async function DashboardPage() {
   noStore()
-  // Fetch full active taxonomy to pass to the client component
-  const taxonomy = await prisma.category.findMany({
+  // Fetch all active snippets to pass to the client wizard
+  const snippets = await prisma.promptSnippet.findMany({
     where: { is_active: true },
-    orderBy: { sort_order: 'asc' },
-    include: {
-      business_modes: {
-        where: { is_active: true },
-        orderBy: { sort_order: 'asc' },
-        include: {
-          subcategories: {
-            where: { is_active: true },
-            orderBy: { sort_order: 'asc' }
-          }
-        }
-      }
-    }
+    orderBy: [
+      { priority_order: 'asc' }
+    ]
   })
 
   return (
@@ -34,7 +24,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <DashboardWizard taxonomy={taxonomy} />
+      <DashboardWizard snippets={snippets} />
     </div>
   )
 }

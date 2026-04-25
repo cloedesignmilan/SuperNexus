@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { generateImagesWithAI } from '@/lib/ai/generate'
 import { logApiCost } from '@/lib/gemini-cost'
 
-export const maxDuration = 300 // Max duration for Vercel Hobby/Pro
+export const maxDuration = 300 // Max duration for Vercel
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,9 +22,9 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { subcategoryId, imageUrls, qty, isOutfit, userClarification } = body
+    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds } = body
 
-    if (!subcategoryId || !imageUrls || imageUrls.length === 0) {
+    if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
     }
 
@@ -35,23 +35,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Insufficient credits', remaining }, { status: 402 })
     }
 
-    // Fetch Subcategory config
-    const subcat = await prisma.subcategory.findUnique({
-      where: { id: subcategoryId },
+    // Trova il Default Subcategory per legare il Job (God Mode Dynamic Node)
+    const subcat = await prisma.subcategory.findFirst({
+      where: { slug: 'dynamic-engine' },
       include: { business_mode: { include: { category: true } }, reference_images: true }
     })
 
     if (!subcat) {
-      return NextResponse.json({ error: 'Invalid configuration' }, { status: 400 })
+      return NextResponse.json({ error: 'Dynamic Engine node not configured in DB' }, { status: 500 })
     }
 
-    // Check Settings
-    const varianceSetting = await prisma.setting.findUnique({ where: { key: 'AI_SCENE_VARIANCE_ENABLED' }})
-    const globalVariance = varianceSetting?.value === 'true'
-    const varianceEnabled = subcat.scene_variance_active !== null ? subcat.scene_variance_active : globalVariance
-
-    const activeModelSetting = await prisma.setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' }})
-    const generationModel = subcat.active_model || activeModelSetting?.value || 'gemini-3.1-flash-image-preview'
+    // Iniettiamo il prompt dinamico sovrascrivendo temporaneamente quello del subcat
+    const dynamicSubcat = {
+        ...subcat,
+        base_prompt_prefix: finalPrompt,
+        negative_prompt: negativePrompt || "text, watermark, poorly rendered, ugly, deformed, blurry"
+    }
 
     // Create Pending Job
     const newJob = await prisma.generationJob.create({
@@ -59,27 +58,30 @@ export async function POST(req: NextRequest) {
         user_id: dbUser.id,
         category_id: subcat.business_mode.category_id,
         business_mode_id: subcat.business_mode_id,
-        subcategory_id: subcategoryId,
-        original_product_image_url: imageUrls[0],
+        subcategory_id: subcat.id,
+        original_product_image_url: imageUrl,
         status: "pending",
         total_cost_eur: 0,
-        results_count: 0
+        results_count: 0,
+        prompt_generated: finalPrompt // Salviamo il prompt dinamico nel job per tracciabilità
       }
     })
+
+    const generationModel = 'gemini-3.1-flash-image-preview' // Default model or fetch from settings
 
     // GENERATE VIA AI ENGINE
     const aiResult = await generateImagesWithAI({
       qty: requestedQty,
-      subcat,
-      publicUrls: imageUrls,
-      userClarification: userClarification || 'X',
-      isOutfit: isOutfit || false,
-      varianceEnabled,
+      subcat: dynamicSubcat as any, // Type cast per compatibilità
+      publicUrls: [imageUrl],
+      userClarification: `Aspect Ratio: ${aspectRatio || '4:5'}`, // Usato come meta
+      isOutfit: false,
+      varianceEnabled: true,
       generationModel
     })
 
     if (aiResult.generatedBase64s.length === 0) {
-      await prisma.generationJob.update({ where: { id: newJob.id }, data: { status: 'failed' } })
+      await prisma.generationJob.update({ where: { id: newJob.id }, data: { status: 'failed', error_message: aiResult.errorMessages.join(', ') } })
       return NextResponse.json({ error: 'AI Generation failed', details: aiResult.errorMessages }, { status: 500 })
     }
 
@@ -95,7 +97,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
         const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
-        const oFileName = `web_out_${dbUser.id}_${timestamp}_${i}.jpg`
+        const oFileName = \`web_out_\${dbUser.id}_\${timestamp}_\${i}.jpg\`
         const { error: upErr } = await adminSupabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
             contentType: 'image/jpeg',
             upsert: true

@@ -101,6 +101,11 @@ model Subcategory {
   negative_prompt         String?  @db.Text
   output_language         String   @default("it")
 
+  // App 2.0 God Mode Configs (JSON)
+  allowed_models          Json?
+  allowed_environments    Json?
+  supported_aspect_ratios Json?
+
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
@@ -206,4 +211,25 @@ model ApiCostLog {
 model Setting {
   key   String @id
   value String @db.Text
+}
+
+model PromptSnippet {
+  id                     String   @id @default(uuid())
+  snippet_type           String   
+  label                  String
+  description            String?  @db.Text
+  icon                   String?  // Nome icona lucide-react o emoji
+  visual_style           String?  // catalog, ugc, lifestyle, premium, ads, generic
+  prompt_fragment        String?  @db.Text
+  negative_fragment      String?  @db.Text
+  priority_order         Int      @default(0)
+  sort_group             String?  @default("Recommended") // Recommended, Ecommerce, Social, Premium, Other styles
+  intensity_level        String   @default("medium") // soft, medium, strong
+  is_recommended         Boolean  @default(false)
+  is_active              Boolean  @default(true)
+  recommended_for        String?  @db.Text
+  incompatibilities      String?  @db.Text
+  admin_notes            String?  @db.Text
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }
