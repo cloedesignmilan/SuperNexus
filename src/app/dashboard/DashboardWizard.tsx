@@ -1,22 +1,22 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info } from 'lucide-react'
+import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info, CheckCircle2 } from 'lucide-react'
 import * as Icons from 'lucide-react'
 import "../admin.css"
 
-type Snippet = any; // Fast typing for prisma schema
+type Snippet = any;
 
 const PRESETS = [
-  { id: 'shopify', label: 'Shopify Product Page', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'amazon', label: 'Amazon Listing Pack', icon: 'Package', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Amazon Hero Shot', SCENE: 'Ghost Mannequin', FORMAT: '1:1', QUANTITY: '1' } },
-  { id: 'etsy_tshirt', label: 'Etsy T-Shirt Seller', icon: 'Palette', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Etsy Artisan Vibe', PRODUCT_TYPE: 'T-Shirts / Hoodies', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'ugc_natural', label: 'UGC Natural Outfit', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', MODEL_OPTION: 'Candid Real Woman', SCENE: 'Urban Street', FORMAT: '9:16', QUANTITY: '3' } },
-  { id: 'premium_ceremony', label: 'Premium Ceremony', icon: 'Star', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Ceremony / Elegant', SCENE: 'Grand Event / Ballroom', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'shoes_ecommerce', label: 'Shoes Ecommerce', icon: 'Activity', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Sneakers / Shoes Focus', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
-  { id: 'swimwear_summer', label: 'Swimwear Summer Pack', icon: 'Sun', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Swimwear / Beachwear', SCENE: 'Tropical Beach', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'bags_premium', label: 'Bags Premium Pack', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Bags / Accessories', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
-  { id: 'jewelry_detail', label: 'Jewelry Detail Pack', icon: 'Watch', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Jewelry / Watches', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
+  { id: 'shopify', badge: 'Best for Shopify', badgeColor: '#10b981', label: 'Shopify Product Page', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', SCENE: 'Studio Softbox', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'amazon', badge: 'Best for Amazon', badgeColor: '#f59e0b', label: 'Amazon Listing Pack', icon: 'Package', steps: { CLIENT_TYPE: 'Amazon/Marketplace Seller', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Amazon Hero Shot', SCENE: 'Ghost Mannequin', FORMAT: '1:1', QUANTITY: '1' } },
+  { id: 'etsy_ugc', badge: 'Natural UGC', badgeColor: '#8b5cf6', label: 'Etsy T-Shirt Seller', icon: 'Smartphone', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', PRODUCT_TYPE: 'T-Shirts / Hoodies', SCENE: 'Mirror Selfie Context', FORMAT: '9:16', QUANTITY: '3' } },
+  { id: 'physical_boutique', badge: 'Premium Look', badgeColor: '#ec4899', label: 'Store / Boutique', icon: 'Store', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'ceremony_campaign', badge: 'High Fashion', badgeColor: '#0f172a', label: 'Premium Ceremony', icon: 'Star', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Ceremony / Elegant', SCENE: 'Grand Event / Ballroom', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'shoes_ecommerce', badge: 'High Conversion', badgeColor: '#3b82f6', label: 'Shoes Ecommerce', icon: 'Activity', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Sneakers / Shoes Focus', SCENE: 'E-Commerce Flat Lay', FORMAT: '1:1', QUANTITY: '3' } },
+  { id: 'swimwear_summer', badge: 'Natural UGC', badgeColor: '#eab308', label: 'Swimwear Summer', icon: 'Sun', steps: { CLIENT_TYPE: 'Content Creator', IMAGE_GOAL: 'Social Media Engagement', IMAGE_TYPE: 'UGC Natural (iPhone POV)', PRODUCT_TYPE: 'Swimwear / Beachwear', SCENE: 'Tropical Beach', FORMAT: '9:16', QUANTITY: '3' } },
+  { id: 'bags_premium', badge: 'Premium Look', badgeColor: '#6366f1', label: 'Bags Premium Pack', icon: 'ShoppingBag', steps: { CLIENT_TYPE: 'Physical Store', IMAGE_GOAL: 'Promote / Ads', IMAGE_TYPE: 'High-Fashion Ad', PRODUCT_TYPE: 'Bags / Accessories', SCENE: 'Luxury Boutique Interior', FORMAT: '4:5', QUANTITY: '3' } },
+  { id: 'jewelry_detail', badge: 'High Conversion', badgeColor: '#14b8a6', label: 'Jewelry Detail Pack', icon: 'Watch', steps: { CLIENT_TYPE: 'E-commerce', IMAGE_GOAL: 'Sell Online', IMAGE_TYPE: 'Ecommerce Clean', PRODUCT_TYPE: 'Jewelry / Watches', SCENE: 'Studio Softbox', FORMAT: '1:1', QUANTITY: '3' } },
 ]
 
 export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
@@ -27,7 +27,7 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   
-  // Selections (key: snippet_type, value: snippet id)
+  // Selections
   const [selections, setSelections] = useState<Record<string, Snippet | null>>({
     CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null
   })
@@ -48,7 +48,6 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
       let fPrompt = "";
       let nPrompt = "";
 
-      // Ordiniamo le scelte per intensity (strong prima) e poi priority
       const selectedSnippets = Object.values(selections).filter(Boolean) as Snippet[];
       
       selectedSnippets.sort((a, b) => {
@@ -87,7 +86,7 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
         const data = await res.json()
         if (data.url) {
           setUploadedUrl(data.url)
-          setStep(0.5) // Preset Selection Step
+          setStep(0.5)
         } else {
           setError(data.error || 'Upload failed')
         }
@@ -102,14 +101,12 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
   const applyPreset = (preset: any) => {
     const newSel = { ...selections };
     Object.keys(preset.steps).forEach(type => {
-      // Find the snippet that matches the label
       const snip = snippets.find(s => s.snippet_type === type && s.label === preset.steps[type]);
       if (snip) newSel[type] = snip;
     });
     setSelections(newSel);
-    // Vado dritto alla scelta prodotto (che non è pre-fillata di solito)
     if (!newSel.PRODUCT_TYPE) setStep(4);
-    else setStep(8); // Se ha tutto va al summary
+    else setStep(8);
   }
 
   const handleGenerate = async () => {
@@ -142,7 +139,7 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
 
       if (data.results) {
         setResults(data.results)
-        setStep(9) // Results Step
+        setStep(9)
       }
     } catch (err: any) {
       setError(err.message)
@@ -154,7 +151,6 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
   const renderSnippetGrid = (type: string) => {
     const typeSnippets = snippets.filter(s => s.snippet_type === type);
     
-    // Raggruppamento
     const groups: Record<string, Snippet[]> = {};
     typeSnippets.forEach(s => {
        const g = s.sort_group || 'Other styles';
@@ -177,7 +173,6 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
                 {groups[groupName].map(snip => {
                   const isSelected = selections[type]?.id === snip.id;
                   
-                  // Soft Incompatibility Check (mocked simple logic based on strings, you can expand this based on the incompatibilities field)
                   let isWarning = false;
                   if (snip.incompatibilities) {
                      const incompats = snip.incompatibilities.toLowerCase();
@@ -217,13 +212,13 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
   }
 
   const stepsData = [
-    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adattiamo il motore al tuo business model.' },
+    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adattiamo il motore fotografico al tuo business model.' },
     { num: 2, type: 'IMAGE_GOAL', title: 'What is the goal?', desc: 'Scegli l\'obiettivo primario dell\'immagine.' },
-    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Definisci l\'estetica dominante.' },
-    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'Cosa stiamo scattando?' },
-    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Scegli chi indosserà il prodotto.' },
-    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Il contesto in cui viene inserito.' },
-    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Ratio e inquadratura.' },
+    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Scegli Catalog per pulizia, UGC per realismo spontaneo, o Premium per lusso.' },
+    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'Cosa stiamo fotografando?' },
+    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Seleziona chi presenterà il tuo prodotto, o mantienilo "No Model" per scatti tecnici.' },
+    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Definisci il background e il contesto ambientale.' },
+    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Scegli l\'aspect ratio e quante variazioni vuoi generare.' },
   ];
 
   return (
@@ -258,14 +253,19 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
       {/* STEP 0: UPLOAD */}
       {step === 0 && (
         <div className="admin-card fade-up-enter" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Benvenuto nel Nuovo Motore GenAI</h2>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem' }}>Carica la foto del tuo prodotto per iniziare il workflow professionale.</p>
+          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', fontWeight: 800 }}>Create product images that look real — without changing your product.</h2>
+          <p style={{ color: 'var(--color-text-muted)', marginBottom: '3rem', fontSize: '1.1rem' }}>Carica la foto del tuo prodotto scattata sul manichino, su un appendino o flat lay.</p>
           
           <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
           
-          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-primary" style={{ padding: '1.5rem 3rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '1rem', margin: '0 auto' }}>
+          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-primary" style={{ padding: '1.5rem 3rem', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '1rem', margin: '0 auto 1.5rem auto' }}>
             {isUploading ? <><Loader2 className="animate-spin" /> Upload in corso...</> : <><Upload /> Upload Product Image</>}
           </button>
+
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '0.5rem 1rem', borderRadius: '20px', fontSize: '0.85rem' }}>
+             <CheckCircle2 size={16} />
+             <span>Il tuo prodotto rimane fedele al 100%. L'AI preserva pattern, loghi e cuciture inalterati.</span>
+          </div>
         </div>
       )}
 
@@ -274,17 +274,20 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
         <div className="fade-up-enter">
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0' }}>Quick Start Presets</h3>
-            <p style={{ color: 'var(--color-text-muted)' }}>Scegli un pacchetto pre-configurato o crea il tuo set da zero.</p>
+            <p style={{ color: 'var(--color-text-muted)' }}>Scegli un pacchetto pre-configurato o crea il tuo workflow manuale.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
             {PRESETS.map(p => {
                const IconC = (Icons as any)[p.icon] || Icons.Zap;
                return (
-                  <button key={p.id} onClick={() => applyPreset(p)} className="glass-panel hover-glow" style={{ padding: '2rem', textAlign: 'center' }}>
-                     <IconC size={32} color="var(--color-primary)" style={{ margin: '0 auto 1rem auto' }} />
-                     <h4 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 0.5rem 0' }}>{p.label}</h4>
-                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Auto-fill 6 steps</p>
+                  <button key={p.id} onClick={() => applyPreset(p)} className="glass-panel hover-glow" style={{ padding: '2rem 1.5rem', textAlign: 'left', position: 'relative' }}>
+                     <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: p.badgeColor, color: '#fff', fontSize: '0.65rem', padding: '2px 8px', borderRadius: '12px', fontWeight: 800, textTransform: 'uppercase' }}>
+                        {p.badge}
+                     </div>
+                     <IconC size={32} color="var(--color-primary)" style={{ marginBottom: '1rem' }} />
+                     <h4 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0' }}>{p.label}</h4>
+                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: 0 }}>Auto-fill AI settings</p>
                   </button>
                )
             })}
@@ -315,16 +318,16 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
         <div className="fade-up-enter">
            <h3 style={{ fontSize: '2rem', marginBottom: '2rem', textAlign: 'center' }}>Final Summary</h3>
            
-           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
+           <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', gap: '2rem' }}>
               <div className="admin-card" style={{ padding: '1.5rem' }}>
-                 <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Your Choices</h4>
+                 <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Le Tue Scelte</h4>
                  {stepsData.map(st => {
                     const sel = selections[st.type];
                     if (!sel) return null;
                     return (
                        <div key={st.type} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.9rem' }}>
                           <span style={{ color: 'var(--color-text-muted)' }}>{st.title.split('?')[0]}</span>
-                          <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>{sel.label}</span>
+                          <span style={{ fontWeight: 600, color: 'var(--color-text)', textAlign: 'right', marginLeft: '1rem' }}>{sel.label}</span>
                        </div>
                     )
                  })}
@@ -332,17 +335,17 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
 
               <div className="admin-card" style={{ padding: '1.5rem' }}>
                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>
-                    <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)' }}>Advanced Prompt Editor</h4>
+                    <h4 style={{ fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)', margin: 0 }}>Advanced Prompt Editor</h4>
                     <Settings size={18} color="var(--color-text-muted)" />
                  </div>
 
-                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>I mattoncini che hai scelto hanno composto questo prompt ottimizzato. Puoi modificarlo manualmente prima di generare.</p>
+                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '1rem' }}>I mattoncini che hai scelto hanno composto questo prompt ottimizzato. Il motore ha calibrato pesi e filtri negativi anti-CGI.</p>
                  
-                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>PROMPT POSITIVO</label>
+                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>PROMPT POSITIVO</label>
                  <textarea value={finalPrompt} onChange={e => setFinalPrompt(e.target.value)} className="input-glass" rows={5} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', marginBottom: '1.5rem', border: '1px solid var(--color-primary)' }}></textarea>
 
-                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>PROMPT NEGATIVO</label>
-                 <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="input-glass" rows={2} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', borderColor: '#ef4444' }}></textarea>
+                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>PROMPT NEGATIVO</label>
+                 <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="input-glass" rows={3} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', borderColor: '#ef4444' }}></textarea>
 
                  <div style={{ marginTop: '2rem', textAlign: 'right' }}>
                     <button onClick={handleGenerate} className="btn-primary btn-hero-glow" style={{ padding: '1rem 3rem', fontSize: '1.1rem', fontWeight: 700 }}>
@@ -359,7 +362,7 @@ export default function DashboardWizard({ snippets }: { snippets: Snippet[] }) {
         <div className="admin-card fade-up-enter" style={{ textAlign: 'center', padding: '5rem 2rem' }}>
           <Wand2 size={64} color="var(--color-primary)" className="animate-pulse" style={{ margin: '0 auto 2rem auto' }} />
           <h2 style={{ fontSize: '2rem', marginBottom: '1rem', background: 'linear-gradient(90deg, #fff, var(--color-primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Compiling your masterpiece...
+            Generazione in corso...
           </h2>
         </div>
       )}
