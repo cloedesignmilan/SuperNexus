@@ -236,14 +236,13 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
       
       <style dangerouslySetInnerHTML={{__html: `
         .studio-layout {
-          display: flex;
-          flex: 1;
+          position: relative;
           width: 100%;
+          height: 100%;
           background: #000;
           color: #fff;
           font-family: 'Inter', sans-serif;
           overflow: hidden;
-          position: relative;
         }
 
         /* Ambient Orbs */
@@ -265,11 +264,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
         /* Split Screen */
         .studio-left {
-          flex: 1;
+          position: absolute;
+          top: 0; left: 0; bottom: 0;
+          width: 45%;
           display: flex;
           align-items: center;
           justify-content: center;
-          position: relative;
           z-index: 10;
           padding: 2rem;
           background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
@@ -277,9 +277,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         }
 
         .studio-right {
-          flex: 1.2;
+          position: absolute;
+          top: 0; right: 0; bottom: 0;
+          width: 55%;
           overflow-y: auto;
-          position: relative;
           z-index: 10;
           background: rgba(5,5,5,0.6);
           backdrop-filter: blur(40px);
