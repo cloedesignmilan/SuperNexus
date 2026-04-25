@@ -33,7 +33,10 @@ export default function PromptConfigsAdmin() {
   // Basic Categories based on user request
   const categories = ['t-shirt', 'shoes', 'swimwear', 'dress', 'bags', 'jewelry'];
   const modes = ['clean-catalog', 'ugc', 'lifestyle', 'ads', 'premium'];
-  const scenes = ['all', 'studio', 'street', 'home', 'beach'];
+  
+  // Extract unique scenes from configs
+  const dynamicScenes = Array.from(new Set(configs.map(c => c.scene).filter(Boolean))) as string[];
+  const scenes = Array.from(new Set(['all', 'studio', 'street', 'home', 'beach', ...dynamicScenes]));
 
   useEffect(() => {
     fetchConfigs();
@@ -161,7 +164,7 @@ export default function PromptConfigsAdmin() {
     }
   };
 
-  const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene || c.scene === null)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
+  const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
     <div>
