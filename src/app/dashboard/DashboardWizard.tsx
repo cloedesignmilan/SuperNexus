@@ -38,6 +38,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   const [isGenerating, setIsGenerating] = useState(false)
   const [results, setResults] = useState<string[]>([])
   const [error, setError] = useState<string | null>(null)
+  
+  // AI Analysis State
+  const [analysisData, setAnalysisData] = useState<any>(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -85,7 +89,48 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         const data = await res.json()
         if (data.url) {
           setUploadedUrl(data.url)
-          setStep(0.5)
+          
+          // Trigger AI Analysis
+          setIsAnalyzing(true)
+          setStep(0.25)
+          
+          fetch('/api/web/analyze-product', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrl: data.url })
+          })
+          .then(res => res.json())
+          .then(analysisRes => {
+            if (analysisRes.success && analysisRes.analysis) {
+              setAnalysisData(analysisRes.analysis)
+              
+              if (analysisRes.analysis.confidence > 0.6 && analysisRes.analysis.detectedProductType) {
+                const matchMap: Record<string, string> = {
+                  'swimwear': 'Swimwear / Beachwear',
+                  'women_clothing': 'Clothing / Fashion',
+                  'men_clothing': 'Clothing / Fashion',
+                  'tshirt_hoodie': 'T-Shirts / Hoodies',
+                  'shoes': 'Sneakers / Shoes Focus',
+                  'bags': 'Bags / Accessories',
+                  'jewelry': 'Jewelry / Watches',
+                  'ceremony_elegant': 'Ceremony / Elegant',
+                  'accessories': 'Bags / Accessories'
+                }
+                const label = matchMap[analysisRes.analysis.detectedProductType];
+                if (label) {
+                  const snip = snippets.find(s => s.snippet_type === 'PRODUCT_TYPE' && s.label === label);
+                  if (snip) {
+                    setSelections(prev => ({ ...prev, PRODUCT_TYPE: snip }));
+                  }
+                }
+              }
+            }
+          })
+          .catch(e => console.error("Analysis failed:", e))
+          .finally(() => {
+            setIsAnalyzing(false)
+          })
+
         } else {
           setError(data.error || 'Upload failed')
         }
@@ -162,8 +207,50 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   }
 
   const renderSnippetGrid = (type: string, stepIndex: number) => {
-    const typeSnippets = snippets.filter(s => s.snippet_type === type);
+    let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
+    // SMART FILTERING BASED ON AI ANALYSIS
+    if (analysisData && analysisData.detectedAttributes) {
+      typeSnippets = typeSnippets.map(s => {
+        let cloned = { ...s };
+        const label = cloned.label.toLowerCase();
+        
+        let isRecommended = false;
+        let isLowPriority = false;
+        
+        // Match Recommendations
+        if (analysisData.detectedAttributes.recommendedScenes && type === 'SCENE') {
+          if (analysisData.detectedAttributes.recommendedScenes.some((rs: string) => label.includes(rs.toLowerCase().split(' ')[0]))) {
+            isRecommended = true;
+          }
+        }
+        if (analysisData.detectedAttributes.recommendedModelOptions && type === 'MODEL_OPTION') {
+          if (analysisData.detectedAttributes.recommendedModelOptions.some((rm: string) => label.includes(rm.toLowerCase().split(' ')[0]))) {
+            isRecommended = true;
+          }
+        }
+
+        // Match Blocked
+        if (analysisData.detectedAttributes.blockedOrLowPriorityOptions) {
+          if (analysisData.detectedAttributes.blockedOrLowPriorityOptions.some((bo: string) => label.includes(bo.toLowerCase().split(' ')[0]))) {
+            isLowPriority = true;
+          }
+        }
+        
+        // Gender Rules
+        if (type === 'MODEL_OPTION' || type === 'SCENE') {
+          const gender = analysisData.detectedAttributes.genderTarget;
+          if (gender === 'woman' && (label.includes('man') || label.includes('uomo') || label.includes('male') || label.includes('boy'))) isLowPriority = true;
+          if (gender === 'man' && (label.includes('woman') || label.includes('donna') || label.includes('female') || label.includes('girl'))) isLowPriority = true;
+        }
+
+        if (isRecommended) cloned.sort_group = '✨ AI Suggested';
+        if (isLowPriority) cloned.sort_group = 'Other styles';
+
+        return cloned;
+      });
+    }
+
     const groups: Record<string, Snippet[]> = {};
     typeSnippets.forEach(s => {
        const g = s.sort_group || 'Other styles';
@@ -171,7 +258,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
        groups[g].push(s);
     });
 
-    const order = ['Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
+    const order = ['✨ AI Suggested', 'Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
     
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
@@ -561,6 +648,51 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
                 <CheckCircle2 size={16} color="#10b981" />
                 <span>Pixel-perfect product preservation. Colors and patterns remain exactly as uploaded.</span>
               </div>
+            </div>
+          )}
+
+          {/* STEP 0.25: AI ANALYSIS */}
+          {step === 0.25 && (
+            <div className="fade-up-enter" style={{ textAlign: 'center' }}>
+              {isAnalyzing ? (
+                <>
+                  <div style={{ width: '80px', height: '80px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem auto' }}>
+                    <Wand2 size={32} color="#3b82f6" className="animate-pulse" />
+                  </div>
+                  <h2 className="step-header">Analyzing Product...</h2>
+                  <p className="step-desc">AI is detecting materials, style, and structure.</p>
+                </>
+              ) : analysisData ? (
+                <>
+                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '24px', padding: '2rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#10b981', marginBottom: '1rem', fontWeight: 600 }}>
+                      <CheckCircle2 size={24} /> AI Detection Complete
+                    </div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'capitalize' }}>
+                      {analysisData.detectedProductType?.replace('_', ' ') || 'Unknown'}
+                    </div>
+                    {analysisData.detectedAttributes?.recommendedScenes && (
+                       <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
+                         Recommended: {analysisData.detectedAttributes.recommendedScenes.slice(0, 3).join(', ')}
+                       </div>
+                    )}
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                    <button onClick={() => setStep(0.5)} className="btn-magic">
+                      Looks Good <ArrowRight size={18} />
+                    </button>
+                    <button onClick={() => { setSelections(prev => ({...prev, PRODUCT_TYPE: null})); setStep(0.5); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.9rem', padding: '0 1.5rem' }}>
+                      Change Type
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="step-header">Analysis Skipped</h2>
+                  <button onClick={() => setStep(0.5)} className="btn-giant">Continue <ArrowRight size={18} /></button>
+                </>
+              )}
             </div>
           )}
 
