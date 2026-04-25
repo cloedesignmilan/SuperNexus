@@ -250,6 +250,21 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
             }
 
+            let localInviolableRules = GLOBAL_INVIOLABLE_RULES;
+            // Relax the strict 1:1 visual clone if we are asking for a Back or Angle view, 
+            // otherwise the AI will just paint the front of the shirt again.
+            const isBackOrAngle = shotInfo.shot_name.toLowerCase().includes('back') || 
+                                  shotInfo.shot_name.toLowerCase().includes('angle') || 
+                                  shotInfo.positive_prompt.toLowerCase().includes('back view') ||
+                                  shotInfo.positive_prompt.toLowerCase().includes('side view');
+            
+            if (isBackOrAngle) {
+                localInviolableRules = `\n\n[GLOBAL INVIOLABLE RULES]
+- You are viewing the FRONT of the product. You MUST INFER and generate the requested 3D angle (e.g. BACK VIEW or SIDE VIEW).
+- Do not add random new graphics to the back.
+- Preserve the original base color and fabric texture perfectly.`;
+            }
+
             variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${ecommerceBlockPositive}${shotInfo.positive_prompt}
@@ -257,13 +272,16 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
 CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
-` + GLOBAL_INVIOLABLE_RULES;
+` + localInviolableRules;
 
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                const cloneText = isBackOrAngle 
+                    ? "SUBJECT GARMENT REFERENCE (This is the front. You must rotate it 3D to show the requested angle/back):"
+                    : "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):";
+                aiParts.push({ text: cloneText });
                 aiParts.push(...base64OutfitParts);
             }
 
