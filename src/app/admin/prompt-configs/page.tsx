@@ -24,6 +24,7 @@ export default function PromptConfigsAdmin() {
   const [configs, setConfigs] = useState<PromptConfigShot[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   const [filterCat, setFilterCat] = useState('t-shirt');
   const [filterMode, setFilterMode] = useState('clean-catalog');
@@ -127,6 +128,39 @@ export default function PromptConfigsAdmin() {
     a.click();
   };
 
+  const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      setSaving(true);
+      const res = await fetch('/api/admin/prompt-configs/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'import', data })
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        alert(result.error || 'Import failed');
+      } else if (result.errors && result.errors.length > 0) {
+        alert(`Import completed with ${result.errors.length} errors:\n\n${result.errors.join('\\n')}`);
+      } else {
+        alert(`Successfully imported ${result.count} prompt shots!`);
+      }
+      
+      fetchConfigs();
+    } catch (err) {
+      alert("Invalid JSON file format");
+    } finally {
+      setSaving(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene || c.scene === null)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
@@ -137,6 +171,16 @@ export default function PromptConfigsAdmin() {
           <p className="text-gray-400 mt-2">Manage AI generation prompts via Database.</p>
         </div>
         <div className="flex gap-4">
+          <input 
+            type="file" 
+            accept=".json" 
+            className="hidden" 
+            ref={fileInputRef} 
+            onChange={handleImport} 
+          />
+          <button onClick={() => fileInputRef.current?.click()} className="flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-500 text-white font-medium">
+            <Upload className="w-4 h-4" /> Import JSON
+          </button>
           <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg hover:bg-gray-700">
             <Download className="w-4 h-4" /> Export JSON
           </button>
