@@ -161,8 +161,8 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             strictPoses = [
                 "[IMAGE 1 — FRONT VIEW] Model or garment facing the camera directly. Centered composition. Full t-shirt clearly visible.",
                 "[IMAGE 2 — BACK VIEW] Show the full back of the t-shirt. If no back print, still show back structure clearly.",
-                "[IMAGE 3 — SIDE ANGLE] Slight 30–45° angle. Show side fit and silhouette.",
-                "[IMAGE 4 — FLAT LAY (NO MODEL)] Top-down view. T-shirt placed on clean surface. No people.",
+                "[IMAGE 3 — SIDE ANGLE (MANDATORY DIFFERENT)] The t-shirt must be rotated clearly (minimum 45°). It must NOT look like a front view. The side shape and silhouette must be visible.",
+                "[IMAGE 4 — FLAT LAY (STRICT)] Top-down view from above (90° angle). T-shirt placed on surface. NO mannequin. NO hanging. NO standing. NO perspective angle. This must look like a real flat lay product photo.",
                 "[IMAGE 5 — CLOSE-UP DETAIL] Zoom on print or fabric. High detail, sharp focus."
             ];
         } else if (isTshirtUGC) {
@@ -249,7 +249,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
 
             let tshirtSpecificRules = "";
             if (isTshirtClean) {
-                tshirtSpecificRules = `\n[T-SHIRT ECOMMERCE STRUCTURED SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in color, design, proportions or print. GENERATE EXACTLY 5 IMAGES. Each image MUST follow a specific role. IMPORTANT RULES: Each image MUST be completely different. Do NOT repeat the same framing. Do NOT generate similar compositions. Each image has a different purpose. LIGHTING: Soft studio lighting, clean ecommerce style. This is a structured ecommerce photoshoot. Follow the shot list strictly. Do not improvise.`;
+                tshirtSpecificRules = `\n[T-SHIRT ECOMMERCE STRUCTURED SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in color, design, proportions or print. GENERATE EXACTLY 5 IMAGES. Each image MUST follow a specific role. IMPORTANT RULES: Each image MUST be completely different. Do NOT repeat the same framing. Do NOT generate similar compositions. Each image has a different purpose. If any required shot is missing or incorrect, the result is invalid. Do not replace missing shots with similar images. LIGHTING: Soft studio lighting, clean ecommerce style. This is a structured ecommerce photoshoot. Follow the shot list strictly. Do not improvise.`;
             } else if (isTshirt) {
                 tshirtSpecificRules = `\n[T-SHIRT CORE SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in: color, fabric, fit, graphics, proportions. The garment must remain perfectly identical. NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES. MODEL RULES: Realistic human, Natural skin texture (no plastic/AI look), Correct anatomy, No deformed hands. DIVERSITY RULE: Each image must vary pose, camera angle, framing, composition. OUTPUT QUALITY: Photorealistic, high-end fashion photography.`;
             }
