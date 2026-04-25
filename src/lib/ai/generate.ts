@@ -83,23 +83,25 @@ ${userClarification === 'UGC_MAN' ? `8. CLARIFICATION FROM THE USER: The user ha
 ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
     const poseModifiers = [
-        "walking confidently towards the camera with dynamic movement",
-        "standing straight with a high-fashion editorial pose",
-        "looking slightly away gracefully, elegant side profile posture",
-        "relaxed but confident posture, subtle and natural demeanor",
-        "in mid-motion, dynamic atmospheric fashion model pose"
+        "full body shot, side angle, walking dynamically along the scene, natural stride",
+        "medium shot, direct front pose, strong eye contact, calm and confident stance",
+        "close-up shot, looking away from camera, candid moment, relaxed natural posture",
+        "low angle shot, standing tall, fashion editorial posture, looking towards the horizon",
+        "high angle medium shot, adjusting hair or garment, candid documentary style"
     ];
 
     const lightingModifiers = [
-        "Golden hour sunset lighting, warm tones, beautiful edge rim light",
-        "Moody overcast weather, soft diffused editorial light, cinematic feel",
-        "High-contrast dramatic lighting, deep shadows, striking visual impact",
-        "Bright crisp daylight, sharp distinct shadows, vibrant atmosphere",
-        "Ethereal soft lighting, gentle shadows, highly aesthetic photography"
+        "editorial style, clean but real lighting, sharp focus",
+        "lifestyle candid style, slight motion blur for realism, bright daylight",
+        "golden hour sunset, warm cinematic lighting, beautiful edge rim light",
+        "imperfect realistic lighting, natural shadow play, raw photography style",
+        "bright crisp daylight, sharp distinct shadows, vibrant atmosphere"
     ];
 
-    const shuffledPoses = poseModifiers.sort(() => Math.random() - 0.5);
-    const shuffledLighting = lightingModifiers.sort(() => Math.random() - 0.5);
+    // Ensure variety by never repeating the exact same index combo
+    // We shuffle but ensure distinct distance/angles per image
+    const shuffledPoses = [...poseModifiers].sort(() => Math.random() - 0.5);
+    const shuffledLighting = [...lightingModifiers].sort(() => Math.random() - 0.5);
 
     const promises = [];
 
@@ -135,10 +137,12 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         } else {
             if (varianceEnabled) {
                 const magicalScene = getRandomSceneForSubcategory(subcat.business_mode?.category?.slug + " " + subcat.business_mode?.slug + " " + subcat.slug);
-                currentLighting += magicalScene;
+                currentLighting += " " + magicalScene;
             }
             
-            variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nPOSE SUGGESTION: ${currentPose}\nLIGHTING/SCENE SUGGESTION: ${currentLighting}\nForza questi disturbi. Mantieni il VISO PERFETTAMENTE A FUOCO e USA un NEGATIVE PROMPT SERVER SIDE per sfavorire: "(plastic skin:1.5), perfect symmetry, heavily airbrushed, fake AI look".]`;
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${subcat.negative_prompt}` : "";
+            
+            variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLIGHTING/AESTHETIC SUGGESTION: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
