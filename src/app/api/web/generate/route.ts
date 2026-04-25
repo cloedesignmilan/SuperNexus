@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds } = body
+    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat } = body
 
     if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
@@ -35,14 +35,33 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Insufficient credits', remaining }, { status: 402 })
     }
 
-    // Trova il Default Subcategory per legare il Job (God Mode Dynamic Node)
-    const subcat = await prisma.subcategory.findFirst({
-      where: { slug: 'dynamic-engine' },
-      include: { business_mode: { include: { category: true } }, reference_images: true }
-    })
+    // Trova la Subcategory reale selezionata dall'utente
+    let subcat = null;
+    if (taxonomyCat && taxonomyMode && taxonomySubcat) {
+      subcat = await prisma.subcategory.findFirst({
+        where: { 
+          name: taxonomySubcat,
+          business_mode: {
+            name: taxonomyMode,
+            category: {
+              name: taxonomyCat
+            }
+          }
+        },
+        include: { business_mode: { include: { category: true } }, reference_images: true }
+      });
+    }
+
+    // Fallback al Dynamic Engine se la tassonomia non è mappata o mancano i parametri
+    if (!subcat) {
+      subcat = await prisma.subcategory.findFirst({
+        where: { slug: 'dynamic-engine' },
+        include: { business_mode: { include: { category: true } }, reference_images: true }
+      })
+    }
 
     if (!subcat) {
-      return NextResponse.json({ error: 'Dynamic Engine node not configured in DB' }, { status: 500 })
+      return NextResponse.json({ error: 'System architecture not initialized. Please run seeder.' }, { status: 500 })
     }
 
     // Iniettiamo il prompt dinamico sovrascrivendo temporaneamente quello del subcat

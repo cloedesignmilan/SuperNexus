@@ -197,7 +197,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         negativePrompt,
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
-        selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id)
+        selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
+        taxonomyCat: selections['PRODUCT_TYPE']?.label || null,
+        taxonomyMode: selections['IMAGE_TYPE']?.label || null,
+        taxonomySubcat: selections['MODEL_OPTION']?.label || null
       }
 
       const res = await fetch('/api/web/generate', {
