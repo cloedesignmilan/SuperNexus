@@ -25,36 +25,41 @@ export default async function GalleryPage() {
     redirect('/auth')
   }
 
-  // 3. Fetch files from Supabase Storage (both Web and Telegram generations)
-  const adminSupabase = createSupabaseAdmin(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  // 3. Fetch JobImages from Database instead of Supabase Storage directly
+  const jobImages = await prisma.jobImage.findMany({
+    where: {
+      job: {
+        user_id: dbUser.id
+      }
+    },
+    include: {
+      job: {
+        include: {
+          category: true,
+          business_mode: true,
+          subcategory: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: 'desc'
+    },
+    take: 100
+  })
 
-  const { data: files, error: storageError } = await adminSupabase.storage
-    .from('telegram-outputs')
-    .list('', {
-      limit: 100,
-      sortBy: { column: 'created_at', order: 'desc' },
-    })
-
-  let userImages: string[] = []
-
-  if (!storageError && files) {
-    const webPrefix = `web_out_${dbUser.id}_`
-    const tgPrefix = dbUser.telegram_chat_id ? `out_${dbUser.telegram_chat_id}_` : null
-
-    // Filter files that belong to this user
-    const userFiles = files.filter(f => 
-      f.name.startsWith(webPrefix) || (tgPrefix && f.name.startsWith(tgPrefix))
-    )
-
-    // Generate public URLs
-    userImages = userFiles.map(f => {
-      const { data } = adminSupabase.storage.from('telegram-outputs').getPublicUrl(f.name)
-      return data.publicUrl
-    })
-  }
+  // Generate objects with url and formatted path
+  const userGalleryItems = jobImages.map(img => {
+    const job = img.job;
+    const pathParts = [];
+    if (job.category) pathParts.push(job.category.name);
+    if (job.business_mode) pathParts.push(job.business_mode.name);
+    if (job.subcategory && job.subcategory.slug !== 'dynamic-engine') pathParts.push(job.subcategory.name);
+    
+    return {
+      url: img.image_url,
+      path: pathParts.join(' → ').toUpperCase() || 'CUSTOM CONFIGURATION'
+    };
+  });
 
   return (
     <div>
@@ -65,7 +70,7 @@ export default async function GalleryPage() {
         </p>
       </div>
 
-      {userImages.length === 0 ? (
+      {userGalleryItems.length === 0 ? (
         <div className="glass-panel" style={{ padding: '4rem', textAlign: 'center', borderStyle: 'dashed', borderWidth: '2px', borderColor: 'rgba(255,255,255,0.1)' }}>
           <p style={{ color: 'var(--color-text-muted)' }}>
             No images generated in the last 24 hours. Head to the Studio to create some!
@@ -73,8 +78,8 @@ export default async function GalleryPage() {
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
-          {userImages.map((url, i) => (
-            <GalleryCard key={i} url={url} />
+          {userGalleryItems.map((item, i) => (
+            <GalleryCard key={i} url={item.url} path={item.path} />
           ))}
         </div>
       )}

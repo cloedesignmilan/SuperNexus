@@ -2,7 +2,7 @@
 
 import { Download } from 'lucide-react'
 
-export default function GalleryCard({ url }: { url: string }) {
+export default function GalleryCard({ url, path }: { url: string, path?: string }) {
   const handleDownload = async () => {
     try {
       const response = await fetch(url);
@@ -32,7 +32,12 @@ export default function GalleryCard({ url }: { url: string }) {
   };
 
   return (
-    <div className="glass-panel hover-glow" style={{ padding: '1rem', borderRadius: '16px', overflow: 'hidden' }}>
+    <div className="glass-panel hover-glow" style={{ padding: '1rem', borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {path && (
+        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#10b981', letterSpacing: '0.05em', padding: '0.2rem 0.5rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '4px', alignSelf: 'flex-start' }}>
+          {path}
+        </div>
+      )}
       <img 
         src={url} 
         alt="AI Generated Output" 

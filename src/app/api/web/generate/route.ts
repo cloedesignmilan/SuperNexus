@@ -130,6 +130,15 @@ export async function POST(req: NextRequest) {
                 shotNumber: metadata.shotNumber,
                 shotName: metadata.shotName
             })
+            
+            await prisma.jobImage.create({
+              data: {
+                job_id: newJob.id,
+                image_url: publicUrl,
+                storage_path: oFileName,
+                image_order: i
+              }
+            })
         }
     }
 
