@@ -164,7 +164,10 @@ export default function PromptConfigsAdmin() {
     }
   };
 
-  const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
+  const filteredConfigs = configs.filter(c => 
+    c.mode === filterMode && 
+    (filterScene === 'all' ? true : c.scene === filterScene)
+  ).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
     <div>
