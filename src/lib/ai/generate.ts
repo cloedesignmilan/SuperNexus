@@ -95,23 +95,22 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     ];
 
     const lightingModifiers = [
-        "bright sunlight, clear day, strong direct lighting",
+        "bright sunlight, clear day, strong direct lighting, summer outdoor lighting",
         "soft diffused lighting, overcast or gentle sunset, flattering and smooth",
-        "dramatic lighting with distinct natural shadows, high contrast, artistic shadow play",
-        "golden hour warm lighting, cinematic rim light",
-        "editorial studio-style clean lighting but outdoors, sharp focus"
+        "golden hour warm lighting, cinematic rim light"
     ];
 
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
-    // Lighting is also strictly sequenced as requested by user.
     const strictPoses = [...poseModifiers];
-    const strictLighting = [...lightingModifiers];
+    
+    // STYLE LOCK: Pick ONE lighting style and ONE magical seed base for the ENTIRE BATCH
+    const lockedLighting = lightingModifiers[Math.floor(Math.random() * lightingModifiers.length)];
 
     const promises = [];
 
     for (let i = 0; i < qty; i++) {
         const currentPose = strictPoses[i % strictPoses.length];
-        let currentLighting = strictLighting[i % strictLighting.length];
+        let currentLighting = lockedLighting;
 
         let variantPrompt = "";
         let aiParts = [];
@@ -146,7 +145,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             
             const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${subcat.negative_prompt}` : "";
             
-            variantPrompt = userPrompt + `\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLIGHTING/AESTHETIC SUGGESTION: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            variantPrompt = userPrompt + `\n\n[COHERENCE SYSTEM: All generated images for this batch MUST stay in the SAME environment with the SAME MODEL. This is a single photoshoot. Do NOT change the environment type or lighting setup between shots.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });

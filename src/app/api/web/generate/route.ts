@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       publicUrls: [imageUrl],
       userClarification: `Aspect Ratio: ${aspectRatio || '4:5'}`, // Usato come meta
       isOutfit: false,
-      varianceEnabled: true,
+      varianceEnabled: false,
       generationModel
     })
 
