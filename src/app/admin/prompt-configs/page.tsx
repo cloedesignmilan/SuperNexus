@@ -166,7 +166,7 @@ export default function PromptConfigsAdmin() {
 
   const filteredConfigs = configs.filter(c => 
     c.mode === filterMode && 
-    (filterScene === 'all' ? true : c.scene === filterScene)
+    (filterScene === 'all' ? true : (c.scene && c.scene.toLowerCase().includes(filterScene.toLowerCase())))
   ).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
