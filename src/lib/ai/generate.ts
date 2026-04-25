@@ -83,31 +83,35 @@ ${userClarification === 'UGC_MAN' ? `8. CLARIFICATION FROM THE USER: The user ha
 ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
     const poseModifiers = [
-        "full body shot, side angle, walking dynamically along the scene, natural stride",
-        "medium shot, direct front pose, strong eye contact, calm and confident stance",
-        "close-up shot, looking away from camera, candid moment, relaxed natural posture",
-        "low angle shot, standing tall, fashion editorial posture, looking towards the horizon",
-        "high angle medium shot, adjusting hair or garment, candid documentary style"
+        // Image 1: Hero Shot
+        "full body shot, walking or standing, clean composition, clear product visibility, fashion editorial posture",
+        // Image 2: Lifestyle Shot
+        "medium shot, relaxed pose, touching hair or looking away, natural candid moment, interacting with environment",
+        // Image 3: Detail / Fashion Shot
+        "closer crop, torso or upper body focus, focus on product fit and details, highly editorial composition",
+        // Image 4+: randomized variations
+        "low camera angle, looking towards the horizon, elegant fashion posture, dynamic",
+        "high angle shot, adjusting garment, candid documentary style, looking away"
     ];
 
     const lightingModifiers = [
-        "editorial style, clean but real lighting, sharp focus",
-        "lifestyle candid style, slight motion blur for realism, bright daylight",
-        "golden hour sunset, warm cinematic lighting, beautiful edge rim light",
-        "imperfect realistic lighting, natural shadow play, raw photography style",
-        "bright crisp daylight, sharp distinct shadows, vibrant atmosphere"
+        "bright sunlight, clear day, strong direct lighting",
+        "soft diffused lighting, overcast or gentle sunset, flattering and smooth",
+        "dramatic lighting with distinct natural shadows, high contrast, artistic shadow play",
+        "golden hour warm lighting, cinematic rim light",
+        "editorial studio-style clean lighting but outdoors, sharp focus"
     ];
 
-    // Ensure variety by never repeating the exact same index combo
-    // We shuffle but ensure distinct distance/angles per image
-    const shuffledPoses = [...poseModifiers].sort(() => Math.random() - 0.5);
-    const shuffledLighting = [...lightingModifiers].sort(() => Math.random() - 0.5);
+    // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
+    // Lighting is also strictly sequenced as requested by user.
+    const strictPoses = [...poseModifiers];
+    const strictLighting = [...lightingModifiers];
 
     const promises = [];
 
     for (let i = 0; i < qty; i++) {
-        const currentPose = shuffledPoses[i % shuffledPoses.length];
-        let currentLighting = shuffledLighting[i % shuffledLighting.length];
+        const currentPose = strictPoses[i % strictPoses.length];
+        let currentLighting = strictLighting[i % strictLighting.length];
 
         let variantPrompt = "";
         let aiParts = [];
@@ -224,6 +228,11 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             console.error('Una delle generazioni multiple ha fallito definitivamente:', outcome.reason);
             errorMessages.push(outcome.reason?.message || outcome.reason?.toString() || "Unknown error");
         }
+    }
+
+    // Ensure exact quantity output
+    if (generatedBase64s.length > qty) {
+        generatedBase64s = generatedBase64s.slice(0, qty);
     }
 
     return {
