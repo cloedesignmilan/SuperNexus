@@ -83,15 +83,15 @@ ${userClarification === 'UGC_MAN' ? `8. CLARIFICATION FROM THE USER: The user ha
 ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
     const poseModifiers = [
-        // Image 1: Hero Shot
-        "full body shot, walking or standing, clean composition, clear product visibility, fashion editorial posture",
-        // Image 2: Lifestyle Shot
-        "medium shot, relaxed pose, touching hair or looking away, natural candid moment, interacting with environment",
-        // Image 3: Detail / Fashion Shot
-        "closer crop, torso or upper body focus, focus on product fit and details, highly editorial composition",
+        // Image 1: Attention (scroll stopping) / Hero Shot
+        "[COMMERCIAL INTENT: ATTENTION/SCROLL STOPPING] full body shot, walking or standing, clean composition, clear product visibility, fashion editorial posture, high impact",
+        // Image 2: Trust (clean, clear product visibility) / Lifestyle
+        "[COMMERCIAL INTENT: TRUST/CLEAR VISIBILITY] medium shot, relaxed pose, touching hair or looking away, natural candid moment, interacting with environment, builds trust",
+        // Image 3: Desire (lifestyle/emotional connection) / Detail
+        "[COMMERCIAL INTENT: DESIRE/LIFESTYLE] closer crop, torso or upper body focus, focus on product fit and details, highly editorial composition, emotional connection",
         // Image 4+: randomized variations
-        "low camera angle, looking towards the horizon, elegant fashion posture, dynamic",
-        "high angle shot, adjusting garment, candid documentary style, looking away"
+        "[COMMERCIAL INTENT: ATTENTION] low camera angle, looking towards the horizon, elegant fashion posture, dynamic",
+        "[COMMERCIAL INTENT: DESIRE] high angle shot, adjusting garment, candid documentary style, looking away"
     ];
 
     const lightingModifiers = [
@@ -145,7 +145,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             
             const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${subcat.negative_prompt}` : "";
             
-            variantPrompt = userPrompt + `\n\n[COHERENCE SYSTEM: All generated images for this batch MUST stay in the SAME environment with the SAME MODEL. This is a single photoshoot. Do NOT change the environment type or lighting setup between shots.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            variantPrompt = userPrompt + `\n\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
