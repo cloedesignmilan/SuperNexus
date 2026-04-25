@@ -31,9 +31,10 @@ export default function PromptConfigsAdmin() {
   const [filterMode, setFilterMode] = useState('clean-catalog');
   const [filterScene, setFilterScene] = useState('all');
   
-  // Basic Categories based on user request
+  // Master Taxonomy based on user request
   const categories = ['t-shirt', 'shoes', 'swimwear', 'dress', 'bags', 'jewelry'];
-  const modes = ['clean-catalog', 'ugc', 'lifestyle', 'ads', 'premium'];
+  const modes = ['clean-catalog', 'model-studio', 'lifestyle', 'ugc', 'ads', 'detail', 'variants'];
+  const presentations = ['no-model', 'model'];
   
   // Extract unique scenes from configs
   const dynamicScenes = Array.from(new Set(configs.map(c => c.scene).filter(Boolean))) as string[];
@@ -61,8 +62,8 @@ export default function PromptConfigsAdmin() {
     const newConfig = {
       category: filterCat,
       mode: filterMode,
-      presentation: 'no-model',
-      scene: filterScene,
+      presentation: 'no-model', // Default, can be changed in the editor
+      scene: filterScene === 'all' ? 'studio' : filterScene,
       shotNumber: configs.length > 0 ? Math.max(...configs.map(c => c.shotNumber)) + 1 : 1,
       shotName: 'New Shot',
       positivePrompt: '',
