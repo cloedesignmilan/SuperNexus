@@ -103,6 +103,24 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     const isShoeCatalog = userPrompt.includes('CLEAN CATALOG MODE – SHOES') || userPrompt.toLowerCase().includes('shoes');
     const isTshirt = userPrompt.toLowerCase().includes('t-shirt') || userPrompt.toLowerCase().includes('tshirt') || userPrompt.toLowerCase().includes('hoodie');
 
+    let isTshirtClean = false;
+    let isTshirtUGC = false;
+    let isTshirtAds = false;
+    let isTshirtBackPrint = false;
+    let isTshirtNoModel = false;
+    let isTshirtColorVariants = false;
+    let isTshirtPremium = false;
+
+    if (isTshirt) {
+        isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
+        isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
+        isTshirtAds = userPrompt.toLowerCase().includes('ads') || userPrompt.toLowerCase().includes('scroll stopper');
+        isTshirtBackPrint = userPrompt.toLowerCase().includes('back print') || userPrompt.toLowerCase().includes('back design');
+        isTshirtNoModel = userPrompt.toLowerCase().includes('no model');
+        isTshirtColorVariants = userPrompt.toLowerCase().includes('color variants') || userPrompt.toLowerCase().includes('different colors');
+        isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
+    }
+
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
     let strictPoses = [...poseModifiers];
     
@@ -117,14 +135,6 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             "[SHOES ANGLE 7] detail close-up (logo or texture)"
         ];
     } else if (isTshirt) {
-        let isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
-        let isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
-        let isTshirtAds = userPrompt.toLowerCase().includes('ads') || userPrompt.toLowerCase().includes('scroll stopper');
-        let isTshirtBackPrint = userPrompt.toLowerCase().includes('back print') || userPrompt.toLowerCase().includes('back design');
-        let isTshirtNoModel = userPrompt.toLowerCase().includes('no model');
-        let isTshirtColorVariants = userPrompt.toLowerCase().includes('color variants') || userPrompt.toLowerCase().includes('different colors');
-        let isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
-
         if (isTshirtBackPrint) {
             strictPoses = [
                 "[T-SHIRT BACK PRINT 1] Show full back clearly, model turned away, design fully visible, no cropping",
