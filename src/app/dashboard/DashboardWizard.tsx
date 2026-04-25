@@ -63,9 +63,9 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
       const isUGC = selections['IMAGE_TYPE']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('UGC');
       if (isUGC) {
-         const ugcRules = "Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested. ";
+         const ugcRules = "[UGC REALISM MODE (HARD): This must NOT look like a professional photoshoot. Simulate a real iPhone photo taken by a normal person. Rules: imperfect framing (slightly off-center), slight motion blur allowed, uneven natural lighting (no studio light), realistic skin texture (pores, small imperfections), casual pose (not posed, not model-like), handheld feeling (not tripod), slightly tilted horizon allowed, background not perfectly clean, depth of field must be flat (like smartphone). Camera simulation: iPhone camera, no cinematic blur, no professional lens look, natural exposure, slightly over or under exposed allowed. IMPORTANT: This must feel like 'a real girl on vacation took this photo quickly' NOT 'a fashion brand campaign'. Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested.] ";
          fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + ugcRules + fPrompt;
-         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, added accessories, sunglasses, bag, hat, jewelry, props, " + nPrompt;
+         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, professional photoshoot, cinematic blur, depth of field, posed model, perfect framing, added accessories, sunglasses, bag, hat, jewelry, props, " + nPrompt;
       }
 
       if (analysisData?.detectedProductType === 'swimwear') {
