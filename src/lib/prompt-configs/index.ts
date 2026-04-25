@@ -42,9 +42,16 @@ export async function getPromptsForSelection({
               category: normCat,
               mode: normMode,
               presentation: normPres,
+              OR: [
+                  { scene: scene || "all" },
+                  { scene: "all" }
+              ],
               isActive: true,
           },
-          orderBy: { shotNumber: 'asc' }
+          orderBy: [
+              { priority: 'desc' },
+              { shotNumber: 'asc' }
+          ]
       });
 
       if (dbShots.length > 0) {

@@ -39,6 +39,7 @@ export async function POST(request: Request) {
               hardRules: item.hardRules,
               outputGoal: item.outputGoal,
               isActive: item.isActive,
+              priority: Number(item.priority || 0),
               scene: item.scene,
               aspectRatio: item.aspectRatio
             },
@@ -53,6 +54,7 @@ export async function POST(request: Request) {
               hardRules: item.hardRules,
               outputGoal: item.outputGoal,
               isActive: item.isActive ?? true,
+              priority: Number(item.priority || 0),
               scene: item.scene,
               aspectRatio: item.aspectRatio
             }

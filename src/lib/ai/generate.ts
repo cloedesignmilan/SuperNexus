@@ -243,13 +243,20 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         if (configShots && i < configShots.length) {
             const shotInfo = configShots[i];
             
+            let ecommerceBlockPositive = "";
+            let ecommerceBlockNegative = "";
+            if (modeSlug === "clean-catalog" && presentationSlug === "no-model") {
+                ecommerceBlockPositive = "single product, centered, clean background, ";
+                ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
+            }
+
             variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
-[POSITIVE INSTRUCTIONS]: ${shotInfo.positive_prompt}
+[POSITIVE INSTRUCTIONS]: ${ecommerceBlockPositive}${shotInfo.positive_prompt}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-CRITICAL NEGATIVE PROMPT: ${shotInfo.negative_prompt}
+CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
 ` + GLOBAL_INVIOLABLE_RULES;
 
             if (isOutfit) {

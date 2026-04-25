@@ -16,6 +16,7 @@ interface PromptConfigShot {
   negativePrompt: string;
   hardRules: string;
   outputGoal: string | null;
+  priority: number;
   isActive: boolean;
 }
 
@@ -26,10 +27,12 @@ export default function PromptConfigsAdmin() {
   
   const [filterCat, setFilterCat] = useState('t-shirt');
   const [filterMode, setFilterMode] = useState('clean-catalog');
+  const [filterScene, setFilterScene] = useState('all');
   
   // Basic Categories based on user request
   const categories = ['t-shirt', 'shoes', 'swimwear', 'dress', 'bags', 'jewelry'];
   const modes = ['clean-catalog', 'ugc', 'lifestyle', 'ads', 'premium'];
+  const scenes = ['all', 'studio', 'street', 'home', 'beach'];
 
   useEffect(() => {
     fetchConfigs();
@@ -54,11 +57,13 @@ export default function PromptConfigsAdmin() {
       category: filterCat,
       mode: filterMode,
       presentation: 'no-model',
+      scene: filterScene,
       shotNumber: configs.length > 0 ? Math.max(...configs.map(c => c.shotNumber)) + 1 : 1,
       shotName: 'New Shot',
       positivePrompt: '',
       negativePrompt: '',
       hardRules: '',
+      priority: 0,
       isActive: true
     };
     
@@ -122,7 +127,7 @@ export default function PromptConfigsAdmin() {
     a.click();
   };
 
-  const filteredConfigs = configs.filter(c => c.mode === filterMode).sort((a,b) => a.shotNumber - b.shotNumber);
+  const filteredConfigs = configs.filter(c => c.mode === filterMode && (c.scene === filterScene || c.scene === null)).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
   return (
     <div className="p-8 max-w-7xl mx-auto text-gray-100">
@@ -158,6 +163,16 @@ export default function PromptConfigsAdmin() {
             className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
           >
             {modes.map(m => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-gray-500 mb-1">Scene</label>
+          <select 
+            value={filterScene} 
+            onChange={(e) => setFilterScene(e.target.value)}
+            className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+          >
+            {scenes.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </div>
         <div className="ml-auto flex items-end">
@@ -250,6 +265,26 @@ export default function PromptConfigsAdmin() {
                         if (s) s.shotNumber = Number(e.target.value);
                         setConfigs(newConfigs);
                       }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-gray-500 mb-1">priority</label>
+                      <input type="number" value={shot.priority} onChange={(e) => {
+                        const newConfigs = [...configs];
+                        const s = newConfigs.find(c => c.id === shot.id);
+                        if (s) s.priority = Number(e.target.value);
+                        setConfigs(newConfigs);
+                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono text-gray-500 mb-1">scene</label>
+                      <select value={shot.scene || 'all'} onChange={(e) => {
+                        const newConfigs = [...configs];
+                        const s = newConfigs.find(c => c.id === shot.id);
+                        if (s) s.scene = e.target.value;
+                        setConfigs(newConfigs);
+                      }} className="w-full bg-gray-800 border border-gray-700 rounded text-sm px-3 py-1.5 text-white">
+                        {scenes.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
                     </div>
                   </div>
 

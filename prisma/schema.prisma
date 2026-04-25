@@ -239,7 +239,7 @@ model PromptConfigShot {
   category        String
   mode            String
   presentation    String
-  scene           String?
+  scene           String   @default("all")
   aspectRatio     String?
   shotNumber      Int
   shotName        String
@@ -247,9 +247,10 @@ model PromptConfigShot {
   negativePrompt  String   @db.Text
   hardRules       String   @db.Text
   outputGoal      String?  @db.Text
+  priority        Int      @default(0)
   isActive        Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  @@unique([category, mode, presentation, shotNumber])
+  @@unique([category, mode, presentation, scene, aspectRatio, shotNumber])
 }
