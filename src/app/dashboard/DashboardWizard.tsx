@@ -61,6 +61,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
          }
       });
 
+      const isUGC = selections['IMAGE_TYPE']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('UGC');
+      if (isUGC) {
+         fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + fPrompt;
+         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, " + nPrompt;
+      }
+
       setFinalPrompt(fPrompt.replace(/, $/, ''));
       setNegativePrompt(nPrompt.replace(/, $/, ''));
     }
@@ -233,21 +239,64 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
     let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
+    // FORMAT / QUANTITY MICROCOPY OVERRIDE
+    if (type === 'FORMAT') {
+      typeSnippets = typeSnippets.map(s => {
+        let cloned = { ...s };
+        if (cloned.label === '4:5') cloned.description = 'Best for Instagram';
+        if (cloned.label === '1:1') cloned.description = 'Ecommerce';
+        if (cloned.label === '9:16') cloned.description = 'TikTok / Reels';
+        if (cloned.label === '16:9') cloned.description = 'Website / banners';
+        return cloned;
+      });
+    }
+
+    if (type === 'QUANTITY') {
+      typeSnippets = typeSnippets.map(s => {
+        let cloned = { ...s };
+        if (cloned.label === '1') cloned.description = 'Basic';
+        if (cloned.label === '3') cloned.description = '⭐ Most popular';
+        if (cloned.label === '5') cloned.description = '🔥 Better variety';
+        if (cloned.label === '10') cloned.description = '⚡ Pro pack';
+        return cloned;
+      });
+    }
+
     // SMART FILTERING BASED ON AI ANALYSIS
     if (analysisData && analysisData.detectedProductType) {
       const pType = analysisData.detectedProductType;
-      typeSnippets = typeSnippets.map(s => {
-        let cloned = { ...s };
-        const label = cloned.label.toLowerCase();
-        
-        let isRecommended = false;
-        let isLowPriority = false;
-        
-        if (pType === 'swimwear') {
-           if (type === 'MODEL_OPTION' && label.includes('woman')) isRecommended = true;
-           if (type === 'SCENE' && (label.includes('beach') || label.includes('pool') || label.includes('resort') || label.includes('summer'))) isRecommended = true;
-           if (type === 'SCENE' && (label.includes('ceremony') || label.includes('office') || label.includes('winter') || label.includes('street'))) isLowPriority = true;
-        } else if (pType === 'shoes') {
+      
+      // Strict Swimwear Override
+      if (pType === 'swimwear') {
+        if (type === 'SCENE') {
+          typeSnippets = [
+            { id: 'sw_beach', label: 'Tropical Beach', description: 'Crystal clear water and white sand', icon: 'Sun', prompt_fragment: 'tropical beach background, white sand, crystal clear ocean water, sunny day', negative_fragment: 'indoor, dark', sort_group: '✨ AI Suggested' },
+            { id: 'sw_pool', label: 'Pool', description: 'Luxury swimming pool setting', icon: 'Droplets', prompt_fragment: 'luxury swimming pool edge, clear blue water, sunny day reflections', negative_fragment: 'indoor, dirty', sort_group: '✨ AI Suggested' },
+            { id: 'sw_resort', label: 'Resort / Vacation', description: 'Premium resort or tropical villa', icon: 'Palmtree', prompt_fragment: 'premium tropical resort background, palm trees, luxury villa', negative_fragment: 'cheap, urban, city', sort_group: '✨ AI Suggested' },
+            { id: 'sw_summer', label: 'Summer Lifestyle', description: 'Natural summer vibe and aesthetics', icon: 'Camera', prompt_fragment: 'summer lifestyle background, natural outdoor lighting, sunny', negative_fragment: 'winter, snow, dark', sort_group: '✨ AI Suggested' }
+          ];
+          if (selections['IMAGE_TYPE']?.label.includes('Catalog')) {
+            typeSnippets.push({ id: 'sw_studio', label: 'Studio clean', description: 'Simple background for ecommerce', icon: 'Box', prompt_fragment: 'clean studio background, solid color, softbox lighting', negative_fragment: 'outdoor, messy, nature', sort_group: 'Other styles' });
+          }
+        } else if (type === 'MODEL_OPTION') {
+          typeSnippets = [
+            { id: 'sw_candid', label: 'Candid Real Woman', description: 'Natural poses and authentic look', icon: 'User', prompt_fragment: 'beautiful real woman wearing the product, candid pose, natural look', negative_fragment: 'man, male, boy, mannequin, flat lay', sort_group: '✨ AI Suggested' },
+            { id: 'sw_ugc_iphone', label: 'UGC iPhone Style', description: 'Selfie or relatable social media style', icon: 'Smartphone', prompt_fragment: 'woman taking a mirror selfie or natural pose, iPhone photography, social media style', negative_fragment: 'man, male, boy, professional studio, DSLR', sort_group: '✨ AI Suggested' },
+            { id: 'sw_curvy', label: 'Curvy / Plus Size', description: 'Beautiful curvy model presentation', icon: 'Heart', prompt_fragment: 'beautiful curvy plus size woman model wearing the product, confident, natural', negative_fragment: 'man, male, boy, skinny, flat lay', sort_group: '✨ AI Suggested' }
+          ];
+          if (selections['IMAGE_TYPE']?.label.includes('Catalog')) {
+            typeSnippets.push({ id: 'sw_nomodel', label: 'No Model', description: 'Product only (flat lay or ghost)', icon: 'Box', prompt_fragment: 'ghost mannequin or flat lay product photography, no model', negative_fragment: 'human, person, model, face, body', sort_group: 'Other styles' });
+          }
+        }
+      } else {
+        typeSnippets = typeSnippets.map(s => {
+          let cloned = { ...s };
+          const label = cloned.label.toLowerCase();
+          
+          let isRecommended = false;
+          let isLowPriority = false;
+          
+          if (pType === 'shoes') {
            if (type === 'IMAGE_GOAL' && label.includes('ecommerce')) isRecommended = true;
            if (type === 'MODEL_OPTION' && (label.includes('on-foot') || label.includes('sole') || label.includes('3/4') || label.includes('side'))) isRecommended = true;
            if (type === 'MODEL_OPTION' && label.includes('woman model')) isLowPriority = true;
@@ -266,11 +315,12 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
            if (type === 'SCENE' && (label.includes('studio') || label.includes('shine'))) isRecommended = true;
         }
 
-        if (isRecommended) cloned.sort_group = '✨ AI Suggested';
-        else if (isLowPriority) cloned.sort_group = 'Other styles';
+          if (isRecommended) cloned.sort_group = '✨ AI Suggested';
+          else if (isLowPriority) cloned.sort_group = 'Other styles';
 
-        return cloned;
-      });
+          return cloned;
+        });
+      }
     }
 
     const groups: Record<string, Snippet[]> = {};
@@ -351,7 +401,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   const stepsData = [
     { num: 1, type: 'IMAGE_TYPE', title: 'What kind of image do you want?', desc: '' },
     { num: 2, type: 'SCENE', title: 'Choose the scene', desc: '' },
-    { num: 3, type: 'MODEL_OPTION', title: 'How should it be presented?', desc: '' },
+    { num: 3, type: 'MODEL_OPTION', title: 'Who wears it & how?', desc: '' },
     { num: 4, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: '' },
   ];
 
