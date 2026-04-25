@@ -63,14 +63,15 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
       const isUGC = selections['IMAGE_TYPE']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('UGC');
       if (isUGC) {
-         fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + fPrompt;
-         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, " + nPrompt;
+         const ugcRules = "Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested. ";
+         fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + ugcRules + fPrompt;
+         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, added accessories, sunglasses, bag, hat, jewelry, props, " + nPrompt;
       }
 
       if (analysisData?.detectedProductType === 'swimwear') {
-         const swimwearRules = "This is a SWIMWEAR product (bikini). The model must clearly be wearing a bikini suitable for beach or pool environments. The scene must reflect a summer setting: tropical beach, luxury resort, poolside, or sunny outdoor environment. The bikini must remain 100% identical to the reference image: same color, same shape, same fit, same design. Do NOT modify the product in any way. Lighting must feel natural and summery. Avoid studio fashion looks that do not match swimwear context. ";
+         const swimwearRules = "[ABSOLUTE PRODUCT FIDELITY] The AI must treat the uploaded product image as the absolute source of truth. Preserve the exact print placement, exact pattern scale, exact color tones, exact trim, exact straps, ties, rings, stitching and cut. Do NOT simplify the product. Do NOT reinterpret the design. For this reference: The bikini has brown and white gingham panels, brown polka-dot trim, thin straps, side ties, and a central metal ring. These details must remain visible and consistent in every generated image. The model must clearly be wearing this exact bikini suitable for beach or pool environments. ";
          fPrompt = swimwearRules + fPrompt;
-         nPrompt = "studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + nPrompt;
+         nPrompt = "changed pattern, smaller pattern, larger pattern, simplified print, missing ring, changed trim, changed straps, changed ties, added accessories, sunglasses, bag, hat, jewelry, props, studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + nPrompt;
       }
 
       setFinalPrompt(fPrompt.replace(/, $/, ''));
