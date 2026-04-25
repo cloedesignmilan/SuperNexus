@@ -240,7 +240,25 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         }
 
         // Strict vs Dynamic Branching
-        if (configShots && i < configShots.length) {
+        const hasValidStrictReference = subcat.strict_reference_mode && currentRefInline;
+
+        if (hasValidStrictReference) {
+            variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
+            
+            if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push(...base64OutfitParts);
+            }
+            
+            aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
+            aiParts.push({ inlineData: currentRefInline });
+            
+            aiParts.push({ text: variantPrompt });
+            
+        } else if (configShots && i < configShots.length) {
             const shotInfo = configShots[i];
             
             let ecommerceBlockPositive = "";
@@ -273,22 +291,6 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
             }
             aiParts.push({ text: variantPrompt });
 
-        } else if (subcat.strict_reference_mode) {
-            variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
-            
-            if (isOutfit) {
-                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
-                aiParts.push(...base64OutfitParts);
-            } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
-                aiParts.push(...base64OutfitParts);
-            }
-            
-            if (currentRefInline) {
-                aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
-                aiParts.push({ inlineData: currentRefInline });
-            }
-            aiParts.push({ text: variantPrompt });
         } else {
             if (varianceEnabled) {
                 const magicalScene = getRandomSceneForSubcategory(subcat.business_mode?.category?.slug + " " + subcat.business_mode?.slug + " " + subcat.slug);
