@@ -494,11 +494,11 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         }
 
         @media (max-width: 1024px) {
-          .studio-layout { flex-direction: column; overflow: hidden; }
-          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 0; }
-          .studio-right { flex: 1; overflow-y: auto; min-height: 0; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; -webkit-overflow-scrolling: touch; }
-          .image-frame { height: 100%; max-width: 250px; aspect-ratio: auto; }
-          .scroll-container { padding: 3rem 1.5rem 8rem 1.5rem; min-height: max-content; }
+          .studio-layout { display: block; position: relative; height: 100%; width: 100%; overflow: hidden; }
+          .studio-left { position: absolute; top: 0; left: 0; width: 100%; height: 35%; padding: 1rem; border-right: none; background: #000; z-index: 0; }
+          .studio-right { position: absolute; top: 35%; bottom: 0; left: 0; width: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; }
+          .image-frame { height: 100%; max-width: 250px; margin: 0 auto; aspect-ratio: auto; }
+          .scroll-container { padding: 3rem 1.5rem 8rem 1.5rem; min-height: 100%; display: block; }
           .nav-dots { top: 1.5rem; right: 1.5rem; }
           .back-button { top: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
           .step-header { font-size: 2.5rem; }
