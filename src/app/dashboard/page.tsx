@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import DashboardWizard from './DashboardWizard'
 import { unstable_noStore as noStore } from 'next/cache'
+import { createClient } from '@/lib/supabase/server'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -15,6 +16,18 @@ export default async function DashboardPage() {
     ]
   })
 
+  let isAdmin = false;
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user && user.email) {
+      const dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } })
+      isAdmin = dbUser?.role === 'admin'
+    }
+  } catch (err) {
+    console.error('Failed to get user role', err)
+  }
+
   return (
     <div>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -24,7 +37,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <DashboardWizard snippets={snippets} />
+      <DashboardWizard snippets={snippets} isAdmin={isAdmin} />
     </div>
   )
 }

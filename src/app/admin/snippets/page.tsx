@@ -32,7 +32,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
         <a href="?" style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: !filterType ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: !filterType ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: !filterType ? 600 : 400 }}>Tutti</a>
         {snippetTypes.map(t => (
-          <a key={t} href={\`?type=\${t}\`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterType === t ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: filterType === t ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterType === t ? 600 : 400 }}>
+          <a key={t} href={`?type=\${t}`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterType === t ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: filterType === t ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterType === t ? 600 : 400 }}>
             {t}
           </a>
         ))}
@@ -115,7 +115,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
             </div>
           ) : (
             snippets.map((snip: any) => (
-              <div key={snip.id} className="admin-card" style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', borderLeft: \`4px solid \${snip.is_active ? 'var(--color-primary)' : '#475569'}\` }}>
+              <div key={snip.id} className="admin-card" style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', borderLeft: `4px solid \${snip.is_active ? 'var(--color-primary)' : '#475569'}` }}>
                 
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -126,7 +126,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
                           </h3>
                       </div>
                       <form action={toggleSnippetStatus.bind(null, snip.id, snip.is_active)}>
-                          <button type="submit" className={\`badge \${snip.is_active ? 'badge-online' : 'badge-offline'}\`} style={{ cursor: 'pointer' }}>
+                          <button type="submit" className={`badge \${snip.is_active ? 'badge-online' : 'badge-offline'}`} style={{ cursor: 'pointer' }}>
                           {snip.is_active ? 'Online' : 'Offline'}
                           </button>
                       </form>
