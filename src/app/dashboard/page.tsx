@@ -29,14 +29,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div>
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>AI Virtual Studio</h2>
-        <p style={{ color: 'var(--color-text-muted)' }}>
-          Welcome to your professional generation studio. Upload your product to begin.
-        </p>
-      </div>
-
+    <div style={{ margin: '-3rem', minHeight: '100vh', background: '#000' }}>
       <DashboardWizard snippets={snippets} isAdmin={isAdmin} />
     </div>
   )

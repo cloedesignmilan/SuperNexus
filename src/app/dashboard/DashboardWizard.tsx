@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info, CheckCircle2, Lock } from 'lucide-react'
+import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info, CheckCircle2, Lock, ArrowRight, Zap, Image as ImageIcon } from 'lucide-react'
 import * as Icons from 'lucide-react'
-import "../admin.css"
 
 type Snippet = any;
 
@@ -104,8 +103,6 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
       const snip = snippets.find(s => s.snippet_type === type && s.label === preset.steps[type]);
       if (snip) newSel[type] = snip;
     });
-    
-    // Ensure missing required values aren't left behind from previous runs if any
     setSelections(newSel);
     if (!newSel.PRODUCT_TYPE) {
       setStep(4);
@@ -117,7 +114,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   const handleSnippetSelect = (type: string, snip: Snippet, stepIndex: number) => {
     setSelections({...selections, [type]: snip});
     
-    // Auto-advance logic (delay for micro-animation visual feedback)
+    // Auto-advance logic
     if (type !== 'QUANTITY' && stepIndex < 7) {
       setTimeout(() => {
         setStep(stepIndex + 1);
@@ -177,15 +174,13 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     const order = ['Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
     
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
         {order.map(groupName => {
           if (!groups[groupName] || groups[groupName].length === 0) return null;
           return (
             <div key={groupName} className="fade-up-enter">
-              <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-text-muted)', marginBottom: '1.2rem', paddingBottom: '0.5rem', fontWeight: 700 }}>
-                {groupName}
-              </h4>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.25rem' }}>
+              <h4 className="group-title">{groupName}</h4>
+              <div className="glass-grid">
                 {groups[groupName].map(snip => {
                   const isSelected = selections[type]?.id === snip.id;
                   
@@ -199,34 +194,19 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
                   const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
 
-                  // Premium card styling
-                  const cardStyle: any = {
-                    padding: '1.5rem', 
-                    textAlign: 'left', 
-                    position: 'relative', 
-                    opacity: isWarning && !isSelected ? 0.6 : 1,
-                    background: isSelected ? 'rgba(255,255,255,0.05)' : 'rgba(10, 15, 25, 0.4)',
-                    border: isSelected ? '2px solid var(--color-primary)' : '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '16px',
-                    boxShadow: isSelected ? '0 0 20px rgba(59, 130, 246, 0.2)' : '0 10px 30px rgba(0,0,0,0.2)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)'
-                  };
-
                   return (
                     <button 
                       key={snip.id} 
                       onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
-                      className={`hover-scale ${isSelected ? 'active-glow' : ''}`} 
-                      style={cardStyle}
+                      className={`glass-card ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
                     >
-                      {snip.is_recommended && <Sparkles size={16} color="var(--color-primary)" style={{ position: 'absolute', top: 12, right: 12 }} />}
-                      <IconComp size={28} color={isSelected ? 'var(--color-primary)' : 'var(--color-text-muted)'} style={{ marginBottom: '1.25rem' }} />
-                      <div style={{ fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.4rem', color: isSelected ? '#fff' : 'var(--color-text)' }}>{snip.label}</div>
-                      {snip.description && <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{snip.description}</div>}
+                      {snip.is_recommended && <Sparkles className="sparkle-icon" size={16} />}
+                      <IconComp size={28} className="card-icon" />
+                      <div className="card-title">{snip.label}</div>
+                      {snip.description && <div className="card-desc">{snip.description}</div>}
                       
                       {isWarning && (
-                         <div style={{ marginTop: '1rem', fontSize: '0.7rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 600 }}>
+                         <div className="conflict-warning">
                            <Info size={14} /> Might conflict
                          </div>
                       )}
@@ -242,233 +222,472 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
   }
 
   const stepsData = [
-    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adattiamo il motore fotografico al tuo business model.' },
-    { num: 2, type: 'IMAGE_GOAL', title: 'What is the goal?', desc: 'Scegli l\'obiettivo primario dell\'immagine.' },
-    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Scegli Catalog per pulizia, UGC per realismo spontaneo, o Premium per lusso.' },
-    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'Cosa stiamo fotografando?' },
-    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Seleziona chi presenterà il tuo prodotto, o mantienilo "No Model" per scatti tecnici.' },
-    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Definisci il background e il contesto ambientale.' },
-    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Scegli l\'aspect ratio e quante variazioni vuoi generare.' },
+    { num: 1, type: 'CLIENT_TYPE', title: 'Who are you?', desc: 'Adapt the photographic engine to your business model.' },
+    { num: 2, type: 'IMAGE_GOAL', title: 'What is the goal?', desc: 'Select the primary objective of your imagery.' },
+    { num: 3, type: 'IMAGE_TYPE', title: 'Visual Style', desc: 'Choose Catalog for clean shots, UGC for natural realism, or Premium for luxury.' },
+    { num: 4, type: 'PRODUCT_TYPE', title: 'Product Type', desc: 'What exactly are we photographing?' },
+    { num: 5, type: 'MODEL_OPTION', title: 'Model Option', desc: 'Who is presenting your product?' },
+    { num: 6, type: 'SCENE', title: 'Scene & Setting', desc: 'Define the background and environmental context.' },
+    { num: 7, type: 'FORMAT', title: 'Format & Layout', desc: 'Choose the aspect ratio and generation volume.' },
   ];
 
   return (
-    <div className="wizard-container" style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem 1rem' }}>
+    <div className="studio-layout">
       
       <style dangerouslySetInnerHTML={{__html: `
-        .active-glow {
-          box-shadow: 0 0 0 1px var(--color-primary), 0 0 20px rgba(59, 130, 246, 0.3) !important;
-          transform: translateY(-2px);
+        .studio-layout {
+          display: flex;
+          height: 100vh;
+          width: 100vw;
+          background: #000;
+          color: #fff;
+          font-family: 'Inter', sans-serif;
+          overflow: hidden;
+          position: relative;
         }
-        .btn-premium {
-          background: linear-gradient(135deg, var(--color-primary), #2563eb);
-          color: white;
-          border: none;
-          padding: 1rem 3rem;
-          font-size: 1.15rem;
-          font-weight: 800;
-          border-radius: 30px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+
+        /* Ambient Orbs */
+        .orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(100px);
+          opacity: 0.3;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #3b82f6; top: -100px; left: -100px; animation: float 10s infinite alternate; }
+        .orb-2 { width: 400px; height: 400px; background: #8b5cf6; bottom: -100px; right: -100px; animation: float 15s infinite alternate-reverse; }
+
+        @keyframes float {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+
+        /* Split Screen */
+        .studio-left {
+          flex: 1;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          justify-content: center;
+          position: relative;
+          z-index: 10;
+          padding: 2rem;
+          background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+          border-right: 1px solid rgba(255,255,255,0.05);
         }
-        .btn-premium:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 15px 25px rgba(37, 99, 235, 0.4);
+
+        .studio-right {
+          flex: 1.2;
+          overflow-y: auto;
+          position: relative;
+          z-index: 10;
+          background: rgba(5,5,5,0.6);
+          backdrop-filter: blur(40px);
+          -webkit-backdrop-filter: blur(40px);
+        }
+
+        .scroll-container {
+          padding: 4rem 10%;
+          max-width: 900px;
+          margin: 0 auto;
+          min-height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        /* Image Frame */
+        .image-frame {
+          width: 100%;
+          max-width: 450px;
+          aspect-ratio: 4/5;
+          border-radius: 24px;
+          overflow: hidden;
+          position: relative;
+          box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+          background: #0a0a0a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .image-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+
+        .image-frame.empty {
+          border: 1px dashed rgba(255,255,255,0.2);
+          background: transparent;
+          box-shadow: none;
+        }
+
+        /* UI Elements */
+        .step-header {
+          font-size: 3.5rem;
+          font-weight: 300;
+          letter-spacing: -0.04em;
+          margin-bottom: 1rem;
+          line-height: 1.1;
+        }
+
+        .step-desc {
+          color: rgba(255,255,255,0.5);
+          font-size: 1.25rem;
+          margin-bottom: 4rem;
+          font-weight: 400;
+        }
+
+        .group-title {
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          color: rgba(255,255,255,0.4);
+          margin-bottom: 1.5rem;
+          font-weight: 700;
+        }
+
+        .glass-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          gap: 1.5rem;
+        }
+
+        .glass-card {
+          background: rgba(255,255,255,0.02);
+          border: 1px solid rgba(255,255,255,0.05);
+          border-radius: 20px;
+          padding: 1.5rem;
+          text-align: left;
+          cursor: pointer;
+          position: relative;
+          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          color: #fff;
+        }
+
+        .glass-card:hover {
+          background: rgba(255,255,255,0.05);
+          transform: translateY(-4px);
+        }
+
+        .glass-card.selected {
+          background: rgba(59, 130, 246, 0.1);
+          border-color: rgba(59, 130, 246, 0.5);
+          box-shadow: 0 0 30px rgba(59, 130, 246, 0.2), inset 0 0 20px rgba(59, 130, 246, 0.1);
+          transform: translateY(-4px);
+        }
+
+        .glass-card.warning { opacity: 0.5; }
+
+        .sparkle-icon { position: absolute; top: 1rem; right: 1rem; color: #3b82f6; }
+        .card-icon { margin-bottom: 1.5rem; color: rgba(255,255,255,0.6); transition: color 0.3s ease; }
+        .glass-card.selected .card-icon { color: #3b82f6; }
+
+        .card-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .card-desc { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+
+        .conflict-warning {
+          margin-top: 1rem;
+          font-size: 0.75rem;
+          color: #fbbf24;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        /* Buttons */
+        .btn-giant {
+          background: #fff;
+          color: #000;
+          border: none;
+          padding: 1.5rem 3rem;
+          border-radius: 99px;
+          font-size: 1.25rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .btn-giant:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(255,255,255,0.2); }
+
+        .btn-magic {
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          color: #fff;
+          border: none;
+          padding: 1.5rem 4rem;
+          border-radius: 99px;
+          font-size: 1.4rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          width: 100%;
+          justify-content: center;
+        }
+        .btn-magic:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 30px 60px rgba(8b, 92, 246, 0.6); }
+
+        /* Navigation Dots */
+        .nav-dots {
+          position: absolute;
+          top: 3rem;
+          right: 4rem;
+          display: flex;
+          gap: 8px;
+          z-index: 50;
+        }
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.2);
+          transition: all 0.3s ease;
+        }
+        .dot.active { background: #fff; transform: scale(1.5); }
+        .dot.completed { background: rgba(255,255,255,0.6); }
+
+        .back-button {
+          position: absolute;
+          top: 3rem;
+          left: 4rem;
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #fff;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s;
+          z-index: 50;
+        }
+        .back-button:hover { background: rgba(255,255,255,0.1); }
+
+        .fade-up-enter {
+          animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Input overrides for God Mode */
+        .admin-textarea {
+          width: 100%;
+          background: rgba(0,0,0,0.3);
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #fff;
+          padding: 1rem;
+          border-radius: 12px;
+          font-family: monospace;
+          font-size: 0.9rem;
+          resize: vertical;
+          margin-bottom: 1rem;
+        }
+
+        /* Mobile specific overrides */
+        @media (max-width: 1024px) {
+          .studio-layout { flex-direction: column; overflow-y: auto; }
+          .studio-left { flex: none; height: 50vh; padding: 1rem; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; background: #000; z-index: 0; }
+          .studio-right { flex: none; min-height: 100vh; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; }
+          .image-frame { height: 100%; max-width: 300px; aspect-ratio: auto; }
+          .scroll-container { padding: 3rem 1.5rem; }
+          .nav-dots { top: 1.5rem; right: 1.5rem; }
+          .back-button { top: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
+          .step-header { font-size: 2.5rem; }
         }
       `}} />
 
-      {error && (
-        <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#f87171', padding: '1rem', borderRadius: '12px', marginBottom: '2rem', textAlign: 'center', fontWeight: 600 }}>
-          {error}
+      <div className="orb orb-1" />
+      <div className="orb orb-2" />
+
+      {/* LEFT PANEL: Always shows the image */}
+      <div className="studio-left">
+        <div className={`image-frame ${!uploadedUrl ? 'empty' : ''}`}>
+          {uploadedUrl ? (
+            <img src={uploadedUrl} alt="Uploaded product" />
+          ) : (
+            <ImageIcon size={64} color="rgba(255,255,255,0.1)" />
+          )}
         </div>
-      )}
+      </div>
 
-      {/* Progress Bar */}
-      {step > 0 && step < 9 && !isGenerating && (
-        <div style={{ marginBottom: '3.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
-             <button onClick={() => setStep(Math.max(0.5, step - 1))} disabled={step === 0.5} style={{ background: 'transparent', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', fontWeight: 600 }}>
-               <ChevronLeft size={18} style={{ marginRight: '4px' }} /> Back
-             </button>
-             <span style={{ fontWeight: 700, color: 'var(--color-primary)', letterSpacing: '0.05em' }}>
-                Step {Math.floor(step)} of 8
-             </span>
-             <button onClick={() => setStep(step === 7 ? 8 : step + 1)} disabled={step < 1 || !selections[stepsData[step-1]?.type]} style={{ background: 'transparent', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', fontWeight: 700 }}>
-               Next <ChevronRight size={18} style={{ marginLeft: '4px' }} />
-             </button>
-          </div>
-          <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
-            <div style={{ width: `${(step / 8) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #3b82f6, #6366f1)', transition: 'width 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)' }} />
-          </div>
-        </div>
-      )}
+      {/* RIGHT PANEL: Scrollable Steps */}
+      <div className="studio-right">
+        
+        {step > 0 && step < 9 && !isGenerating && (
+          <>
+            <button className="back-button" onClick={() => setStep(Math.max(0, step - 1))}>
+              <ChevronLeft size={24} />
+            </button>
+            <div className="nav-dots">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className={`dot ${i === step ? 'active' : ''} ${i < step ? 'completed' : ''}`} />
+              ))}
+            </div>
+          </>
+        )}
 
-      {/* STEP 0: UPLOAD */}
-      {step === 0 && (
-        <div className="fade-up-enter" style={{ textAlign: 'center', padding: '5rem 2rem', background: 'rgba(10,15,25,0.4)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
-          <h2 style={{ fontSize: '2.8rem', marginBottom: '1rem', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.2 }}>Create product images that look real — without changing your product.</h2>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: '3.5rem', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto 3.5rem auto' }}>Carica la foto del tuo prodotto scattata sul manichino, su un appendino o flat lay.</p>
-          
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
-          
-          <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-premium" style={{ margin: '0 auto 2rem auto', padding: '1.25rem 3rem', fontSize: '1.2rem' }}>
-            {isUploading ? <><Loader2 className="animate-spin" /> Uploading...</> : <><Upload /> Upload Product Image</>}
-          </button>
+        <div className="scroll-container">
 
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '0.75rem 1.5rem', borderRadius: '30px', fontSize: '0.9rem', fontWeight: 600 }}>
-             <CheckCircle2 size={18} />
-             <span>Il tuo prodotto rimane fedele al 100%. L'AI preserva pattern, loghi e cuciture inalterati.</span>
-          </div>
-        </div>
-      )}
+          {/* Error Banner */}
+          {error && (
+            <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#f87171', padding: '1.5rem', borderRadius: '16px', marginBottom: '2rem', textAlign: 'center', fontWeight: 600 }}>
+              {error}
+            </div>
+          )}
 
-      {/* STEP 0.5: PRESETS OR CUSTOM */}
-      {step === 0.5 && (
-        <div className="fade-up-enter">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h3 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0', fontWeight: 800 }}>Quick Start Presets</h3>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>Scegli un pacchetto pre-configurato o crea il tuo workflow manuale.</p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
-            {PRESETS.map(p => {
-               const IconC = (Icons as any)[p.icon] || Icons.Zap;
-               return (
-                  <button key={p.id} onClick={() => applyPreset(p)} className="hover-scale" style={{ padding: '2rem 1.5rem', textAlign: 'left', position: 'relative', background: 'rgba(10,15,25,0.4)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.15)', cursor: 'pointer', transition: 'all 0.3s ease' }}>
-                     <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: p.badgeColor, color: '#fff', fontSize: '0.7rem', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase', boxShadow: `0 4px 10px ${p.badgeColor}40` }}>
-                        {p.badge}
-                     </div>
-                     <IconC size={36} color="var(--color-primary)" style={{ marginBottom: '1.25rem' }} />
-                     <h4 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 0.5rem 0' }}>{p.label}</h4>
-                     <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: 0, fontWeight: 500 }}>Auto-fill AI settings</p>
-                  </button>
-               )
-            })}
-          </div>
-
-          <div style={{ textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '3rem' }}>
-             <button onClick={() => setStep(1)} className="btn-secondary" style={{ padding: '1rem 3rem', fontSize: '1.1rem', borderRadius: '30px', fontWeight: 700 }}>
-                Start Custom Workflow <ChevronRight size={18} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: '8px' }} />
-             </button>
-          </div>
-        </div>
-      )}
-
-      {/* DYNAMIC STEPS 1-7 */}
-      {step >= 1 && step <= 7 && (
-        <div className="fade-up-enter">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h3 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0', fontWeight: 800 }}>{stepsData[step-1].title}</h3>
-            <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>{stepsData[step-1].desc}</p>
-          </div>
-
-          {renderSnippetGrid(stepsData[step-1].type, step)}
-        </div>
-      )}
-
-      {/* FINAL STEP 8: SUMMARY & EDITOR */}
-      {step === 8 && (
-        <div className="fade-up-enter">
-           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-              <h3 style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', fontWeight: 800 }}>Ready to Generate</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>Review your configuration before creating the magic.</p>
-           </div>
-           
-           <div style={{ display: 'grid', gridTemplateColumns: isAdmin ? 'minmax(300px, 1fr) 2fr' : '1fr', gap: '2.5rem' }}>
+          {/* STEP 0: UPLOAD */}
+          {step === 0 && (
+            <div className="fade-up-enter">
+              <h1 className="step-header">Virtual Studio</h1>
+              <p className="step-desc" style={{ maxWidth: '600px' }}>Upload your raw product photo. We'll transform it into high-end editorial imagery without touching the original product.</p>
               
-              {/* Premium Summary View for Users */}
-              <div style={{ background: 'rgba(10,15,25,0.4)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)', padding: '2rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-                 
-                 {/* Left: Image Thumbnail */}
-                 <div style={{ flex: '0 0 200px' }}>
-                    <div style={{ width: '100%', aspectRatio: '4/5', background: '#000', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                       {uploadedUrl && <img src={uploadedUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Uploaded product" />}
-                    </div>
-                 </div>
+              <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
+              
+              <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-giant">
+                {isUploading ? <><Loader2 className="animate-spin" /> Uploading...</> : <><Upload size={24} /> Upload Image</>}
+              </button>
 
-                 {/* Right: Choices & CTA */}
-                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
-                       {stepsData.map(st => {
-                          const sel = selections[st.type];
-                          if (!sel) return null;
-                          return (
-                             <div key={st.type} style={{ background: 'rgba(255,255,255,0.03)', padding: '1rem', borderRadius: '12px' }}>
-                                <span style={{ display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>{st.title.split('?')[0]}</span>
-                                <span style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '1rem' }}>{sel.label}</span>
-                             </div>
-                          )
-                       })}
-                    </div>
+              <div style={{ marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem' }}>
+                <CheckCircle2 size={16} color="#10b981" />
+                <span>Pixel-perfect product preservation. Colors and patterns remain exactly as uploaded.</span>
+              </div>
+            </div>
+          )}
 
-                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', padding: '1.5rem', borderRadius: '16px' }}>
-                       <div>
-                          <div style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.2rem', marginBottom: '0.25rem' }}>{selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'}</div>
-                          <div style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>Format: {selections['FORMAT']?.label || '4:5'}</div>
-                       </div>
-                       <button onClick={handleGenerate} className="btn-premium">
-                          Generate Images ✨
-                       </button>
-                    </div>
-                 </div>
+          {/* STEP 0.5: PRESETS OR CUSTOM */}
+          {step === 0.5 && (
+            <div className="fade-up-enter">
+              <h2 className="step-header">Quick Start</h2>
+              <p className="step-desc">Select a curated workflow or customize everything.</p>
+
+              <div className="glass-grid" style={{ marginBottom: '4rem' }}>
+                {PRESETS.map(p => {
+                  const IconC = (Icons as any)[p.icon] || Icons.Zap;
+                  return (
+                    <button key={p.id} onClick={() => applyPreset(p)} className="glass-card" style={{ padding: '2rem' }}>
+                      <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: p.badgeColor, color: '#fff', fontSize: '0.65rem', padding: '4px 10px', borderRadius: '20px', fontWeight: 800, textTransform: 'uppercase' }}>
+                        {p.badge}
+                      </div>
+                      <IconC size={32} style={{ marginBottom: '1.5rem', color: '#fff' }} />
+                      <div className="card-title" style={{ fontSize: '1.4rem' }}>{p.label}</div>
+                      <div className="card-desc">Auto-fill AI settings</div>
+                    </button>
+                  )
+                })}
               </div>
 
-              {/* ADMIN GOD MODE: Advanced Editor */}
-              {isAdmin && (
-                <div style={{ background: 'rgba(10,15,25,0.4)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)', padding: '2rem' }}>
-                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
-                      <h4 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fbbf24', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Lock size={16} /> Admin God Mode
-                      </h4>
-                      <Settings size={20} color="var(--color-text-muted)" />
-                   </div>
+              <div style={{ textAlign: 'center' }}>
+                <button onClick={() => setStep(1)} className="btn-giant" style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  Start Custom Workflow <ArrowRight size={20} />
+                </button>
+              </div>
+            </div>
+          )}
 
-                   <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
-                     These are the raw prompts assembled from your snippets. They are hidden from standard users. You can edit them manually before sending to Replicate.
-                   </p>
-                   
-                   <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Positive Prompt</label>
-                   <textarea value={finalPrompt} onChange={e => setFinalPrompt(e.target.value)} className="input-glass" rows={4} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', marginBottom: '1.5rem', border: '1px solid rgba(59, 130, 246, 0.3)' }}></textarea>
-
-                   <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 800, color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Negative Prompt</label>
-                   <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="input-glass" rows={3} style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '0.85rem', borderColor: 'rgba(239, 68, 68, 0.3)' }}></textarea>
+          {/* DYNAMIC STEPS 1-7 */}
+          {step >= 1 && step <= 7 && (
+            <div className="fade-up-enter">
+              <h2 className="step-header">{stepsData[step-1].title}</h2>
+              <p className="step-desc">{stepsData[step-1].desc}</p>
+              
+              {renderSnippetGrid(stepsData[step-1].type, step)}
+              
+              {/* Only show NEXT button if it's the QUANTITY step or if multiple selection is needed */}
+              {step === 7 && (
+                <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button onClick={() => setStep(8)} disabled={!selections['QUANTITY']} className="btn-giant">
+                    Review Configuration <ArrowRight size={20} />
+                  </button>
                 </div>
               )}
-           </div>
-        </div>
-      )}
+            </div>
+          )}
 
-      {/* GENERATING STATE */}
-      {isGenerating && (
-        <div className="fade-up-enter" style={{ textAlign: 'center', padding: '6rem 2rem', background: 'rgba(10,15,25,0.4)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
-          <Wand2 size={72} color="var(--color-primary)" className="animate-pulse" style={{ margin: '0 auto 2rem auto' }} />
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', fontWeight: 800, background: 'linear-gradient(90deg, #fff, var(--color-primary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            Creating the magic...
-          </h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem' }}>Hang tight! Our AI is rendering your photorealistic images.</p>
-        </div>
-      )}
-
-      {/* RESULTS STEP */}
-      {step === 9 && results.length > 0 && (
-        <div className="fade-up-enter">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-            <h3 style={{ fontSize: '2.5rem', margin: 0, fontWeight: 800 }}>Results</h3>
-            <button onClick={() => { setStep(0.5); setResults([]); }} className="btn-secondary" style={{ borderRadius: '30px', padding: '0.75rem 2rem', fontWeight: 700 }}>Generate More</button>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
-            {results.map((url, i) => (
-              <div key={i} style={{ borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <img src={url} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
+          {/* FINAL STEP 8: SUMMARY & EDITOR */}
+          {step === 8 && (
+            <div className="fade-up-enter">
+              <h2 className="step-header">Ready</h2>
+              <p className="step-desc">Your configuration is complete.</p>
+              
+              <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2.5rem', marginBottom: '3rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem' }}>
+                  {stepsData.map(st => {
+                    const sel = selections[st.type];
+                    if (!sel) return null;
+                    return (
+                      <div key={st.type}>
+                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>{st.title.split('?')[0]}</div>
+                        <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{sel.label}</div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
 
+              <button onClick={handleGenerate} className="btn-magic">
+                <Sparkles size={24} /> Generate {selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'}
+              </button>
+
+              {isAdmin && (
+                <div style={{ marginTop: '4rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fbbf24', marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.85rem', fontWeight: 700 }}>
+                    <Lock size={16} /> Admin God Mode
+                  </div>
+                  
+                  <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Positive Prompt</label>
+                  <textarea value={finalPrompt} onChange={e => setFinalPrompt(e.target.value)} className="admin-textarea" rows={4} />
+
+                  <label style={{ display: 'block', fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Negative Prompt</label>
+                  <textarea value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} className="admin-textarea" rows={3} />
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* GENERATING STATE */}
+          {isGenerating && (
+            <div className="fade-up-enter" style={{ textAlign: 'center' }}>
+              <div style={{ width: '120px', height: '120px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 3rem auto', border: '1px solid rgba(59, 130, 246, 0.3)', boxShadow: '0 0 50px rgba(59, 130, 246, 0.2)' }}>
+                <Loader2 size={48} color="#3b82f6" className="animate-spin" />
+              </div>
+              <h2 className="step-header" style={{ fontSize: '3rem' }}>Rendering...</h2>
+              <p className="step-desc">Applying photorealistic materials and lighting.</p>
+            </div>
+          )}
+
+          {/* RESULTS STEP */}
+          {step === 9 && results.length > 0 && (
+            <div className="fade-up-enter">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+                <div>
+                  <h2 className="step-header" style={{ marginBottom: 0 }}>Results</h2>
+                </div>
+                <button onClick={() => { setStep(0.5); setResults([]); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 2rem', color: '#fff', fontSize: '1rem' }}>
+                  Generate More
+                </button>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+                {results.map((url, i) => (
+                  <div key={i} style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000' }}>
+                    <img src={url} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+        </div>
+      </div>
     </div>
   )
 }
