@@ -37,12 +37,22 @@ export default function GalleryCard({ url }: { url: string }) {
         style={{ width: '100%', height: 'auto', borderRadius: '8px', display: 'block' }} 
       />
       <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
+        <style>{`
+          .dl-label-desktop { display: inline; }
+          .dl-label-mobile { display: none; }
+          @media (max-width: 768px) {
+            .dl-label-desktop { display: none; }
+            .dl-label-mobile { display: inline; }
+          }
+        `}</style>
         <button 
           onClick={handleDownload}
           className="btn-secondary"
           style={{ border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.75rem', cursor: 'pointer', fontWeight: 600 }}
         >
-          <Download size={18} /> Save to Phone
+          <Download size={18} />
+          <span className="dl-label-desktop">Download Image</span>
+          <span className="dl-label-mobile">Save to Phone</span>
         </button>
       </div>
     </div>
