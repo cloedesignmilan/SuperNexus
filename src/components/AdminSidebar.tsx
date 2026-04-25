@@ -15,6 +15,7 @@ export default function AdminSidebar() {
     { href: "/admin/subcategories", label: "Sottocategorie & Asset", icon: <Share2 size={18} /> },
     { href: "/admin/clients", label: "CRM & Clienti", icon: <Users size={18} /> },
     { href: "/admin/snippets", label: "Mattoncini (Snippets)", icon: <Database size={18} /> },
+    { href: "/admin/prompt-configs", label: "Prompt Configs", icon: <Zap size={18} /> },
     { href: "/admin/jobs", label: "Generazioni AI", icon: <Zap size={18} /> },
     { href: "/admin/data", label: "Sincronizza Dati", icon: <Database size={18} /> },
   ];

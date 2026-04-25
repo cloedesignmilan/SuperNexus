@@ -59,7 +59,7 @@ export default function DataSyncPage() {
         <div className="admin-card card-gradient-cyan" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '1rem' }}>Esporta Dati</h2>
           <p style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '2rem' }}>
-            Scarica l'intera struttura del database (Categorie, Business Mode, Sottocategorie e Prompt) in un file CSV.
+            Scarica l'intera struttura del database (Categorie, Business Mode, Sottocategorie) in un file CSV.
           </p>
           <a 
             href="/api/admin/data/export" 
@@ -84,7 +84,7 @@ export default function DataSyncPage() {
         <div className="admin-card card-gradient-purple" style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '1rem' }}>Importa Dati</h2>
           <p style={{ fontSize: '0.9rem', opacity: 0.9, marginBottom: '2rem' }}>
-            Carica un file CSV modificato per aggiornare o creare in massa categorie, modalità e prompt.
+            Carica un file CSV modificato per aggiornare o creare in massa categorie e modalità.
           </p>
           
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
