@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
@@ -23,42 +23,51 @@ export async function POST(request: Request) {
       let importedCount = 0;
       for (const item of data) {
         try {
-          await prisma.promptConfigShot.upsert({
+          const existing = await prisma.promptConfigShot.findFirst({
             where: {
-              category_mode_presentation_shotNumber: {
-                category: item.category,
-                mode: item.mode,
-                presentation: item.presentation,
-                shotNumber: Number(item.shotNumber)
-              }
-            },
-            update: {
-              shotName: item.shotName,
-              positivePrompt: item.positivePrompt,
-              negativePrompt: item.negativePrompt,
-              hardRules: item.hardRules,
-              outputGoal: item.outputGoal,
-              isActive: item.isActive,
-              priority: Number(item.priority || 0),
-              scene: item.scene,
-              aspectRatio: item.aspectRatio
-            },
-            create: {
               category: item.category,
               mode: item.mode,
               presentation: item.presentation,
-              shotNumber: Number(item.shotNumber),
-              shotName: item.shotName,
-              positivePrompt: item.positivePrompt,
-              negativePrompt: item.negativePrompt,
-              hardRules: item.hardRules,
-              outputGoal: item.outputGoal,
-              isActive: item.isActive ?? true,
-              priority: Number(item.priority || 0),
-              scene: item.scene,
-              aspectRatio: item.aspectRatio
+              scene: item.scene || "all",
+              aspectRatio: item.aspectRatio || null,
+              shotNumber: Number(item.shotNumber)
             }
           });
+
+          if (existing) {
+            await prisma.promptConfigShot.update({
+              where: { id: existing.id },
+              data: {
+                shotName: item.shotName,
+                positivePrompt: item.positivePrompt,
+                negativePrompt: item.negativePrompt,
+                hardRules: item.hardRules,
+                outputGoal: item.outputGoal,
+                isActive: item.isActive,
+                priority: Number(item.priority || 0),
+                scene: item.scene,
+                aspectRatio: item.aspectRatio
+              }
+            });
+          } else {
+            await prisma.promptConfigShot.create({
+              data: {
+                category: item.category,
+                mode: item.mode,
+                presentation: item.presentation,
+                shotNumber: Number(item.shotNumber),
+                shotName: item.shotName,
+                positivePrompt: item.positivePrompt,
+                negativePrompt: item.negativePrompt,
+                hardRules: item.hardRules,
+                outputGoal: item.outputGoal,
+                isActive: item.isActive ?? true,
+                priority: Number(item.priority || 0),
+                scene: item.scene || "all",
+                aspectRatio: item.aspectRatio || null
+              }
+            });
+          }
           importedCount++;
         } catch (e) {
           console.error("Import error on item:", item, e);
