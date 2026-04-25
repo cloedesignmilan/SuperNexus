@@ -11,6 +11,40 @@ export interface GenerateImagesOptions {
     generationModel: string;
 }
 
+function buildTshirtPromptByShot(shot: string, basePrompt: string): string {
+    const globalRules = `\n\n--- T-SHIRT ECOMMERCE STRUCTURED SYSTEM ---
+STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image.
+No changes in color, design, proportions or print.
+NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES.
+
+CURRENT TASK:
+`;
+
+    let shotInstruction = "";
+    switch (shot) {
+        case "front":
+            shotInstruction = "T-shirt front view, facing camera, centered, clean studio background. Exact product replication.";
+            break;
+        case "back":
+            shotInstruction = "T-shirt back view, rotated 180 degrees, show only back side. Clean studio. No front visible.";
+            break;
+        case "side":
+            shotInstruction = "T-shirt side angle, rotated 45 degrees. Show silhouette. Not front view.";
+            break;
+        case "flatlay":
+            shotInstruction = "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.";
+            break;
+        case "detail":
+            shotInstruction = "Close-up of t-shirt print or fabric. High detail, sharp focus.";
+            break;
+        default:
+            shotInstruction = "T-shirt front view, clean studio background.";
+    }
+
+    return basePrompt + globalRules + shotInstruction;
+}
+
+
 export async function generateImagesWithAI({
     qty,
     subcat,
@@ -167,14 +201,6 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 "[T-SHIRT PREMIUM 4] Minimal studio, high fashion posture, cinematic shadows",
                 "[T-SHIRT PREMIUM 5] Aspirative luxury environment, confident relaxed pose"
             ];
-        } else if (isTshirtClean) {
-            strictPoses = [
-                "[IMAGE 1 — FRONT VIEW] Model or garment facing the camera directly. Centered composition. Full t-shirt clearly visible.",
-                "[IMAGE 2 — BACK VIEW (MANDATORY)] The t-shirt must be rotated 180°. Show only the back side. Front print must NOT be visible.",
-                "[IMAGE 3 — SIDE ANGLE (MANDATORY DIFFERENT)] The t-shirt must be rotated clearly (minimum 45°). It must NOT look like a front view. The side shape and silhouette must be visible.",
-                "[IMAGE 4 — FLAT LAY (STRICT 90°)] Top-down 90° camera. T-shirt placed flat on surface. ABSOLUTE RULES: No perspective, no angle, no floating, no shadows from standing position. Must look like real ecommerce flat lay.",
-                "[IMAGE 5 — CLOSE-UP DETAIL] Zoom on print or fabric. High detail, sharp focus."
-            ];
         } else if (isTshirtUGC) {
             strictPoses = [
                 "[T-SHIRT UGC 1] Mirror selfie, bedroom environment, real person vibe, authentic not polished",
@@ -244,6 +270,20 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 aiParts.push({ inlineData: currentRefInline });
             }
             aiParts.push({ text: variantPrompt });
+        } else if (isTshirtClean) {
+            const tshirtShots = ["front", "back", "side", "flatlay", "detail"];
+            const shotType = tshirtShots[i % tshirtShots.length];
+            variantPrompt = buildTshirtPromptByShot(shotType, userPrompt);
+            
+            if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push(...base64OutfitParts);
+            }
+
+            aiParts.push({ text: variantPrompt });
         } else {
             if (varianceEnabled) {
                 const magicalScene = getRandomSceneForSubcategory(subcat.business_mode?.category?.slug + " " + subcat.business_mode?.slug + " " + subcat.slug);
@@ -258,9 +298,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             const shoeSpecificRules = isShoeCatalog ? `\n[ANGLE CONTROL SYSTEM (STRICT): Each image MUST represent a UNIQUE predefined angle. If an angle is duplicated → INVALID. If an angle is missing → INVALID.]\n[CONSISTENCY RULE: same distance from camera, same zoom level, same product size in frame, same framing margins. All images must look like part of the SAME catalog set.]\n[DIVERSITY ENFORCEMENT: Each image must be visually and technically different. Do NOT repeat similar angles or compositions.]` : "";
 
             let tshirtSpecificRules = "";
-            if (isTshirtClean) {
-                tshirtSpecificRules = `\n[T-SHIRT ECOMMERCE STRUCTURED SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in color, design, proportions or print. GENERATE EXACTLY 5 IMAGES. Each image MUST follow a specific role. IMPORTANT RULES: Each image MUST be completely different. Do NOT repeat the same framing. Do NOT generate similar compositions. Each image has a different purpose. If any required shot is missing or incorrect, the result is invalid. Do not replace missing shots with similar images. LIGHTING: Soft studio lighting, clean ecommerce style. This is a structured ecommerce photoshoot. Follow the shot list strictly. Do not improvise. FORBIDDEN: Floating t-shirts. Tilted compositions. Creative angles for ecommerce shots. This is a strict ecommerce product set. Do NOT generate artistic or creative shots for required images. Follow the shot list exactly.`;
-            } else if (isTshirt) {
+            if (isTshirt) {
                 tshirtSpecificRules = `\n[T-SHIRT CORE SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in: color, fabric, fit, graphics, proportions. The garment must remain perfectly identical. NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES. MODEL RULES: Realistic human, Natural skin texture (no plastic/AI look), Correct anatomy, No deformed hands. DIVERSITY RULE: Each image must vary pose, camera angle, framing, composition. OUTPUT QUALITY: Photorealistic, high-end fashion photography.`;
             }
 
