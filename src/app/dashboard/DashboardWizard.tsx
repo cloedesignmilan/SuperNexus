@@ -577,6 +577,48 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
           align-items: center;
           gap: 6px;
         }
+        /* Overlay Badge */
+        .desktop-overlay-badge {
+           position: absolute;
+           bottom: 16px;
+           left: 16px;
+           background: rgba(0, 0, 0, 0.4);
+           backdrop-filter: blur(12px);
+           -webkit-backdrop-filter: blur(12px);
+           border: 1px solid rgba(255, 255, 255, 0.15);
+           border-radius: 16px;
+           padding: 10px 14px;
+           display: flex;
+           align-items: center;
+           gap: 12px;
+           z-index: 10;
+           box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+           max-width: calc(100% - 32px);
+           overflow: hidden;
+        }
+
+        .desktop-change-btn {
+           position: absolute;
+           top: 16px;
+           right: 16px;
+           background: rgba(0, 0, 0, 0.4);
+           backdrop-filter: blur(12px);
+           border: 1px solid rgba(255, 255, 255, 0.15);
+           color: #fff;
+           padding: 6px 12px;
+           border-radius: 99px;
+           font-size: 0.75rem;
+           font-weight: 600;
+           cursor: pointer;
+           z-index: 10;
+           transition: background 0.2s;
+           display: flex;
+           align-items: center;
+           gap: 4px;
+        }
+        .desktop-change-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
+        .mobile-header-content { display: none; }
 
         /* Buttons */
         .btn-giant {
@@ -675,6 +717,9 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         }
 
         @media (max-width: 1024px) {
+          .desktop-overlay-badge { display: none !important; }
+          .desktop-change-btn { display: none !important; }
+
           .studio-layout { flex-direction: column; overflow: hidden; }
           .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 50; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
           
@@ -733,9 +778,29 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
       {/* LEFT PANEL: Always shows the image */}
       <div className={`studio-left ${step > 0 && step < 9 && uploadedUrl ? 'collapsed' : ''}`}>
-        <div className={`image-frame ${!uploadedUrl ? 'empty' : ''}`}>
+        <div className={`image-frame ${!uploadedUrl ? 'empty' : ''}`} style={{ position: 'relative' }}>
           {uploadedUrl ? (
-            <img src={uploadedUrl} alt="Uploaded product" />
+            <>
+              <img src={uploadedUrl} alt="Uploaded product" />
+              {step > 0 && step < 9 && (
+                <>
+                  <div className="desktop-overlay-badge">
+                    <div style={{ width: '36px', height: '36px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(255,255,255,0.2)' }}>
+                      <img src={uploadedUrl} alt="Thumb" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>Product Uploaded</div>
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', textTransform: 'capitalize', marginTop: '2px', fontWeight: 500 }}>
+                        {analysisData ? analysisData.detectedProductType?.replace('_', ' ') : 'Ready'}
+                      </div>
+                    </div>
+                  </div>
+                  <button className="desktop-change-btn" onClick={() => { setStep(0); setUploadedUrl(null); }}>
+                    Change Image
+                  </button>
+                </>
+              )}
+            </>
           ) : (
             <ImageIcon size={64} color="rgba(255,255,255,0.1)" />
           )}
