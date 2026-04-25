@@ -113,6 +113,9 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             "[SHOES ANGLE 3] top view (from above)",
             "[SHOES ANGLE 4] pair front view (both shoes aligned)",
             "[SHOES ANGLE 5] back view (heel focus)",
+            "[SHOES ANGLE 6] sole bottom view",
+            "[SHOES ANGLE 7] detail close-up (logo or texture)"
+        ];
     } else if (isTshirt) {
         let isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
         let isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
