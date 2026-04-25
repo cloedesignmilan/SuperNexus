@@ -33,7 +33,7 @@ export default async function DashboardPage() {
       <style dangerouslySetInnerHTML={{__html: `
         html, body { overflow: hidden !important; background-color: #000 !important; height: 100dvh !important; overscroll-behavior: none; position: fixed; width: 100%; }
         div[style*="min-height: 100vh"] { height: 100dvh !important; min-height: 100dvh !important; }
-        main { padding: 0 !important; max-width: 100% !important; margin: 0 !important; display: flex; flex-direction: column; overflow: hidden; flex: 1; position: relative; }
+        main { padding: 0 !important; max-width: 100% !important; margin: 0 !important; display: flex; flex-direction: column; overflow: hidden; flex: 1; height: 100%; }
       `}} />
       <DashboardWizard snippets={snippets} isAdmin={isAdmin} />
     </>
