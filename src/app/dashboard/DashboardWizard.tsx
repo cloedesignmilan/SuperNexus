@@ -207,11 +207,28 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
          if (modelSnip) newSelections['MODEL_OPTION'] = modelSnip;
          
          setSelections(newSelections);
-         setTimeout(() => setStep(4), 350); // Vai a FORMAT_QUANTITY
+         if ((!analysisData || analysisData.confidence < 0.8) && newSelections['MODEL_OPTION']?.label !== 'No Model') {
+            setTimeout(() => setStep(3.5), 350);
+         } else {
+            setTimeout(() => setStep(4), 350); // Vai a FORMAT_QUANTITY
+         }
          return;
       }
 
       setSelections(newSelections);
+      
+      if (type === 'MODEL_OPTION') {
+         if ((!analysisData || analysisData.confidence < 0.8) && snip.label !== 'No Model') {
+            setTimeout(() => setStep(3.5), 350);
+            return;
+         }
+      }
+
+      if (type === 'CLIENT_TYPE') {
+         setTimeout(() => setStep(4), 350);
+         return;
+      }
+
       setTimeout(() => {
         setStep(stepIndex + 1);
       }, 350);
@@ -272,7 +289,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       if (selections['IMAGE_TYPE']?.label === 'Model Studio') return setStep(1);
       return setStep(2);
     }
-    setStep(Math.max(0, step - 1));
+    setStep(Math.max(0, step === 3.5 ? 3 : step === 0.75 ? 0 : step - 1));
   };
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
@@ -993,7 +1010,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
 
           {/* DYNAMIC STEPS 1-4 */}
-          {step >= 1 && step <= 4 && (
+          {step >= 1 && step <= 4 && step !== 3.5 && (
             <div className="fade-up-enter">
               <h2 className="step-header">{stepsData[step-1].title}</h2>
               <p className="step-desc">{stepsData[step-1].desc}</p>
@@ -1008,6 +1025,15 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   </button>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* STEP 3.5: MANUAL GENDER SELECTION (AI DOUBT) */}
+          {step === 3.5 && (
+            <div className="fade-up-enter">
+              <h2 className="step-header">Who is wearing it?</h2>
+              <p className="step-desc">AI couldn't perfectly detect the target gender for this item.</p>
+              {renderSnippetGridInternal('CLIENT_TYPE', 3.5)}
             </div>
           )}
 
