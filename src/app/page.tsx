@@ -15,7 +15,6 @@ import ChatBot from '@/components/ChatBot';
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
-import WaitlistButton from '@/components/WaitlistButton';
 import { getShowcaseData } from '@/lib/getShowcaseData';
 
 function getDynamicMetrics() {
@@ -65,14 +64,11 @@ export default async function LandingPage() {
             flexWrap: 'wrap',
             justifyContent: 'center'
           }} className="desktop-only-nav">
-             <a href="#category-t-shirts" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> T-Shirts</a>
-             <a href="#category-swimwear" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> Swimwear</a>
-             <a href="#category-footwear" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.2s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> Footwear</a>
-             <a href="#category-women" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Outfits</a>
-             <a href="#category-bridal" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.4s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Bridal</a>
-             <a href="#category-men" className="glow-link stagger-anim" style={{ '--glow-color': '#4d94ff', animationDelay: '0.5s' } as React.CSSProperties}><Briefcase size={14} color="#000000" className="glow-icon" /> Men's Suits</a>
-             <a href="#category-kids" className="glow-link stagger-anim" style={{ '--glow-color': '#ffaa00', animationDelay: '0.6s' } as React.CSSProperties}><Baby size={14} color="#000000" className="glow-icon" /> Kids</a>
-             <a href="#category-women" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0055', animationDelay: '0.7s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Runway</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> T-Shirts & Tops</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> Swimwear</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.2s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> Ceremony & Elegant</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> Everyday Fashion</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> Footwear</a>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -254,7 +250,7 @@ export default async function LandingPage() {
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
             <div style={{ width: '100%', maxWidth: '250px' }}>
-              <WaitlistButton />
+              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(255,10,179,0.4)', textDecoration: 'none' }}>Start Free Trial</a>
             </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
@@ -386,7 +382,9 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <WaitlistButton />
+                <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(255,10,179,0.4)', textDecoration: 'none' }}>
+                  Start Free Trial
+                </a>
             </div>
           </div>
           
@@ -404,7 +402,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <button disabled className="btn-secondary" style={{ width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
+            <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ display: 'block', width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Get Started</a>
           </div>
 
           {/* Retail Pack */}
@@ -421,7 +419,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
+            <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Buy Now</a>
           </div>
 
           {/* Retail Subscription */}
@@ -443,7 +441,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
               Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
             </div>
-            <button disabled className="btn-secondary" style={{ padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', display: 'block', opacity: 0.5, cursor: 'not-allowed' }}>Currently Updating</button>
+            <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Subscribe Now</a>
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
