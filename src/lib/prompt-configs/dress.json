@@ -11,7 +11,7 @@
           {
             "shotNumber": 1,
             "shotName": "Front View Ghost",
-            "positivePrompt": "Dress front view, invisible ghost mannequin effect, floating perfectly centered. Clean white studio background. Exact product replication, showing full silhouette and hemline.",
+            "positivePrompt": "{product} front view, invisible ghost mannequin effect, floating perfectly centered. Clean white studio background. Exact product replication, showing full silhouette and hemline.",
             "negativePrompt": "people, models, hands, perspective, flat lay, messy, background",
             "hardRules": "STRICT FRONT VIEW, INVISIBLE MANNEQUIN, FULL HEMLINE VISIBLE",
             "outputGoal": "Hero Image Ecommerce"
@@ -19,7 +19,7 @@
           {
             "shotNumber": 2,
             "shotName": "Back View Ghost",
-            "positivePrompt": "Dress back view, invisible ghost mannequin effect, rotated 180 degrees. Show only back side and zipper/fastenings. Clean studio white background.",
+            "positivePrompt": "{product} back view, invisible ghost mannequin effect, rotated 180 degrees. Show only back side and zipper/fastenings. Clean studio white background.",
             "negativePrompt": "front view, people, models, flat lay",
             "hardRules": "180 DEGREE ROTATION, NO FRONT VISIBLE",
             "outputGoal": "Back View Ecommerce"
@@ -27,7 +27,7 @@
           {
             "shotNumber": 3,
             "shotName": "Side Silhouette",
-            "positivePrompt": "Dress side angle, rotated 45 degrees, invisible ghost mannequin. Showing the profile silhouette and drape of the fabric. Clean studio.",
+            "positivePrompt": "{product} side angle, rotated 45 degrees, invisible ghost mannequin. Showing the profile silhouette and drape of the fabric. Clean studio.",
             "negativePrompt": "front view, straight on, people, models",
             "hardRules": "MINIMUM 45 DEGREE ROTATION, SHOW SIDE PROFILE",
             "outputGoal": "Side Profile Ecommerce"
@@ -35,7 +35,7 @@
           {
             "shotNumber": 4,
             "shotName": "Flat Lay Styled",
-            "positivePrompt": "Dress flat lay, perfectly folded or artfully laid flat on a neutral background. Top-down 90° view camera. No perspective.",
+            "positivePrompt": "{product} flat lay, perfectly folded or artfully laid flat on a neutral background. Top-down 90° view camera. No perspective.",
             "negativePrompt": "mannequin, hanging, standing, perspective angle, people",
             "hardRules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT OR NEATLY FOLDED",
             "outputGoal": "Flat Lay Ecommerce"
@@ -43,7 +43,7 @@
           {
             "shotNumber": 5,
             "shotName": "Detail Fabric Close-Up",
-            "positivePrompt": "Macro close-up of the dress fabric and stitching. High detail, sharp focus on the material texture and pattern.",
+            "positivePrompt": "Macro close-up of the {product} fabric and stitching. High detail, sharp focus on the material texture and pattern.",
             "negativePrompt": "full dress, zoomed out, people, models",
             "hardRules": "MACRO SHOT, EXTREME DETAIL",
             "outputGoal": "Detail View Ecommerce"
@@ -59,7 +59,7 @@
           {
             "shotNumber": 1,
             "shotName": "Front Full Body",
-            "positivePrompt": "Professional studio fashion portrait of a female model wearing the dress. Full body shot showing the dress hemline and shoes. Confident elegant pose. Clean solid background. High fashion lighting.",
+            "positivePrompt": "Professional studio fashion portrait of a {gender} wearing the {product}. Full body shot showing the {product} hemline and shoes. Confident elegant pose. Clean solid background. High fashion lighting.",
             "negativePrompt": "close up, messy background, outdoors, casual selfie, chopped head or feet",
             "hardRules": "FULL BODY VISIBLE. FRONT VIEW. ELEGANT POSTURE.",
             "outputGoal": "Main Model Full Body"
@@ -67,7 +67,7 @@
           {
             "shotNumber": 2,
             "shotName": "Dynamic 3/4 Twist",
-            "positivePrompt": "Female model wearing the dress, dynamic 3/4 side angle. Elegant twist showing how the skirt or fabric flows. Editorial pose. Clean studio background.",
+            "positivePrompt": "{gender} wearing the {product}, dynamic 3/4 side angle. Elegant twist showing how the skirt or fabric flows. Editorial pose. Clean studio background.",
             "negativePrompt": "straight on, stiff pose, mannequin, flat lighting",
             "hardRules": "3/4 ANGLE. SHOW FABRIC MOVEMENT/FLOW.",
             "outputGoal": "Side fit and flow"
@@ -75,7 +75,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back View Elegance",
-            "positivePrompt": "Model facing away from the camera, showing the back design of the dress. Clean studio background. Hair styled to not hide the upper back of the dress.",
+            "positivePrompt": "{gender} facing away from the camera, showing the back design of the {product}. Clean studio background. Hair styled to not hide the upper back of the {product}.",
             "negativePrompt": "front view, model face, turning around, messy background",
             "hardRules": "MODEL BACK VIEW. PERFECT SYMMETRY ON BACK DETAILS.",
             "outputGoal": "Model back fit"
@@ -83,7 +83,7 @@
           {
             "shotNumber": 4,
             "shotName": "Mid Shot Portrait",
-            "positivePrompt": "Medium shot (waist up) of the female model wearing the dress. Focus on the neckline and bodice fit. High end fashion catalog lighting.",
+            "positivePrompt": "Medium shot (waist up) of the {gender} wearing the {product}. Focus on the neckline and bodice fit. High end fashion catalog lighting.",
             "negativePrompt": "full body, busy background, wide angle",
             "hardRules": "WAIST-UP CROPPING. FOCUS ON NECKLINE/BODICE.",
             "outputGoal": "Bodice fit demonstration"
@@ -91,7 +91,7 @@
           {
             "shotNumber": 5,
             "shotName": "Movement/Walking Studio",
-            "positivePrompt": "Model walking or moving gracefully in the studio wearing the dress, capturing the flow and movement of the hem. Elegant motion blur. High fashion studio setup.",
+            "positivePrompt": "{gender} walking or moving gracefully in the studio wearing the {product}, capturing the flow and movement of the hem. Elegant motion blur. High fashion studio setup.",
             "negativePrompt": "standing perfectly still, stiff, outdoor",
             "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
             "outputGoal": "Fabric motion presentation"
@@ -107,7 +107,7 @@
           {
             "shotNumber": 1,
             "shotName": "Front Full Body Curvy",
-            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size female model wearing the dress. Full body shot. Confident, elegant smiling pose. Clean solid background.",
+            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size {gender} wearing the {product}. Full body shot. Confident, elegant smiling pose. Clean solid background.",
             "negativePrompt": "thin model, outdoors, messy background, distorted body",
             "hardRules": "MUST USE PLUS-SIZE MODEL. FRONT VIEW FULL BODY.",
             "outputGoal": "Main curvy fit"
@@ -115,7 +115,7 @@
           {
             "shotNumber": 2,
             "shotName": "3/4 Angle Curvy",
-            "positivePrompt": "Curvy plus-size model wearing the dress, 3/4 side angle. Hands on hips, emphasizing the silhouette. Clean studio.",
+            "positivePrompt": "curvy plus-size {gender} wearing the {product}, 3/4 side angle. Hands on hips, emphasizing the silhouette. Clean studio.",
             "negativePrompt": "thin model, straight on, stiff",
             "hardRules": "MUST USE PLUS-SIZE MODEL. 3/4 ANGLE.",
             "outputGoal": "Side profile curvy silhouette"
@@ -123,7 +123,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back View Curvy",
-            "positivePrompt": "Curvy plus-size model facing away from the camera, showing the back of the dress. Elegant posture. Clean studio background.",
+            "positivePrompt": "curvy plus-size {gender} facing away from the camera, showing the back of the {product}. Elegant posture. Clean studio background.",
             "negativePrompt": "thin model, front view, face visible",
             "hardRules": "MUST USE PLUS-SIZE MODEL. BACK VIEW.",
             "outputGoal": "Back curvy fit"
@@ -131,7 +131,7 @@
           {
             "shotNumber": 4,
             "shotName": "Mid Shot Curvy",
-            "positivePrompt": "Medium shot (waist up) of a curvy plus-size model wearing the dress. Focus on the neckline and bust fit. Confident expression.",
+            "positivePrompt": "Medium shot (waist up) of a curvy plus-size {gender} wearing the {product}. Focus on the neckline and bust fit. Confident expression.",
             "negativePrompt": "thin model, full body, wide angle",
             "hardRules": "MUST USE PLUS-SIZE MODEL. WAIST-UP.",
             "outputGoal": "Curvy bodice fit"
@@ -139,7 +139,7 @@
           {
             "shotNumber": 5,
             "shotName": "Seated Elegance",
-            "positivePrompt": "Curvy plus-size model sitting elegantly on a studio stool wearing the dress. High fashion editorial pose. Focus on how the dress drapes while seated.",
+            "positivePrompt": "curvy plus-size {gender} sitting elegantly on a studio stool wearing the {product}. High fashion editorial pose. Focus on how the {product} drapes while seated.",
             "negativePrompt": "thin model, standing, messy background",
             "hardRules": "MUST USE PLUS-SIZE MODEL. SEATED STUDIO POSE.",
             "outputGoal": "Seated curvy drape"
@@ -155,15 +155,15 @@
           {
             "shotNumber": 1,
             "shotName": "City Stroll Elegance",
-            "positivePrompt": "Model wearing the dress walking gracefully down a beautiful European city street. Full body shot. Bokeh background, cinematic natural sunlight.",
+            "positivePrompt": "{gender} wearing the {product} walking gracefully down a beautiful European city street. Full body shot. Bokeh background, cinematic natural sunlight.",
             "negativePrompt": "studio, solid background, looking at camera stiffly, flat lighting",
-            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. MODEL WALKING.",
+            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. {gender} walking.",
             "outputGoal": "Dynamic urban lifestyle"
           },
           {
             "shotNumber": 2,
             "shotName": "Golden Hour Balcony",
-            "positivePrompt": "Model wearing the dress standing on a scenic balcony or terrace. Medium shot, natural golden hour lighting, hair blowing slightly in the wind.",
+            "positivePrompt": "{gender} wearing the {product} standing on a scenic balcony or terrace. Medium shot, natural golden hour lighting, hair blowing slightly in the wind.",
             "negativePrompt": "studio, harsh flash, indoors",
             "hardRules": "GOLDEN HOUR LIGHTING. OUTDOOR TERRACE OR BALCONY.",
             "outputGoal": "Romantic lifestyle"
@@ -171,7 +171,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back View Scenery",
-            "positivePrompt": "Model wearing the dress facing away, looking out over a stunning landscape or cityscape. Back shot showing the dress details from behind. Natural sunlight.",
+            "positivePrompt": "{gender} wearing the {product} facing away, looking out over a stunning landscape or cityscape. Back shot showing the {product} details from behind. Natural sunlight.",
             "negativePrompt": "front view, studio, indoors",
             "hardRules": "BACK VIEW IN SCENIC SETTING.",
             "outputGoal": "Lifestyle back fit"
@@ -179,7 +179,7 @@
           {
             "shotNumber": 4,
             "shotName": "Evening Gala Vibe",
-            "positivePrompt": "Model wearing the dress in an upscale indoor setting (like a luxury hotel lobby or restaurant). Elegant pose. Cinematic low-light photography.",
+            "positivePrompt": "{gender} wearing the {product} in an upscale indoor setting (like a luxury hotel lobby or restaurant). Elegant pose. Cinematic low-light photography.",
             "negativePrompt": "studio, bright daylight, casual street",
             "hardRules": "UPSCALE INDOOR ENVIRONMENT. CINEMATIC LIGHTING.",
             "outputGoal": "Luxury event lifestyle"
@@ -187,7 +187,7 @@
           {
             "shotNumber": 5,
             "shotName": "Candid Joy",
-            "positivePrompt": "Candid shot of the model wearing the dress laughing naturally while holding a clutch or drink. Mid-shot. Soft focus elegant background.",
+            "positivePrompt": "Candid shot of the {gender} wearing the {product} laughing naturally while holding a clutch or drink. Mid-shot. Soft focus elegant background.",
             "negativePrompt": "posed, stiff, studio, looking straight at camera seriously",
             "hardRules": "CANDID EMOTION. ELEGANT BACKGROUND.",
             "outputGoal": "Emotional lifestyle connection"
@@ -203,15 +203,15 @@
           {
             "shotNumber": 1,
             "shotName": "Event Guest Candid",
-            "positivePrompt": "Real everyday woman wearing the dress arriving at an event. Candid photography, natural, unposed. Authentic feel, slight motion. Outdoor sunlight.",
+            "positivePrompt": "Real everyday {gender} wearing the {product} arriving at an event. Candid photography, natural, unposed. Authentic feel, slight motion. Outdoor sunlight.",
             "negativePrompt": "professional model, studio, posed, airbrushed, perfect lighting",
-            "hardRules": "MUST LOOK LIKE A REAL WOMAN, NOT A FASHION MODEL.",
+            "hardRules": "MUST LOOK LIKE A Real {gender}, NOT A FASHION MODEL.",
             "outputGoal": "Authentic event lifestyle"
           },
           {
             "shotNumber": 2,
             "shotName": "Dinner Date",
-            "positivePrompt": "Real everyday woman wearing the dress sitting at a nice restaurant table. Medium shot. Natural ambient lighting, candid smile.",
+            "positivePrompt": "Real everyday {gender} wearing the {product} sitting at a nice restaurant table. Medium shot. Natural ambient lighting, candid smile.",
             "negativePrompt": "high fashion, studio, looking intensely at camera",
             "hardRules": "RESTAURANT CONTEXT. REALISTIC FEMALE.",
             "outputGoal": "Everyday context"
@@ -219,7 +219,7 @@
           {
             "shotNumber": 3,
             "shotName": "Walking Away",
-            "positivePrompt": "Real woman walking away from camera wearing the dress at a garden party. Casual outdoor setting, back view.",
+            "positivePrompt": "Real {gender} walking away from camera wearing the {product} at a garden party. Casual outdoor setting, back view.",
             "negativePrompt": "studio, posed, fashion model",
             "hardRules": "BACK VIEW. REALISTIC MOVEMENT.",
             "outputGoal": "Back view authentic"
@@ -227,7 +227,7 @@
           {
             "shotNumber": 4,
             "shotName": "Friends hanging out",
-            "positivePrompt": "Real woman wearing the dress laughing, candid shot chatting with someone off-camera. Upper body. Natural skin texture.",
+            "positivePrompt": "Real {gender} wearing the {product} laughing, candid shot chatting with someone off-camera. Upper body. Natural skin texture.",
             "negativePrompt": "studio, perfect skin, fashion editorial",
             "hardRules": "CANDID EMOTION. NATURAL LIGHTING.",
             "outputGoal": "Candid emotion"
@@ -235,7 +235,7 @@
           {
             "shotNumber": 5,
             "shotName": "Imperfect framing",
-            "positivePrompt": "Woman wearing the dress in a realistic beautiful setting, framing feels like a friend took a photo of her with a phone. Slightly imperfect framing.",
+            "positivePrompt": "{gender} wearing the {product} in a realistic beautiful setting, framing feels like a friend took a photo of her with a phone. Slightly imperfect framing.",
             "negativePrompt": "professional framing, studio light, DSLR",
             "hardRules": "IMPERFECT CANDID FEEL.",
             "outputGoal": "Relatable content"
@@ -251,15 +251,15 @@
           {
             "shotNumber": 1,
             "shotName": "Candid Walking Man",
-            "positivePrompt": "Real everyday man wearing the dress walking down a city street. Fashion forward. Candid photography, authentic, unposed, natural sunlight.",
+            "positivePrompt": "Real everyday {gender} wearing the {product} walking down a city street. Fashion forward. Candid photography, authentic, unposed, natural sunlight.",
             "negativePrompt": "professional model, studio, highly edited, airbrushed",
-            "hardRules": "MUST LOOK LIKE A REAL MAN, NOT A FASHION MODEL.",
+            "hardRules": "MUST LOOK LIKE A Real {gender}, NOT A FASHION MODEL.",
             "outputGoal": "Authentic man lifestyle"
           },
           {
             "shotNumber": 2,
             "shotName": "Casual Stance",
-            "positivePrompt": "Real everyday man wearing the dress standing casually outdoors. Medium shot. Natural urban background.",
+            "positivePrompt": "Real everyday {gender} wearing the {product} standing casually outdoors. Medium shot. Natural urban background.",
             "negativePrompt": "high fashion, posed, studio",
             "hardRules": "CASUAL STANCE. REALISTIC MALE.",
             "outputGoal": "Everyday stance"
@@ -267,7 +267,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back candid man",
-            "positivePrompt": "Real man wearing the dress walking away from camera in a city environment. Back view.",
+            "positivePrompt": "Real {gender} wearing the {product} walking away from camera in a city environment. Back view.",
             "negativePrompt": "studio, posed, fashion model",
             "hardRules": "BACK VIEW. REALISTIC MALE.",
             "outputGoal": "Back view man"
@@ -275,7 +275,7 @@
           {
             "shotNumber": 4,
             "shotName": "Looking away",
-            "positivePrompt": "Real man wearing the dress looking off-camera casually. Upper body shot, natural outdoor lighting.",
+            "positivePrompt": "Real {gender} wearing the {product} looking off-camera casually. Upper body shot, natural outdoor lighting.",
             "negativePrompt": "looking at camera, studio, dramatic lighting",
             "hardRules": "CANDID PROFILE. NATURAL LIGHTING.",
             "outputGoal": "Candid profile"
@@ -283,7 +283,7 @@
           {
             "shotNumber": 5,
             "shotName": "Relaxed sitting",
-            "positivePrompt": "Real man wearing the dress sitting on a bench outdoors. Relaxed realistic posture.",
+            "positivePrompt": "Real {gender} wearing the {product} sitting on a bench outdoors. Relaxed realistic posture.",
             "negativePrompt": "stiff posture, studio, fashion editorial",
             "hardRules": "SEATED OUTDOORS. AUTHENTIC FEEL.",
             "outputGoal": "Seated lifestyle"
@@ -299,7 +299,7 @@
           {
             "shotNumber": 1,
             "shotName": "Mirror Selfie Dress",
-            "positivePrompt": "UGC style mirror selfie of a real woman wearing the dress in a bedroom or nice bathroom. Shot on iPhone, slightly grainy, authentic flash reflection. Full dress visible.",
+            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a bedroom or nice bathroom. Shot on iPhone, slightly grainy, authentic flash reflection. Full dress visible.",
             "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model",
             "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE. SHOW FULL DRESS.",
             "outputGoal": "UGC Selfie"
@@ -307,7 +307,7 @@
           {
             "shotNumber": 2,
             "shotName": "Night Out Point of View",
-            "positivePrompt": "UGC style photo of a real woman wearing the dress, taken by a friend on a night out. Flash photography, authentic, slightly imperfect framing.",
+            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken by a friend on a night out. Flash photography, authentic, slightly imperfect framing.",
             "negativePrompt": "professional, studio, perfectly centered, softbox",
             "hardRules": "IMPERFECT FRAMING. IPHONE NIGHT FLASH AESTHETIC.",
             "outputGoal": "POV Night Out"
@@ -315,7 +315,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back UGC",
-            "positivePrompt": "UGC style back shot of a woman wearing the dress walking ahead on a sidewalk. Casual, raw phone photo.",
+            "positivePrompt": "UGC style back shot of a {gender} wearing the {product} walking ahead on a sidewalk. Casual, raw phone photo.",
             "negativePrompt": "studio, high fashion, perfect focus",
             "hardRules": "BACK VIEW. RAW IPHONE QUALITY.",
             "outputGoal": "UGC Back view"
@@ -323,7 +323,7 @@
           {
             "shotNumber": 4,
             "shotName": "Close up details UGC",
-            "positivePrompt": "UGC style close up of the dress fabric and neckline, taken casually with a phone. Realistic home or venue lighting.",
+            "positivePrompt": "UGC style close up of the {product} fabric and neckline, taken casually with a phone. Realistic home or venue lighting.",
             "negativePrompt": "macro lens, professional detail, studio",
             "hardRules": "PHONE CAMERA CLOSE UP.",
             "outputGoal": "UGC Texture"
@@ -331,7 +331,7 @@
           {
             "shotNumber": 5,
             "shotName": "Getting ready",
-            "positivePrompt": "UGC style photo of a woman wearing the dress fixing her hair in a hallway. Authentic everyday shot. Grainy iPhone aesthetic.",
+            "positivePrompt": "UGC style photo of a {gender} wearing the {product} fixing her hair in a hallway. Authentic everyday shot. Grainy iPhone aesthetic.",
             "negativePrompt": "studio, perfect lighting, modeling",
             "hardRules": "EVERYDAY ENVIRONMENT. RELAXED AND REAL.",
             "outputGoal": "UGC Getting Ready"
@@ -347,7 +347,7 @@
           {
             "shotNumber": 1,
             "shotName": "Mirror Selfie Man",
-            "positivePrompt": "UGC style mirror selfie of a real man wearing the dress. Shot on iPhone, messy room background, authentic.",
+            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product}. Shot on iPhone, messy room background, authentic.",
             "negativePrompt": "professional lighting, DSLR, studio, high quality",
             "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
             "outputGoal": "UGC Selfie Man"
@@ -355,7 +355,7 @@
           {
             "shotNumber": 2,
             "shotName": "Casual street UGC",
-            "positivePrompt": "UGC style photo of a real man wearing the dress, walking on the street, taken quickly by a friend.",
+            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, walking on the street, taken quickly by a friend.",
             "negativePrompt": "professional, studio, centered perfectly",
             "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
             "outputGoal": "POV Friend Man"
@@ -363,7 +363,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back UGC Man",
-            "positivePrompt": "UGC style back shot of a man wearing the dress looking at a view. Casual, raw phone photo.",
+            "positivePrompt": "UGC style back shot of a {gender} wearing the {product} looking at a view. Casual, raw phone photo.",
             "negativePrompt": "studio, high fashion, perfect focus",
             "hardRules": "BACK VIEW. RAW IPHONE QUALITY.",
             "outputGoal": "UGC Back view man"
@@ -371,7 +371,7 @@
           {
             "shotNumber": 4,
             "shotName": "Party UGC",
-            "positivePrompt": "UGC style photo of a man wearing the dress at a party. Authentic phone flash lighting.",
+            "positivePrompt": "UGC style photo of a {gender} wearing the {product} at a party. Authentic phone flash lighting.",
             "negativePrompt": "studio, perfect lighting",
             "hardRules": "PARTY ENVIRONMENT. RAW VIBE FLASH.",
             "outputGoal": "Active UGC"
@@ -379,7 +379,7 @@
           {
             "shotNumber": 5,
             "shotName": "Sitting casual",
-            "positivePrompt": "UGC style photo of a man wearing the dress sitting in a car or cafe. Authentic everyday shot.",
+            "positivePrompt": "UGC style photo of a {gender} wearing the {product} sitting in a car or cafe. Authentic everyday shot.",
             "negativePrompt": "studio, modeling",
             "hardRules": "CASUAL SEATED. IPHONE VIBE.",
             "outputGoal": "UGC Casual Seat"
@@ -395,7 +395,7 @@
           {
             "shotNumber": 1,
             "shotName": "Glamour Light Ad",
-            "positivePrompt": "High impact advertising shot. Model wearing the dress walking through dramatic spotlight or sunrays. Glamorous aesthetic. Intense colors.",
+            "positivePrompt": "High impact advertising shot. {gender} wearing the {product} walking through dramatic spotlight or sunrays. Glamorous aesthetic. Intense colors.",
             "negativePrompt": "boring, flat lighting, white background, simple",
             "hardRules": "EXTREME LIGHTING. HIGH CONTRAST ADS STYLE.",
             "outputGoal": "Scroll stopper glamour"
@@ -403,7 +403,7 @@
           {
             "shotNumber": 2,
             "shotName": "Fabric Toss Ad",
-            "positivePrompt": "Model wearing the dress with the skirt/fabric tossed elegantly in the air. Dynamic action shot. Solid bright contrasting background color.",
+            "positivePrompt": "{gender} wearing the {product} with the skirt/fabric tossed elegantly in the air. Dynamic action shot. Solid bright contrasting background color.",
             "negativePrompt": "standing still, boring pose, grey background",
             "hardRules": "FABRIC IN MIDAIR. HIGH ENERGY.",
             "outputGoal": "High energy action"
@@ -411,7 +411,7 @@
           {
             "shotNumber": 3,
             "shotName": "Asymmetrical Editorial",
-            "positivePrompt": "Model wearing the dress, framed to the extreme right or left. Negative space intentionally left for ad copy. Dramatic side lighting, editorial fashion.",
+            "positivePrompt": "{gender} wearing the {product}, framed to the extreme right or left. Negative space intentionally left for ad copy. Dramatic side lighting, editorial fashion.",
             "negativePrompt": "busy background, centered subject",
             "hardRules": "ASYMMETRICAL FRAMING FOR AD TEXT.",
             "outputGoal": "Ad copy framing"
@@ -419,7 +419,7 @@
           {
             "shotNumber": 4,
             "shotName": "Back View Glamour Ad",
-            "positivePrompt": "Model wearing the dress from the back, walking down a grand staircase or dramatic runway. Cinematic and epic ad shot.",
+            "positivePrompt": "{gender} wearing the {product} from the back, walking down a grand staircase or dramatic runway. Cinematic and epic ad shot.",
             "negativePrompt": "front view, boring background",
             "hardRules": "EPIC CINEMATIC BACK VIEW.",
             "outputGoal": "Cinematic back ad"
@@ -427,7 +427,7 @@
           {
             "shotNumber": 5,
             "shotName": "Pop Color Blocking",
-            "positivePrompt": "Model wearing the dress. Solid extremely bright pop-art background (e.g. bright yellow or hot pink) that color-blocks with the dress. Hard flash lighting, high fashion edgy pose.",
+            "positivePrompt": "{gender} wearing the {product}. Solid extremely bright pop-art background (e.g. bright yellow or hot pink) that color-blocks with the {product}. Hard flash lighting, high fashion edgy pose.",
             "negativePrompt": "natural lighting, outdoors, muted colors",
             "hardRules": "SOLID BRIGHT POP COLOR BACKGROUND. HARD FLASH.",
             "outputGoal": "Pop art ad"
@@ -443,7 +443,7 @@
           {
             "shotNumber": 1,
             "shotName": "Floating Magic Dress",
-            "positivePrompt": "Dress magically floating in mid-air with dynamic elegant ripples in the skirt. Bright contrasting studio background. High impact advertising.",
+            "positivePrompt": "{product} magically floating in mid-air with dynamic elegant ripples in the skirt. Bright contrasting studio background. High impact advertising.",
             "negativePrompt": "model, mannequin, flat lay, boring",
             "hardRules": "FLOATING GHOST EFFECT WITH VOLUME. NO MODEL.",
             "outputGoal": "Floating magic"
@@ -451,7 +451,7 @@
           {
             "shotNumber": 2,
             "shotName": "Pedestal Showcase",
-            "positivePrompt": "Dress displayed majestically on an elegant marble or glowing pedestal. High-end premium product photography. Dramatic lighting.",
+            "positivePrompt": "{product} displayed majestically on an elegant marble or glowing pedestal. High-end premium product photography. Dramatic lighting.",
             "negativePrompt": "model, messy, flat lay",
             "hardRules": "ON PREMIUM PEDESTAL. DRAMATIC LIGHT. NO MODEL.",
             "outputGoal": "Premium pedestal ad"
@@ -459,7 +459,7 @@
           {
             "shotNumber": 3,
             "shotName": "Back View Floating",
-            "positivePrompt": "Back view of the dress floating in mid-air. Dramatic under-lighting emphasizing the silhouette and back details. Epic product presentation.",
+            "positivePrompt": "Back view of the {product} floating in mid-air. Dramatic under-lighting emphasizing the silhouette and back details. Epic product presentation.",
             "negativePrompt": "front view, model",
             "hardRules": "BACK VIEW FLOATING. NO MODEL.",
             "outputGoal": "Epic back float"
@@ -467,7 +467,7 @@
           {
             "shotNumber": 4,
             "shotName": "Floral/Nature Abstract",
-            "positivePrompt": "Dress hanging elegantly against a background of oversized abstract flowers or tropical leaves. Advertising campaign style.",
+            "positivePrompt": "{product} hanging elegantly against a background of oversized abstract flowers or tropical leaves. Advertising campaign style.",
             "negativePrompt": "model, people, dirty",
             "hardRules": "HANGING WITH ABSTRACT NATURE BACKGROUND. NO MODEL.",
             "outputGoal": "Nature contrast ad"
@@ -475,7 +475,7 @@
           {
             "shotNumber": 5,
             "shotName": "Hanging Minimalist Pop",
-            "positivePrompt": "Dress hanging on a modern minimalist brass hanger against a bright pop-color background with a hard drop shadow.",
+            "positivePrompt": "{product} hanging on a modern minimalist brass hanger against a bright pop-color background with a hard drop shadow.",
             "negativePrompt": "model, floating, complex background",
             "hardRules": "ON BRASS HANGER. HARD SHADOW. NO MODEL.",
             "outputGoal": "Pop minimal hanger"
@@ -491,7 +491,7 @@
           {
             "shotNumber": 1,
             "shotName": "Neckline & Jewelry Detail",
-            "positivePrompt": "Extreme macro close-up of the dress neckline worn by a model, showing a hint of a necklace. Focus on the stitching and bodice fabric weave. Shallow depth of field.",
+            "positivePrompt": "Extreme macro close-up of the {product} neckline worn by a model, showing a hint of a necklace. Focus on the stitching and bodice fabric weave. Shallow depth of field.",
             "negativePrompt": "full body, full dress visible, far away",
             "hardRules": "MACRO NECKLINE DETAIL ONLY.",
             "outputGoal": "Neckline detail"
@@ -499,7 +499,7 @@
           {
             "shotNumber": 2,
             "shotName": "Waistline / Belt Detail",
-            "positivePrompt": "Macro close-up of the dress waistline or belt area on the model. Showing the fit and fabric cinching.",
+            "positivePrompt": "Macro close-up of the {product} waistline or belt area on the model. Showing the fit and fabric cinching.",
             "negativePrompt": "full body, face",
             "hardRules": "MACRO WAIST DETAIL ONLY.",
             "outputGoal": "Waistline fit detail"
@@ -507,7 +507,7 @@
           {
             "shotNumber": 3,
             "shotName": "Hem & Shoes Detail",
-            "positivePrompt": "Close-up on the lower hem of the dress and the model's shoes. Showing how the dress falls near the ankles/knees.",
+            "positivePrompt": "Close-up on the lower hem of the {product} and the model's shoes. Showing how the {product} falls near the ankles/knees.",
             "negativePrompt": "full dress, upper body, face",
             "hardRules": "HEMLINE DETAIL ONLY.",
             "outputGoal": "Hem and shoe detail"
@@ -515,7 +515,7 @@
           {
             "shotNumber": 4,
             "shotName": "Back Zipper/Closure Detail",
-            "positivePrompt": "Close-up of the back closure, zipper, or buttons of the dress worn by a model. Focus on the delicate back details.",
+            "positivePrompt": "Close-up of the back closure, zipper, or buttons of the {product} worn by a model. Focus on the delicate back details.",
             "negativePrompt": "front view, full body",
             "hardRules": "BACK CLOSURE DETAIL ONLY.",
             "outputGoal": "Back seam detail"
@@ -523,7 +523,7 @@
           {
             "shotNumber": 5,
             "shotName": "Fabric Drape Action",
-            "positivePrompt": "Close-up of the dress skirt flowing and swishing, showing how the fabric folds and drapes dynamically in motion. Highlighting the material lightness.",
+            "positivePrompt": "Close-up of the {product} skirt flowing and swishing, showing how the fabric folds and drapes dynamically in motion. Highlighting the material lightness.",
             "negativePrompt": "flat fabric, full body, static",
             "hardRules": "DYNAMIC SKIRT DRAPE CLOSE-UP.",
             "outputGoal": "Fabric behavior detail"
@@ -539,7 +539,7 @@
           {
             "shotNumber": 1,
             "shotName": "Flat Macro Weave",
-            "positivePrompt": "Extreme macro photography of the dress fabric laid flat. Focus purely on the material weave, sequins, or print. Clean lighting.",
+            "positivePrompt": "Extreme macro photography of the {product} fabric laid flat. Focus purely on the material weave, sequins, or print. Clean lighting.",
             "negativePrompt": "model, full dress, zoomed out",
             "hardRules": "MICROSCOPIC WEAVE LEVEL. NO MODEL.",
             "outputGoal": "Fabric weave macro"
@@ -547,7 +547,7 @@
           {
             "shotNumber": 2,
             "shotName": "Folded Bodice Detail",
-            "positivePrompt": "Macro close-up of the neatly folded bodice of the dress. Highlighting the structural quality and shape.",
+            "positivePrompt": "Macro close-up of the neatly folded bodice of the {product}. Highlighting the structural quality and shape.",
             "negativePrompt": "model, messy",
             "hardRules": "FOLDED BODICE DETAIL. NO MODEL.",
             "outputGoal": "Bodice structure detail"
@@ -555,7 +555,7 @@
           {
             "shotNumber": 3,
             "shotName": "Hem Stitching",
-            "positivePrompt": "Macro shot of the bottom hem stitching of the dress, laid flat. Perfect focus on the thread and finish.",
+            "positivePrompt": "Macro shot of the bottom hem stitching of the {product}, laid flat. Perfect focus on the thread and finish.",
             "negativePrompt": "model, out of focus",
             "hardRules": "HEM STITCHING MACRO. NO MODEL.",
             "outputGoal": "Hem quality detail"
@@ -563,7 +563,7 @@
           {
             "shotNumber": 4,
             "shotName": "Back Label/Collar Area",
-            "positivePrompt": "Close-up of the inside back collar/zipper area of the dress. Clean flat lay.",
+            "positivePrompt": "Close-up of the inside back collar/zipper area of the {product}. Clean flat lay.",
             "negativePrompt": "model, front view",
             "hardRules": "INSIDE COLLAR SEAM. NO MODEL.",
             "outputGoal": "Inside seam detail"
@@ -571,7 +571,7 @@
           {
             "shotNumber": 5,
             "shotName": "Fabric Ripples",
-            "positivePrompt": "Close-up of the dress fabric artfully scrunched to create soft ripples and valleys, emphasizing the material elegance and sheen.",
+            "positivePrompt": "Close-up of the {product} fabric artfully scrunched to create soft ripples and valleys, emphasizing the material elegance and sheen.",
             "negativePrompt": "model, perfectly flat",
             "hardRules": "RIPPLED FABRIC TEXTURE. NO MODEL.",
             "outputGoal": "Fabric weight texture"

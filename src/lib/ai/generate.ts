@@ -8,7 +8,9 @@ const GLOBAL_INVIOLABLE_RULES = `\n\n[GLOBAL INVIOLABLE RULES]
 - Preserve the product identity perfectly. Do not invent details.
 - Do not add unwanted objects. Do not add text unless explicitly requested.
 - No watermark. No logo changes.
-- No distorted anatomy if a model is present.`;
+- No distorted anatomy if a model is present.
+- CRITICAL: If the reference image has store tags, cardboard labels, price tags, or hangtags attached, REMOVE THEM COMPLETELY. The garment must be cleanly worn without store tags.
+- CRITICAL: If the product is an open jacket, blazer, or coat, YOU MUST generate an elegant shirt (e.g., dress shirt or t-shirt) underneath it. Do not leave the chest hollow or map the lining to the skin.`;
 
 export interface GenerateImagesOptions {
     qty: number;
