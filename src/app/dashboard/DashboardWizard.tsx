@@ -1054,7 +1054,23 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             <div className="fade-up-enter">
               <h2 className="step-header">Who is wearing it?</h2>
               <p className="step-desc">Please confirm the target audience to ensure perfect modeling.</p>
-              {renderSnippetGridInternal('CLIENT_TYPE', 2.5)}
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+                 {[
+                   { label: 'Male Model', display: 'Uomo', id: 'gender-man', prompt: 'male fashion model, handsome man' },
+                   { label: 'Female Model', display: 'Donna', id: 'gender-woman', prompt: 'female fashion model, beautiful woman' }
+                 ].map(gender => (
+                    <div 
+                      key={gender.id}
+                      className={`snippet-card ${selections['CLIENT_TYPE']?.id === gender.id ? 'active' : ''}`}
+                      onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, intensity_level: 'strong' }, 2.5)}
+                    >
+                      <Icons.User size={24} style={{ color: selections['CLIENT_TYPE']?.id === gender.id ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
+                      <div className="snippet-title">{gender.display}</div>
+                      <div className="snippet-desc">Generate images using a {gender.label.toLowerCase()}</div>
+                    </div>
+                 ))}
+              </div>
             </div>
           )}
 
