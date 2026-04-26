@@ -306,6 +306,18 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
     let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
+    // STRICT TAXONOMY ENFORCEMENT
+    if (type === 'MODEL_OPTION') {
+      const mode = selections['IMAGE_TYPE']?.label;
+      if (mode === 'Model Studio') {
+        typeSnippets = typeSnippets.filter(s => s.label === 'Model Photo' || s.label === 'Curvy / Plus Size');
+      } else if (mode === 'Clean Catalog') {
+        typeSnippets = typeSnippets.filter(s => s.label === 'No Model');
+      } else if (mode === 'Lifestyle') {
+        typeSnippets = typeSnippets.filter(s => s.label === 'Model Photo');
+      }
+    }
+    
     // FORMAT / QUANTITY MICROCOPY OVERRIDE
     if (type === 'FORMAT') {
       typeSnippets = typeSnippets.map(s => {
@@ -344,15 +356,6 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
           ];
           if (selections['IMAGE_TYPE']?.label.includes('Catalog')) {
             typeSnippets.push({ id: 'sw_studio', label: 'Studio clean', description: 'Simple background for ecommerce', icon: 'Box', prompt_fragment: 'clean studio background, solid color, softbox lighting', negative_fragment: 'outdoor, messy, nature', sort_group: 'Other styles' });
-          }
-        } else if (type === 'MODEL_OPTION') {
-          typeSnippets = [
-            { id: 'sw_candid', label: 'Candid Real Woman', description: 'Natural poses and authentic look', icon: 'User', prompt_fragment: 'beautiful real woman wearing the product, candid pose, natural look', negative_fragment: 'man, male, boy, mannequin, flat lay', sort_group: '✨ AI Suggested' },
-            { id: 'sw_ugc_iphone', label: 'UGC iPhone Style', description: 'Selfie or relatable social media style', icon: 'Smartphone', prompt_fragment: 'woman taking a mirror selfie or natural pose, iPhone photography, social media style', negative_fragment: 'man, male, boy, professional studio, DSLR', sort_group: '✨ AI Suggested' },
-            { id: 'sw_curvy', label: 'Curvy / Plus Size', description: 'Beautiful curvy model presentation', icon: 'Heart', prompt_fragment: 'beautiful curvy plus size woman model wearing the product, confident, natural', negative_fragment: 'man, male, boy, skinny, flat lay', sort_group: '✨ AI Suggested' }
-          ];
-          if (selections['IMAGE_TYPE']?.label.includes('Catalog')) {
-            typeSnippets.push({ id: 'sw_nomodel', label: 'No Model', description: 'Product only (flat lay or ghost)', icon: 'Box', prompt_fragment: 'ghost mannequin or flat lay product photography, no model', negative_fragment: 'human, person, model, face, body', sort_group: 'Other styles' });
           }
         }
       } else {
