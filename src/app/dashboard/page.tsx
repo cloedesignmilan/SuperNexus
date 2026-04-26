@@ -8,13 +8,23 @@ export const revalidate = 0
 
 export default async function DashboardPage() {
   noStore()
-  // Fetch all active snippets to pass to the client wizard
   const snippets = await prisma.promptSnippet.findMany({
     where: { is_active: true },
     orderBy: [
       { priority_order: 'asc' }
     ]
   })
+
+  // Fetch active taxonomy from CRM to enforce visibility in the app
+  const activeBusinessModes = await prisma.businessMode.findMany({
+    where: { is_active: true },
+    include: { category: true }
+  });
+
+  const activeSubcategories = await prisma.subcategory.findMany({
+    where: { is_active: true },
+    include: { business_mode: { include: { category: true } } }
+  });
 
   let isAdmin = false;
   try {
@@ -35,7 +45,7 @@ export default async function DashboardPage() {
         #dashboard-root { height: 100dvh !important; display: flex; flex-direction: column; overflow: hidden; }
         main { padding: 0 !important; max-width: 100% !important; margin: 0 !important; display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
       `}} />
-      <DashboardWizard snippets={snippets} isAdmin={isAdmin} />
+      <DashboardWizard snippets={snippets} isAdmin={isAdmin} activeBusinessModes={activeBusinessModes} activeSubcategories={activeSubcategories} />
     </>
   )
 }

@@ -7,7 +7,7 @@ import * as Icons from 'lucide-react'
 type Snippet = any;
 
 
-export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snippet[], isAdmin?: boolean }) {
+export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes = [], activeSubcategories = [] }: { snippets: Snippet[], isAdmin?: boolean, activeBusinessModes?: any[], activeSubcategories?: any[] }) {
   const [step, setStep] = useState<number>(0)
   
   // Upload State
@@ -277,11 +277,16 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     if (type === 'IMAGE_TYPE') {
+      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      const activeModeNames = activeBusinessModes
+        .filter(bm => bm.category.slug === detectedCat || bm.category.slug === 't-shirt')
+        .map(bm => bm.name);
+
       const customOptions = [
         { id: 'custom_clean', label: 'Clean Catalog', description: 'Ecommerce puro. Sfondo pulito, prodotto protagonista', icon: 'ShoppingBag', prompt_fragment: 'ecommerce clean photography, neutral background, studio softbox lighting, highly detailed', negative_fragment: 'busy background, lifestyle, messy' },
         { id: 'custom_model', label: 'Model Studio', description: 'Catalogo con modella/o. Studio, pose controllate', icon: 'User', prompt_fragment: 'model wearing the product, high fashion editorial, professional studio photography', negative_fragment: 'flat lay, empty, mannequin' },
         { id: 'custom_lifestyle', label: 'Lifestyle', description: 'Ambientato. Strada / casa / contesto naturale', icon: 'Camera', prompt_fragment: 'lifestyle photography, natural environment, contextual, cinematic lighting', negative_fragment: 'studio, isolated, white background' }
-      ];
+      ].filter(opt => activeModeNames.includes(opt.label));
 
       return (
         <div className="glass-grid">
@@ -309,13 +314,13 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     // STRICT TAXONOMY ENFORCEMENT
     if (type === 'MODEL_OPTION') {
       const mode = selections['IMAGE_TYPE']?.label;
-      if (mode === 'Model Studio') {
-        typeSnippets = typeSnippets.filter(s => s.label === 'Model Photo' || s.label === 'Curvy / Plus Size');
-      } else if (mode === 'Clean Catalog') {
-        typeSnippets = typeSnippets.filter(s => s.label === 'No Model');
-      } else if (mode === 'Lifestyle') {
-        typeSnippets = typeSnippets.filter(s => s.label === 'Model Photo');
-      }
+      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      
+      const activeSubNames = activeSubcategories
+        .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === mode)
+        .map(sub => sub.name);
+
+      typeSnippets = typeSnippets.filter(s => activeSubNames.includes(s.label));
     }
     
     // FORMAT / QUANTITY MICROCOPY OVERRIDE
