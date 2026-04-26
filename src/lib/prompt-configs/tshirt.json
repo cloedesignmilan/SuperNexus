@@ -9,44 +9,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Front View",
-            "positive_prompt": "T-shirt front view, facing camera, centered, clean studio background. Exact product replication.",
-            "negative_prompt": "people, models, mannequin, hands, perspective, floating",
-            "hard_rules": "STRICT FRONT VIEW, NO MODEL",
-            "output_goal": "Hero Image Ecommerce"
+            "shotNumber": 1,
+            "shotName": "Front View",
+            "positivePrompt": "T-shirt front view, facing camera, centered, clean studio background. Exact product replication.",
+            "negativePrompt": "people, models, mannequin, hands, perspective, floating",
+            "hardRules": "STRICT FRONT VIEW, NO MODEL",
+            "outputGoal": "Hero Image Ecommerce"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Back View",
-            "positive_prompt": "T-shirt back view, rotated 180 degrees, show only back side. Clean studio. No front visible.",
-            "negative_prompt": "front print, neck hole front, people, models, mannequin",
-            "hard_rules": "180 DEGREE ROTATION, NO PRINT ON BACK",
-            "output_goal": "Back View Ecommerce"
+            "shotNumber": 2,
+            "shotName": "Back View",
+            "positivePrompt": "T-shirt back view, rotated 180 degrees, show only back side. Clean studio. No front visible.",
+            "negativePrompt": "front print, neck hole front, people, models, mannequin",
+            "hardRules": "180 DEGREE ROTATION, NO PRINT ON BACK",
+            "outputGoal": "Back View Ecommerce"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Side Angle",
-            "positive_prompt": "T-shirt side angle, rotated 45 degrees. Show silhouette. Not front view.",
-            "negative_prompt": "front view, straight on, people, models",
-            "hard_rules": "MINIMUM 45 DEGREE ROTATION",
-            "output_goal": "Side Profile Ecommerce"
+            "shotNumber": 3,
+            "shotName": "Side Angle",
+            "positivePrompt": "T-shirt side angle, rotated 45 degrees. Show silhouette. Not front view.",
+            "negativePrompt": "front view, straight on, people, models",
+            "hardRules": "MINIMUM 45 DEGREE ROTATION",
+            "outputGoal": "Side Profile Ecommerce"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Flat Lay",
-            "positive_prompt": "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.",
-            "negative_prompt": "mannequin, hanging, standing, perspective angle, people, shadows from standing",
-            "hard_rules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT",
-            "output_goal": "Flat Lay Ecommerce"
+            "shotNumber": 4,
+            "shotName": "Flat Lay",
+            "positivePrompt": "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.",
+            "negativePrompt": "mannequin, hanging, standing, perspective angle, people, shadows from standing",
+            "hardRules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT",
+            "outputGoal": "Flat Lay Ecommerce"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Detail Close-Up",
-            "positive_prompt": "Close-up of t-shirt print or fabric. High detail, sharp focus.",
-            "negative_prompt": "full t-shirt, zoomed out, people, models",
-            "hard_rules": "MACRO SHOT, EXTREME DETAIL",
-            "output_goal": "Detail View Ecommerce"
+            "shotNumber": 5,
+            "shotName": "Detail Close-Up",
+            "positivePrompt": "Close-up of t-shirt print or fabric. High detail, sharp focus.",
+            "negativePrompt": "full t-shirt, zoomed out, people, models",
+            "hardRules": "MACRO SHOT, EXTREME DETAIL",
+            "outputGoal": "Detail View Ecommerce"
           }
         ]
       },
@@ -57,44 +57,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Front Studio Portrait",
-            "positive_prompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
-            "negative_prompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
-            "hard_rules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
-            "output_goal": "Main Model Ecommerce Shot"
+            "shotNumber": 1,
+            "shotName": "Front Studio Portrait",
+            "positivePrompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
+            "hardRules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
+            "outputGoal": "Main Model Ecommerce Shot"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Dynamic 3/4 Angle",
-            "positive_prompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
-            "negative_prompt": "straight on, stiff pose, mannequin, casual snap",
-            "hard_rules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
-            "output_goal": "Side fit demonstration"
+            "shotNumber": 2,
+            "shotName": "Dynamic 3/4 Angle",
+            "positivePrompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, casual snap",
+            "hardRules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
+            "outputGoal": "Side fit demonstration"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back View",
-            "positive_prompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
-            "negative_prompt": "front print, model face, turning around, messy background",
-            "hard_rules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
-            "output_goal": "Model back fit"
+            "shotNumber": 3,
+            "shotName": "Back View",
+            "positivePrompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
+            "negativePrompt": "front print, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
+            "outputGoal": "Model back fit"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Full Body Look",
-            "positive_prompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
-            "negative_prompt": "close up, cropped head, cropped feet, complex outfit, busy background",
-            "hard_rules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
-            "output_goal": "Complete outfit styling"
+            "shotNumber": 4,
+            "shotName": "Full Body Look",
+            "positivePrompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
+            "negativePrompt": "close up, cropped head, cropped feet, complex outfit, busy background",
+            "hardRules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
+            "outputGoal": "Complete outfit styling"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Lifestyle Studio Crop",
-            "positive_prompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
-            "negative_prompt": "full body, face focus, blurry t-shirt, outdoor",
-            "hard_rules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
-            "output_goal": "Texture and detail on body"
+            "shotNumber": 5,
+            "shotName": "Lifestyle Studio Crop",
+            "positivePrompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
+            "negativePrompt": "full body, face focus, blurry t-shirt, outdoor",
+            "hardRules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
+            "outputGoal": "Texture and detail on body"
           }
         ]
       },
@@ -105,44 +105,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Front Fit Curvy",
-            "positive_prompt": "Professional studio fashion portrait of a curvy plus-size model wearing the t-shirt. Medium shot. Confident, smiling pose. Clean solid background.",
-            "negative_prompt": "thin model, outdoors, messy background, distorted body",
-            "hard_rules": "MUST USE PLUS-SIZE MODEL. FRONT VIEW.",
-            "output_goal": "Main curvy fit"
+            "shotNumber": 1,
+            "shotName": "Front Fit Curvy",
+            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size model wearing the t-shirt. Medium shot. Confident, smiling pose. Clean solid background.",
+            "negativePrompt": "thin model, outdoors, messy background, distorted body",
+            "hardRules": "MUST USE PLUS-SIZE MODEL. FRONT VIEW.",
+            "outputGoal": "Main curvy fit"
           },
           {
-            "shot_number": 2,
-            "shot_name": "3/4 Angle Curvy",
-            "positive_prompt": "Curvy plus-size model wearing the t-shirt, 3/4 side angle. Hands in pockets, relaxed posture. Clean studio.",
-            "negative_prompt": "thin model, straight on, stiff",
-            "hard_rules": "MUST USE PLUS-SIZE MODEL. 3/4 ANGLE.",
-            "output_goal": "Side profile curvy fit"
+            "shotNumber": 2,
+            "shotName": "3/4 Angle Curvy",
+            "positivePrompt": "Curvy plus-size model wearing the t-shirt, 3/4 side angle. Hands in pockets, relaxed posture. Clean studio.",
+            "negativePrompt": "thin model, straight on, stiff",
+            "hardRules": "MUST USE PLUS-SIZE MODEL. 3/4 ANGLE.",
+            "outputGoal": "Side profile curvy fit"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back View Curvy",
-            "positive_prompt": "Curvy plus-size model facing away from the camera, showing the back of the t-shirt. Clean studio background.",
-            "negative_prompt": "thin model, front print, face visible",
-            "hard_rules": "MUST USE PLUS-SIZE MODEL. BACK VIEW. NO PRINT ON BACK.",
-            "output_goal": "Back curvy fit"
+            "shotNumber": 3,
+            "shotName": "Back View Curvy",
+            "positivePrompt": "Curvy plus-size model facing away from the camera, showing the back of the t-shirt. Clean studio background.",
+            "negativePrompt": "thin model, front print, face visible",
+            "hardRules": "MUST USE PLUS-SIZE MODEL. BACK VIEW. NO PRINT ON BACK.",
+            "outputGoal": "Back curvy fit"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Full Body Curvy",
-            "positive_prompt": "Full body shot of a curvy plus-size model wearing the t-shirt styled with denim. Confident stance. Clean studio.",
-            "negative_prompt": "thin model, close up, cropped",
-            "hard_rules": "MUST USE PLUS-SIZE MODEL. FULL BODY.",
-            "output_goal": "Full body curvy outfit"
+            "shotNumber": 4,
+            "shotName": "Full Body Curvy",
+            "positivePrompt": "Full body shot of a curvy plus-size model wearing the t-shirt styled with denim. Confident stance. Clean studio.",
+            "negativePrompt": "thin model, close up, cropped",
+            "hardRules": "MUST USE PLUS-SIZE MODEL. FULL BODY.",
+            "outputGoal": "Full body curvy outfit"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Detail Crop Curvy",
-            "positive_prompt": "Close-up crop on the torso of a curvy model wearing the t-shirt. Focus on how the fabric stretches and fits.",
-            "negative_prompt": "thin model, full body, face focus",
-            "hard_rules": "MUST USE PLUS-SIZE MODEL. TORSO CROP.",
-            "output_goal": "Detail curvy fit"
+            "shotNumber": 5,
+            "shotName": "Detail Crop Curvy",
+            "positivePrompt": "Close-up crop on the torso of a curvy model wearing the t-shirt. Focus on how the fabric stretches and fits.",
+            "negativePrompt": "thin model, full body, face focus",
+            "hardRules": "MUST USE PLUS-SIZE MODEL. TORSO CROP.",
+            "outputGoal": "Detail curvy fit"
           }
         ]
       },
@@ -153,44 +153,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Urban Stroll",
-            "positive_prompt": "Model wearing the t-shirt walking confidently down a sunny modern city street. Medium full shot. Bokeh background, cinematic natural lighting.",
-            "negative_prompt": "studio, solid background, looking at camera stiffly, flat lighting",
-            "hard_rules": "LIFESTYLE ENVIRONMENT BOKEH. MODEL IN MOTION.",
-            "output_goal": "Dynamic urban lifestyle"
+            "shotNumber": 1,
+            "shotName": "Urban Stroll",
+            "positivePrompt": "Model wearing the t-shirt walking confidently down a sunny modern city street. Medium full shot. Bokeh background, cinematic natural lighting.",
+            "negativePrompt": "studio, solid background, looking at camera stiffly, flat lighting",
+            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. MODEL IN MOTION.",
+            "outputGoal": "Dynamic urban lifestyle"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Cafe Scene",
-            "positive_prompt": "Model wearing the t-shirt sitting at an aesthetic outdoor cafe table. Medium close-up, natural golden hour lighting. Relaxed atmosphere.",
-            "negative_prompt": "standing, full body, studio, harsh flash",
-            "hard_rules": "SEATED LIFESTYLE CONTEXT. UPPER BODY.",
-            "output_goal": "Relaxed lifestyle"
+            "shotNumber": 2,
+            "shotName": "Cafe Scene",
+            "positivePrompt": "Model wearing the t-shirt sitting at an aesthetic outdoor cafe table. Medium close-up, natural golden hour lighting. Relaxed atmosphere.",
+            "negativePrompt": "standing, full body, studio, harsh flash",
+            "hardRules": "SEATED LIFESTYLE CONTEXT. UPPER BODY.",
+            "outputGoal": "Relaxed lifestyle"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Looking Away Back",
-            "positive_prompt": "Model wearing the t-shirt facing away, looking out over a scenic city view. Back shot. Natural sunlight.",
-            "negative_prompt": "front view, print, studio, indoors",
-            "hard_rules": "BACK VIEW IN LIFESTYLE SETTING. NO PRINT ON BACK.",
-            "output_goal": "Lifestyle back fit"
+            "shotNumber": 3,
+            "shotName": "Looking Away Back",
+            "positivePrompt": "Model wearing the t-shirt facing away, looking out over a scenic city view. Back shot. Natural sunlight.",
+            "negativePrompt": "front view, print, studio, indoors",
+            "hardRules": "BACK VIEW IN LIFESTYLE SETTING. NO PRINT ON BACK.",
+            "outputGoal": "Lifestyle back fit"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Sunlight Leaning",
-            "positive_prompt": "Model wearing the t-shirt leaning against a textured brick wall outdoors. Full body, casual crossed arms pose. Harsh artistic sunlight and shadows.",
-            "negative_prompt": "studio, walking, empty background",
-            "hard_rules": "LEANING POSE. FULL BODY OUTDOORS.",
-            "output_goal": "Edgy lifestyle"
+            "shotNumber": 4,
+            "shotName": "Sunlight Leaning",
+            "positivePrompt": "Model wearing the t-shirt leaning against a textured brick wall outdoors. Full body, casual crossed arms pose. Harsh artistic sunlight and shadows.",
+            "negativePrompt": "studio, walking, empty background",
+            "hardRules": "LEANING POSE. FULL BODY OUTDOORS.",
+            "outputGoal": "Edgy lifestyle"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Candid Laugh",
-            "positive_prompt": "Candid shot of the model wearing the t-shirt laughing naturally. Mid-shot. Outdoors park setting. Soft focus background.",
-            "negative_prompt": "posed, stiff, studio, looking straight at camera seriously",
-            "hard_rules": "CANDID EMOTION. LIFESTYLE BACKGROUND.",
-            "output_goal": "Emotional lifestyle connection"
+            "shotNumber": 5,
+            "shotName": "Candid Laugh",
+            "positivePrompt": "Candid shot of the model wearing the t-shirt laughing naturally. Mid-shot. Outdoors park setting. Soft focus background.",
+            "negativePrompt": "posed, stiff, studio, looking straight at camera seriously",
+            "hardRules": "CANDID EMOTION. LIFESTYLE BACKGROUND.",
+            "outputGoal": "Emotional lifestyle connection"
           }
         ]
       },
@@ -201,44 +201,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Candid Walking",
-            "positive_prompt": "Real everyday woman wearing the t-shirt walking on the street. Candid photography, natural, unposed. Authentic feel, slight motion.",
-            "negative_prompt": "professional model, studio, posed, airbrushed, perfect lighting",
-            "hard_rules": "MUST LOOK LIKE A REAL WOMAN, NOT A FASHION MODEL.",
-            "output_goal": "Authentic woman lifestyle"
+            "shotNumber": 1,
+            "shotName": "Candid Walking",
+            "positivePrompt": "Real everyday woman wearing the t-shirt walking on the street. Candid photography, natural, unposed. Authentic feel, slight motion.",
+            "negativePrompt": "professional model, studio, posed, airbrushed, perfect lighting",
+            "hardRules": "MUST LOOK LIKE A REAL WOMAN, NOT A FASHION MODEL.",
+            "outputGoal": "Authentic woman lifestyle"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Coffee Run",
-            "positive_prompt": "Real everyday woman wearing the t-shirt holding a coffee cup outdoors. Medium shot. Natural sunlight, candid smile.",
-            "negative_prompt": "high fashion, studio, looking intensely at camera",
-            "hard_rules": "EVERYDAY CONTEXT. REALISTIC FEMALE.",
-            "output_goal": "Everyday context"
+            "shotNumber": 2,
+            "shotName": "Coffee Run",
+            "positivePrompt": "Real everyday woman wearing the t-shirt holding a coffee cup outdoors. Medium shot. Natural sunlight, candid smile.",
+            "negativePrompt": "high fashion, studio, looking intensely at camera",
+            "hardRules": "EVERYDAY CONTEXT. REALISTIC FEMALE.",
+            "outputGoal": "Everyday context"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back candid",
-            "positive_prompt": "Real woman walking away from camera wearing the t-shirt. Casual outdoor setting.",
-            "negative_prompt": "studio, posed, fashion model",
-            "hard_rules": "BACK VIEW. REALISTIC MOVEMENT. NO PRINT ON BACK.",
-            "output_goal": "Back view authentic"
+            "shotNumber": 3,
+            "shotName": "Back candid",
+            "positivePrompt": "Real woman walking away from camera wearing the t-shirt. Casual outdoor setting.",
+            "negativePrompt": "studio, posed, fashion model",
+            "hardRules": "BACK VIEW. REALISTIC MOVEMENT. NO PRINT ON BACK.",
+            "outputGoal": "Back view authentic"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Friends hanging out",
-            "positive_prompt": "Real woman wearing the t-shirt laughing, candid shot at a park. Upper body. Natural skin texture.",
-            "negative_prompt": "studio, perfect skin, fashion editorial",
-            "hard_rules": "CANDID EMOTION. NATURAL LIGHTING.",
-            "output_goal": "Candid emotion"
+            "shotNumber": 4,
+            "shotName": "Friends hanging out",
+            "positivePrompt": "Real woman wearing the t-shirt laughing, candid shot at a park. Upper body. Natural skin texture.",
+            "negativePrompt": "studio, perfect skin, fashion editorial",
+            "hardRules": "CANDID EMOTION. NATURAL LIGHTING.",
+            "outputGoal": "Candid emotion"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Mirror selfie vibe",
-            "positive_prompt": "Woman wearing the t-shirt in a realistic casual setting, framing feels like a friend took a photo of her. Slightly imperfect framing.",
-            "negative_prompt": "professional framing, studio light",
-            "hard_rules": "IMPERFECT CANDID FEEL.",
-            "output_goal": "Relatable content"
+            "shotNumber": 5,
+            "shotName": "Mirror selfie vibe",
+            "positivePrompt": "Woman wearing the t-shirt in a realistic casual setting, framing feels like a friend took a photo of her. Slightly imperfect framing.",
+            "negativePrompt": "professional framing, studio light",
+            "hardRules": "IMPERFECT CANDID FEEL.",
+            "outputGoal": "Relatable content"
           }
         ]
       },
@@ -249,44 +249,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Candid Walking Man",
-            "positive_prompt": "Real everyday man wearing the t-shirt walking down a city street. Candid photography, authentic, unposed, natural sunlight.",
-            "negative_prompt": "professional model, studio, highly edited, airbrushed",
-            "hard_rules": "MUST LOOK LIKE A REAL MAN, NOT A FASHION MODEL.",
-            "output_goal": "Authentic man lifestyle"
+            "shotNumber": 1,
+            "shotName": "Candid Walking Man",
+            "positivePrompt": "Real everyday man wearing the t-shirt walking down a city street. Candid photography, authentic, unposed, natural sunlight.",
+            "negativePrompt": "professional model, studio, highly edited, airbrushed",
+            "hardRules": "MUST LOOK LIKE A REAL MAN, NOT A FASHION MODEL.",
+            "outputGoal": "Authentic man lifestyle"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Casual Stance",
-            "positive_prompt": "Real everyday man wearing the t-shirt standing casually outdoors, hands in pockets. Medium shot. Natural urban background.",
-            "negative_prompt": "high fashion, posed, studio",
-            "hard_rules": "CASUAL STANCE. REALISTIC MALE.",
-            "output_goal": "Everyday stance"
+            "shotNumber": 2,
+            "shotName": "Casual Stance",
+            "positivePrompt": "Real everyday man wearing the t-shirt standing casually outdoors, hands in pockets. Medium shot. Natural urban background.",
+            "negativePrompt": "high fashion, posed, studio",
+            "hardRules": "CASUAL STANCE. REALISTIC MALE.",
+            "outputGoal": "Everyday stance"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back candid man",
-            "positive_prompt": "Real man wearing the t-shirt walking away from camera in a city environment.",
-            "negative_prompt": "studio, posed, fashion model",
-            "hard_rules": "BACK VIEW. REALISTIC MALE. NO PRINT ON BACK.",
-            "output_goal": "Back view man"
+            "shotNumber": 3,
+            "shotName": "Back candid man",
+            "positivePrompt": "Real man wearing the t-shirt walking away from camera in a city environment.",
+            "negativePrompt": "studio, posed, fashion model",
+            "hardRules": "BACK VIEW. REALISTIC MALE. NO PRINT ON BACK.",
+            "outputGoal": "Back view man"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Looking away",
-            "positive_prompt": "Real man wearing the t-shirt looking off-camera casually. Upper body shot, natural outdoor lighting.",
-            "negative_prompt": "looking at camera, studio, dramatic lighting",
-            "hard_rules": "CANDID PROFILE. NATURAL LIGHTING.",
-            "output_goal": "Candid profile"
+            "shotNumber": 4,
+            "shotName": "Looking away",
+            "positivePrompt": "Real man wearing the t-shirt looking off-camera casually. Upper body shot, natural outdoor lighting.",
+            "negativePrompt": "looking at camera, studio, dramatic lighting",
+            "hardRules": "CANDID PROFILE. NATURAL LIGHTING.",
+            "outputGoal": "Candid profile"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Relaxed sitting",
-            "positive_prompt": "Real man wearing the t-shirt sitting on a bench outdoors. Relaxed realistic posture.",
-            "negative_prompt": "stiff posture, studio, fashion editorial",
-            "hard_rules": "SEATED OUTDOORS. AUTHENTIC FEEL.",
-            "output_goal": "Seated lifestyle"
+            "shotNumber": 5,
+            "shotName": "Relaxed sitting",
+            "positivePrompt": "Real man wearing the t-shirt sitting on a bench outdoors. Relaxed realistic posture.",
+            "negativePrompt": "stiff posture, studio, fashion editorial",
+            "hardRules": "SEATED OUTDOORS. AUTHENTIC FEEL.",
+            "outputGoal": "Seated lifestyle"
           }
         ]
       },
@@ -297,44 +297,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Mirror Selfie Woman",
-            "positive_prompt": "UGC style mirror selfie of a real woman wearing the t-shirt in a bedroom. Shot on iPhone, slightly grainy, authentic flash reflection.",
-            "negative_prompt": "professional lighting, DSLR, studio, high quality, posed model",
-            "hard_rules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
-            "output_goal": "UGC Selfie"
+            "shotNumber": 1,
+            "shotName": "Mirror Selfie Woman",
+            "positivePrompt": "UGC style mirror selfie of a real woman wearing the t-shirt in a bedroom. Shot on iPhone, slightly grainy, authentic flash reflection.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model",
+            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
+            "outputGoal": "UGC Selfie"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Friend point of view",
-            "positive_prompt": "UGC style photo of a real woman wearing the t-shirt, taken by a friend at a casual outdoor lunch. Authentic, slightly imperfect framing.",
-            "negative_prompt": "professional, studio, centered perfectly",
-            "hard_rules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
-            "output_goal": "POV Friend"
+            "shotNumber": 2,
+            "shotName": "Friend point of view",
+            "positivePrompt": "UGC style photo of a real woman wearing the t-shirt, taken by a friend at a casual outdoor lunch. Authentic, slightly imperfect framing.",
+            "negativePrompt": "professional, studio, centered perfectly",
+            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
+            "outputGoal": "POV Friend"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back UGC",
-            "positive_prompt": "UGC style back shot of a woman wearing the t-shirt walking away at a festival or street. Casual, raw.",
-            "negative_prompt": "studio, high fashion, perfect focus",
-            "hard_rules": "BACK VIEW. RAW IPHONE QUALITY. NO PRINT ON BACK.",
-            "output_goal": "UGC Back view"
+            "shotNumber": 3,
+            "shotName": "Back UGC",
+            "positivePrompt": "UGC style back shot of a woman wearing the t-shirt walking away at a festival or street. Casual, raw.",
+            "negativePrompt": "studio, high fashion, perfect focus",
+            "hardRules": "BACK VIEW. RAW IPHONE QUALITY. NO PRINT ON BACK.",
+            "outputGoal": "UGC Back view"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Close up fabric UGC",
-            "positive_prompt": "UGC style close up of the t-shirt fabric, taken casually with a phone. Realistic home lighting.",
-            "negative_prompt": "macro lens, professional detail, studio",
-            "hard_rules": "PHONE CAMERA CLOSE UP.",
-            "output_goal": "UGC Texture"
+            "shotNumber": 4,
+            "shotName": "Close up fabric UGC",
+            "positivePrompt": "UGC style close up of the t-shirt fabric, taken casually with a phone. Realistic home lighting.",
+            "negativePrompt": "macro lens, professional detail, studio",
+            "hardRules": "PHONE CAMERA CLOSE UP.",
+            "outputGoal": "UGC Texture"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Sitting at home",
-            "positive_prompt": "UGC style photo of a woman wearing the t-shirt relaxing on a couch. Cozy home environment, authentic.",
-            "negative_prompt": "studio, perfect lighting, modeling",
-            "hard_rules": "HOME ENVIRONMENT. RELAXED.",
-            "output_goal": "UGC Home"
+            "shotNumber": 5,
+            "shotName": "Sitting at home",
+            "positivePrompt": "UGC style photo of a woman wearing the t-shirt relaxing on a couch. Cozy home environment, authentic.",
+            "negativePrompt": "studio, perfect lighting, modeling",
+            "hardRules": "HOME ENVIRONMENT. RELAXED.",
+            "outputGoal": "UGC Home"
           }
         ]
       },
@@ -345,44 +345,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Mirror Selfie Man",
-            "positive_prompt": "UGC style mirror selfie of a real man wearing the t-shirt. Shot on iPhone, messy room background, authentic.",
-            "negative_prompt": "professional lighting, DSLR, studio, high quality",
-            "hard_rules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
-            "output_goal": "UGC Selfie Man"
+            "shotNumber": 1,
+            "shotName": "Mirror Selfie Man",
+            "positivePrompt": "UGC style mirror selfie of a real man wearing the t-shirt. Shot on iPhone, messy room background, authentic.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality",
+            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
+            "outputGoal": "UGC Selfie Man"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Casual street UGC",
-            "positive_prompt": "UGC style photo of a real man wearing the t-shirt, walking on the street, taken quickly by a friend.",
-            "negative_prompt": "professional, studio, centered perfectly",
-            "hard_rules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
-            "output_goal": "POV Friend Man"
+            "shotNumber": 2,
+            "shotName": "Casual street UGC",
+            "positivePrompt": "UGC style photo of a real man wearing the t-shirt, walking on the street, taken quickly by a friend.",
+            "negativePrompt": "professional, studio, centered perfectly",
+            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
+            "outputGoal": "POV Friend Man"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back UGC Man",
-            "positive_prompt": "UGC style back shot of a man wearing the t-shirt looking at a view. Casual, raw phone photo.",
-            "negative_prompt": "studio, high fashion, perfect focus",
-            "hard_rules": "BACK VIEW. RAW IPHONE QUALITY. NO PRINT ON BACK.",
-            "output_goal": "UGC Back view man"
+            "shotNumber": 3,
+            "shotName": "Back UGC Man",
+            "positivePrompt": "UGC style back shot of a man wearing the t-shirt looking at a view. Casual, raw phone photo.",
+            "negativePrompt": "studio, high fashion, perfect focus",
+            "hardRules": "BACK VIEW. RAW IPHONE QUALITY. NO PRINT ON BACK.",
+            "outputGoal": "UGC Back view man"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Gym/Active UGC",
-            "positive_prompt": "UGC style photo of a man wearing the t-shirt in an active setting or gym. Authentic sweat or movement.",
-            "negative_prompt": "studio, perfect lighting",
-            "hard_rules": "ACTIVE ENVIRONMENT. RAW VIBE.",
-            "output_goal": "Active UGC"
+            "shotNumber": 4,
+            "shotName": "Gym/Active UGC",
+            "positivePrompt": "UGC style photo of a man wearing the t-shirt in an active setting or gym. Authentic sweat or movement.",
+            "negativePrompt": "studio, perfect lighting",
+            "hardRules": "ACTIVE ENVIRONMENT. RAW VIBE.",
+            "outputGoal": "Active UGC"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Sitting casual",
-            "positive_prompt": "UGC style photo of a man wearing the t-shirt sitting in a car or cafe. Authentic everyday shot.",
-            "negative_prompt": "studio, modeling",
-            "hard_rules": "CASUAL SEATED. IPHONE VIBE.",
-            "output_goal": "UGC Casual Seat"
+            "shotNumber": 5,
+            "shotName": "Sitting casual",
+            "positivePrompt": "UGC style photo of a man wearing the t-shirt sitting in a car or cafe. Authentic everyday shot.",
+            "negativePrompt": "studio, modeling",
+            "hardRules": "CASUAL SEATED. IPHONE VIBE.",
+            "outputGoal": "UGC Casual Seat"
           }
         ]
       },
@@ -393,44 +393,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Vibrant Neon Ad",
-            "positive_prompt": "High impact advertising shot. Model wearing the t-shirt lit by vibrant neon lights. Cyberpunk or modern aesthetic. Dramatic shadows, intense colors.",
-            "negative_prompt": "boring, flat lighting, white background, simple",
-            "hard_rules": "EXTREME LIGHTING. HIGH CONTRAST ADS STYLE.",
-            "output_goal": "Scroll stopper neon"
+            "shotNumber": 1,
+            "shotName": "Vibrant Neon Ad",
+            "positivePrompt": "High impact advertising shot. Model wearing the t-shirt lit by vibrant neon lights. Cyberpunk or modern aesthetic. Dramatic shadows, intense colors.",
+            "negativePrompt": "boring, flat lighting, white background, simple",
+            "hardRules": "EXTREME LIGHTING. HIGH CONTRAST ADS STYLE.",
+            "outputGoal": "Scroll stopper neon"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Action Jump Ad",
-            "positive_prompt": "Model wearing the t-shirt frozen in mid-air jumping. Dynamic action shot. Solid bright contrasting background color.",
-            "negative_prompt": "standing still, boring pose, grey background",
-            "hard_rules": "MIDAIR JUMP. HIGH ENERGY.",
-            "output_goal": "High energy action"
+            "shotNumber": 2,
+            "shotName": "Action Jump Ad",
+            "positivePrompt": "Model wearing the t-shirt frozen in mid-air jumping. Dynamic action shot. Solid bright contrasting background color.",
+            "negativePrompt": "standing still, boring pose, grey background",
+            "hardRules": "MIDAIR JUMP. HIGH ENERGY.",
+            "outputGoal": "High energy action"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Extreme Close Up Text",
-            "positive_prompt": "Extreme close up of the model wearing the t-shirt. Focus on the chest area with negative space intentionally left for ad copy. Dramatic side lighting.",
-            "negative_prompt": "full body, busy background, centered subject",
-            "hard_rules": "ASYMMETRICAL FRAMING FOR AD TEXT.",
-            "output_goal": "Ad copy framing"
+            "shotNumber": 3,
+            "shotName": "Extreme Close Up Text",
+            "positivePrompt": "Extreme close up of the model wearing the t-shirt. Focus on the chest area with negative space intentionally left for ad copy. Dramatic side lighting.",
+            "negativePrompt": "full body, busy background, centered subject",
+            "hardRules": "ASYMMETRICAL FRAMING FOR AD TEXT.",
+            "outputGoal": "Ad copy framing"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Back View Ad",
-            "positive_prompt": "Model wearing the t-shirt from the back, walking into a dramatic light flare or smoke. Cinematic and epic ad shot.",
-            "negative_prompt": "front view, boring background",
-            "hard_rules": "EPIC CINEMATIC BACK VIEW. NO PRINT ON BACK.",
-            "output_goal": "Cinematic back ad"
+            "shotNumber": 4,
+            "shotName": "Back View Ad",
+            "positivePrompt": "Model wearing the t-shirt from the back, walking into a dramatic light flare or smoke. Cinematic and epic ad shot.",
+            "negativePrompt": "front view, boring background",
+            "hardRules": "EPIC CINEMATIC BACK VIEW. NO PRINT ON BACK.",
+            "outputGoal": "Cinematic back ad"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Pop Art Colors",
-            "positive_prompt": "Model wearing the t-shirt. Solid extremely bright pop-art background (e.g. bright yellow or hot pink). Hard flash lighting, high fashion edgy pose.",
-            "negative_prompt": "natural lighting, outdoors, muted colors",
-            "hard_rules": "SOLID BRIGHT POP COLOR BACKGROUND. HARD FLASH.",
-            "output_goal": "Pop art ad"
+            "shotNumber": 5,
+            "shotName": "Pop Art Colors",
+            "positivePrompt": "Model wearing the t-shirt. Solid extremely bright pop-art background (e.g. bright yellow or hot pink). Hard flash lighting, high fashion edgy pose.",
+            "negativePrompt": "natural lighting, outdoors, muted colors",
+            "hardRules": "SOLID BRIGHT POP COLOR BACKGROUND. HARD FLASH.",
+            "outputGoal": "Pop art ad"
           }
         ]
       },
@@ -441,44 +441,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Floating Magic Ad",
-            "positive_prompt": "T-shirt magically floating in mid-air with dynamic ripples in the fabric. Bright contrasting studio background. High impact advertising.",
-            "negative_prompt": "model, mannequin, flat lay, boring",
-            "hard_rules": "FLOATING GHOST EFFECT. NO MODEL.",
-            "output_goal": "Floating magic"
+            "shotNumber": 1,
+            "shotName": "Floating Magic Ad",
+            "positivePrompt": "T-shirt magically floating in mid-air with dynamic ripples in the fabric. Bright contrasting studio background. High impact advertising.",
+            "negativePrompt": "model, mannequin, flat lay, boring",
+            "hardRules": "FLOATING GHOST EFFECT. NO MODEL.",
+            "outputGoal": "Floating magic"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Neon Splash Ad",
-            "positive_prompt": "T-shirt product shot surrounded by abstract neon light trails or liquid splash effects. Dark background. Extremely vibrant.",
-            "negative_prompt": "model, plain white background, flat lighting",
-            "hard_rules": "ABSTRACT EFFECTS. NO MODEL.",
-            "output_goal": "Vibrant effects ad"
+            "shotNumber": 2,
+            "shotName": "Neon Splash Ad",
+            "positivePrompt": "T-shirt product shot surrounded by abstract neon light trails or liquid splash effects. Dark background. Extremely vibrant.",
+            "negativePrompt": "model, plain white background, flat lighting",
+            "hardRules": "ABSTRACT EFFECTS. NO MODEL.",
+            "outputGoal": "Vibrant effects ad"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Back View Floating",
-            "positive_prompt": "Back view of the t-shirt floating in mid-air. Dramatic under-lighting. Epic product presentation.",
-            "negative_prompt": "front view, model",
-            "hard_rules": "BACK VIEW FLOATING. NO MODEL. NO PRINT ON BACK.",
-            "output_goal": "Epic back float"
+            "shotNumber": 3,
+            "shotName": "Back View Floating",
+            "positivePrompt": "Back view of the t-shirt floating in mid-air. Dramatic under-lighting. Epic product presentation.",
+            "negativePrompt": "front view, model",
+            "hardRules": "BACK VIEW FLOATING. NO MODEL. NO PRINT ON BACK.",
+            "outputGoal": "Epic back float"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Folded Stack Ad",
-            "positive_prompt": "T-shirt perfectly folded and stacked on a glowing pedestal. High-end premium product photography. Dramatic lighting.",
-            "negative_prompt": "hanging, model, messy",
-            "hard_rules": "PERFECTLY FOLDED. NO MODEL.",
-            "output_goal": "Premium folded ad"
+            "shotNumber": 4,
+            "shotName": "Folded Stack Ad",
+            "positivePrompt": "T-shirt perfectly folded and stacked on a glowing pedestal. High-end premium product photography. Dramatic lighting.",
+            "negativePrompt": "hanging, model, messy",
+            "hardRules": "PERFECTLY FOLDED. NO MODEL.",
+            "outputGoal": "Premium folded ad"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Hanging Minimalist Pop",
-            "positive_prompt": "T-shirt hanging on a modern minimalist wire hanger against a bright pop-color background with a hard drop shadow.",
-            "negative_prompt": "model, floating, complex background",
-            "hard_rules": "ON HANGER. HARD SHADOW. NO MODEL.",
-            "output_goal": "Pop minimal hanger"
+            "shotNumber": 5,
+            "shotName": "Hanging Minimalist Pop",
+            "positivePrompt": "T-shirt hanging on a modern minimalist wire hanger against a bright pop-color background with a hard drop shadow.",
+            "negativePrompt": "model, floating, complex background",
+            "hardRules": "ON HANGER. HARD SHADOW. NO MODEL.",
+            "outputGoal": "Pop minimal hanger"
           }
         ]
       },
@@ -489,44 +489,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Collar Detail",
-            "positive_prompt": "Extreme macro close-up of the t-shirt collar worn by a model. Focus on the neckline stitching and fabric weave. Shallow depth of field.",
-            "negative_prompt": "full body, full shirt visible, far away",
-            "hard_rules": "MACRO COLLAR DETAIL ONLY.",
-            "output_goal": "Collar stitch detail"
+            "shotNumber": 1,
+            "shotName": "Collar Detail",
+            "positivePrompt": "Extreme macro close-up of the t-shirt collar worn by a model. Focus on the neckline stitching and fabric weave. Shallow depth of field.",
+            "negativePrompt": "full body, full shirt visible, far away",
+            "hardRules": "MACRO COLLAR DETAIL ONLY.",
+            "outputGoal": "Collar stitch detail"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Sleeve Hem Detail",
-            "positive_prompt": "Macro close-up of the t-shirt sleeve hem on the model's arm. Showing the double stitching and fabric edge.",
-            "negative_prompt": "full body, face",
-            "hard_rules": "MACRO SLEEVE DETAIL ONLY.",
-            "output_goal": "Sleeve hem detail"
+            "shotNumber": 2,
+            "shotName": "Sleeve Hem Detail",
+            "positivePrompt": "Macro close-up of the t-shirt sleeve hem on the model's arm. Showing the double stitching and fabric edge.",
+            "negativePrompt": "full body, face",
+            "hardRules": "MACRO SLEEVE DETAIL ONLY.",
+            "outputGoal": "Sleeve hem detail"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Graphic Print Macro",
-            "positive_prompt": "Extreme close-up on the main print/graphic of the t-shirt worn by a model. Showing the ink texture on the fabric.",
-            "negative_prompt": "full shirt, far away",
-            "hard_rules": "MACRO GRAPHIC DETAIL ONLY.",
-            "output_goal": "Print texture detail"
+            "shotNumber": 3,
+            "shotName": "Graphic Print Macro",
+            "positivePrompt": "Extreme close-up on the main print/graphic of the t-shirt worn by a model. Showing the ink texture on the fabric.",
+            "negativePrompt": "full shirt, far away",
+            "hardRules": "MACRO GRAPHIC DETAIL ONLY.",
+            "outputGoal": "Print texture detail"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Back Neckline Detail",
-            "positive_prompt": "Close-up of the back neckline of the t-shirt worn by a model. Focus on the nape of the neck and back shoulder seam.",
-            "negative_prompt": "front view, full body",
-            "hard_rules": "BACK NECKLINE DETAIL. NO PRINT ON BACK.",
-            "output_goal": "Back seam detail"
+            "shotNumber": 4,
+            "shotName": "Back Neckline Detail",
+            "positivePrompt": "Close-up of the back neckline of the t-shirt worn by a model. Focus on the nape of the neck and back shoulder seam.",
+            "negativePrompt": "front view, full body",
+            "hardRules": "BACK NECKLINE DETAIL. NO PRINT ON BACK.",
+            "outputGoal": "Back seam detail"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Fabric Drape Action",
-            "positive_prompt": "Close-up of the model's torso twisting, showing how the t-shirt fabric folds and drapes dynamically. Highlighting the material softness.",
-            "negative_prompt": "flat fabric, full body",
-            "hard_rules": "DYNAMIC FABRIC DRAPE CLOSE-UP.",
-            "output_goal": "Fabric behavior detail"
+            "shotNumber": 5,
+            "shotName": "Fabric Drape Action",
+            "positivePrompt": "Close-up of the model's torso twisting, showing how the t-shirt fabric folds and drapes dynamically. Highlighting the material softness.",
+            "negativePrompt": "flat fabric, full body",
+            "hardRules": "DYNAMIC FABRIC DRAPE CLOSE-UP.",
+            "outputGoal": "Fabric behavior detail"
           }
         ]
       },
@@ -537,44 +537,44 @@
         "quantity": 5,
         "shots": [
           {
-            "shot_number": 1,
-            "shot_name": "Flat Macro Weave",
-            "positive_prompt": "Extreme macro photography of the t-shirt fabric laid flat. Focus purely on the cotton weave texture and threads. Clean lighting.",
-            "negative_prompt": "model, full shirt, zoomed out",
-            "hard_rules": "MICROSCOPIC WEAVE LEVEL. NO MODEL.",
-            "output_goal": "Fabric weave macro"
+            "shotNumber": 1,
+            "shotName": "Flat Macro Weave",
+            "positivePrompt": "Extreme macro photography of the t-shirt fabric laid flat. Focus purely on the cotton weave texture and threads. Clean lighting.",
+            "negativePrompt": "model, full shirt, zoomed out",
+            "hardRules": "MICROSCOPIC WEAVE LEVEL. NO MODEL.",
+            "outputGoal": "Fabric weave macro"
           },
           {
-            "shot_number": 2,
-            "shot_name": "Folded Edge Detail",
-            "positive_prompt": "Macro close-up of a neatly folded edge of the t-shirt. Highlighting the thickness and quality of the hem.",
-            "negative_prompt": "model, messy",
-            "hard_rules": "FOLDED EDGE DETAIL. NO MODEL.",
-            "output_goal": "Hem thickness detail"
+            "shotNumber": 2,
+            "shotName": "Folded Edge Detail",
+            "positivePrompt": "Macro close-up of a neatly folded edge of the t-shirt. Highlighting the thickness and quality of the hem.",
+            "negativePrompt": "model, messy",
+            "hardRules": "FOLDED EDGE DETAIL. NO MODEL.",
+            "outputGoal": "Hem thickness detail"
           },
           {
-            "shot_number": 3,
-            "shot_name": "Print Ink Texture",
-            "positive_prompt": "Macro shot of the graphic print on the t-shirt, laid flat. Showing the raised ink or dye sublimation texture perfectly.",
-            "negative_prompt": "model, out of focus",
-            "hard_rules": "PRINT TEXTURE MACRO. NO MODEL.",
-            "output_goal": "Ink detail"
+            "shotNumber": 3,
+            "shotName": "Print Ink Texture",
+            "positivePrompt": "Macro shot of the graphic print on the t-shirt, laid flat. Showing the raised ink or dye sublimation texture perfectly.",
+            "negativePrompt": "model, out of focus",
+            "hardRules": "PRINT TEXTURE MACRO. NO MODEL.",
+            "outputGoal": "Ink detail"
           },
           {
-            "shot_number": 4,
-            "shot_name": "Back Label Area",
-            "positive_prompt": "Close-up of the inside back collar area of the t-shirt, showing the neck seam. Clean flat lay.",
-            "negative_prompt": "model, front view",
-            "hard_rules": "INSIDE COLLAR SEAM. NO PRINT ON BACK. NO MODEL.",
-            "output_goal": "Inside seam detail"
+            "shotNumber": 4,
+            "shotName": "Back Label Area",
+            "positivePrompt": "Close-up of the inside back collar area of the t-shirt, showing the neck seam. Clean flat lay.",
+            "negativePrompt": "model, front view",
+            "hardRules": "INSIDE COLLAR SEAM. NO PRINT ON BACK. NO MODEL.",
+            "outputGoal": "Inside seam detail"
           },
           {
-            "shot_number": 5,
-            "shot_name": "Fabric Ripples",
-            "positive_prompt": "Close-up of the t-shirt fabric artfully scrunched to create soft ripples and valleys, emphasizing the material weight and sheen.",
-            "negative_prompt": "model, perfectly flat",
-            "hard_rules": "RIPPLED FABRIC TEXTURE. NO MODEL.",
-            "output_goal": "Fabric weight texture"
+            "shotNumber": 5,
+            "shotName": "Fabric Ripples",
+            "positivePrompt": "Close-up of the t-shirt fabric artfully scrunched to create soft ripples and valleys, emphasizing the material weight and sheen.",
+            "negativePrompt": "model, perfectly flat",
+            "hardRules": "RIPPLED FABRIC TEXTURE. NO MODEL.",
+            "outputGoal": "Fabric weight texture"
           }
         ]
       }
