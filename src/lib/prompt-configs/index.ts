@@ -55,8 +55,11 @@ export async function getPromptsForSelection({
   if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';
   if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
   
-  if (normPres.includes('candid') && normPres.includes('woman')) normPres = 'candid-woman';
-  if (normPres.includes('candid') && normPres.includes('man')) normPres = 'candid-man';
+  if (normPres.includes('candid') && normPres.includes('woman')) {
+    normPres = 'candid-woman';
+  } else if (normPres.includes('candid') && normPres.includes('man')) {
+    normPres = 'candid-man';
+  }
   if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
   if (normPres.includes('still life')) normPres = 'still-life-pack';
   if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
