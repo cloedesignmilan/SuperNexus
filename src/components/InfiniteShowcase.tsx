@@ -313,7 +313,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       }}>
         {/* LEFT IMAGES */}
         {leftImages.map((img, i) => (
-          <div key={`left-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''} hide-mobile`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
+          <div key={`left-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
@@ -325,7 +325,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
 
         {/* RIGHT IMAGES */}
         {rightImages.map((img, i) => (
-          <div key={`right-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''} hide-mobile`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
+          <div key={`right-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
@@ -403,18 +403,30 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
 
         @media (max-width: 1024px) {
           .static-showcase-container {
-            flex-direction: column;
-            gap: 2rem !important;
+            flex-direction: row;
+            justify-content: flex-start;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 2rem 1.5rem !important;
+            gap: 1.5rem !important;
+            margin-left: -1.5rem;
+            width: 100vw;
+          }
+          .static-showcase-container::-webkit-scrollbar {
+            display: none;
           }
           .slide-up-card {
             width: 80vw;
-            max-width: 400px;
+            max-width: 320px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
           }
           .center-card {
             transform: translateY(60px) scale(1);
-            width: 90vw;
-            max-width: 450px;
-            order: -1;
+            width: 80vw;
+            max-width: 320px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
           }
           .center-card.visible {
             transform: translateY(0) scale(1);
