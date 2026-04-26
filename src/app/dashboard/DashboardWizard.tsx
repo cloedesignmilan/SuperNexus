@@ -151,6 +151,18 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   }
 
 
+  const getMappedCategorySlug = (aiType?: string) => {
+    if (!aiType) return 't-shirt';
+    const type = aiType.toLowerCase();
+    if (type.includes('tshirt') || type.includes('hoodie') || type.includes('top') || type.includes('sweat') || type.includes('shirt')) return 't-shirt';
+    if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown')) return 'dress';
+    if (type.includes('bag')) return 'bags';
+    if (type.includes('jewel') || type.includes('accessories')) return 'jewelry';
+    if (type.includes('shoe') || type.includes('sneaker') || type.includes('boot')) return 'shoes';
+    if (type.includes('swim') || type.includes('beach') || type.includes('bikini')) return 'swimwear';
+    return 't-shirt'; // Default fallback
+  };
+
   const handleSnippetSelect = (type: string, snip: Snippet, stepIndex: number) => {
     const newSelections = { ...selections, [type]: snip };
     
@@ -180,7 +192,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       if (type === 'IMAGE_TYPE') {
         setSelections(newSelections);
         // Find if this BusinessMode has only 1 subcategory
-        const detectedCat = analysisData?.detectedProductType || 't-shirt';
+        const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
         const activeSubNames = activeSubcategories
            .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === snip.label)
            .map(sub => sub.name);
@@ -211,7 +223,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         const detectedCat = analysisData?.detectedProductType || 't-shirt';
+         const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
          const isTshirt = detectedCat === 't-shirt';
          const isLowConfidence = !analysisData || analysisData.confidence < 0.8;
          
@@ -253,7 +265,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
-        taxonomyCat: analysisData?.detectedProductType || 't-shirt',
+        taxonomyCat: getMappedCategorySlug(analysisData?.detectedProductType),
         taxonomyMode: selections['IMAGE_TYPE']?.label || null,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null
       }
@@ -281,7 +293,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const handleBack = () => {
     if (step === 3) {
       // Check if we skipped step 2
-      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const activeSubNames = activeSubcategories
            .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
            .map(sub => sub.name);
@@ -293,7 +305,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     if (type === 'IMAGE_TYPE') {
-      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const customOptions = activeBusinessModes
         .filter(bm => bm.category.slug === detectedCat || bm.category.slug === 't-shirt')
         .map(bm => {
@@ -341,7 +353,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     // STRICT TAXONOMY ENFORCEMENT
     if (type === 'MODEL_OPTION') {
       const mode = selections['IMAGE_TYPE']?.label;
-      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       
       const activeSubNames = activeSubcategories
         .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === mode)
