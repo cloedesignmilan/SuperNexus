@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
           business_mode: {
             name: taxonomyMode,
             category: {
-              name: taxonomyCat
+              slug: taxonomyCat.toLowerCase()
             }
           }
         },
