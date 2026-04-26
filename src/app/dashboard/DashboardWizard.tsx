@@ -191,7 +191,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              if ((!analysisData || analysisData.confidence < 0.8) && modelSnip.label !== 'No Model') {
+              const isTshirt = detectedCat === 't-shirt';
+              const isLowConfidence = !analysisData || analysisData.confidence < 0.8;
+              
+              if ((isTshirt || isLowConfidence) && modelSnip.label !== 'No Model') {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -208,7 +211,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         if ((!analysisData || analysisData.confidence < 0.8) && snip.label !== 'No Model') {
+         const detectedCat = analysisData?.detectedProductType || 't-shirt';
+         const isTshirt = detectedCat === 't-shirt';
+         const isLowConfidence = !analysisData || analysisData.confidence < 0.8;
+         
+         if ((isTshirt || isLowConfidence) && snip.label !== 'No Model') {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
@@ -1030,11 +1037,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             </div>
           )}
 
-          {/* STEP 2.5: MANUAL GENDER SELECTION (AI DOUBT) */}
+          {/* STEP 2.5: MANUAL GENDER SELECTION (AI DOUBT OR TSHIRT SAFETY) */}
           {step === 2.5 && (
             <div className="fade-up-enter">
               <h2 className="step-header">Who is wearing it?</h2>
-              <p className="step-desc">AI couldn't perfectly detect the target gender for this item.</p>
+              <p className="step-desc">Please confirm the target audience to ensure perfect modeling.</p>
               {renderSnippetGridInternal('CLIENT_TYPE', 2.5)}
             </div>
           )}
