@@ -165,19 +165,29 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    // Initial visibility trigger
+    // Fallback: force visibility after 2 seconds in case observer fails completely
+    const fallbackTimeout = setTimeout(() => {
+      setIsVisible(true);
+      setIsAnimating(true);
+    }, 2000);
+
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         setIsVisible(true);
         setIsAnimating(true);
         observer.disconnect();
+        clearTimeout(fallbackTimeout);
       }
-    }, { threshold: 0.2 });
+    }, { threshold: 0 }); // abbassato a 0 per garantire l'innesco appena entra a schermo
     
     const el = document.getElementById('infinite-showcase-section');
     if (el) observer.observe(el);
+    else clearTimeout(fallbackTimeout);
     
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimeout);
+    };
   }, []);
 
   useEffect(() => {
