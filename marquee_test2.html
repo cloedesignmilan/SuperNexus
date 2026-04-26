@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.marquee-track {
+  width: 1000px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+  border: 1px solid red;
+}
+.marquee-content {
+  display: flex;
+  gap: 1.5rem;
+  flex-shrink: 0;
+  min-width: max-content;
+  will-change: transform;
+  animation: marquee-left 5s linear infinite;
+}
+.marquee-card {
+  width: 300px;
+  height: 100px;
+  background: blue;
+  flex-shrink: 0;
+}
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100% - 1.5rem)); }
+}
+</style>
+</head>
+<body>
+<div class="marquee-track">
+  <div class="marquee-content">
+    <div class="marquee-card"></div><div class="marquee-card"></div><div class="marquee-card"></div><div class="marquee-card"></div>
+  </div>
+  <div class="marquee-content">
+    <div class="marquee-card"></div><div class="marquee-card"></div><div class="marquee-card"></div><div class="marquee-card"></div>
+  </div>
+</div>
+</body>
+</html>

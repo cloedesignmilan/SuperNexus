@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 import { logApiCost } from "@/lib/gemini-cost";
-import { CATEGORIES } from "@/lib/getShowcaseData";
 import { PRICING_CONFIG } from "@/lib/pricingConfig";
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
 
 const getSystemPrompt = () => {
-  const uniqueCategories = Array.from(new Set(CATEGORIES.map(c => c.category))).join(', ');
-  const uniqueSubcategories = Array.from(new Set(CATEGORIES.map(c => c.subcategory))).join(', ');
+  const uniqueCategories = "T-Shirt, Costumi, Scarpe, Borse, Gioielli, Uomo, Donna, Bambino";
+  const uniqueSubcategories = "Model Studio, UGC, Lifestyle, Clean Catalog";
 
   return `Sei l’assistente ufficiale di SuperNexus AI.
 

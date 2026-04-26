@@ -1,186 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-// Define the static structure
-export const CATEGORIES = [
-  {
-    "id": "t-shirt & knitwear-streetwear-flatlay",
-    "category": "T-Shirt & Knitwear",
-    "subcategory": "Flat Lay Clean",
-    "useCases": ["Instagram", "Pinterest", "Hypebeast"],
-    "desc": "Transform simple flat lays into hype streetwear shots with dynamic backgrounds and modern aesthetics.",
-    "folderPath": "/prove/Tshirt/Tshirt- FlatLay"
-  },
-  {
-    "id": "t-shirt & knitwear-e-commerce-clean",
-    "category": "T-Shirt & Knitwear",
-    "subcategory": "E-Commerce Clean",
-    "useCases": ["Amazon", "Etsy", "Shopify"],
-    "desc": "Stop shooting on rigid mannequins! Transform flat lays into highly converting e-commerce catalog photos.",
-    "folderPath": "/prove/Tshirt/Ecommerce Clean"
-  },
-  {
-    "id": "t-shirt & knitwear-ugc-(user-generated-content)",
-    "category": "T-Shirt & Knitwear",
-    "subcategory": "UGC / Creator Style",
-    "useCases": ["TikTok", "IG Reels", "FB Ads"],
-    "desc": "Create relatable, everyday lifestyle shots that look like genuine customer photos for high-converting ads.",
-    "folderPath": "/prove/Tshirt/UCG"
-  },
-  {
-    "id": "swimwear-e-commerce-clean",
-    "category": "Swimwear",
-    "subcategory": "E-Commerce Clean",
-    "useCases": ["Amazon", "Shopify", "Catalog"],
-    "desc": "Perfectly lit, distraction-free catalog shots to maximize conversion rates.",
-    "folderPath": "/prove/Donna/Costumi/Ecommerce-Clean"
-  },
-  {
-    "id": "swimwear-poolside-lifestyle",
-    "category": "Swimwear",
-    "subcategory": "Poolside Lifestyle",
-    "useCases": ["Instagram", "Facebook Ads", "Resort"],
-    "desc": "Showcase your swimwear in realistic, sun-drenched outdoor environments.",
-    "folderPath": "/prove/Donna/Costumi/In spiaggia"
-  },
-  {
-    "id": "swimwear-fitting-room-ugc",
-    "category": "Swimwear",
-    "subcategory": "Fitting Room UGC",
-    "useCases": ["TikTok", "IG Reels", "UGC Ads"],
-    "desc": "Ultra-realistic, relatable fitting room selfies that look like genuine customer content.",
-    "folderPath": "/prove/Donna/Costumi/UGC"
-  },
-  {
-    "id": "footwear-womens-sneakers",
-    "category": "Footwear & Sneakers",
-    "subcategory": "Women's Sneakers",
-    "useCases": ["E-Commerce", "Social Media", "Lookbook"],
-    "desc": "Showcase your sneakers in stunning, realistic environments. From crisp studio shots to dynamic urban lifestyles.",
-    "folderPath": "/prove/Footwear/Sneakers"
-  },
-  {
-    "id": "footwear & sneakers-product-clean",
-    "category": "Footwear & Sneakers",
-    "subcategory": "Product Clean",
-    "useCases": ["Amazon", "Shopify"],
-    "desc": "Total elimination of defects. Your warehouse shots become perfect still-lifes ready for online sales.",
-    "folderPath": "/prove/Calzature/Product Clean"
-  },
-  {
-    "id": "women's fashion-mannequin-display",
-    "category": "Women's Fashion",
-    "subcategory": "Mannequin Display",
-    "useCases": ["Boutique", "Catalog"],
-    "desc": "Turn standard store mannequins into lifelike models wearing your latest collections.",
-    "folderPath": "/prove/Donna/Mannequin Display"
-  },
-  {
-    "id": "women's fashion-runway-editorial",
-    "category": "Women's Fashion",
-    "subcategory": "Runway Editorial",
-    "useCases": ["High Fashion", "Magazines"],
-    "desc": "Place your garments in professional runway environments with perfect lighting.",
-    "folderPath": "/prove/Donna/Runway Editorial"
-  },
-  {
-    "id": "women's fashion-luxury-villa-shoot",
-    "category": "Women's Fashion",
-    "subcategory": "Luxury Villa Shoot",
-    "useCases": ["Instagram", "Luxury", "FB Ads"],
-    "desc": "Have your garments worn by hyper-realistic digital models in luxury villas.",
-    "folderPath": "/prove/Donna/Luxury Villa Shoot"
-  },
-  {
-    "id": "women's fashion-instagram-lifestyle",
-    "category": "Women's Fashion",
-    "subcategory": "Instagram Lifestyle",
-    "useCases": ["Influencer", "TikTok", "IG Reels"],
-    "desc": "Create vibrant, trendy lifestyle shots that perfectly match the Instagram aesthetic.",
-    "folderPath": "/prove/Donna/Instagram Lifestyle"
-  },
-  {
-    "id": "women's fashion-mature-sophistication",
-    "category": "Women's Fashion",
-    "subcategory": "Mature Sophistication",
-    "useCases": ["LinkedIn", "Catalog", "Classic"],
-    "desc": "Elegant and sophisticated shots targeting a mature, classy demographic.",
-    "folderPath": "/prove/Donna/Mature Sophistication"
-  },
-  {
-    "id": "women's fashion-gym-&-fitness",
-    "category": "Women's Fashion",
-    "subcategory": "Gym & Fitness",
-    "useCases": ["Activewear", "TikTok", "Instagram"],
-    "desc": "Dynamic, high-energy shots perfect for showcasing athletic wear in action.",
-    "folderPath": "/prove/Donna/Gym & Fitness"
-  },
-  {
-    "id": "women's fashion-outfit-coordination",
-    "category": "Women's Fashion",
-    "subcategory": "Outfit Coordination",
-    "useCases": ["Pinterest", "Lookbook"],
-    "desc": "Show how different pieces match together in realistic, coordinated street looks. Just send multiple photos to the bot at once!",
-    "folderPath": "/prove/Donna/Outfit Coordination"
-  },
-  {
-    "id": "women's fashion-curvy",
-    "category": "Women's Fashion",
-    "subcategory": "Curvy",
-    "useCases": ["E-Commerce", "Instagram", "Catalog"],
-    "desc": "Showcase your fashion on realistic curvy models, perfect for inclusive e-commerce and social media.",
-    "folderPath": "/prove/Donna/Curvy"
-  },
-  {
-    "id": "bridal-bridal-collection",
-    "category": "Bridal",
-    "subcategory": "Romantic Venue",
-    "useCases": ["Atelier", "Wedding", "Pinterest"],
-    "desc": "Transform an anonymous dress hanging in the Atelier into sumptuous catalogs that enchant brides.",
-    "folderPath": "/prove/Sposa/Romantic Venue"
-  },
-  {
-    "id": "groom & formal-groom-collection",
-    "category": "Groom & Formal",
-    "subcategory": "Elegant Groom",
-    "useCases": ["Tailoring", "Wedding", "Magazine"],
-    "desc": "Elegant formal wear presented in stunning, romantic locations.",
-    "folderPath": "/prove/Sposo"
-  },
-  {
-    "id": "men's apparel-silver-fox-luxury",
-    "category": "Men's Apparel",
-    "subcategory": "Silver Fox Luxury",
-    "useCases": ["Luxury", "Boutique"],
-    "desc": "Target premium customers with sophisticated, mature male models.",
-    "folderPath": "/prove/Uomo/Silver Fox Luxury"
-  },
-  {
-    "id": "men's apparel-executive-lifestyle",
-    "category": "Men's Apparel",
-    "subcategory": "Executive Lifestyle",
-    "useCases": ["LinkedIn", "Business", "Magazine"],
-    "desc": "Showcase your suits in their natural habitat: modern offices and business environments.",
-    "folderPath": "/prove/Uomo/Executive Lifestyle"
-  },
-  {
-    "id": "kids collection-elegant-event",
-    "category": "Kids Collection",
-    "subcategory": "Elegant Event",
-    "useCases": ["Ceremony", "Catalog"],
-    "desc": "Adorable, high-quality shots for kids' formal wear and special occasions.",
-    "folderPath": "/prove/Bambino/Elegant Event"
-  },
-  {
-    "id": "kids collection-playful-lifestyle",
-    "category": "Kids Collection",
-    "subcategory": "Playful Lifestyle",
-    "useCases": ["Parenting Groups", "IG Posts", "TikTok"],
-    "desc": "Sweet and engaging lifestyle shots perfect for capturing the attention of parents.",
-    "folderPath": "/prove/Bambino/Playful Lifestyle"
-  }
-];
-
 export interface ShowcaseItem {
   id: string;
   category: string;
@@ -193,62 +13,102 @@ export interface ShowcaseItem {
 
 export async function getShowcaseData(): Promise<ShowcaseItem[]> {
   const result: ShowcaseItem[] = [];
+  const baseDir = path.join(process.cwd(), 'public', 'prove nuove');
 
-  for (const cat of CATEGORIES) {
-    const fullPath = path.join(process.cwd(), 'public', cat.folderPath);
-    let beforeImages: string[] = [];
-    let afterImages: string[] = [];
-
-    if (fs.existsSync(fullPath)) {
-      const files = fs.readdirSync(fullPath);
-
-      for (const file of files) {
-        // Skip hidden files or non-image files
-        if (file.startsWith('.')) continue;
-        if (!file.match(/\.(jpg|jpeg|png|webp)$/i)) continue;
-
-        const lowerFile = file.toLowerCase();
-
-        // Exclusion rule: X.* or x.*
-        if (lowerFile.startsWith('x.')) {
-          continue;
-        }
-
-        // Before rule: starts with "prima"
-        if (lowerFile.startsWith('prima')) {
-          beforeImages.push(`${cat.folderPath}/${file}`);
-          continue;
-        }
-
-        // Add to afters
-        afterImages.push(`${cat.folderPath}/${file}`);
-      }
-
-      // Prioritization rule for 'afters': 1.*
-      afterImages.sort((a, b) => {
-        const fileA = path.basename(a).toLowerCase();
-        const fileB = path.basename(b).toLowerCase();
-        
-        if (fileA.startsWith('1.')) return -1;
-        if (fileB.startsWith('1.')) return 1;
-        
-        return a.localeCompare(b);
-      });
-
-      // Sort before images so prima1 comes before prima2
-      beforeImages.sort((a, b) => a.localeCompare(b));
-    }
-
-    result.push({
-      id: cat.id,
-      category: cat.category,
-      subcategory: cat.subcategory,
-      useCases: cat.useCases,
-      desc: cat.desc,
-      before: beforeImages.length > 0 ? beforeImages : [`${cat.folderPath}/prima.jpeg`], // fallback
-      afters: afterImages
-    });
+  if (!fs.existsSync(baseDir)) {
+    return result;
   }
 
-  return result;
+  const categories = fs.readdirSync(baseDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory() && dirent.name !== 'Immagini originali' && !dirent.name.startsWith('.'));
+
+  for (const cat of categories) {
+    const catDir = path.join(baseDir, cat.name);
+    const subcategories = fs.readdirSync(catDir, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('.'));
+
+    for (const subcat of subcategories) {
+      const fullPath = path.join(catDir, subcat.name);
+      const files = fs.readdirSync(fullPath);
+      
+      const afterImages: string[] = [];
+      const beforeImages: string[] = [];
+
+      for (const file of files) {
+        if (file.startsWith('.') || !file.match(/\.(jpg|jpeg|png|webp)$/i)) continue;
+        
+        const lowerFile = file.toLowerCase();
+        if (lowerFile.startsWith('prima')) {
+          beforeImages.push(`/prove nuove/${cat.name}/${subcat.name}/${file}`);
+        } else {
+          afterImages.push(`/prove nuove/${cat.name}/${subcat.name}/${file}`);
+        }
+      }
+
+      if (beforeImages.length === 0) {
+        const origPath = path.join(baseDir, 'Immagini originali');
+        if (fs.existsSync(origPath)) {
+          const origFiles = fs.readdirSync(origPath);
+          const match = origFiles.find(f => f.toLowerCase().startsWith(cat.name.toLowerCase()));
+          if (match) {
+            beforeImages.push(`/prove nuove/Immagini originali/${match}`);
+          } else {
+            // Ultimate fallback to any image if available
+            const anyImg = origFiles.find(f => f.match(/\.(jpg|jpeg|png|webp)$/i) && !f.startsWith('.'));
+            if (anyImg) {
+               beforeImages.push(`/prove nuove/Immagini originali/${anyImg}`);
+            }
+          }
+        }
+      }
+
+      if (afterImages.length > 0) {
+        result.push({
+          id: `${cat.name}-${subcat.name}`.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          category: cat.name,
+          subcategory: subcat.name,
+          useCases: ["AI Generated", "E-Commerce", "Social Media"],
+          desc: "AI Generated content",
+          before: beforeImages,
+          afters: afterImages
+        });
+      }
+    }
+  }
+
+  // Merge SHOES / LifeStyle and SHOES / Detail : Texture
+  const mergedResult: ShowcaseItem[] = [];
+  const shoesToMerge: ShowcaseItem[] = [];
+  let firstIndex = -1;
+
+  for (let i = 0; i < result.length; i++) {
+    const item = result[i];
+    if (item.category.toUpperCase() === 'SHOES' && 
+       (item.subcategory.toLowerCase() === 'lifestyle' || item.subcategory.toLowerCase().includes('texture'))) {
+      shoesToMerge.push(item);
+      if (firstIndex === -1) firstIndex = mergedResult.length;
+    } else {
+      mergedResult.push(item);
+    }
+  }
+
+  if (shoesToMerge.length > 0) {
+    const mergedItem: ShowcaseItem = {
+      id: 'shoes-lifestyle-texture',
+      category: 'SHOES',
+      subcategory: 'LifeStyle & Texture',
+      useCases: ["AI Generated", "E-Commerce", "Social Media"],
+      desc: "AI Generated content",
+      before: shoesToMerge[0].before,
+      afters: shoesToMerge.flatMap(item => item.afters)
+    };
+    
+    if (firstIndex !== -1) {
+      mergedResult.splice(firstIndex, 0, mergedItem);
+    } else {
+      mergedResult.push(mergedItem);
+    }
+  }
+
+  return mergedResult;
 }

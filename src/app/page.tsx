@@ -5,7 +5,7 @@ import AnimatedCounter from '@/components/AnimatedCounter';
 import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
 import PhoneMockup from '@/components/PhoneMockup';
 import SocialPostMockup from '@/components/SocialPostMockup';
-import ShowcaseCategories from '@/components/ShowcaseCategories';
+import InfiniteShowcase from '@/components/InfiniteShowcase';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
 import GalleryMockup from '@/components/GalleryMockup';
@@ -292,9 +292,8 @@ export default async function LandingPage() {
       <TargetAudience />
 
       {/* SHOWCASE DA ZERO */}
-      <section id="showcase" style={{ padding: '6rem 0', background: '#080808', color: '#fff', borderTop: '1px solid #222', borderBottom: '1px solid #222' }}>
-
-        <ShowcaseCategories showcaseData={showcaseData} />
+      <section id="showcase">
+        <InfiniteShowcase showcaseData={showcaseData} />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.marquee-track {
+  width: 800px;
+  overflow: hidden;
+  position: relative;
+  display: block;
+  border: 1px solid red;
+}
+.marquee-content {
+  display: inline-flex;
+  gap: 1.5rem;
+  padding-left: 1.5rem;
+  min-width: max-content;
+  flex-shrink: 0;
+  will-change: transform;
+  animation: marquee-left 5s linear infinite;
+}
+.marquee-content.right {
+  animation: marquee-right 5s linear infinite;
+}
+.marquee-card {
+  width: 200px;
+  height: 100px;
+  background: blue;
+  flex-shrink: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 0.75rem)); }
+}
+@keyframes marquee-right {
+  0% { transform: translateX(calc(-50% - 0.75rem)); }
+  100% { transform: translateX(0); }
+}
+</style>
+</head>
+<body>
+<h2>Left</h2>
+<div class="marquee-track">
+  <div class="marquee-content">
+    <div class="marquee-card">1</div><div class="marquee-card">2</div><div class="marquee-card">3</div><div class="marquee-card">4</div>
+    <div class="marquee-card">1</div><div class="marquee-card">2</div><div class="marquee-card">3</div><div class="marquee-card">4</div>
+  </div>
+</div>
+<h2>Right</h2>
+<div class="marquee-track">
+  <div class="marquee-content right">
+    <div class="marquee-card">1</div><div class="marquee-card">2</div><div class="marquee-card">3</div><div class="marquee-card">4</div>
+    <div class="marquee-card">1</div><div class="marquee-card">2</div><div class="marquee-card">3</div><div class="marquee-card">4</div>
+  </div>
+</div>
+</body>
+</html>
