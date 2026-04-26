@@ -347,8 +347,10 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
             aiParts.push({ text: variantPrompt });
         }
 
-        // TRUE IDENTITY LOCK INJECTION
-        // If this is image 2+ (i > 0) AND we successfully captured the identity from image 1
+        // TRUE IDENTITY LOCK INJECTION (TEMPORARILY DISABLED)
+        // BUG FIX: Injecting the first generated image as a strict reference causes Gemini Flash 
+        // to suffer from "Latent Collapse" (outputting perfectly identical clones of Image 1 and ignoring poses).
+        /*
         if (i > 0 && identityReferenceBase64) {
             const identityPart = {
                 text: "\n[IDENTITY REFERENCE SYSTEM: Use the provided reference image directly below as the SAME person. Do NOT change facial identity. Maintain identical face, bone structure, proportions, and skin tone. Only change pose, camera angle, and framing.]\n"
@@ -363,6 +365,7 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
             aiParts.unshift(identityImagePart);
             aiParts.unshift(identityPart);
         }
+        */
 
         let attempt = 0;
         let success = false;

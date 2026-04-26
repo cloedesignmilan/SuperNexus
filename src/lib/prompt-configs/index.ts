@@ -43,8 +43,16 @@ export async function getPromptsForSelection({
   quantity
 }: SelectionParams): Promise<PromptShot[] | null> {
   const normCat = categorySlug.toLowerCase().trim();
-  const normMode = modeSlug.toLowerCase().trim();
-  const normPres = presentationSlug.toLowerCase().trim();
+  let normMode = modeSlug.toLowerCase().trim();
+  let normPres = presentationSlug.toLowerCase().trim();
+
+  // Mappa i nomi lunghi del frontend negli slug brevi del JSON/DB
+  if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';
+  if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
+  
+  if (normPres.includes('candid') && normPres.includes('woman')) normPres = 'candid-woman';
+  if (normPres.includes('candid') && normPres.includes('man')) normPres = 'candid-man';
+  if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
 
   try {
       // Priority 1: Fetch from Database
