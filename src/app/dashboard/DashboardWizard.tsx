@@ -80,8 +80,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
          nPrompt = "redesigned product, simplified product, smooth details, changed textures, modified branding, environment, props, people, lifestyle, reflection, dramatic shadows, " + nPrompt;
       }
 
+      const globalNegative = "logos, apple logo, brand marks, watermarks, text, typography, fonts, graphics, words, signatures, symbols, patches, icons, " + nPrompt;
+
       setFinalPrompt(fPrompt.replace(/, $/, ''));
-      setNegativePrompt(nPrompt.replace(/, $/, ''));
+      setNegativePrompt(globalNegative.replace(/, $/, ''));
     }
   }, [step, selections]);
 
@@ -1057,13 +1059,13 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
                  {[
-                   { label: 'Male Model', display: 'Uomo', id: 'gender-man', prompt: 'male fashion model, handsome man' },
-                   { label: 'Female Model', display: 'Donna', id: 'gender-woman', prompt: 'female fashion model, beautiful woman' }
+                   { label: 'MAN', display: 'MAN', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features' },
+                   { label: 'WOMAN', display: 'WOMAN', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features' }
                  ].map(gender => (
                     <div 
                       key={gender.id}
                       className={`snippet-card ${selections['CLIENT_TYPE']?.id === gender.id ? 'active' : ''}`}
-                      onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, intensity_level: 'strong' }, 2.5)}
+                      onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, negative_fragment: gender.negative, intensity_level: 'strong' }, 2.5)}
                     >
                       <Icons.User size={24} style={{ color: selections['CLIENT_TYPE']?.id === gender.id ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
                       <div className="snippet-title">{gender.display}</div>
