@@ -16,12 +16,18 @@ export default function WaitlistButton() {
     // Sostituire l'URL con quello del Webhook di Google Apps Script
     const WEBHOOK_URL = process.env.NEXT_PUBLIC_WAITLIST_WEBHOOK_URL || '';
     
+    if (!WEBHOOK_URL) {
+      alert("ATTENZIONE: Non hai ancora inserito il Webhook URL in .env o su Vercel!");
+      setStatus('error');
+      return;
+    }
+    
     try {
       await fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain;charset=utf-8',
         },
         body: JSON.stringify({ email, timestamp: new Date().toISOString() })
       });
