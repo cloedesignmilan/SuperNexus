@@ -201,6 +201,16 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
          return;
       }
 
+      // Fast-forward for Lifestyle (Dopo aver scelto la scena, salta la scelta modello)
+      if (type === 'SCENE' && newSelections['IMAGE_TYPE']?.label === 'Lifestyle') {
+         const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === 'Model Photo');
+         if (modelSnip) newSelections['MODEL_OPTION'] = modelSnip;
+         
+         setSelections(newSelections);
+         setTimeout(() => setStep(4), 350); // Vai a FORMAT_QUANTITY
+         return;
+      }
+
       setSelections(newSelections);
       setTimeout(() => {
         setStep(stepIndex + 1);
