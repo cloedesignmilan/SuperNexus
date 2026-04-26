@@ -14,6 +14,7 @@ import ChatBot from '@/components/ChatBot';
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
+import WaitlistButton from '@/components/WaitlistButton';
 import { getShowcaseData } from '@/lib/getShowcaseData';
 
 function getDynamicMetrics() {
@@ -251,9 +252,9 @@ export default async function LandingPage() {
             ✨ Create Photos that actually sell
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
-            <button disabled className="btn-primary btn-hero-glow" style={{ fontWeight: '800', whiteSpace: 'nowrap', opacity: 0.5, cursor: 'not-allowed' }}>
-              Maintenance In Progress
-            </button>
+            <div style={{ width: '100%', maxWidth: '250px' }}>
+              <WaitlistButton />
+            </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
             </a>
@@ -365,7 +366,7 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <button disabled className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', opacity: 0.5, cursor: 'not-allowed' }}>Maintenance In Progress</button>
+                <WaitlistButton />
             </div>
           </div>
           
