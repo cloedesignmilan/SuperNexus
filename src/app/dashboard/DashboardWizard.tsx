@@ -262,6 +262,19 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     }
   }
 
+  const handleBack = () => {
+    if (step === 4) {
+      if (selections['IMAGE_TYPE']?.label === 'Clean Catalog') return setStep(1);
+      if (selections['IMAGE_TYPE']?.label === 'Lifestyle') return setStep(2);
+      return setStep(3);
+    }
+    if (step === 3) {
+      if (selections['IMAGE_TYPE']?.label === 'Model Studio') return setStep(1);
+      return setStep(2);
+    }
+    setStep(Math.max(0, step - 1));
+  };
+
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     if (type === 'IMAGE_TYPE') {
       const customOptions = [
@@ -873,7 +886,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         
         {step > 0 && step < 9 && !isGenerating && (
           <>
-            <button className="back-button" onClick={() => setStep(Math.max(0, step - 1))}>
+            <button className="back-button" onClick={handleBack}>
               <ChevronLeft size={24} />
             </button>
             <div className="nav-dots">
