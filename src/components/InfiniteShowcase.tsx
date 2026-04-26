@@ -214,17 +214,6 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       category: config.displayCategory,
       useCase: config.displaySubcategory.split('→')[1]?.trim() || config.displaySubcategory,
     }));
-  } else if (config.lookup) {
-    const targetItem = showcaseData.find(item => 
-      item.category === config.lookup!.category && item.subcategory.toUpperCase().includes(config.lookup!.subcategoryIncludes)
-    );
-    if (targetItem) {
-      generatedImages = targetItem.afters.slice(0, 4).map(url => ({
-        url,
-        category: targetItem.category,
-        useCase: targetItem.subcategory.split('→')[1]?.trim() || targetItem.subcategory,
-      }));
-    }
   }
 
   // Se non ci sono immagini, evita errori distruttivi. 
