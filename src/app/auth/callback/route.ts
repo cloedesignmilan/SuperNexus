@@ -27,8 +27,14 @@ export async function GET(request: Request) {
         })
 
         if (!dbUser) {
-          // Registrations are temporarily paused. Do not create new users.
-          return NextResponse.redirect(`${origin}/auth?error=registrations_paused`)
+          // Registrations are active. Create new user with 10 free trial images.
+          dbUser = await prisma.user.create({
+            data: {
+              email: email,
+              role: 'client',
+              images_allowance: 10, // Free trial package
+            }
+          })
         }
       }
 

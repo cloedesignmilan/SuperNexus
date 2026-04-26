@@ -28,11 +28,7 @@ export default function AuthButtons() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      {errorParam === 'registrations_paused' && (
-        <div style={{ padding: '0.75rem', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: '12px', color: '#f87171', fontSize: '0.85rem', textAlign: 'center', marginBottom: '1rem' }}>
-          ⚠️ Le registrazioni sono temporaneamente disabilitate per manutenzione e aggiornamento catalogo.
-        </div>
-      )}
+
       
       <button 
         onClick={() => handleOAuthLogin('google')}
