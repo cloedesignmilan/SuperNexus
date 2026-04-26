@@ -26,6 +26,7 @@ export interface GenerateImagesOptions {
     specificShotNumber?: number;
     clientGender?: string;
     detectedProductType?: string;
+    aspectRatio?: string;
 }
 
 export async function generateImagesWithAI({
@@ -41,9 +42,18 @@ export async function generateImagesWithAI({
     taxonomySubcat,
     specificShotNumber,
     clientGender,
-    detectedProductType
+    detectedProductType,
+    aspectRatio
 }: GenerateImagesOptions) {
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
+    
+    // Mappa l'aspect ratio richiesto a uno supportato nativamente da Imagen 3
+    let finalAspectRatio = "3:4"; // Default per portrait
+    if (aspectRatio === "1:1") finalAspectRatio = "1:1";
+    else if (aspectRatio === "9:16") finalAspectRatio = "9:16";
+    else if (aspectRatio === "16:9") finalAspectRatio = "16:9";
+    else if (aspectRatio === "4:3") finalAspectRatio = "4:3";
+    else if (aspectRatio === "4:5") finalAspectRatio = "3:4"; // Imagen 3 non supporta 4:5, il 3:4 è il fallback corretto.
     
     // 1. Fetch input images and convert to base64
     let base64OutfitParts: any[] = [];
@@ -447,7 +457,7 @@ CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${finalN
                     ],
                     config: {
                         // @ts-ignore
-                        imageConfig: { aspectRatio: "3:4" }
+                        imageConfig: { aspectRatio: finalAspectRatio }
                     }
                 });
                 success = true;

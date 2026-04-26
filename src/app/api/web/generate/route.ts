@@ -106,7 +106,8 @@ export async function POST(req: NextRequest) {
       taxonomySubcat,
       specificShotNumber,
       clientGender,
-      detectedProductType
+      detectedProductType,
+      aspectRatio
     })
 
     if (aiResult.generatedBase64s.length === 0) {
