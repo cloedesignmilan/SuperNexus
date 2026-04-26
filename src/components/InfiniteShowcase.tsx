@@ -17,15 +17,7 @@ interface Props {
 }
 
 const SLIDESHOW_CONFIG = [
-  {
-    displayCategory: 'T-SHIRT',
-    displaySubcategory: 'CLEAN CATALOG → NO MODEL',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
-    lookup: {
-      category: 'T-SHIRT',
-      subcategoryIncludes: 'CLEAN CATALOG'
-    }
-  },
+  // The T-SHIRT CLEAN CATALOG lookup was removed because dynamic images were deleted.
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'WOMAN → MODEL STUDIO',
@@ -235,8 +227,11 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
     }
   }
 
-  // Se non ci sono immagini, evita errori
-  if (generatedImages.length === 0) return null;
+  // Se non ci sono immagini, evita errori distruttivi. 
+  // Ritorna un div invisibile col corretto id per mantenere vivo l'observer e il setInterval.
+  if (generatedImages.length === 0) {
+    return <div id="infinite-showcase-section" style={{ opacity: 0, height: '1px' }}></div>;
+  }
 
   const originalImage = {
     url: config.originalImage,
