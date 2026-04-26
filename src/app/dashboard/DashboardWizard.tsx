@@ -177,9 +177,10 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
     // Auto-advance logic for standard steps
     if (type !== 'QUANTITY' && type !== 'FORMAT' && stepIndex >= 1 && stepIndex < 4) {
       
-      // Fast-forward for T-shirt -> Clean Catalog
-      if (type === 'IMAGE_TYPE' && snip.label === 'Clean Catalog' && newSelections['PRODUCT_TYPE']?.label === 'T-shirt') {
-         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && s.label === 'Studio Softbox');
+      // Fast-forward for Clean Catalog (Applicato a tutte le categorie)
+      if (type === 'IMAGE_TYPE' && snip.label === 'Clean Catalog') {
+         // Cerca una scena adatta (Studio Softbox, Studio clean, ecc.)
+         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && (s.label.toLowerCase().includes('studio') || s.label.toLowerCase().includes('clean')));
          const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === 'No Model');
          
          if (sceneSnip) newSelections['SCENE'] = sceneSnip;
