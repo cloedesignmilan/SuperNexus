@@ -158,7 +158,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     if (!aiType) return 't-shirt';
     const type = aiType.toLowerCase();
     if (type.includes('tshirt') || type.includes('hoodie') || type.includes('top') || type.includes('sweat') || type.includes('shirt')) return 't-shirt';
-    if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown')) return 'dress';
+    if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown') || type.includes('suit') || type.includes('blazer') || type.includes('tuxedo') || type.includes('formal') || type.includes('jacket')) return 'dress';
     if (type.includes('bag')) return 'bags';
     if (type.includes('jewel') || type.includes('accessories')) return 'jewelry';
     if (type.includes('shoe') || type.includes('sneaker') || type.includes('boot')) return 'shoes';
@@ -268,7 +268,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         taxonomyMode: selections['IMAGE_TYPE']?.label || null,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
-        clientGender
+        clientGender,
+        detectedProductType: analysisData?.detectedProductType
       }
 
       const res = await fetch('/api/web/generate', {
