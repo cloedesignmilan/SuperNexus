@@ -58,43 +58,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front Studio Portrait",
-            "positivePrompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
-            "negativePrompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
-            "hardRules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
-            "outputGoal": "Main Model Ecommerce Shot"
+            "shotName": "Classic Studio Front",
+            "positivePrompt": "Professional indoor studio fashion portrait. Model wearing the t-shirt, waist up. Pure white seamless paper backdrop. Standard softbox lighting. Neutral confident pose.",
+            "negativePrompt": "outdoors, street, coffee bar, cafe, city, windows, messy background, flat lay",
+            "hardRules": "STRICTLY INDOOR STUDIO BACKDROP. FRONT VIEW. HANDS MUST NOT COVER T-SHIRT.",
+            "outputGoal": "Standard front catalog"
           },
           {
             "shotNumber": 2,
-            "shotName": "Dynamic 3/4 Angle",
-            "positivePrompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
-            "negativePrompt": "straight on, stiff pose, mannequin, casual snap",
-            "hardRules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
-            "outputGoal": "Side fit demonstration"
+            "shotName": "Seated on Apple Box",
+            "positivePrompt": "Model wearing the t-shirt sitting casually on a wooden studio apple box. Full body shot. Colored seamless paper backdrop (e.g., pastel grey or blue). High end fashion catalog lighting.",
+            "negativePrompt": "standing perfectly straight, outdoors, cafe, busy background, close up",
+            "hardRules": "MODEL MUST BE SEATED ON A BOX IN A PHOTOGRAPHY STUDIO. INDOORS ONLY.",
+            "outputGoal": "Seated fit variation"
           },
           {
             "shotNumber": 3,
-            "shotName": "Back View",
-            "positivePrompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
-            "negativePrompt": "front print, model face, turning around, messy background",
-            "hardRules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
-            "outputGoal": "Model back fit"
+            "shotName": "Plain Back View",
+            "positivePrompt": "Model completely facing away from the camera. Showing the PLAIN SOLID COLOR back of the t-shirt. Indoor studio background. Hair tied up or away from the back.",
+            "negativePrompt": "graphic, print, logo, text, pattern on back, front view, face visible, turning around, outdoors",
+            "hardRules": "BACK VIEW. STRICTLY NO PRINT, NO GRAPHIC, NO LOGO ON THE BACK. COMPLETELY BLANK FABRIC ON BACK.",
+            "outputGoal": "Back fit without print"
           },
           {
             "shotNumber": 4,
-            "shotName": "Full Body Look",
-            "positivePrompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
-            "negativePrompt": "close up, cropped head, cropped feet, complex outfit, busy background",
-            "hardRules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
-            "outputGoal": "Complete outfit styling"
+            "shotName": "Edgy Flash Photography",
+            "positivePrompt": "High fashion edgy portrait. Model wearing the t-shirt with a dynamic pose. Hard flash lighting casting a sharp, dark shadow on the white studio wall behind them. Editorial aesthetic.",
+            "negativePrompt": "soft lighting, outdoor sunlight, street, flat lay, boring pose",
+            "hardRules": "HARD FLASH LIGHTING. SHARP SHADOW ON STUDIO WALL. INDOORS.",
+            "outputGoal": "Editorial style variation"
           },
           {
             "shotNumber": 5,
-            "shotName": "Lifestyle Studio Crop",
-            "positivePrompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
-            "negativePrompt": "full body, face focus, blurry t-shirt, outdoor",
-            "hardRules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
-            "outputGoal": "Texture and detail on body"
+            "shotName": "Macro Collar/Chest Worn",
+            "positivePrompt": "Extreme close up crop on the model's torso and neckline wearing the t-shirt. Focus heavily on the fabric weave, collar stitching, and the main graphic. Intimate studio lighting.",
+            "negativePrompt": "full body, face visible, messy background, outdoors, wide angle",
+            "hardRules": "MACRO CROP ON CHEST/NECK ONLY. INDOOR STUDIO. NO FULL BODY.",
+            "outputGoal": "Texture and fit detail"
           }
         ]
       },
