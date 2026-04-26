@@ -121,7 +121,7 @@ export async function getPromptsForSelection({
   let shots = [...row.shots];
   
   if (specificShotNumber) {
-      const target = shots.find(s => s.shot_number === specificShotNumber);
+      const target = shots.find(s => ((s as any).shotNumber || s.shot_number) === specificShotNumber);
       if (target) return [target];
   }
 
