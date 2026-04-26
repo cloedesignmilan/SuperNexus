@@ -31,9 +31,13 @@ export default function PhoneMockup({ imgSrc, label, className = '' }: PhoneMock
               src={src} 
               alt={`Mockup screen ${idx + 1}`} 
               className="phone-image"
+              suppressHydrationWarning={true}
               style={{
                 position: images.length > 1 ? 'absolute' : 'relative',
                 top: 0, left: 0,
+                width: '100%',
+                height: 'auto',
+                transform: 'translate(14px, 50px) scale(1.10)',
                 opacity: currentIndex === idx ? 1 : 0,
                 transition: 'opacity 0.5s ease-in-out',
                 zIndex: currentIndex === idx ? 2 : 1

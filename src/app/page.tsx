@@ -8,6 +8,7 @@ import SocialPostMockup from '@/components/SocialPostMockup';
 import InfiniteShowcase from '@/components/InfiniteShowcase';
 import VisualStorytelling from '@/components/VisualStorytelling';
 import TargetAudience from '@/components/TargetAudience';
+import GuestTryOut from '@/components/GuestTryOut';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
 import ChatBot from '@/components/ChatBot';
@@ -294,6 +295,7 @@ export default async function LandingPage() {
       {/* SHOWCASE DA ZERO */}
       <section id="showcase">
         <InfiniteShowcase showcaseData={showcaseData} />
+        <GuestTryOut />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}
@@ -307,7 +309,16 @@ export default async function LandingPage() {
             <h3 className="bento-title">Everything via Web App.</h3>
             <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
-              <PhoneMockup imgSrc={['/immagini/seq01.png', '/immagini/seq02.png', '/immagini/seq03.jpg', '/immagini/seq04.jpg', '/immagini/seq05.jpg']} />
+              <PhoneMockup imgSrc={[
+                '/immagini/IMG_2048.png', 
+                '/immagini/IMG_2049.png', 
+                '/immagini/IMG_2050.png', 
+                '/immagini/IMG_2051.png',
+                '/immagini/IMG_2052.png',
+                '/immagini/IMG_2053.png',
+                '/immagini/IMG_2054.png',
+                '/immagini/IMG_2055.png'
+              ]} />
             </div>
           </div>
 
@@ -315,7 +326,7 @@ export default async function LandingPage() {
           <div className="bento-card bento-half" style={{ background: '#111111', color: 'white', display: 'flex', flexDirection: 'column' }}>
             <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
             <h3 className="bento-title" style={{ color: 'white' }}>Cut Shooting Costs.</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>Eliminate the monthly budget for models, makeup artists, photographers, and studios once and for all. All your creations remain accessible 24/7 in your Telegram cloud.</p>
+            <p className="bento-subtitle" style={{ color: '#aaa' }}>Eliminate the monthly budget for models, makeup artists, photographers, and studios once and for all. All your creations remain accessible 24/7 in your secure Web App Dashboard.</p>
             <ul className="bento-list">
               <li style={{ color: 'white' }}>❌ No models to pay</li>
               <li style={{ color: 'white' }}>❌ No schedules to meet</li>
@@ -324,7 +335,17 @@ export default async function LandingPage() {
             
             {/* GALLERIA MOCKUP ROOT */}
             <div className="bento-visual-center" style={{ marginBottom: '-250px' }}>
-              <PhoneMockup imgSrc="/immagini/gallery-mockup.jpg" />
+              <PhoneMockup imgSrc={[
+                '/immagini/IMG_2058.PNG',
+                '/immagini/IMG_2059.PNG',
+                '/immagini/IMG_2060.PNG',
+                '/immagini/IMG_2061.PNG',
+                '/immagini/IMG_2062.PNG',
+                '/immagini/IMG_2063.PNG',
+                '/immagini/IMG_2064.PNG',
+                '/immagini/IMG_2065.PNG',
+                '/immagini/IMG_2067.PNG'
+              ]} />
             </div>
           </div>
         </div>
