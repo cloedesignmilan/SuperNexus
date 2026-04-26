@@ -43,7 +43,7 @@
           {
             "shotNumber": 5,
             "shotName": "Hardware Close-Up",
-            "positivePrompt": "Macro close-up of the hand{product} hardware, zipper, or logo plate. High detail, sharp focus on the metal texture.",
+            "positivePrompt": "Macro close-up of the {product} hardware, zipper, or logo plate. High detail, sharp focus on the metal texture.",
             "negativePrompt": "full {product}, zoomed out, people, models",
             "hardRules": "MACRO SHOT, EXTREME DETAIL ON HARDWARE.",
             "outputGoal": "Detail View Ecommerce"
@@ -59,7 +59,7 @@
           {
             "shotNumber": 1,
             "shotName": "Front Carry Full Body",
-            "positivePrompt": "Professional studio fashion portrait of a female model holding the hand{product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
+            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
             "negativePrompt": "close up, messy background, outdoors, {product} hidden",
             "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
             "outputGoal": "Main Model Full Body"
@@ -67,7 +67,7 @@
           {
             "shotNumber": 2,
             "shotName": "Shoulder Carry Profile",
-            "positivePrompt": "Female model wearing the hand{product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
+            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
             "negativePrompt": "straight on, stiff pose, mannequin",
             "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
             "outputGoal": "Shoulder fit"
@@ -75,7 +75,7 @@
           {
             "shotNumber": 3,
             "shotName": "Close-up Hand Hold",
-            "positivePrompt": "Close-up of the model's hands holding the hand{product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
+            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
             "negativePrompt": "full body, model face, busy background",
             "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
             "outputGoal": "Handle usage"
@@ -83,7 +83,7 @@
           {
             "shotNumber": 4,
             "shotName": "Crossbody Mid Shot",
-            "positivePrompt": "Medium shot of the female model wearing the hand{product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
+            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
             "negativePrompt": "full body, busy background, wide angle",
             "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
             "outputGoal": "Crossbody fit demonstration"
@@ -91,7 +91,7 @@
           {
             "shotNumber": 5,
             "shotName": "Dynamic Swing",
-            "positivePrompt": "Model walking gracefully in the studio, swinging the hand{product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
+            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
             "negativePrompt": "standing perfectly still, stiff, outdoor",
             "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
             "outputGoal": "{product} in motion"
@@ -107,7 +107,7 @@
           {
             "shotNumber": 1,
             "shotName": "Front Carry Curvy",
-            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size female model holding the hand{product}. Full body shot. Confident, elegant pose. Clean solid background.",
+            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size female model holding the {product}. Full body shot. Confident, elegant pose. Clean solid background.",
             "negativePrompt": "thin model, outdoors, messy background",
             "hardRules": "MUST USE PLUS-SIZE MODEL. FULL BODY.",
             "outputGoal": "Main curvy fit"
@@ -115,7 +115,7 @@
           {
             "shotNumber": 2,
             "shotName": "Shoulder Carry Curvy",
-            "positivePrompt": "Curvy plus-size model wearing the hand{product} on the shoulder, 3/4 angle. Hands on hips. Clean studio.",
+            "positivePrompt": "Curvy plus-size model wearing the {product} on the shoulder, 3/4 angle. Hands on hips. Clean studio.",
             "negativePrompt": "thin model, straight on, stiff",
             "hardRules": "MUST USE PLUS-SIZE MODEL. 3/4 ANGLE.",
             "outputGoal": "Side profile curvy silhouette"
@@ -131,7 +131,7 @@
           {
             "shotNumber": 4,
             "shotName": "Close-up Curvy",
-            "positivePrompt": "Close up of the curvy model's torso and arm holding the hand{product}. Focus on the {product} size relative to the body.",
+            "positivePrompt": "Close up of the curvy model's torso and arm holding the {product}. Focus on the {product} size relative to the body.",
             "negativePrompt": "thin model, full body, wide angle",
             "hardRules": "MUST USE PLUS-SIZE MODEL. TORSO CROP.",
             "outputGoal": "{product} proportion"
@@ -139,7 +139,7 @@
           {
             "shotNumber": 5,
             "shotName": "Seated Elegance",
-            "positivePrompt": "Curvy plus-size model sitting elegantly on a studio stool, holding the hand{product} on her lap. High fashion editorial pose.",
+            "positivePrompt": "Curvy plus-size model sitting elegantly on a studio stool, holding the {product} on her lap. High fashion editorial pose.",
             "negativePrompt": "thin model, standing, messy background",
             "hardRules": "MUST USE PLUS-SIZE MODEL. SEATED STUDIO POSE.",
             "outputGoal": "Seated curvy drape"
@@ -154,43 +154,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "City Stroll Bag",
-            "positivePrompt": "Model holding the hand{product} walking gracefully down a beautiful city street. Full body shot. Bokeh background, cinematic sunlight. {product} is clearly visible.",
-            "negativePrompt": "studio, solid background, looking at camera stiffly, flat lighting",
-            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. MODEL WALKING.",
-            "outputGoal": "Dynamic urban lifestyle"
+            "shotName": "City Stroll Feet",
+            "positivePrompt": "Close up on the {product} worn by a model walking gracefully down a beautiful city street. Low angle shot cropped at the knees. Bokeh background, cinematic sunlight. The {product} is the absolute focus.",
+            "negativePrompt": "full body, torso, face, studio, solid background, flat lighting",
+            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. KNEE-DOWN CROP ONLY. MODEL WALKING.",
+            "outputGoal": "Dynamic urban footwear lifestyle"
           },
           {
             "shotNumber": 2,
-            "shotName": "Cafe Table Placement",
-            "positivePrompt": "Hand{product} resting elegantly on a cafe table, model sitting in the blurred background. Natural golden hour lighting.",
-            "negativePrompt": "studio, harsh flash, indoors, model holding it tightly",
-            "hardRules": "BAG ON TABLE IN FOREGROUND. LIFESTYLE BACKGROUND.",
-            "outputGoal": "Lifestyle placement"
+            "shotName": "Standing on Terrace",
+            "positivePrompt": "Close up on feet wearing the {product} standing elegantly on a scenic terrace or cobblestone. Cropped below the knee. Natural golden hour lighting.",
+            "negativePrompt": "studio, harsh flash, indoors, upper body, full body",
+            "hardRules": "KNEE-DOWN CROP ONLY. LIFESTYLE BACKGROUND.",
+            "outputGoal": "Footwear stance lifestyle"
           },
           {
             "shotNumber": 3,
-            "shotName": "Carrying on Shoulder",
-            "positivePrompt": "Model wearing the hand{product} on shoulder, looking out over a stunning cityscape. Natural sunlight, editorial lifestyle.",
-            "negativePrompt": "front view, studio, indoors",
-            "hardRules": "SHOULDER CARRY IN SCENIC SETTING.",
-            "outputGoal": "Lifestyle shoulder fit"
+            "shotName": "Walking Away Step",
+            "positivePrompt": "Low angle shot from behind of feet wearing the {product} taking a step forward on an outdoor pavement. Focus on the heel and back of the shoes. Natural sunlight.",
+            "negativePrompt": "front view, full body, studio, indoors",
+            "hardRules": "BACK VIEW LOW ANGLE. KNEE-DOWN CROP ONLY.",
+            "outputGoal": "Footwear back fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Evening Luxury Vibe",
-            "positivePrompt": "Model holding the hand{product} in an upscale indoor setting (luxury hotel lobby). Elegant pose. Cinematic low-light photography.",
-            "negativePrompt": "studio, bright daylight, casual street",
-            "hardRules": "UPSCALE INDOOR ENVIRONMENT. CINEMATIC LIGHTING.",
-            "outputGoal": "Luxury event lifestyle"
+            "shotName": "Relaxed Seated Feet",
+            "positivePrompt": "Close up of crossed ankles/feet wearing the {product} while the model sits relaxed outdoors (e.g. on a bench or cafe chair). Cinematic low-light or sunset photography.",
+            "negativePrompt": "full body, face, studio, standing",
+            "hardRules": "SEATED POSTURE. KNEE-DOWN CROP ONLY. OUTDOOR ENVIRONMENT.",
+            "outputGoal": "Relaxed footwear lifestyle"
           },
           {
             "shotNumber": 5,
-            "shotName": "Candid Grabbing",
-            "positivePrompt": "Candid shot of the model reaching for or opening the hand{product} naturally. Mid-shot. Soft focus elegant background.",
-            "negativePrompt": "posed, stiff, studio, looking straight at camera",
-            "hardRules": "CANDID INTERACTION WITH BAG.",
-            "outputGoal": "Emotional lifestyle connection"
+            "shotName": "Dynamic Step / Jump",
+            "positivePrompt": "Action shot of feet wearing the {product} mid-step or mid-air over a natural outdoor surface. Cropped at the shins. Soft focus elegant background.",
+            "negativePrompt": "posed, stiff, studio, full body, head visible",
+            "hardRules": "DYNAMIC FOOT MOVEMENT. SHIN-DOWN CROP ONLY.",
+            "outputGoal": "Active footwear connection"
           }
         ]
       },
@@ -203,7 +203,7 @@
           {
             "shotNumber": 1,
             "shotName": "Street Candid Woman",
-            "positivePrompt": "Real everyday woman carrying the hand{product} on the street. Candid photography, natural, unposed. Authentic feel, slight motion.",
+            "positivePrompt": "Real everyday woman carrying the {product} on the street. Candid photography, natural, unposed. Authentic feel, slight motion.",
             "negativePrompt": "professional model, studio, posed, airbrushed",
             "hardRules": "MUST LOOK LIKE A REAL WOMAN. CANDID CARRY.",
             "outputGoal": "Authentic street lifestyle"
@@ -211,7 +211,7 @@
           {
             "shotNumber": 2,
             "shotName": "Shopping Day",
-            "positivePrompt": "Real everyday woman holding the hand{product} while looking at a shop window. Medium shot. Natural ambient lighting.",
+            "positivePrompt": "Real everyday woman holding the {product} while looking at a shop window. Medium shot. Natural ambient lighting.",
             "negativePrompt": "high fashion, studio, looking intensely at camera",
             "hardRules": "SHOPPING CONTEXT. REALISTIC FEMALE.",
             "outputGoal": "Everyday context"
@@ -219,7 +219,7 @@
           {
             "shotNumber": 3,
             "shotName": "Park Bench",
-            "positivePrompt": "Real woman sitting on a park bench, hand{product} resting next to her. Casual outdoor setting.",
+            "positivePrompt": "Real woman sitting on a park bench, {product} resting next to her. Casual outdoor setting.",
             "negativePrompt": "studio, posed, fashion model",
             "hardRules": "BAG NEXT TO PERSON. REALISTIC OUTDOORS.",
             "outputGoal": "Resting authentic"
@@ -227,7 +227,7 @@
           {
             "shotNumber": 4,
             "shotName": "Grabbing Phone",
-            "positivePrompt": "Real woman grabbing her phone out of the hand{product}. Candid shot. Natural lighting.",
+            "positivePrompt": "Real woman grabbing her phone out of the {product}. Candid shot. Natural lighting.",
             "negativePrompt": "studio, perfect skin, fashion editorial",
             "hardRules": "INTERACTING WITH BAG. NATURAL LIGHTING.",
             "outputGoal": "Candid usage"
@@ -299,7 +299,7 @@
           {
             "shotNumber": 1,
             "shotName": "Mirror Selfie Bag",
-            "positivePrompt": "UGC style mirror selfie of a real woman showing off her outfit and the hand{product}. Shot on iPhone, slightly grainy, authentic flash reflection.",
+            "positivePrompt": "UGC style mirror selfie of a real woman showing off her outfit and the {product}. Shot on iPhone, slightly grainy, authentic flash reflection.",
             "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model",
             "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE. SHOW BAG CLEARLY.",
             "outputGoal": "UGC Selfie"
@@ -307,7 +307,7 @@
           {
             "shotNumber": 2,
             "shotName": "Unboxing / Bed placement",
-            "positivePrompt": "UGC style photo of the hand{product} resting on a messy unmade bed. Shot from above with a phone. Casual, raw.",
+            "positivePrompt": "UGC style photo of the {product} resting on a messy unmade bed. Shot from above with a phone. Casual, raw.",
             "negativePrompt": "professional, studio, perfectly centered, softbox",
             "hardRules": "RESTING ON BED. IPHONE AESTHETIC.",
             "outputGoal": "UGC Placement"
@@ -323,7 +323,7 @@
           {
             "shotNumber": 4,
             "shotName": "Car Seat Placement",
-            "positivePrompt": "UGC style close up of the hand{product} resting on the passenger seat of a car. Realistic lighting, taken casually with a phone.",
+            "positivePrompt": "UGC style close up of the {product} resting on the passenger seat of a car. Realistic lighting, taken casually with a phone.",
             "negativePrompt": "macro lens, professional detail, studio",
             "hardRules": "CAR SEAT ENVIRONMENT. PHONE CAMERA.",
             "outputGoal": "UGC Car"
@@ -403,7 +403,7 @@
           {
             "shotNumber": 2,
             "shotName": "Swinging Action Ad",
-            "positivePrompt": "Model swinging the hand{product} aggressively towards the camera. Dynamic action shot with motion blur. Solid bright contrasting background.",
+            "positivePrompt": "Model swinging the {product} aggressively towards the camera. Dynamic action shot with motion blur. Solid bright contrasting background.",
             "negativePrompt": "standing still, boring pose, grey background",
             "hardRules": "BAG IN MOTION TOWARDS CAMERA. HIGH ENERGY.",
             "outputGoal": "High energy action"
