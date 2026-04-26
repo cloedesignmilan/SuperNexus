@@ -114,9 +114,12 @@ export async function POST(req: NextRequest) {
     const timestamp = Date.now()
     const outputResults = []
 
+    const safeName = (str: string) => (str || 'UNKNOWN').toUpperCase().replace(/[^A-Z0-9 -]/g, '').trim();
+    const taxonomyPrefix = `${safeName(taxonomyCat)}-${safeName(taxonomyMode)}-${safeName(taxonomySubcat)}`;
+
     for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
         const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
-        const oFileName = `web_out_${dbUser.id}_${timestamp}_${i}.jpg`
+        const oFileName = `${taxonomyPrefix}-${i + 1}_${timestamp}.jpg`
         const { error: upErr } = await adminSupabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
             contentType: 'image/jpeg',
             upsert: true

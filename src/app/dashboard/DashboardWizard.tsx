@@ -228,10 +228,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
       const customOptions = [
         { id: 'custom_clean', label: 'Clean Catalog', description: 'Ecommerce puro. Sfondo pulito, prodotto protagonista', icon: 'ShoppingBag', prompt_fragment: 'ecommerce clean photography, neutral background, studio softbox lighting, highly detailed', negative_fragment: 'busy background, lifestyle, messy' },
         { id: 'custom_model', label: 'Model Studio', description: 'Catalogo con modella/o. Studio, pose controllate', icon: 'User', prompt_fragment: 'model wearing the product, high fashion editorial, professional studio photography', negative_fragment: 'flat lay, empty, mannequin' },
-        { id: 'custom_lifestyle', label: 'Lifestyle', description: 'Ambientato. Strada / casa / contesto naturale', icon: 'Camera', prompt_fragment: 'lifestyle photography, natural environment, contextual, cinematic lighting', negative_fragment: 'studio, isolated, white background' },
-        { id: 'custom_ugc', label: 'UGC', description: 'User Generated Content. iPhone look, imperfetto, realistico', icon: 'Smartphone', prompt_fragment: 'iPhone photography, candid, natural lighting, social media UGC style, relatable lifestyle', negative_fragment: 'studio lighting, professional camera, artificial, 3d render' },
-        { id: 'custom_ads', label: 'Ads / Scroll Stopper', description: 'Pubblicità. Forte impatto, visivo aggressivo', icon: 'Zap', prompt_fragment: 'high impact advertising photography, dramatic lighting, vivid colors, scroll stopping visual', negative_fragment: 'boring, flat, dull, amateur' },
-        { id: 'custom_detail', label: 'Detail / Texture', description: 'Qualità prodotto. Zoom, materiali', icon: 'Search', prompt_fragment: 'macro photography, extreme close up, fabric texture, high quality detail', negative_fragment: 'full body, zoomed out' }
+        { id: 'custom_lifestyle', label: 'Lifestyle', description: 'Ambientato. Strada / casa / contesto naturale', icon: 'Camera', prompt_fragment: 'lifestyle photography, natural environment, contextual, cinematic lighting', negative_fragment: 'studio, isolated, white background' }
       ];
 
       return (
