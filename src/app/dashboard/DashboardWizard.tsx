@@ -152,7 +152,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
 
 
   const handleSnippetSelect = (type: string, snip: Snippet, stepIndex: number) => {
-    setSelections({...selections, [type]: snip});
+    const newSelections = { ...selections, [type]: snip };
     
     if (stepIndex === 0.75 && type === 'PRODUCT_TYPE') {
       // Manual override of AI detection
@@ -169,15 +169,33 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         ...prev,
         detectedProductType: Object.keys(typeMap).find(k => typeMap[k] === snip.label) || 'unknown'
       }));
+      setSelections(newSelections);
       setTimeout(() => setStep(1), 350);
       return;
     }
 
     // Auto-advance logic for standard steps
     if (type !== 'QUANTITY' && type !== 'FORMAT' && stepIndex >= 1 && stepIndex < 4) {
+      
+      // Fast-forward for T-shirt -> Clean Catalog
+      if (type === 'IMAGE_TYPE' && snip.label === 'Clean Catalog' && newSelections['PRODUCT_TYPE']?.label === 'T-shirt') {
+         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && s.label === 'Studio Softbox');
+         const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === 'No Model');
+         
+         if (sceneSnip) newSelections['SCENE'] = sceneSnip;
+         if (modelSnip) newSelections['MODEL_OPTION'] = modelSnip;
+         
+         setSelections(newSelections);
+         setTimeout(() => setStep(4), 350);
+         return;
+      }
+
+      setSelections(newSelections);
       setTimeout(() => {
         setStep(stepIndex + 1);
       }, 350);
+    } else {
+      setSelections(newSelections);
     }
   }
 
