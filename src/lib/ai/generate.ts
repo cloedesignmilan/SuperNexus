@@ -21,6 +21,7 @@ export interface GenerateImagesOptions {
     taxonomyCat?: string;
     taxonomyMode?: string;
     taxonomySubcat?: string;
+    specificShotNumber?: number;
 }
 
 export async function generateImagesWithAI({
@@ -33,7 +34,8 @@ export async function generateImagesWithAI({
     generationModel,
     taxonomyCat,
     taxonomyMode,
-    taxonomySubcat
+    taxonomySubcat,
+    specificShotNumber
 }: GenerateImagesOptions) {
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
     
@@ -232,7 +234,8 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         categorySlug,
         modeSlug,
         presentationSlug,
-        quantity: qty
+        quantity: qty,
+        specificShotNumber
     });
 
     for (let i = 0; i < qty; i++) {

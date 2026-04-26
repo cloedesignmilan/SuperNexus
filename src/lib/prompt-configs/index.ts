@@ -28,6 +28,7 @@ export interface SelectionParams {
   presentationSlug: string;
   scene?: string;
   quantity?: number;
+  specificShotNumber?: number;
 }
 
 export function loadPromptConfig(category: string): PromptConfigRow[] | null {
@@ -40,7 +41,8 @@ export async function getPromptsForSelection({
   modeSlug,
   presentationSlug,
   scene,
-  quantity
+  quantity,
+  specificShotNumber
 }: SelectionParams): Promise<PromptShot[] | null> {
   const normCat = categorySlug.toLowerCase().trim();
   let normMode = modeSlug.toLowerCase().trim();
@@ -82,6 +84,12 @@ export async function getPromptsForSelection({
               hard_rules: db.hardRules,
               output_goal: db.outputGoal || ""
           }));
+          
+          if (specificShotNumber) {
+              const target = shots.find(s => s.shot_number === specificShotNumber);
+              if (target) return [target];
+          }
+          
           return expandShots(shots, quantity);
       }
   } catch(e) {
@@ -110,7 +118,14 @@ export async function getPromptsForSelection({
   
   if (!row) return null;
 
-  return expandShots([...row.shots], quantity);
+  let shots = [...row.shots];
+  
+  if (specificShotNumber) {
+      const target = shots.find(s => s.shot_number === specificShotNumber);
+      if (target) return [target];
+  }
+
+  return expandShots(shots, quantity);
 }
 
 function expandShots(shots: PromptShot[], quantity?: number): PromptShot[] {

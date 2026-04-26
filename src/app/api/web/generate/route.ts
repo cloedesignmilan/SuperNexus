@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat } = body
+    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber } = body
 
     if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
@@ -37,6 +37,8 @@ export async function POST(req: NextRequest) {
 
     // Trova la Subcategory reale selezionata dall'utente
     let subcat = null;
+    console.log("PAYLOAD RECEIVED FOR TAXONOMY:", { taxonomyCat, taxonomyMode, taxonomySubcat });
+    
     if (taxonomyCat && taxonomyMode && taxonomySubcat) {
       subcat = await prisma.subcategory.findFirst({
         where: { 
@@ -50,10 +52,12 @@ export async function POST(req: NextRequest) {
         },
         include: { business_mode: { include: { category: true } }, reference_images: true }
       });
+      console.log("SUBCAT FOUND:", subcat ? subcat.name : "NULL");
     }
 
     // Fallback al Dynamic Engine se la tassonomia non è mappata o mancano i parametri
     if (!subcat) {
+      console.log("FALLING BACK TO DYNAMIC ENGINE. ONE OF THE PARAMS WAS MISSING OR QUERY FAILED.");
       subcat = await prisma.subcategory.findFirst({
         where: { slug: 'dynamic-engine' },
         include: { business_mode: { include: { category: true } }, reference_images: true }
@@ -99,7 +103,8 @@ export async function POST(req: NextRequest) {
       generationModel,
       taxonomyCat,
       taxonomyMode,
-      taxonomySubcat
+      taxonomySubcat,
+      specificShotNumber
     })
 
     if (aiResult.generatedBase64s.length === 0) {

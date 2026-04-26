@@ -31,6 +31,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   // AI Analysis State
   const [analysisData, setAnalysisData] = useState<any>(null)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [availableShots, setAvailableShots] = useState<any[]>([])
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -262,7 +263,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
         taxonomyCat: getMappedCategorySlug(analysisData?.detectedProductType),
         taxonomyMode: selections['IMAGE_TYPE']?.label || null,
-        taxonomySubcat: selections['MODEL_OPTION']?.label || null
+        taxonomySubcat: selections['MODEL_OPTION']?.label || null,
+        specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined
       }
 
       const res = await fetch('/api/web/generate', {
@@ -1036,7 +1038,28 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               {/* Only show NEXT button if it's the FORMAT_QUANTITY step */}
               {step === 3 && (
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setStep(4)} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
+                  <button onClick={async () => {
+                     if (selections['QUANTITY']?.label === '1') {
+                         const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                         const res = await fetch('/api/web/get-shots', {
+                             method: 'POST',
+                             body: JSON.stringify({
+                                 categorySlug: detectedCat,
+                                 modeSlug: selections['IMAGE_TYPE']?.label || '',
+                                 presentationSlug: selections['MODEL_OPTION']?.label || ''
+                             })
+                         });
+                         if (res.ok) {
+                             const data = await res.json();
+                             if (data.shots && data.shots.length > 0) {
+                                 setAvailableShots(data.shots);
+                                 setStep(3.5);
+                                 return;
+                             }
+                         }
+                     }
+                     setStep(4);
+                  }} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
                     Review Configuration <ArrowRight size={20} />
                   </button>
                 </div>
@@ -1065,6 +1088,44 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                       <div className="snippet-desc">Generate images using a {gender.label.toLowerCase()}</div>
                     </div>
                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 3.5: SPECIFIC SHOT SELECTION (ONLY IF QUANTITY = 1) */}
+          {step === 3.5 && (
+            <div className="fade-up-enter">
+              <h2 className="step-header">Select Specific Shot</h2>
+              <p className="step-desc">Since you selected 1 image, which specific shot do you want?</p>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+                 {availableShots.map(shot => (
+                    <div 
+                      key={shot.shot_number}
+                      className={`snippet-card ${selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number ? 'active' : ''}`}
+                      onClick={() => {
+                          setSelections({ ...selections, SPECIFIC_SHOT: shot });
+                          setTimeout(() => setStep(4), 350);
+                      }}
+                    >
+                      <Icons.Camera size={24} style={{ color: selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
+                      <div className="snippet-title">{shot.shot_name}</div>
+                      <div className="snippet-desc" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.5rem' }}>Shot {shot.shot_number}</div>
+                    </div>
+                 ))}
+                 
+                 {/* Fallback Option */}
+                 <div 
+                    className={`snippet-card ${!selections['SPECIFIC_SHOT'] ? 'active' : ''}`}
+                    onClick={() => {
+                        setSelections({ ...selections, SPECIFIC_SHOT: null });
+                        setTimeout(() => setStep(4), 350);
+                    }}
+                  >
+                    <Icons.Wand2 size={24} style={{ color: !selections['SPECIFIC_SHOT'] ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
+                    <div className="snippet-title">Any / Random</div>
+                    <div className="snippet-desc" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.5rem' }}>Let AI decide</div>
+                  </div>
               </div>
             </div>
           )}
