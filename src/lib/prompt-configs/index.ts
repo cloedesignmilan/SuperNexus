@@ -56,6 +56,7 @@ export async function getPromptsForSelection({
   if (normPres.includes('candid') && normPres.includes('man')) normPres = 'candid-man';
   if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
   if (normPres.includes('still life')) normPres = 'still-life-pack';
+  if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
   if (normPres === 'no model') normPres = 'no-model';
   if (normPres === 'model photo') normPres = 'model-photo';
 

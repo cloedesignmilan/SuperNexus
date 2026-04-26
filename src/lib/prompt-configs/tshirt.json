@@ -397,6 +397,55 @@
       {
         "category": "t-shirt",
         "mode": "ugc",
+        "presentation": "ugc-creator-pack",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Mirror Selfie Seated",
+            "positivePrompt": "UGC style mirror selfie. Real woman sitting cross-legged on the floor of a cozy aesthetic bedroom in front of a bed. She is wearing the t-shirt and holding an iPhone in front of her face, hiding her face. Bright natural lighting. Authentic casual vibe.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, face visible, standing",
+            "hardRules": "MUST BE A MIRROR SELFIE HIDING FACE. SEATED ON FLOOR. BEDROOM BACKGROUND.",
+            "outputGoal": "Relatable Bedroom Selfie"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Pointing at Print",
+            "positivePrompt": "UGC style outdoor photo. Real smiling woman wearing the t-shirt, pointing with both index fingers at the center graphic of the t-shirt. Sunny day, casual background. Authentic and enthusiastic.",
+            "negativePrompt": "studio, looking away, professional, serious, indoors",
+            "hardRules": "POINTING AT SHIRT WITH BOTH HANDS. SMILING AND LOOKING AT CAMERA. OUTDOORS.",
+            "outputGoal": "Enthusiastic Print Highlight"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Holding Shirt Front",
+            "positivePrompt": "UGC style indoor photo. Real smiling woman holding up the t-shirt by the shoulders in front of her body. Cozy aesthetic living room or bedroom background. Authentic and casual presentation.",
+            "negativePrompt": "wearing the shirt, studio, professional lighting",
+            "hardRules": "HOLDING THE SHIRT UP IN FRONT, NOT WEARING IT. INDOOR LIFESTYLE BACKGROUND.",
+            "outputGoal": "Creator unboxing/showing"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Behind the Scenes Hanger",
+            "positivePrompt": "UGC style point-of-view shot. Showing hands holding an iPhone that is taking a picture of the t-shirt hanging on a wooden hanger in the background. Screen of the phone is visible showing the camera app. Creative behind-the-scenes aesthetic.",
+            "negativePrompt": "wearing the shirt, professional, studio, perfectly centered",
+            "hardRules": "POV SHOT SHOWING PHONE SCREEN. T-SHIRT ON HANGER IN BACKGROUND.",
+            "outputGoal": "Behind the scenes aesthetic"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Edgy Floor Pose",
+            "positivePrompt": "UGC style photo. Cool aesthetic woman wearing the t-shirt sitting on the floor leaning against a bed. Wearing sunglasses, looking away from the camera. Edgy, stylish, vintage filter vibe. Bedroom setting.",
+            "negativePrompt": "studio, standing, professional lighting, smiling directly at camera",
+            "hardRules": "WEARING SUNGLASSES. SITTING ON FLOOR. LOOKING AWAY. EDGY VIBE.",
+            "outputGoal": "Stylish edgy UGC"
+          }
+        ]
+      },
+      {
+        "category": "t-shirt",
+        "mode": "ugc",
         "presentation": "candid-man",
         "scene": "all",
         "quantity": 5,
