@@ -191,6 +191,16 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
          return;
       }
 
+      // Fast-forward for Model Studio (Salta la scena, vai alla scelta modello)
+      if (type === 'IMAGE_TYPE' && snip.label === 'Model Studio') {
+         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && (s.label.toLowerCase().includes('studio') || s.label.toLowerCase().includes('clean')));
+         if (sceneSnip) newSelections['SCENE'] = sceneSnip;
+         
+         setSelections(newSelections);
+         setTimeout(() => setStep(3), 350); // Vai a MODEL_OPTION
+         return;
+      }
+
       setSelections(newSelections);
       setTimeout(() => {
         setStep(stepIndex + 1);
