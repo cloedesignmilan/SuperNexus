@@ -283,6 +283,9 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
             }
 
+            const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT");
+            const backShotOverride = isBackShotNoPrint ? `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.` : "";
+
             variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${ecommerceBlockPositive}${shotInfo.positive_prompt}
@@ -290,7 +293,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
 CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
-` + GLOBAL_INVIOLABLE_RULES;
+` + GLOBAL_INVIOLABLE_RULES + backShotOverride;
 
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
