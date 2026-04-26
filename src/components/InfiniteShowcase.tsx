@@ -403,14 +403,15 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
 
         @media (max-width: 1024px) {
           .static-showcase-container {
-            flex-direction: row;
-            justify-content: flex-start;
-            overflow-x: auto;
+            flex-direction: row !important;
+            justify-content: flex-start !important;
+            overflow-x: auto !important;
             scroll-snap-type: x mandatory;
             padding: 2rem 1.5rem !important;
-            gap: 1.5rem !important;
-            margin-left: -1.5rem;
-            width: 100vw;
+            gap: 1rem !important;
+            margin-left: 0 !important;
+            width: 100% !important;
+            -webkit-overflow-scrolling: touch;
           }
           .static-showcase-container::-webkit-scrollbar {
             display: none;
@@ -420,16 +421,19 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
             max-width: 320px;
             flex-shrink: 0;
             scroll-snap-align: center;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
           }
           .center-card {
-            transform: translateY(60px) scale(1);
+            transform: translateY(0) scale(1) !important;
             width: 80vw;
             max-width: 320px;
             flex-shrink: 0;
             scroll-snap-align: center;
+            opacity: 1 !important;
           }
           .center-card.visible {
-            transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1) !important;
           }
         }
       `}} />
