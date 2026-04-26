@@ -254,6 +254,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       const qtySnippet = selections['QUANTITY'];
       const aspectRatioSnippet = selections['FORMAT'];
       
+      const clientTypeSnip = selections['CLIENT_TYPE'];
+      const clientGender = clientTypeSnip?.id === 'gender-man' ? 'MAN' : (clientTypeSnip?.id === 'gender-woman' ? 'WOMAN' : null);
+
       const payload = {
         imageUrl: uploadedUrl,
         finalPrompt: finalPrompt || "Taxonomy Auto Prompt",
@@ -264,7 +267,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         taxonomyCat: getMappedCategorySlug(analysisData?.detectedProductType),
         taxonomyMode: selections['IMAGE_TYPE']?.label || null,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
-        specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined
+        specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
+        clientGender
       }
 
       const res = await fetch('/api/web/generate', {
