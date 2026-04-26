@@ -206,7 +206,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              if (modelSnip.label !== 'No Model') {
+              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK') {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -223,7 +223,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         if (snip.label !== 'No Model') {
+         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK') {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
