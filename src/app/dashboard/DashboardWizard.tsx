@@ -197,7 +197,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         // Find if this BusinessMode has only 1 subcategory
         const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
         const activeSubNames = activeSubcategories
-           .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === snip.label)
+           .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === snip.label)
            .map(sub => sub.name);
         
         if (activeSubNames.length === 1) {
@@ -296,7 +296,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       // Check if we skipped step 2
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const activeSubNames = activeSubcategories
-           .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
+           .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
            .map(sub => sub.name);
       if (activeSubNames.length === 1) return setStep(1); // Go back to IMAGE_TYPE
       return setStep(2);
@@ -308,7 +308,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     if (type === 'IMAGE_TYPE') {
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const customOptions = activeBusinessModes
-        .filter(bm => bm.category.slug === detectedCat || bm.category.slug === 't-shirt')
+        .filter(bm => bm.category.slug === detectedCat)
         .map(bm => {
           let icon = 'Box';
           if (bm.name === 'Clean Catalog') icon = 'ShoppingBag';
@@ -357,7 +357,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       
       const activeSubNames = activeSubcategories
-        .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === mode)
+        .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === mode)
         .map(sub => sub.name);
 
       typeSnippets = typeSnippets.filter(s => activeSubNames.includes(s.label));
