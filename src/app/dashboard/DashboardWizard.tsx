@@ -237,7 +237,7 @@ export default function DashboardWizard({ snippets, isAdmin }: { snippets: Snipp
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
-        taxonomyCat: selections['PRODUCT_TYPE']?.label || null,
+        taxonomyCat: analysisData?.detectedProductType || 't-shirt',
         taxonomyMode: selections['IMAGE_TYPE']?.label || null,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null
       }

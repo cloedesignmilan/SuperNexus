@@ -96,7 +96,10 @@ export async function POST(req: NextRequest) {
       userClarification: `Aspect Ratio: ${aspectRatio || '4:5'}`, // Usato come meta
       isOutfit: false,
       varianceEnabled: false,
-      generationModel
+      generationModel,
+      taxonomyCat,
+      taxonomyMode,
+      taxonomySubcat
     })
 
     if (aiResult.generatedBase64s.length === 0) {

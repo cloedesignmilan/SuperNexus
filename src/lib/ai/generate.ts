@@ -18,6 +18,9 @@ export interface GenerateImagesOptions {
     isOutfit: boolean;
     varianceEnabled: boolean;
     generationModel: string;
+    taxonomyCat?: string;
+    taxonomyMode?: string;
+    taxonomySubcat?: string;
 }
 
 export async function generateImagesWithAI({
@@ -27,7 +30,10 @@ export async function generateImagesWithAI({
     userClarification,
     isOutfit,
     varianceEnabled,
-    generationModel
+    generationModel,
+    taxonomyCat,
+    taxonomyMode,
+    taxonomySubcat
 }: GenerateImagesOptions) {
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
     
@@ -217,9 +223,10 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     let generatedMetadata: { shotNumber: number | null, shotName: string | null }[] = [];
     let errorMessages: string[] = [];
 
-    const categorySlug = subcat.business_mode?.category?.slug || "";
-    const modeSlug = subcat.business_mode?.slug || "";
-    const presentationSlug = subcat.slug || "";
+    // Tenta prima la Taxonomy esplicita dal Wizard, altrimenti fallback su Subcat DB
+    const categorySlug = taxonomyCat ? taxonomyCat.toLowerCase().replace(/[^a-z0-9]+/g, '-') : (subcat.business_mode?.category?.slug || "");
+    const modeSlug = taxonomyMode ? taxonomyMode.toLowerCase().replace(/[^a-z0-9]+/g, '-') : (subcat.business_mode?.slug || "");
+    const presentationSlug = taxonomySubcat ? taxonomySubcat.toLowerCase().replace(/[^a-z0-9]+/g, '-') : (subcat.slug || "");
     
     const configShots = await getPromptsForSelection({
         categorySlug,
