@@ -301,14 +301,31 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT");
             const backShotOverride = isBackShotNoPrint ? `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.` : "";
 
+            // Replace dynamic placeholders
+            const productNoun = categorySlug === 'swimwear' ? 'swimsuit' : categorySlug.replace('-', ' ');
+            const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
+            
+            const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
+            const finalNegative = shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
+
+            let productLockSystem = "";
+            if (categorySlug === 'swimwear') {
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction, exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. The straps MUST match exactly, the pattern MUST remain identical, all seams and proportions must match the original image. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+            } else {
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, patterns, and construction. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+            }
+
+            const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+            const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body, maintaining all proportions and straps.]";
+
             variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
-[POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${shotInfo.positive_prompt}
+[POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${finalPositive}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${shotInfo.negative_prompt}
-` + GLOBAL_INVIOLABLE_RULES + backShotOverride;
+CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
+` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective;
 
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
@@ -349,7 +366,7 @@ CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${shotIn
 
             const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: ${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
-            const isNoModel = userPrompt.toLowerCase().includes('no model');
+            const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
 
             const shoeSpecificRules = isShoeCatalog ? `\n[ANGLE CONTROL SYSTEM (STRICT): Each image MUST represent a UNIQUE predefined angle. If an angle is duplicated → INVALID. If an angle is missing → INVALID.]\n[CONSISTENCY RULE: same distance from camera, same zoom level, same product size in frame, same framing margins. All images must look like part of the SAME catalog set.]\n[DIVERSITY ENFORCEMENT: Each image must be visually and technically different. Do NOT repeat similar angles or compositions.]` : "";
@@ -359,7 +376,16 @@ CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${shotIn
                 tshirtSpecificRules = `\n[T-SHIRT CORE SYSTEM] STRICT PRODUCT RULE: The t-shirt must be an EXACT 1:1 replica of the reference image. No changes in: color, fabric, fit, graphics, proportions. The garment must remain perfectly identical. NO WRINKLES. NO DISTORTION. NO DESIGN CHANGES. MODEL RULES: Realistic human, Natural skin texture (no plastic/AI look), Correct anatomy, No deformed hands. DIVERSITY RULE: Each image must vary pose, camera angle, framing, composition. OUTPUT QUALITY: Photorealistic, high-end fashion photography.`;
             }
 
-            variantPrompt = userPrompt + `\n\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction (including ruched/elastic areas), exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Do NOT invent new elements (like bows, knots, rings). Do NOT modify pattern density or distribution. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. For this bikini: the top MUST have the same ruched elastic structure, the straps MUST match exactly, the bottom pattern MUST remain identical, all seams and proportions must match the original image. If the product differs from the reference, the result is INVALID. PRIORITY: Product accuracy > model > scene > aesthetics.]\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            let productLockSystem = "";
+            if (categorySlug === 'swimwear') {
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, cuts, stitching, strap positions, patterns. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+            } else {
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure and construction. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+            }
+            
+            const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
+
+            variantPrompt = userPrompt + `\n\n${productLockSystem}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
