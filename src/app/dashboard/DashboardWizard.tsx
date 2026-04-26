@@ -1039,23 +1039,29 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               {step === 3 && (
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
                   <button onClick={async () => {
-                     if (selections['QUANTITY']?.label === '1') {
-                         const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
-                         const res = await fetch('/api/web/get-shots', {
-                             method: 'POST',
-                             body: JSON.stringify({
-                                 categorySlug: detectedCat,
-                                 modeSlug: selections['IMAGE_TYPE']?.label || '',
-                                 presentationSlug: selections['MODEL_OPTION']?.label || ''
-                             })
-                         });
-                         if (res.ok) {
-                             const data = await res.json();
-                             if (data.shots && data.shots.length > 0) {
-                                 setAvailableShots(data.shots);
-                                 setStep(3.5);
-                                 return;
+                     const qtyStr = selections['QUANTITY']?.label?.toString().trim();
+                     if (qtyStr === '1' || qtyStr === '1 Image' || qtyStr === '1 Foto') {
+                         try {
+                             const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                             const res = await fetch('/api/web/get-shots', {
+                                 method: 'POST',
+                                 headers: { 'Content-Type': 'application/json' },
+                                 body: JSON.stringify({
+                                     categorySlug: detectedCat,
+                                     modeSlug: selections['IMAGE_TYPE']?.label || '',
+                                     presentationSlug: selections['MODEL_OPTION']?.label || ''
+                                 })
+                             });
+                             if (res.ok) {
+                                 const data = await res.json();
+                                 if (data.shots && data.shots.length > 0) {
+                                     setAvailableShots(data.shots);
+                                     setStep(3.5);
+                                     return;
+                                 }
                              }
+                         } catch (e) {
+                             console.error("Error fetching shots:", e);
                          }
                      }
                      setStep(4);
