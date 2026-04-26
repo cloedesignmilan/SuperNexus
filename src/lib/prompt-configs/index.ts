@@ -4,6 +4,7 @@ import dressConfigData from "./dress.json";
 import bagsConfigData from "./bags.json";
 import jewelryConfigData from "./jewelry.json";
 import swimwearConfigData from "./swimwear.json";
+import shoesConfigData from "./shoes.json";
 import { PromptConfigRow, PromptShot } from "./types";
 
 // Extract the 'configs' array from the new JSON structure
@@ -12,6 +13,7 @@ const dressConfig = (dressConfigData[0] as any).configs as PromptConfigRow[];
 const bagsConfig = (bagsConfigData[0] as any).configs as PromptConfigRow[];
 const jewelryConfig = (jewelryConfigData[0] as any).configs as PromptConfigRow[];
 const swimwearConfig = (swimwearConfigData[0] as any).configs as PromptConfigRow[];
+const shoesConfig = (shoesConfigData[0] as any).configs as PromptConfigRow[];
 
 const registry: Record<string, PromptConfigRow[]> = {
   "t-shirt": tshirtConfig,
@@ -21,7 +23,7 @@ const registry: Record<string, PromptConfigRow[]> = {
   "bags": bagsConfig,
   "jewelry": jewelryConfig,
   "swimwear": swimwearConfig,
-  // "shoes": shoesConfig,
+  "shoes": shoesConfig,
   // ... future categories
 };
 

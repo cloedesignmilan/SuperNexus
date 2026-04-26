@@ -349,8 +349,8 @@ CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${finalN
             currentShotName = "Dynamic Scene";
             currentShotNumber = i + 1;
             
-            if (varianceEnabled) {
-                const magicalScene = getRandomSceneForSubcategory(subcat.business_mode?.category?.slug + " " + subcat.business_mode?.slug + " " + subcat.slug);
+            if (varianceEnabled && modeSlug !== 'clean-catalog') {
+                const magicalScene = getRandomSceneForSubcategory(subcat?.business_mode?.category?.slug + " " + subcat?.business_mode?.slug + " " + subcat?.slug);
                 currentLighting += " " + magicalScene;
             }
             
