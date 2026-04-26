@@ -1,12 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import tshirtConfigData from "./tshirt.json";
+import dressConfigData from "./dress.json";
 import { PromptConfigRow, PromptShot } from "./types";
 
-const tshirtConfig = tshirtConfigData as PromptConfigRow[];
+// Extract the 'configs' array from the new JSON structure
+const tshirtConfig = (tshirtConfigData[0] as any).configs as PromptConfigRow[];
+const dressConfig = (dressConfigData[0] as any).configs as PromptConfigRow[];
 
 const registry: Record<string, PromptConfigRow[]> = {
   "t-shirt": tshirtConfig,
   "tshirt": tshirtConfig, // Fallback
+  "dress": dressConfig,
+  "dress / elegant": dressConfig, // Fallback
   // "shoes": shoesConfig,
   // ... future categories
 };

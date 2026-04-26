@@ -175,57 +175,49 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     }
 
     // Auto-advance logic for standard steps
-    if (type !== 'QUANTITY' && type !== 'FORMAT' && stepIndex >= 1 && stepIndex < 4) {
+    if (type !== 'QUANTITY' && type !== 'FORMAT') {
       
-      // Fast-forward for Clean Catalog (Applicato a tutte le categorie)
-      if (type === 'IMAGE_TYPE' && snip.label === 'Clean Catalog') {
-         // Cerca una scena adatta (Studio Softbox, Studio clean, ecc.)
-         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && (s.label.toLowerCase().includes('studio') || s.label.toLowerCase().includes('clean')));
-         const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === 'No Model');
-         
-         if (sceneSnip) newSelections['SCENE'] = sceneSnip;
-         if (modelSnip) newSelections['MODEL_OPTION'] = modelSnip;
-         
-         setSelections(newSelections);
-         setTimeout(() => setStep(4), 350);
-         return;
-      }
-
-      // Fast-forward for Model Studio (Salta la scena, vai alla scelta modello)
-      if (type === 'IMAGE_TYPE' && snip.label === 'Model Studio') {
-         const sceneSnip = snippets.find(s => s.snippet_type === 'SCENE' && (s.label.toLowerCase().includes('studio') || s.label.toLowerCase().includes('clean')));
-         if (sceneSnip) newSelections['SCENE'] = sceneSnip;
-         
-         setSelections(newSelections);
-         setTimeout(() => setStep(3), 350); // Vai a MODEL_OPTION
-         return;
-      }
-
-      // Fast-forward for Lifestyle (Dopo aver scelto la scena, salta la scelta modello)
-      if (type === 'SCENE' && newSelections['IMAGE_TYPE']?.label === 'Lifestyle') {
-         const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === 'Model Photo');
-         if (modelSnip) newSelections['MODEL_OPTION'] = modelSnip;
-         
-         setSelections(newSelections);
-         if ((!analysisData || analysisData.confidence < 0.8) && newSelections['MODEL_OPTION']?.label !== 'No Model') {
-            setTimeout(() => setStep(3.5), 350);
-         } else {
-            setTimeout(() => setStep(4), 350); // Vai a FORMAT_QUANTITY
-         }
-         return;
+      if (type === 'IMAGE_TYPE') {
+        setSelections(newSelections);
+        // Find if this BusinessMode has only 1 subcategory
+        const detectedCat = analysisData?.detectedProductType || 't-shirt';
+        const activeSubNames = activeSubcategories
+           .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === snip.label)
+           .map(sub => sub.name);
+        
+        if (activeSubNames.length === 1) {
+           const modelSnip = snippets.find(s => s.snippet_type === 'MODEL_OPTION' && s.label === activeSubNames[0]);
+           if (modelSnip) {
+              newSelections['MODEL_OPTION'] = modelSnip;
+              setSelections(newSelections);
+              
+              if ((!analysisData || analysisData.confidence < 0.8) && modelSnip.label !== 'No Model') {
+                 setTimeout(() => setStep(2.5), 350);
+              } else {
+                 setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
+              }
+              return;
+           }
+        }
+        
+        // Go to MODEL_OPTION
+        setTimeout(() => setStep(2), 350);
+        return;
       }
 
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
          if ((!analysisData || analysisData.confidence < 0.8) && snip.label !== 'No Model') {
-            setTimeout(() => setStep(3.5), 350);
+            setTimeout(() => setStep(2.5), 350);
             return;
          }
+         setTimeout(() => setStep(3), 350);
+         return;
       }
 
       if (type === 'CLIENT_TYPE') {
-         setTimeout(() => setStep(4), 350);
+         setTimeout(() => setStep(3), 350);
          return;
       }
 
@@ -280,30 +272,41 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   }
 
   const handleBack = () => {
-    if (step === 4) {
-      if (selections['IMAGE_TYPE']?.label === 'Clean Catalog') return setStep(1);
-      if (selections['IMAGE_TYPE']?.label === 'Lifestyle') return setStep(2);
-      return setStep(3);
-    }
     if (step === 3) {
-      if (selections['IMAGE_TYPE']?.label === 'Model Studio') return setStep(1);
+      // Check if we skipped step 2
+      const detectedCat = analysisData?.detectedProductType || 't-shirt';
+      const activeSubNames = activeSubcategories
+           .filter(sub => (sub.business_mode.category.slug === detectedCat || sub.business_mode.category.slug === 't-shirt') && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
+           .map(sub => sub.name);
+      if (activeSubNames.length === 1) return setStep(1); // Go back to IMAGE_TYPE
       return setStep(2);
     }
-    setStep(Math.max(0, step === 3.5 ? 3 : step === 0.75 ? 0 : step - 1));
+    setStep(Math.max(0, step === 2.5 ? 2 : step === 0.75 ? 0 : step - 1));
   };
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     if (type === 'IMAGE_TYPE') {
       const detectedCat = analysisData?.detectedProductType || 't-shirt';
-      const activeModeNames = activeBusinessModes
+      const customOptions = activeBusinessModes
         .filter(bm => bm.category.slug === detectedCat || bm.category.slug === 't-shirt')
-        .map(bm => bm.name);
-
-      const customOptions = [
-        { id: 'custom_clean', label: 'Clean Catalog', description: 'Ecommerce puro. Sfondo pulito, prodotto protagonista', icon: 'ShoppingBag', prompt_fragment: 'ecommerce clean photography, neutral background, studio softbox lighting, highly detailed', negative_fragment: 'busy background, lifestyle, messy' },
-        { id: 'custom_model', label: 'Model Studio', description: 'Catalogo con modella/o. Studio, pose controllate', icon: 'User', prompt_fragment: 'model wearing the product, high fashion editorial, professional studio photography', negative_fragment: 'flat lay, empty, mannequin' },
-        { id: 'custom_lifestyle', label: 'Lifestyle', description: 'Ambientato. Strada / casa / contesto naturale', icon: 'Camera', prompt_fragment: 'lifestyle photography, natural environment, contextual, cinematic lighting', negative_fragment: 'studio, isolated, white background' }
-      ].filter(opt => activeModeNames.includes(opt.label));
+        .map(bm => {
+          let icon = 'Box';
+          if (bm.name === 'Clean Catalog') icon = 'ShoppingBag';
+          else if (bm.name === 'Model Studio') icon = 'User';
+          else if (bm.name === 'Lifestyle') icon = 'Camera';
+          else if (bm.name === 'UGC') icon = 'Smartphone';
+          else if (bm.name === 'Ads / Scroll Stopper') icon = 'Zap';
+          else if (bm.name === 'Detail / Texture') icon = 'Search';
+          
+          return {
+             id: bm.id,
+             label: bm.name,
+             description: bm.description,
+             icon,
+             prompt_fragment: '',
+             negative_fragment: ''
+          }
+        });
 
       return (
         <div className="glass-grid">
@@ -492,9 +495,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   const stepsData = [
     { num: 1, type: 'IMAGE_TYPE', title: 'What kind of image do you want?', desc: '' },
-    { num: 2, type: 'SCENE', title: 'Choose the scene', desc: '' },
-    { num: 3, type: 'MODEL_OPTION', title: 'Who wears it & how?', desc: '' },
-    { num: 4, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: '' },
+    { num: 2, type: 'MODEL_OPTION', title: 'Who wears it & how?', desc: '' },
+    { num: 3, type: 'FORMAT_QUANTITY', title: 'Format and quantity', desc: '' },
   ];
 
   return (
@@ -1009,8 +1011,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           )}
 
 
-          {/* DYNAMIC STEPS 1-4 */}
-          {step >= 1 && step <= 4 && step !== 3.5 && (
+          {/* DYNAMIC STEPS 1-3 */}
+          {step >= 1 && step <= 3 && step !== 2.5 && (
             <div className="fade-up-enter">
               <h2 className="step-header">{stepsData[step-1].title}</h2>
               <p className="step-desc">{stepsData[step-1].desc}</p>
@@ -1018,9 +1020,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               {renderSnippetGrid(stepsData[step-1].type, step)}
               
               {/* Only show NEXT button if it's the FORMAT_QUANTITY step */}
-              {step === 4 && (
+              {step === 3 && (
                 <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
-                  <button onClick={() => setStep(5)} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
+                  <button onClick={() => setStep(4)} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
                     Review Configuration <ArrowRight size={20} />
                   </button>
                 </div>
@@ -1028,17 +1030,17 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             </div>
           )}
 
-          {/* STEP 3.5: MANUAL GENDER SELECTION (AI DOUBT) */}
-          {step === 3.5 && (
+          {/* STEP 2.5: MANUAL GENDER SELECTION (AI DOUBT) */}
+          {step === 2.5 && (
             <div className="fade-up-enter">
               <h2 className="step-header">Who is wearing it?</h2>
               <p className="step-desc">AI couldn't perfectly detect the target gender for this item.</p>
-              {renderSnippetGridInternal('CLIENT_TYPE', 3.5)}
+              {renderSnippetGridInternal('CLIENT_TYPE', 2.5)}
             </div>
           )}
 
-          {/* FINAL STEP 5: SUMMARY & GENERATE */}
-          {step === 5 && (
+          {/* FINAL STEP 4: SUMMARY & GENERATE */}
+          {step === 4 && (
             <div className="fade-up-enter">
               <h2 className="step-header">Ready to Generate</h2>
               <p className="step-desc">Your product will stay 100% faithful to your original image.</p>
