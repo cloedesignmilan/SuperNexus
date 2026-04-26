@@ -25,6 +25,8 @@ export default function PromptConfigsAdmin() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [generatingPromptId, setGeneratingPromptId] = useState<string | null>(null);
+  const [showRawImport, setShowRawImport] = useState(false);
+  const [rawJsonText, setRawJsonText] = useState('');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   const [filterCat, setFilterCat] = useState('t-shirt');
@@ -166,6 +168,35 @@ export default function PromptConfigsAdmin() {
     }
   };
 
+  const handleRawImport = async () => {
+    if (!rawJsonText.trim()) return;
+    try {
+      const data = JSON.parse(rawJsonText);
+      setSaving(true);
+      const res = await fetch('/api/admin/prompt-configs/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'import', data })
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        alert(result.error || 'Import failed');
+      } else if (result.errors && result.errors.length > 0) {
+        alert(`Import completed with ${result.errors.length} errors:\n\n${result.errors.join('\\n')}`);
+      } else {
+        alert(`Successfully imported ${result.count} prompt shots!`);
+        setRawJsonText('');
+        setShowRawImport(false);
+      }
+      fetchConfigs();
+    } catch (err) {
+      alert("Invalid JSON format. Please check your syntax.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleAiGenerate = async (shotId: string, instruction: string) => {
     if (!instruction.trim()) {
       alert("Inserisci prima una descrizione per l'AI.");
@@ -237,7 +268,15 @@ export default function PromptConfigsAdmin() {
               padding: '0.8rem 1.5rem', background: 'rgba(0,210,255,0.2)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
             }}
           >
-            <Upload size={18} /> Import JSON
+            <Upload size={18} /> Import JSON File
+          </button>
+          <button 
+            onClick={() => setShowRawImport(!showRawImport)} 
+            style={{ 
+              padding: '0.8rem 1.5rem', background: 'rgba(230,46,191,0.2)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+            }}
+          >
+            <Sparkles size={18} /> Paste JSON
           </button>
           <button 
             onClick={handleExport} 
@@ -249,6 +288,24 @@ export default function PromptConfigsAdmin() {
           </button>
         </div>
       </div>
+
+      {showRawImport && (
+        <div className="admin-card" style={{ padding: '1.5rem', marginBottom: '2rem', background: 'rgba(230,46,191,0.05)', border: '1px solid rgba(230,46,191,0.2)' }}>
+          <h3 style={{ margin: '0 0 1rem 0', color: 'white', fontSize: '1.1rem' }}>Paste JSON Code</h3>
+          <textarea
+            value={rawJsonText}
+            onChange={(e) => setRawJsonText(e.target.value)}
+            placeholder="Paste your JSON array here... e.g. [{ category: 't-shirt', configs: [...] }]"
+            style={{ width: '100%', height: '200px', background: 'rgba(0,0,0,0.5)', color: '#00ffcc', fontFamily: 'monospace', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', outline: 'none', resize: 'vertical', marginBottom: '1rem' }}
+          />
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+            <button onClick={() => setShowRawImport(false)} style={{ padding: '0.6rem 1.2rem', background: 'transparent', color: 'var(--color-text-muted)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
+            <button onClick={handleRawImport} disabled={saving} style={{ padding: '0.6rem 1.2rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 600, opacity: saving ? 0.7 : 1 }}>
+              {saving ? 'Importing...' : 'Import Now'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="admin-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
