@@ -248,7 +248,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       
       const payload = {
         imageUrl: uploadedUrl,
-        finalPrompt,
+        finalPrompt: finalPrompt || "Taxonomy Auto Prompt",
         negativePrompt,
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
