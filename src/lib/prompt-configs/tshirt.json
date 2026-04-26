@@ -34,11 +34,11 @@
           },
           {
             "shotNumber": 4,
-            "shotName": "Flat Lay",
-            "positivePrompt": "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.",
-            "negativePrompt": "mannequin, hanging, standing, perspective angle, people, shadows from standing",
-            "hardRules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT",
-            "outputGoal": "Flat Lay Ecommerce"
+            "shotName": "Folded Flat Lay",
+            "positivePrompt": "Premium ecommerce flat lay photography. The t-shirt is neatly laid flat on a clean studio surface with its sleeves gently folded inwards. True top-down 90-degree camera angle (bird's-eye view). Soft drop shadows on the surface to show it is resting horizontally.",
+            "negativePrompt": "mannequin, hanging, standing, floating in air, 3D render, invisible ghost mannequin, front view upright",
+            "hardRules": "TRUE BIRD'S-EYE VIEW. SLEEVES FOLDED INWARDS. OBVIOUS SURFACE DROP SHADOW.",
+            "outputGoal": "Folded Flat Lay Presentation"
           },
           {
             "shotNumber": 5,
