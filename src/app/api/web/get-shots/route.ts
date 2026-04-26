@@ -23,7 +23,11 @@ export async function POST(req: Request) {
     }
 
     // Restituiamo solo l'elenco degli shot name unici
-    const uniqueShots = Array.from(new Map(shots.map(s => [s.shot_number, s])).values());
+    const uniqueShots = Array.from(new Map(shots.map(s => {
+       const sNum = s.shotNumber || s.shot_number;
+       const sName = s.shotName || s.shot_name;
+       return [sNum, { shot_number: sNum, shot_name: sName }];
+    })).values());
     
     return NextResponse.json({ shots: uniqueShots });
 
