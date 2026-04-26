@@ -3,6 +3,7 @@
     "category": "t-shirt",
     "configs": [
       {
+        "category": "t-shirt",
         "mode": "clean-catalog",
         "presentation": "no-model",
         "scene": "all",
@@ -34,11 +35,11 @@
           },
           {
             "shotNumber": 4,
-            "shotName": "Folded Flat Lay",
-            "positivePrompt": "Premium ecommerce flat lay photography. The t-shirt is neatly laid flat on a clean studio surface with its sleeves gently folded inwards. True top-down 90-degree camera angle (bird's-eye view). Soft drop shadows on the surface to show it is resting horizontally.",
-            "negativePrompt": "mannequin, hanging, standing, floating in air, 3D render, invisible ghost mannequin, front view upright",
-            "hardRules": "TRUE BIRD'S-EYE VIEW. SLEEVES FOLDED INWARDS. OBVIOUS SURFACE DROP SHADOW.",
-            "outputGoal": "Folded Flat Lay Presentation"
+            "shotName": "Flat Lay",
+            "positivePrompt": "T-shirt flat lay, top-down 90° view, placed on surface. No model, no perspective, no floating.",
+            "negativePrompt": "mannequin, hanging, standing, perspective angle, people, shadows from standing",
+            "hardRules": "TOP-DOWN 90 DEGREE CAMERA, PERFECTLY FLAT",
+            "outputGoal": "Flat Lay Ecommerce"
           },
           {
             "shotNumber": 5,
@@ -51,6 +52,56 @@
         ]
       },
       {
+        "category": "t-shirt",
+        "mode": "clean-catalog",
+        "presentation": "still-life-pack",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Hanger Presentation",
+            "positivePrompt": "T-shirt perfectly hanging straight on a premium wooden hanger. Clean bright white studio background. Symmetric and professional e-commerce product shot. Smooth fabric. High-end retail presentation.",
+            "negativePrompt": "human, model, hands, flat lay, folded, wrinkles, messy, natural background",
+            "hardRules": "MUST BE HANGING ON A WOODEN HANGER. VERTICAL ORIENTATION. CLEAN STUDIO.",
+            "outputGoal": "Classic Ghost/Hanger Shot"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Classic Flat Lay",
+            "positivePrompt": "Premium ecommerce flat lay photography. The t-shirt is neatly laid perfectly flat on a clean light studio surface. True top-down 90-degree camera angle (bird's-eye view). Smooth fabric, even lighting, subtle drop shadow.",
+            "negativePrompt": "hanger, mannequin, strong wrinkles, human, folded, perspective angle",
+            "hardRules": "TRUE BIRD'S-EYE VIEW. PERFECTLY FLAT UNWRINKLED FABRIC. OBVIOUS SURFACE DROP SHADOW.",
+            "outputGoal": "Perfect Flat Presentation"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Studio Folded",
+            "positivePrompt": "T-shirt perfectly and neatly folded into a crisp rectangle, resting on a bright white studio surface. Top-down angle. Crisp edges, professional retail merchandising presentation. Only front graphic visible.",
+            "negativePrompt": "unfolded, hanging, human, messy, multiple shirts, rustic",
+            "hardRules": "MUST BE COMPLETELY FOLDED INTO A RECTANGLE. CLEAN STUDIO.",
+            "outputGoal": "Folded Stack Presentation"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Casual Wood Flat Lay",
+            "positivePrompt": "T-shirt laid casually on a rustic white wooden plank surface. Natural bright lighting, soft shadows. Fabric has realistic natural wrinkles and folds, giving an organic authentic feel. Top-down camera angle.",
+            "negativePrompt": "hanger, perfectly smooth, studio white seamless, folded",
+            "hardRules": "RUSTIC WOOD SURFACE BACKGROUND. REALISTIC FABRIC WRINKLES. CASUAL LAYOUT.",
+            "outputGoal": "Organic Instagram Flat Lay"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Folded Stack",
+            "positivePrompt": "A very neat vertical stack of identical folded t-shirts resting perfectly on a flat wooden surface. Slight high-angle shot showing the thickness and sides of the stack. Premium retail aesthetic.",
+            "negativePrompt": "single shirt, unfolded, hanging, human, messy pile",
+            "hardRules": "MUST SHOW A THICK STACK OF MULTIPLE FOLDED SHIRTS.",
+            "outputGoal": "Merchandising Stack Presentation"
+          }
+        ]
+      },
+      {
+        "category": "t-shirt",
         "mode": "model-studio",
         "presentation": "model-photo",
         "scene": "all",
@@ -58,47 +109,48 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Classic Studio Front",
-            "positivePrompt": "Professional indoor studio fashion portrait. Model wearing the t-shirt, waist up. Pure white seamless paper backdrop. Standard softbox lighting. Neutral confident pose.",
-            "negativePrompt": "outdoors, street, coffee bar, cafe, city, windows, messy background, flat lay",
-            "hardRules": "STRICTLY INDOOR STUDIO BACKDROP. FRONT VIEW. HANDS MUST NOT COVER T-SHIRT.",
-            "outputGoal": "Standard front catalog"
+            "shotName": "Front Studio Portrait",
+            "positivePrompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
+            "hardRules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
+            "outputGoal": "Main Model Ecommerce Shot"
           },
           {
             "shotNumber": 2,
-            "shotName": "Seated on Apple Box",
-            "positivePrompt": "Model wearing the t-shirt sitting casually on a wooden studio apple box. Full body shot. Colored seamless paper backdrop (e.g., pastel grey or blue). High end fashion catalog lighting.",
-            "negativePrompt": "standing perfectly straight, outdoors, cafe, busy background, close up",
-            "hardRules": "MODEL MUST BE SEATED ON A BOX IN A PHOTOGRAPHY STUDIO. INDOORS ONLY.",
-            "outputGoal": "Seated fit variation"
+            "shotName": "Dynamic 3/4 Angle",
+            "positivePrompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, casual snap",
+            "hardRules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
+            "outputGoal": "Side fit demonstration"
           },
           {
             "shotNumber": 3,
-            "shotName": "Plain Back View",
-            "positivePrompt": "Model completely facing away from the camera. Showing the PLAIN SOLID COLOR back of the t-shirt. Indoor studio background. Hair tied up or away from the back.",
-            "negativePrompt": "graphic, print, logo, text, pattern on back, front view, face visible, turning around, outdoors",
-            "hardRules": "BACK VIEW. STRICTLY NO PRINT, NO GRAPHIC, NO LOGO ON THE BACK. COMPLETELY BLANK FABRIC ON BACK.",
-            "outputGoal": "Back fit without print"
+            "shotName": "Back View",
+            "positivePrompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
+            "negativePrompt": "front print, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
+            "outputGoal": "Model back fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Edgy Flash Photography",
-            "positivePrompt": "High fashion edgy portrait. Model wearing the t-shirt with a dynamic pose. Hard flash lighting casting a sharp, dark shadow on the white studio wall behind them. Editorial aesthetic.",
-            "negativePrompt": "soft lighting, outdoor sunlight, street, flat lay, boring pose",
-            "hardRules": "HARD FLASH LIGHTING. SHARP SHADOW ON STUDIO WALL. INDOORS.",
-            "outputGoal": "Editorial style variation"
+            "shotName": "Full Body Look",
+            "positivePrompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
+            "negativePrompt": "close up, cropped head, cropped feet, complex outfit, busy background",
+            "hardRules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
+            "outputGoal": "Complete outfit styling"
           },
           {
             "shotNumber": 5,
-            "shotName": "Macro Collar/Chest Worn",
-            "positivePrompt": "Extreme close up crop on the model's torso and neckline wearing the t-shirt. Focus heavily on the fabric weave, collar stitching, and the main graphic. Intimate studio lighting.",
-            "negativePrompt": "full body, face visible, messy background, outdoors, wide angle",
-            "hardRules": "MACRO CROP ON CHEST/NECK ONLY. INDOOR STUDIO. NO FULL BODY.",
-            "outputGoal": "Texture and fit detail"
+            "shotName": "Lifestyle Studio Crop",
+            "positivePrompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
+            "negativePrompt": "full body, face focus, blurry t-shirt, outdoor",
+            "hardRules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
+            "outputGoal": "Texture and detail on body"
           }
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "model-studio",
         "presentation": "curvy",
         "scene": "all",
@@ -147,6 +199,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "lifestyle",
         "presentation": "model-photo",
         "scene": "all",
@@ -195,6 +248,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "lifestyle",
         "presentation": "candid-woman",
         "scene": "all",
@@ -243,6 +297,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "lifestyle",
         "presentation": "candid-man",
         "scene": "all",
@@ -291,6 +346,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "ugc",
         "presentation": "candid-woman",
         "scene": "all",
@@ -339,6 +395,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "ugc",
         "presentation": "candid-man",
         "scene": "all",
@@ -387,6 +444,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "ads",
         "presentation": "model-photo",
         "scene": "all",
@@ -435,6 +493,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "ads",
         "presentation": "no-model",
         "scene": "all",
@@ -483,6 +542,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "detail",
         "presentation": "model-photo",
         "scene": "all",
@@ -531,6 +591,7 @@
         ]
       },
       {
+        "category": "t-shirt",
         "mode": "detail",
         "presentation": "no-model",
         "scene": "all",

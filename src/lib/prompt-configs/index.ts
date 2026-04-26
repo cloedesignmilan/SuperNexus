@@ -55,6 +55,9 @@ export async function getPromptsForSelection({
   if (normPres.includes('candid') && normPres.includes('woman')) normPres = 'candid-woman';
   if (normPres.includes('candid') && normPres.includes('man')) normPres = 'candid-man';
   if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
+  if (normPres.includes('still life')) normPres = 'still-life-pack';
+  if (normPres === 'no model') normPres = 'no-model';
+  if (normPres === 'model photo') normPres = 'model-photo';
 
   try {
       // Priority 1: Fetch from Database
