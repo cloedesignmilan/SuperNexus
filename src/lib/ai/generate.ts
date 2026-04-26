@@ -415,9 +415,11 @@ CRITICAL NEGATIVE PROMPT: ${ecommerceBlockNegative}${shotInfo.negative_prompt}
                                     identityReferenceBase64 = part.inlineData.data;
                                 }
                                 foundImageInThisBatch = true;
+                                break; // FIX: Prendi solo 1 immagine per ogni Shot
                             }
                         }
                     }
+                    if (foundImageInThisBatch) break; // FIX: Esci dal ciclo candidati se hai trovato l'immagine
                 }
                 if (!foundImageInThisBatch) {
                     errorMessages.push(`Nessuna immagine base64 trovata nella risposta per la scena ${i+1}`);

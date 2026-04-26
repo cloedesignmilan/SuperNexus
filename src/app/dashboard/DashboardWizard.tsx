@@ -205,10 +205,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              const isTshirt = detectedCat === 't-shirt';
-              const isLowConfidence = !analysisData || analysisData.confidence < 0.8;
-              
-              if ((isTshirt || isLowConfidence) && modelSnip.label !== 'No Model') {
+              if (modelSnip.label !== 'No Model') {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -225,11 +222,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
-         const isTshirt = detectedCat === 't-shirt';
-         const isLowConfidence = !analysisData || analysisData.confidence < 0.8;
-         
-         if ((isTshirt || isLowConfidence) && snip.label !== 'No Model') {
+         if (snip.label !== 'No Model') {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
