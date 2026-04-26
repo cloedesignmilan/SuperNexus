@@ -1008,7 +1008,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     <button onClick={() => setStep(1)} className="btn-magic">
                       Looks Good <ArrowRight size={18} />
                     </button>
-                    <button onClick={() => { setStep(0.75); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.9rem', padding: '0 1.5rem' }}>
+                    <button onClick={() => { setStep(0.75); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '100px', color: '#ffffff', fontSize: '0.9rem', padding: '0.8rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s ease' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
                       Change Type
                     </button>
                   </div>
