@@ -26,7 +26,7 @@ export default function AnimatedTelegramMockup() {
           {/* Messaggio 1: Utente invia foto */}
           <div className="msg-row msg-user fade-in" style={{ animationDelay: '1s' }}>
             <div className="msg-bubble">
-              <img src="/4-a.jpeg" alt="Foto scattata in negozio" className="msg-photo" />
+              <img src="/4-a.jpeg" alt="Foto scattata in negozio" className="msg-photo" loading="lazy" />
               <div className="msg-time">10:30 ✓✓</div>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function AnimatedTelegramMockup() {
             <div className="avatar-bot">✨</div>
             <div className="msg-bubble highlight-bubble">
               <p><strong>PROCESS COMPLETED! 🎉</strong><br/>Here are the exclusive scenes generated for you:</p>
-              <img src="/4-b.jpeg" alt="Risultato editoriale" className="msg-photo-result" />
+              <img src="/4-b.jpeg" alt="Risultato editoriale" className="msg-photo-result" loading="lazy" />
               <div className="msg-time">10:32</div>
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function AnimatedTelegramMockup() {
           {/* Messaggio 7: Utente invia foto 2 */}
           <div className="msg-row msg-user fade-in" style={{ animationDelay: '12s' }}>
             <div className="msg-bubble">
-              <img src="/1-a.jpeg" alt="Seconda foto negozio" className="msg-photo" />
+              <img src="/1-a.jpeg" alt="Seconda foto negozio" className="msg-photo" loading="lazy" />
               <div className="msg-time">10:33 ✓✓</div>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function AnimatedTelegramMockup() {
             <div className="msg-bubble highlight-bubble">
               <p><strong>PROCESS COMPLETED! 🎉</strong><br/>Here are the exclusive scenes generated for you:</p>
               {/* L'utente voleva vedere bene la foto da donna, l'ho messa in grande */}
-              <img src="/1-b.jpeg" alt="Risultato editoriale donna" className="msg-photo-result" style={{ width: '220px' }} />
+              <img src="/1-b.jpeg" alt="Risultato editoriale donna" className="msg-photo-result" style={{ width: '220px' }} loading="lazy" />
               <div className="msg-time">10:35</div>
             </div>
           </div>

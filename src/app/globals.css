@@ -1127,6 +1127,26 @@ body {
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   z-index: 4;
 }
+
+/* Guest Try-Out Animations - Reliable Reveal */
+@keyframes ai-simple-reveal {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.95) translateY(20px); 
+    filter: brightness(2) blur(10px); 
+    box-shadow: 0 0 100px 20px rgba(204,255,0,0.8);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+    filter: brightness(1) blur(0px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+}
+
+.result-container-animated {
+  animation: ai-simple-reveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
 .social-card {
   background: #fff;
   border-radius: 16px;

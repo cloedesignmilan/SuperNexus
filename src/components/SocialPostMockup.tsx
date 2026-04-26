@@ -23,7 +23,7 @@ export default function SocialPostMockup({ imgSrc, accountName = 'luxury_boutiqu
         </div>
         
         <div className="social-image-wrapper">
-          <img src={imgSrc} alt="Post" className="social-image" />
+          <img src={imgSrc} alt="Post" className="social-image" loading="lazy" />
         </div>
         
         <div className="social-footer">

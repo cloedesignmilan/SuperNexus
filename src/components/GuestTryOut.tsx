@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Loader2, Sparkles, AlertCircle, Lock } from 'lucide-react';
+import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X } from 'lucide-react';
 
 export default function GuestTryOut() {
   const [file, setFile] = useState<File | null>(null);
@@ -21,8 +21,7 @@ export default function GuestTryOut() {
     // Check if the user has already used the trial on this device
     const used = localStorage.getItem('supernexus_guest_used');
     if (used) {
-      // TEMPORARILY DISABLED FOR TESTING
-      // setHasUsedTrial(true);
+      setHasUsedTrial(true);
     }
   }, []);
 
@@ -41,24 +40,24 @@ export default function GuestTryOut() {
 
     if (type === 'swimwear') {
       options = [
-        { title: 'Lifestyle Model', icon: '🏖️', cat: 'Swimwear', mode: 'Lifestyle', subcat: 'Candid Photo' },
-        { title: 'Clean Catalog', icon: '📸', cat: 'Swimwear', mode: 'Clean Catalog', subcat: 'No Model' }
+        { title: 'Lifestyle Model', icon: <ImageIcon size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Swimwear', mode: 'Lifestyle', subcat: 'Candid Photo' },
+        { title: 'Clean Catalog', icon: <Box size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Swimwear', mode: 'Clean Catalog', subcat: 'No Model' }
       ];
     } else if (type === 'ceremony_elegant' || type === 'women_clothing') {
       options = [
-        { title: 'Model Studio', icon: '✨', cat: 'Dress / Elegant', mode: 'Model Studio', subcat: 'Model Photo' },
-        { title: 'Lifestyle Candid', icon: '🌆', cat: 'Dress / Elegant', mode: 'Lifestyle', subcat: 'Candid Photo' }
+        { title: 'Model Studio', icon: <Star size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Dress', mode: 'Model Studio', subcat: 'Model Photo' },
+        { title: 'High-End Event', icon: <Camera size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Dress', mode: 'Lifestyle', subcat: 'Model Photo' }
       ];
     } else if (type === 'shoes') {
       options = [
-        { title: 'On Model', icon: '👟', cat: 'Shoes', mode: 'Model Studio', subcat: 'Model Photo' },
-        { title: 'Clean Catalog', icon: '📦', cat: 'Shoes', mode: 'Clean Catalog', subcat: 'No Model' }
+        { title: 'On Model', icon: <User size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Shoes', mode: 'Model Studio', subcat: 'Model Photo' },
+        { title: 'Clean Catalog', icon: <Box size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'Shoes', mode: 'Clean Catalog', subcat: 'No Model' }
       ];
     } else {
       // Default fallback (T-Shirt/Hoodie/Men Clothing)
       options = [
-        { title: 'On Model', icon: '👕', cat: 'T-shirt', mode: 'Model Studio', subcat: 'Model Photo' },
-        { title: 'Ghost Mannequin', icon: '👻', cat: 'T-shirt', mode: 'Clean Catalog', subcat: 'No Model' }
+        { title: 'On Model', icon: <User size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'T-shirt', mode: 'Model Studio', subcat: 'Model Photo' },
+        { title: 'Ghost Mannequin', icon: <Shirt size={36} color="#ccff00" strokeWidth={1.5} />, cat: 'T-shirt', mode: 'Clean Catalog', subcat: 'No Model' }
       ];
     }
 
@@ -142,8 +141,7 @@ export default function GuestTryOut() {
       if (genData.results && genData.results.length > 0) {
         setResultUrl(genData.results[0].url);
         localStorage.setItem('supernexus_guest_used', 'true');
-        // TEMPORARILY DISABLED FOR TESTING
-        // setHasUsedTrial(true);
+        setHasUsedTrial(true);
       } else {
         throw new Error('Nessun risultato generato.');
       }
@@ -170,22 +168,6 @@ export default function GuestTryOut() {
       marginTop: '2rem',
       boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
     }}>
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes magic-reveal {
-          0% { opacity: 0; transform: scale(0.9) translateY(40px); filter: brightness(2) contrast(1.5); }
-          50% { opacity: 1; transform: scale(1.02) translateY(-10px); filter: brightness(1.2) contrast(1.1); }
-          100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1) contrast(1); }
-        }
-        @keyframes magic-glow {
-          0% { box-shadow: 0 0 0 rgba(204,255,0,0); }
-          50% { box-shadow: 0 0 100px rgba(204,255,0,0.5); }
-          100% { box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-        }
-        .result-container-animated {
-          animation: magic-reveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, magic-glow 2s ease-out forwards;
-        }
-      `}} />
-
       <h3 style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textAlign: 'center' }}>
         Experience the Magic.
       </h3>
@@ -270,9 +252,9 @@ export default function GuestTryOut() {
                 <div style={{ display: 'flex', gap: '1rem' }}>
                   <button 
                     onClick={() => { setPreviewUrl(null); setFile(null); }}
-                    style={{ flex: 1, padding: '1rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}
+                    style={{ flex: 1, padding: '1rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                   >
-                    Cancel
+                    <X size={20} /> Cancel
                   </button>
                   <button 
                     onClick={handleUploadAndAnalyze}
