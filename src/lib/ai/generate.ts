@@ -246,6 +246,11 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     const modeSlug = taxonomyMode ? taxonomyMode.toLowerCase().replace(/[^a-z0-9]+/g, '-') : (subcat.business_mode?.slug || "");
     const presentationSlug = taxonomySubcat ? taxonomySubcat.toLowerCase().replace(/[^a-z0-9]+/g, '-') : (subcat.slug || "");
     
+    // Extract requested model age from userPrompt
+    const ageMatch = userPrompt.match(/(\d+) years old model/);
+    const extractedAge = ageMatch ? ageMatch[1] : null;
+    const ageLockDirective = extractedAge ? `[AGE LOCK: The model MUST BE strictly ${extractedAge} years old. Show accurate, realistic signs of this exact age (e.g., mature skin, lines if >40). Do NOT default to a young 20s model. This is a critical demographic requirement.] ` : "";
+
     const configShots = await getPromptsForSelection({
         categorySlug,
         modeSlug,
@@ -302,13 +307,13 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
             }
 
-            let genderLockPositive = "";
+            let genderLockPositive = ageLockDirective;
             let genderLockNegative = "";
             if (clientGender === 'MAN') {
-                genderLockPositive = "[GENDER LOCK: MALE] MUST BE A HANDSOME MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ";
+                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
                 genderLockNegative = "female, woman, girl, breasts, feminine features, ";
             } else if (clientGender === 'WOMAN') {
-                genderLockPositive = "[GENDER LOCK: FEMALE] MUST BE A BEAUTIFUL FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ";
+                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ${ageLockDirective}`;
                 genderLockNegative = "male, man, boy, facial hair, masculine features, ";
             }
 
@@ -366,17 +371,17 @@ CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerc
                 currentLighting += " " + magicalScene;
             }
             
-            let genderLockPositive = "";
+            let genderLockPositive = ageLockDirective;
             let genderLockNegative = "";
             let identityNoun = "woman";
             let identityPronoun = "Her";
             if (clientGender === 'MAN') {
-                genderLockPositive = "[GENDER LOCK: MALE] MUST BE A HANDSOME MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ";
+                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
                 genderLockNegative = "female, woman, girl, breasts, feminine features, ";
                 identityNoun = "man";
                 identityPronoun = "His";
             } else if (clientGender === 'WOMAN') {
-                genderLockPositive = "[GENDER LOCK: FEMALE] MUST BE A BEAUTIFUL FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ";
+                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ${ageLockDirective}`;
                 genderLockNegative = "male, man, boy, facial hair, masculine features, ";
             }
 
