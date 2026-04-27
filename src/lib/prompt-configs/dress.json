@@ -395,42 +395,42 @@
           {
             "shotNumber": 1,
             "shotName": "Glamour Light Ad",
-            "positivePrompt": "High impact advertising shot. {gender} wearing the {product} walking through dramatic spotlight or sunrays. Glamorous aesthetic. Intense colors.",
-            "negativePrompt": "boring, flat lighting, white background, simple",
-            "hardRules": "EXTREME LIGHTING. HIGH CONTRAST ADS STYLE.",
-            "outputGoal": "Scroll stopper glamour"
+            "positivePrompt": "High impact advertising scroll-stopper shot. {gender} wearing the {product} walking with dynamic energy. The background MUST be a seamless tone-on-tone gradient matching the primary color of the dress (if the dress is white, use a soft pastel gradient). Glamorous aesthetic, intense vivid colors.",
+            "negativePrompt": "boring, flat lighting, plain white background, busy background, real world",
+            "hardRules": "TONE-ON-TONE GRADIENT BACKGROUND. JAW-DROPPING WOW EFFECT.",
+            "outputGoal": "Scroll stopper glamour gradient"
           },
           {
             "shotNumber": 2,
             "shotName": "Fabric Toss Ad",
-            "positivePrompt": "{gender} wearing the {product} with the skirt/fabric tossed elegantly in the air. Dynamic action shot. Solid bright contrasting background color.",
-            "negativePrompt": "standing still, boring pose, grey background",
-            "hardRules": "FABRIC IN MIDAIR. HIGH ENERGY.",
-            "outputGoal": "High energy action"
+            "positivePrompt": "{gender} wearing the {product} with the skirt/fabric tossed elegantly in the air. Dynamic action advertising shot. The background MUST be a seamless tone-on-tone gradient matching the primary color of the dress (if the dress is white, use a soft pastel gradient).",
+            "negativePrompt": "standing still, boring pose, plain white background, busy background, real world",
+            "hardRules": "FABRIC IN MIDAIR. TONE-ON-TONE GRADIENT BACKGROUND. JAW-DROPPING WOW EFFECT.",
+            "outputGoal": "High energy gradient action"
           },
           {
             "shotNumber": 3,
             "shotName": "Asymmetrical Editorial",
-            "positivePrompt": "{gender} wearing the {product}, framed to the extreme right or left. Negative space intentionally left for ad copy. Dramatic side lighting, editorial fashion.",
-            "negativePrompt": "busy background, centered subject",
-            "hardRules": "ASYMMETRICAL FRAMING FOR AD TEXT.",
-            "outputGoal": "Ad copy framing"
+            "positivePrompt": "{gender} wearing the {product}, framed to the extreme right or left. Negative space intentionally left for ad copy. The background MUST be a seamless tone-on-tone gradient matching the primary color of the dress (if the dress is white, use a soft pastel gradient). Editorial fashion.",
+            "negativePrompt": "centered subject, plain white background, busy background, real world",
+            "hardRules": "ASYMMETRICAL FRAMING. TONE-ON-TONE GRADIENT BACKGROUND. JAW-DROPPING WOW EFFECT.",
+            "outputGoal": "Ad copy gradient framing"
           },
           {
             "shotNumber": 4,
             "shotName": "Back View Glamour Ad",
-            "positivePrompt": "{gender} wearing the {product} from the back, walking down a grand staircase or dramatic runway. Cinematic and epic ad shot.",
-            "negativePrompt": "front view, boring background",
-            "hardRules": "EPIC CINEMATIC BACK VIEW.",
-            "outputGoal": "Cinematic back ad"
+            "positivePrompt": "{gender} wearing the {product} from the back, striking an elegant pose looking over the shoulder. Cinematic and epic ad shot. The background MUST be a seamless tone-on-tone gradient matching the primary color of the dress (if the dress is white, use a soft pastel gradient).",
+            "negativePrompt": "front view, plain white background, busy background, real world",
+            "hardRules": "EPIC CINEMATIC BACK VIEW. TONE-ON-TONE GRADIENT BACKGROUND. JAW-DROPPING WOW EFFECT.",
+            "outputGoal": "Cinematic back gradient ad"
           },
           {
             "shotNumber": 5,
-            "shotName": "Pop Color Blocking",
-            "positivePrompt": "{gender} wearing the {product}. Solid extremely bright pop-art background (e.g. bright yellow or hot pink) that color-blocks with the {product}. Hard flash lighting, high fashion edgy pose.",
-            "negativePrompt": "natural lighting, outdoors, muted colors",
-            "hardRules": "SOLID BRIGHT POP COLOR BACKGROUND. HARD FLASH.",
-            "outputGoal": "Pop art ad"
+            "shotName": "Vivid Gradient Ad",
+            "positivePrompt": "{gender} wearing the {product}. The background MUST be a seamless tone-on-tone gradient matching the primary color of the dress (if the dress is white, use a soft pastel gradient). Hard flash lighting, high fashion edgy pose. Jaw-dropping ethereal aesthetic.",
+            "negativePrompt": "natural lighting, outdoors, muted colors, plain white background, busy background, real world",
+            "hardRules": "HARD FLASH. TONE-ON-TONE GRADIENT BACKGROUND. JAW-DROPPING WOW EFFECT.",
+            "outputGoal": "Edgy gradient fashion ad"
           }
         ]
       },
