@@ -353,22 +353,23 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       {/* CATEGORY TITLE BELOW IMAGES */}
       <div key={`title-${activeIndex}`} className={`slide-up-title ${isVisible ? 'visible' : ''}`} style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '5rem', transitionDelay: '0.8s' }}>
         <h2 style={{ 
-          fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', 
+          fontSize: 'clamp(1.2rem, 5vw, 2.5rem)', 
           fontWeight: '900', 
-          lineHeight: '1.2',
+          lineHeight: '1.3',
           letterSpacing: '-0.02em',
           textTransform: 'uppercase',
           margin: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          flexWrap: 'nowrap',
-          whiteSpace: 'nowrap',
-          gap: '15px'
+          flexWrap: 'wrap',
+          textAlign: 'center',
+          gap: 'clamp(8px, 2vw, 15px)',
+          padding: '0 1rem'
         }}>
-          <span style={{ color: '#ffffff' }}>{config.displayCategory}</span>
+          <span style={{ color: '#ffffff', textAlign: 'center' }}>{config.displayCategory}</span>
           <span style={{ color: '#444' }}>/</span>
-          <span className="animated-gradient-text" style={{ whiteSpace: 'nowrap' }}>
+          <span className="animated-gradient-text" style={{ textAlign: 'center' }}>
             {config.displaySubcategory.includes('→') ? config.displaySubcategory.split('→').slice(1).join('→').trim() : config.displaySubcategory}
           </span>
         </h2>
