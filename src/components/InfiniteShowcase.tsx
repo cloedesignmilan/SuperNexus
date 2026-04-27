@@ -18,6 +18,26 @@ interface Props {
 
 const SLIDESHOW_CONFIG = [
   {
+    displayCategory: 'DRESS / ELEGANT',
+    displaySubcategory: 'DETAIL / TEXTURE → NO MODEL',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg',
+    manualImages: [
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.jpg",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot3.jpg"
+    ]
+  },
+  {
+    displayCategory: 'DRESS / ELEGANT',
+    displaySubcategory: 'DETAIL / TEXTURE → MODEL PHOTO',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg',
+    manualImages: [
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot1.jpg",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot2.jpg",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot3.jpg"
+    ]
+  },
+  {
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'CLEAN CATALOG → NO MODEL',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
