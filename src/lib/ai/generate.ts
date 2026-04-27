@@ -248,8 +248,21 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
     
     // Extract requested model age from userPrompt
     const ageMatch = userPrompt.match(/(\d+) years old model/);
-    const extractedAge = ageMatch ? ageMatch[1] : null;
-    const ageLockDirective = extractedAge ? `[AGE LOCK: The model MUST BE strictly ${extractedAge} years old. Show accurate, realistic signs of this exact age (e.g., mature skin, lines if >40). Do NOT default to a young 20s model. This is a critical demographic requirement.] ` : "";
+    const extractedAge = ageMatch ? parseInt(ageMatch[1]) : null;
+    let ageLockDirective = "";
+    let ageNegativeDirective = "";
+    
+    if (extractedAge) {
+        if (extractedAge < 25) {
+            ageLockDirective = `[AGE LOCK: The person MUST BE strictly ${extractedAge} years old. Emphasize extreme youth, teenage or very early 20s facial features, youthful skin. DO NOT generate an older person.] `;
+            ageNegativeDirective = "older, mature, wrinkles, middle-aged, 30s, 40s, 50s, signs of aging, ";
+        } else if (extractedAge >= 40) {
+            ageLockDirective = `[AGE LOCK: The person MUST BE strictly ${extractedAge} years old. You MUST show realistic and undeniable signs of aging: mature skin texture, visible wrinkles, expression lines, older facial structure. DO NOT generate a young, flawless 20s model. This is a strict demographic requirement for a mature person.] `;
+            ageNegativeDirective = "young, youth, 20s, 30s, flawless skin, teenage, baby face, unblemished, young fashion model, ";
+        } else {
+            ageLockDirective = `[AGE LOCK: The person MUST BE strictly ${extractedAge} years old. Show accurate, realistic facial features for this exact age.] `;
+        }
+    }
 
     const configShots = await getPromptsForSelection({
         categorySlug,
@@ -308,13 +321,13 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             }
 
             let genderLockPositive = ageLockDirective;
-            let genderLockNegative = "";
+            let genderLockNegative = ageNegativeDirective;
             if (clientGender === 'MAN') {
-                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
-                genderLockNegative = "female, woman, girl, breasts, feminine features, ";
+                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
+                genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
             } else if (clientGender === 'WOMAN') {
-                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ${ageLockDirective}`;
-                genderLockNegative = "male, man, boy, facial hair, masculine features, ";
+                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
+                genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
             }
 
             const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT");
@@ -372,17 +385,17 @@ CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerc
             }
             
             let genderLockPositive = ageLockDirective;
-            let genderLockNegative = "";
+            let genderLockNegative = ageNegativeDirective;
             let identityNoun = "woman";
             let identityPronoun = "Her";
             if (clientGender === 'MAN') {
-                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A MALE FASHION MODEL. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
-                genderLockNegative = "female, woman, girl, breasts, feminine features, ";
+                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
+                genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
                 identityNoun = "man";
                 identityPronoun = "His";
             } else if (clientGender === 'WOMAN') {
-                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A FEMALE FASHION MODEL. ABSOLUTELY NO MALES. ${ageLockDirective}`;
-                genderLockNegative = "male, man, boy, facial hair, masculine features, ";
+                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
+                genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
             }
 
             const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: ${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
