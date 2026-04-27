@@ -21,10 +21,12 @@ const SLIDESHOW_CONFIG = [
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'CLEAN CATALOG → NO MODEL',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
-    lookup: {
-      category: 'T-SHIRT',
-      subcategoryIncludes: 'CLEAN CATALOG'
-    }
+    manualImages: [
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (62).jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (63).jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (64).jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (65).jpg"
+    ]
   },
   {
     displayCategory: 'T-SHIRT',
@@ -212,34 +214,6 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
     return () => clearInterval(interval);
   }, [isAnimating]);
 
-  useEffect(() => {
-    // Prefetch next slide's images to prevent blank flashes
-    if (typeof window === 'undefined') return;
-    
-    const nextIndex = (activeIndex + 1) % SLIDESHOW_CONFIG.length;
-    const nextConfig = SLIDESHOW_CONFIG[nextIndex];
-    let nextUrls: string[] = [];
-    
-    if (nextConfig.manualImages) {
-      nextUrls = nextConfig.manualImages;
-    } else if ((nextConfig as any).lookup) {
-      const lookupConfig = (nextConfig as any).lookup;
-      const targetItem = showcaseData.find(item => 
-        item.category === lookupConfig.category && item.subcategory.toUpperCase().includes(lookupConfig.subcategoryIncludes)
-      );
-      if (targetItem) {
-        nextUrls = targetItem.afters.slice(0, 4);
-      }
-    }
-    
-    nextUrls.push(nextConfig.originalImage);
-    
-    nextUrls.forEach(url => {
-      const img = new window.Image();
-      img.src = url;
-    });
-  }, [activeIndex, showcaseData]);
-
   const config = SLIDESHOW_CONFIG[activeIndex];
   
   let generatedImages: { url: string, category: string, useCase: string }[] = [];
@@ -250,18 +224,6 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       category: config.displayCategory,
       useCase: config.displaySubcategory.split('→')[1]?.trim() || config.displaySubcategory,
     }));
-  } else if ((config as any).lookup) {
-    const lookupConfig = (config as any).lookup;
-    const targetItem = showcaseData.find(item => 
-      item.category === lookupConfig.category && item.subcategory.toUpperCase().includes(lookupConfig.subcategoryIncludes)
-    );
-    if (targetItem) {
-      generatedImages = targetItem.afters.slice(0, 4).map(url => ({
-        url,
-        category: targetItem.category,
-        useCase: targetItem.subcategory.split('→')[1]?.trim() || targetItem.subcategory,
-      }));
-    }
   }
 
   // Se non ci sono immagini, evita errori distruttivi. 
@@ -355,19 +317,19 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       }}>
         {/* LEFT IMAGES */}
         {leftImages.map((img, i) => (
-          <div key={`left-static-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
+          <div key={`left-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
 
         {/* CENTER ORIGINAL */}
-        <div key="center-static" className={`slide-up-card center-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '0s', zIndex: 10 }}>
+        <div key={`center-${activeIndex}`} className={`slide-up-card center-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '0s', zIndex: 10 }}>
           <MarqueeCard img={originalImage} isOriginal={true} />
         </div>
 
         {/* RIGHT IMAGES */}
         {rightImages.map((img, i) => (
-          <div key={`right-static-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
+          <div key={`right-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
@@ -400,35 +362,38 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       <style dangerouslySetInnerHTML={{__html: `
         .slide-up-title {
           opacity: 0;
-          transition: opacity 0.6s ease-in-out;
+          transform: translateY(30px);
+          transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           width: 100%;
         }
         .slide-up-title.visible {
           opacity: 1;
+          transform: translateY(0);
         }
 
         .slide-up-card {
           opacity: 0;
-          transition: opacity 0.6s ease-in-out;
+          transform: translateY(60px);
+          transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           width: 18vw;
           min-width: 200px;
           max-width: 300px;
         }
         .slide-up-card.visible {
           opacity: 1;
+          transform: translateY(0);
         }
         
         .center-card {
+          transform: translateY(60px) scale(1.15);
           width: 22vw;
           min-width: 250px;
           max-width: 350px;
           box-shadow: 0 0 50px rgba(204, 255, 0, 0.2);
           border-radius: 20px;
-          opacity: 0;
-          transition: opacity 0.6s ease-in-out;
         }
         .center-card.visible {
-          opacity: 1;
+          transform: translateY(0) scale(1.15);
         }
 
         .marquee-card-responsive {
@@ -461,13 +426,18 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
             flex-shrink: 0;
             scroll-snap-align: center;
             opacity: 1 !important;
+            transform: translateY(0) !important;
           }
           .center-card {
+            transform: translateY(0) scale(1) !important;
             width: 80vw;
             max-width: 320px;
             flex-shrink: 0;
             scroll-snap-align: center;
             opacity: 1 !important;
+          }
+          .center-card.visible {
+            transform: translateY(0) scale(1) !important;
           }
         }
       `}} />
