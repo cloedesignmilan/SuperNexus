@@ -18,8 +18,8 @@ model User {
   paypal_subscription_id  String?  @unique
   subscription_status     String?  @default("active")
   subscription_expires_at DateTime?
-  images_allowance        Int      @default(0) // Limite credito totale attuale
-  base_allowance          Int      @default(150) // Limite ricaricato ogni mese
+  images_allowance        Int      @default(10) // Limite credito totale attuale
+  base_allowance          Int      @default(10) // Limite ricaricato ogni mese
   images_generated        Int      @default(0) // Consumo totale nel ciclo
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
