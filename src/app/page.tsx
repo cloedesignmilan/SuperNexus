@@ -250,7 +250,7 @@ export default async function LandingPage() {
           </h2>
           <div className="hero-buttons fade-up-enter delay-4">
             <div style={{ width: '100%', maxWidth: '250px' }}>
-              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(255,10,179,0.4)', textDecoration: 'none' }}>Start Free Trial</a>
+              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Start Free Trial</a>
             </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
               See the Results
@@ -382,7 +382,7 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
-                <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(255,10,179,0.4)', textDecoration: 'none' }}>
+                <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>
                   Start Free Trial
                 </a>
             </div>
