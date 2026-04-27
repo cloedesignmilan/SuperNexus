@@ -265,7 +265,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
         taxonomyCat: getMappedCategorySlug(analysisData?.detectedProductType),
-        taxonomyMode: selections['IMAGE_TYPE']?.label || null,
+        taxonomyMode: selections['BUSINESS_MODE']?.label || null,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
         clientGender,
