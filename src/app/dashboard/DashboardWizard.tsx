@@ -36,62 +36,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Calcola il prompt quando arriviamo allo step finale
-  useEffect(() => {
-    if (step === 5) {
-      let fPrompt = "";
-      let nPrompt = "";
-
-      const selectedSnippets = Object.values(selections).filter(Boolean) as Snippet[];
-      
-      selectedSnippets.sort((a, b) => {
-         const intensityScore = (val: string) => val === 'strong' ? 3 : val === 'medium' ? 2 : 1;
-         if (intensityScore(b.intensity_level) !== intensityScore(a.intensity_level)) {
-             return intensityScore(b.intensity_level) - intensityScore(a.intensity_level);
-         }
-         return a.priority_order - b.priority_order;
-      });
-
-      selectedSnippets.forEach(s => {
-         if (s.prompt_fragment) {
-            let frag = s.prompt_fragment.trim();
-            if (s.intensity_level === 'strong') frag = `((${frag}))`;
-            fPrompt += frag + ", ";
-         }
-         if (s.negative_fragment) {
-            nPrompt += s.negative_fragment.trim() + ", ";
-         }
-      });
-
-      if (selections['MODEL_OPTION'] && selections['MODEL_OPTION'].label !== 'No Model' && selections['MODEL_OPTION'].label !== 'STILL LIFE PACK') {
-         fPrompt = `${modelAge} years old model, ` + fPrompt;
-      }
-
-      const isUGC = selections['IMAGE_TYPE']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('Candid');
-      if (isUGC) {
-         const ugcRules = "[UGC REALISM MODE (HARD): This must NOT look like a professional photoshoot. Simulate a real iPhone photo taken by a normal person. Rules: imperfect framing (slightly off-center), slight motion blur allowed, uneven natural lighting (no studio light), realistic skin texture (pores, small imperfections), casual pose (not posed, not model-like), handheld feeling (not tripod), slightly tilted horizon allowed, background not perfectly clean, depth of field must be flat (like smartphone). Camera simulation: iPhone camera, no cinematic blur, no professional lens look, natural exposure, slightly over or under exposed allowed. IMPORTANT: This must feel like 'a real girl on vacation took this photo quickly' NOT 'a fashion brand campaign'. Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested.] ";
-         fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + ugcRules + fPrompt;
-         nPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, professional photoshoot, cinematic blur, depth of field, posed model, perfect framing, added accessories, sunglasses, bag, hat, jewelry, props, " + nPrompt;
-      }
-
-      if (analysisData?.detectedProductType === 'swimwear') {
-         const swimwearRules = "[ABSOLUTE PRODUCT FIDELITY] The AI must treat the uploaded product image as the absolute source of truth. Preserve the exact print placement, exact pattern scale, exact color tones, exact trim, exact straps, ties, rings, stitching and cut. Do NOT simplify the product. Do NOT reinterpret the design. For this reference: The bikini has brown and white gingham panels, brown polka-dot trim, thin straps, side ties, and a central metal ring. These details must remain visible and consistent in every generated image. The model must clearly be wearing this exact bikini suitable for beach or pool environments. ";
-         fPrompt = swimwearRules + fPrompt;
-         nPrompt = "changed pattern, smaller pattern, larger pattern, simplified print, missing ring, changed trim, changed straps, changed ties, added accessories, sunglasses, bag, hat, jewelry, props, studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + nPrompt;
-      }
-
-      if (analysisData?.detectedProductType === 'shoes' && selections['IMAGE_TYPE']?.label?.includes('Catalog')) {
-         const shoesCatalogRules = "[CLEAN CATALOG MODE – SHOES (STRICT ECOMMERCE)] The uploaded shoe is the ONLY reference. CRITICAL: The shoe must be reproduced EXACTLY as in the original image. No changes allowed. PRODUCT LOCK (VERY STRICT): exact shape and proportions, exact colors and materials, exact stitching and seams, exact logo placement, exact sole structure, exact laces style and color. DO NOT: redesign, simplify, smooth details, change textures, modify branding. If the product differs → INVALID. SHOOTING STYLE: professional ecommerce packshot, clean studio background (pure white or light grey), softbox lighting (diffused, shadow soft and minimal), ultra sharp focus, no reflections, no dramatic shadows. COMPOSITION: Each image must show a DIFFERENT angle (3/4 front view, side view, top view, pair front view, back view, sole bottom view, detail close-up). FRAMING: centered product, consistent scale across images, full product visible, no cropping. BACKGROUND: pure white (#ffffff) or soft grey, no environment, no props, no people. FINAL GOAL: This must look like a real ecommerce product listing from a premium brand. Consistency and accuracy are more important than aesthetics. DISABLE AI CREATIVITY: Do not add artistic interpretation. Do not improve the design. Do not stylize the product. This is a technical reproduction, not a creative image. ";
-         fPrompt = shoesCatalogRules + fPrompt;
-         nPrompt = "redesigned product, simplified product, smooth details, changed textures, modified branding, environment, props, people, lifestyle, reflection, dramatic shadows, " + nPrompt;
-      }
-
-      const globalNegative = "logos, apple logo, brand marks, watermarks, text, typography, fonts, graphics, words, signatures, symbols, patches, icons, " + nPrompt;
-
-      setFinalPrompt(fPrompt.replace(/, $/, ''));
-      setNegativePrompt(globalNegative.replace(/, $/, ''));
-    }
-  }, [step, selections]);
+  // Il prompt viene ora calcolato in modo sincrono dentro handleGenerate
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -255,6 +200,61 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     setError(null)
     setResults([])
 
+    // CALCOLO SINCRONO DEL PROMPT PRIMA DEL FETCH
+    let syncFPrompt = "";
+    let syncNPrompt = "";
+
+    const selectedSnippets = Object.values(selections).filter(Boolean) as Snippet[];
+    selectedSnippets.sort((a, b) => {
+       const intensityScore = (val: string) => val === 'strong' ? 3 : val === 'medium' ? 2 : 1;
+       if (intensityScore(b.intensity_level) !== intensityScore(a.intensity_level)) {
+           return intensityScore(b.intensity_level) - intensityScore(a.intensity_level);
+       }
+       return a.priority_order - b.priority_order;
+    });
+
+    selectedSnippets.forEach(s => {
+       if (s.prompt_fragment) {
+          let frag = s.prompt_fragment.trim();
+          if (s.intensity_level === 'strong') frag = `((${frag}))`;
+          syncFPrompt += frag + ", ";
+       }
+       if (s.negative_fragment) {
+          syncNPrompt += s.negative_fragment.trim() + ", ";
+       }
+    });
+
+    if (selections['MODEL_OPTION'] && selections['MODEL_OPTION'].label !== 'No Model' && selections['MODEL_OPTION'].label !== 'STILL LIFE PACK') {
+       syncFPrompt = `${modelAge} years old model, ` + syncFPrompt;
+    }
+
+    const isUGC = selections['IMAGE_TYPE']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('Candid');
+    if (isUGC) {
+       const ugcRules = "[UGC REALISM MODE (HARD): This must NOT look like a professional photoshoot. Simulate a real iPhone photo taken by a normal person. Rules: imperfect framing (slightly off-center), slight motion blur allowed, uneven natural lighting (no studio light), realistic skin texture (pores, small imperfections), casual pose (not posed, not model-like), handheld feeling (not tripod), slightly tilted horizon allowed, background not perfectly clean, depth of field must be flat (like smartphone). Camera simulation: iPhone camera, no cinematic blur, no professional lens look, natural exposure, slightly over or under exposed allowed. IMPORTANT: This must feel like 'a real girl on vacation took this photo quickly' NOT 'a fashion brand campaign'. Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested.] ";
+       syncFPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + ugcRules + syncFPrompt;
+       syncNPrompt = "studio lighting, DSLR, perfect skin, CGI, render, airbrushed, professional photoshoot, cinematic blur, depth of field, posed model, perfect framing, added accessories, sunglasses, bag, hat, jewelry, props, " + syncNPrompt;
+    }
+
+    if (analysisData?.detectedProductType === 'swimwear') {
+       const swimwearRules = "[ABSOLUTE PRODUCT FIDELITY] The AI must treat the uploaded product image as the absolute source of truth. Preserve the exact print placement, exact pattern scale, exact color tones, exact trim, exact straps, ties, rings, stitching and cut. Do NOT simplify the product. Do NOT reinterpret the design. For this reference: The bikini has brown and white gingham panels, brown polka-dot trim, thin straps, side ties, and a central metal ring. These details must remain visible and consistent in every generated image. The model must clearly be wearing this exact bikini suitable for beach or pool environments. ";
+       syncFPrompt = swimwearRules + syncFPrompt;
+       syncNPrompt = "changed pattern, smaller pattern, larger pattern, simplified print, missing ring, changed trim, changed straps, changed ties, added accessories, sunglasses, bag, hat, jewelry, props, studio fashion looks, winter, heavy clothing, modified product, different color, different shape, " + syncNPrompt;
+    }
+
+    if (analysisData?.detectedProductType === 'shoes' && selections['IMAGE_TYPE']?.label?.includes('Catalog')) {
+       const shoesCatalogRules = "[CLEAN CATALOG MODE – SHOES (STRICT ECOMMERCE)] The uploaded shoe is the ONLY reference. CRITICAL: The shoe must be reproduced EXACTLY as in the original image. No changes allowed. PRODUCT LOCK (VERY STRICT): exact shape and proportions, exact colors and materials, exact stitching and seams, exact logo placement, exact sole structure, exact laces style and color. DO NOT: redesign, simplify, smooth details, change textures, modify branding. If the product differs → INVALID. SHOOTING STYLE: professional ecommerce packshot, clean studio background (pure white or light grey), softbox lighting (diffused, shadow soft and minimal), ultra sharp focus, no reflections, no dramatic shadows. COMPOSITION: Each image must show a DIFFERENT angle (3/4 front view, side view, top view, pair front view, back view, sole bottom view, detail close-up). FRAMING: centered product, consistent scale across images, full product visible, no cropping. BACKGROUND: pure white (#ffffff) or soft grey, no environment, no props, no people. FINAL GOAL: This must look like a real ecommerce product listing from a premium brand. Consistency and accuracy are more important than aesthetics. DISABLE AI CREATIVITY: Do not add artistic interpretation. Do not improve the design. Do not stylize the product. This is a technical reproduction, not a creative image. ";
+       syncFPrompt = shoesCatalogRules + syncFPrompt;
+       syncNPrompt = "redesigned product, simplified product, smooth details, changed textures, modified branding, environment, props, people, lifestyle, reflection, dramatic shadows, " + syncNPrompt;
+    }
+
+    const syncGlobalNegative = "logos, apple logo, brand marks, watermarks, text, typography, fonts, graphics, words, signatures, symbols, patches, icons, " + syncNPrompt;
+
+    const finalComputedPrompt = syncFPrompt.replace(/, $/, '');
+    const finalComputedNegative = syncGlobalNegative.replace(/, $/, '');
+    
+    setFinalPrompt(finalComputedPrompt);
+    setNegativePrompt(finalComputedNegative);
+
     try {
       const qtySnippet = selections['QUANTITY'];
       const aspectRatioSnippet = selections['FORMAT'];
@@ -274,8 +274,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
       const payload = {
         imageUrl: uploadedUrl,
-        finalPrompt: finalPrompt || "Taxonomy Auto Prompt",
-        negativePrompt,
+        finalPrompt: finalComputedPrompt || "Taxonomy Auto Prompt",
+        negativePrompt: finalComputedNegative,
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
