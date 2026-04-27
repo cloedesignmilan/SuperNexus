@@ -62,7 +62,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
          }
       });
 
-      const isUGC = selections['BUSINESS_MODE']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('Candid');
+      const isUGC = selections['IMAGE_TYPE']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('UGC') || selections['MODEL_OPTION']?.label.includes('Candid');
       if (isUGC) {
          const ugcRules = "[UGC REALISM MODE (HARD): This must NOT look like a professional photoshoot. Simulate a real iPhone photo taken by a normal person. Rules: imperfect framing (slightly off-center), slight motion blur allowed, uneven natural lighting (no studio light), realistic skin texture (pores, small imperfections), casual pose (not posed, not model-like), handheld feeling (not tripod), slightly tilted horizon allowed, background not perfectly clean, depth of field must be flat (like smartphone). Camera simulation: iPhone camera, no cinematic blur, no professional lens look, natural exposure, slightly over or under exposed allowed. IMPORTANT: This must feel like 'a real girl on vacation took this photo quickly' NOT 'a fashion brand campaign'. Natural style is allowed, but product accuracy has priority over lifestyle creativity. Do not add accessories unless explicitly requested.] ";
          fPrompt = "iPhone style, natural lighting, candid, imperfect realism, " + ugcRules + fPrompt;
@@ -257,6 +257,16 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       const clientTypeSnip = selections['CLIENT_TYPE'];
       const clientGender = clientTypeSnip?.id === 'gender-man' ? 'MAN' : (clientTypeSnip?.id === 'gender-woman' ? 'WOMAN' : null);
 
+      let taxonomyModeMapped = selections['IMAGE_TYPE']?.label || null;
+      if (taxonomyModeMapped) {
+        if (taxonomyModeMapped.includes('UGC')) taxonomyModeMapped = 'UGC';
+        else if (taxonomyModeMapped.includes('Catalog') || taxonomyModeMapped.includes('Ecommerce') || taxonomyModeMapped.includes('Clean')) taxonomyModeMapped = 'Clean Catalog';
+        else if (taxonomyModeMapped.includes('Ad') || taxonomyModeMapped.includes('Scroll')) taxonomyModeMapped = 'Ads / Scroll Stopper';
+        else if (taxonomyModeMapped.includes('Detail') || taxonomyModeMapped.includes('Texture')) taxonomyModeMapped = 'Detail / Texture';
+        else if (taxonomyModeMapped.includes('Model') || taxonomyModeMapped.includes('Studio')) taxonomyModeMapped = 'Model Studio';
+        else taxonomyModeMapped = 'Lifestyle';
+      }
+
       const payload = {
         imageUrl: uploadedUrl,
         finalPrompt: finalPrompt || "Taxonomy Auto Prompt",
@@ -264,8 +274,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         qty: qtySnippet ? parseInt(qtySnippet.label, 10) : 1,
         aspectRatio: aspectRatioSnippet ? aspectRatioSnippet.label : '4:5',
         selectedSnippetIds: Object.values(selections).filter(Boolean).map(s => s.id),
-        taxonomyCat: getMappedCategorySlug(analysisData?.detectedProductType),
-        taxonomyMode: selections['BUSINESS_MODE']?.label || null,
+        taxonomyCat: getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType),
+        taxonomyMode: taxonomyModeMapped,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
         clientGender,
