@@ -17,7 +17,48 @@ interface Props {
 }
 
 const SLIDESHOW_CONFIG = [
-  // The T-SHIRT CLEAN CATALOG lookup was removed because dynamic images were deleted.
+  {
+    displayCategory: 'T-SHIRT',
+    displaySubcategory: 'CLEAN CATALOG → NO MODEL',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
+    lookup: {
+      category: 'T-SHIRT',
+      subcategoryIncludes: 'CLEAN CATALOG'
+    }
+  },
+  {
+    displayCategory: 'T-SHIRT',
+    displaySubcategory: 'MODEL STUDIO → MODEL PHOTO',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
+    manualImages: [
+      "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (62) 2.jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (63).jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (64) 2.jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (65).jpg"
+    ]
+  },
+  {
+    displayCategory: 'T-SHIRT',
+    displaySubcategory: 'UGC CREATOR PACK',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 18_59_01.png',
+    manualImages: [
+      "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (83).jpg",
+      "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (84).jpg",
+      "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (85).jpg",
+      "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (86).jpg"
+    ]
+  },
+  {
+    displayCategory: 'SWIMWEAR',
+    displaySubcategory: 'UGC CREATOR PACK',
+    originalImage: '/prove nuove/Immagini originali/10CDB780-50B9-4B50-8262-CA2EDA1AD623_1_105_c.jpeg',
+    manualImages: [
+      "/prove nuove/swimwear/UGC/supernexus_image (88).jpg",
+      "/prove nuove/swimwear/UGC/supernexus_image (89).jpg",
+      "/prove nuove/swimwear/UGC/supernexus_image (90).jpg",
+      "/prove nuove/swimwear/UGC/supernexus_image (91).jpg"
+    ]
+  },
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'WOMAN → MODEL STUDIO',
@@ -181,6 +222,18 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       category: config.displayCategory,
       useCase: config.displaySubcategory.split('→')[1]?.trim() || config.displaySubcategory,
     }));
+  } else if ((config as any).lookup) {
+    const lookupConfig = (config as any).lookup;
+    const targetItem = showcaseData.find(item => 
+      item.category === lookupConfig.category && item.subcategory.toUpperCase().includes(lookupConfig.subcategoryIncludes)
+    );
+    if (targetItem) {
+      generatedImages = targetItem.afters.slice(0, 4).map(url => ({
+        url,
+        category: targetItem.category,
+        useCase: targetItem.subcategory.split('→')[1]?.trim() || targetItem.subcategory,
+      }));
+    }
   }
 
   // Se non ci sono immagini, evita errori distruttivi. 
