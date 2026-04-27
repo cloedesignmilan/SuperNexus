@@ -214,6 +214,21 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
     return () => clearInterval(interval);
   }, [isAnimating]);
 
+  useEffect(() => {
+    // Prefetch next slide's images to prevent blank flashes
+    if (typeof window === 'undefined') return;
+    
+    const nextIndex = (activeIndex + 1) % SLIDESHOW_CONFIG.length;
+    const nextConfig = SLIDESHOW_CONFIG[nextIndex];
+    const nextUrls: string[] = [...(nextConfig.manualImages || [])];
+    nextUrls.push(nextConfig.originalImage);
+    
+    nextUrls.forEach(url => {
+      const img = new window.Image();
+      img.src = url;
+    });
+  }, [activeIndex]);
+
   const config = SLIDESHOW_CONFIG[activeIndex];
   
   let generatedImages: { url: string, category: string, useCase: string }[] = [];
@@ -317,19 +332,19 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       }}>
         {/* LEFT IMAGES */}
         {leftImages.map((img, i) => (
-          <div key={`left-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
+          <div key={`left-static-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.1 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
 
         {/* CENTER ORIGINAL */}
-        <div key={`center-${activeIndex}`} className={`slide-up-card center-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '0s', zIndex: 10 }}>
+        <div key="center-static" className={`slide-up-card center-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: '0s', zIndex: 10 }}>
           <MarqueeCard img={originalImage} isOriginal={true} />
         </div>
 
         {/* RIGHT IMAGES */}
         {rightImages.map((img, i) => (
-          <div key={`right-${activeIndex}-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
+          <div key={`right-static-${i}`} className={`slide-up-card ${isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${0.4 + i * 0.15}s` }}>
             <MarqueeCard img={img} />
           </div>
         ))}
