@@ -491,41 +491,41 @@
           {
             "shotNumber": 1,
             "shotName": "Neckline & Jewelry Detail",
-            "positivePrompt": "Extreme macro close-up of the {product} neckline worn by a model, showing a hint of a necklace. Focus on the stitching and bodice fabric weave. Shallow depth of field.",
-            "negativePrompt": "full body, full dress visible, far away",
-            "hardRules": "MACRO NECKLINE DETAIL ONLY.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Extreme macro close-up of the {product} neckline worn by a model. Focus on the stitching, original details, and bodice fabric weave. Preserve exact straps, precise neckline shape, and original trims. Shallow depth of field.",
+            "negativePrompt": "added accessories, necklace, jewelry, different neckline, changed straps, full body, full dress visible, far away",
+            "hardRules": "MACRO NECKLINE DETAIL ONLY. EXACT REPLICATION OF ORIGINAL STRAPS AND NECKLINE. DO NOT ADD JEWELRY.",
             "outputGoal": "Neckline detail"
           },
           {
             "shotNumber": 2,
             "shotName": "Waistline / Belt Detail",
-            "positivePrompt": "Macro close-up of the {product} waistline or belt area on the model. Showing the fit and fabric cinching.",
-            "negativePrompt": "full body, face",
-            "hardRules": "MACRO WAIST DETAIL ONLY.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Macro close-up of the {product} waistline or belt area on the model. Maintain the exact original belt or waist trim (braided, chain, rope, or fabric). Showing the exact fit and original fabric cinching.",
+            "negativePrompt": "different belt, leather belt, added accessories, redesigned waist, full body, face",
+            "hardRules": "MACRO WAIST DETAIL ONLY. MUST REPLICATE EXACT ORIGINAL WAIST/BELT DETAILS.",
             "outputGoal": "Waistline fit detail"
           },
           {
             "shotNumber": 3,
             "shotName": "Hem & Shoes Detail",
-            "positivePrompt": "Close-up on the lower hem of the {product} and the model's shoes. Showing how the {product} falls near the ankles/knees.",
-            "negativePrompt": "full dress, upper body, face",
-            "hardRules": "HEMLINE DETAIL ONLY.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Close-up on the lower hem of the {product} and the model's shoes. Showing how the exact original fabric falls and pleats near the ankles/knees.",
+            "negativePrompt": "different fabric, changed pleats, full dress, upper body, face",
+            "hardRules": "HEMLINE DETAIL ONLY. PRESERVE ORIGINAL PLEATS AND HEM STRUCTURE.",
             "outputGoal": "Hem and shoe detail"
           },
           {
             "shotNumber": 4,
             "shotName": "Back Zipper/Closure Detail",
-            "positivePrompt": "Close-up of the back closure, zipper, or buttons of the {product} worn by a model. Focus on the delicate back details.",
-            "negativePrompt": "front view, full body",
-            "hardRules": "BACK CLOSURE DETAIL ONLY.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Close-up of the back closure, zipper, or buttons of the {product} worn by a model. Focus on the delicate exact original back details.",
+            "negativePrompt": "different back, added details, front view, full body",
+            "hardRules": "BACK CLOSURE DETAIL ONLY. MUST BE FAITHFUL TO ORIGINAL GARMENT.",
             "outputGoal": "Back seam detail"
           },
           {
             "shotNumber": 5,
             "shotName": "Fabric Drape Action",
-            "positivePrompt": "Close-up of the {product} skirt flowing and swishing, showing how the fabric folds and drapes dynamically in motion. Highlighting the material lightness.",
-            "negativePrompt": "flat fabric, full body, static",
-            "hardRules": "DYNAMIC SKIRT DRAPE CLOSE-UP.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Close-up of the {product} skirt flowing and swishing, showing how the exact original fabric folds, pleats, and drapes dynamically in motion. Highlighting the material lightness and true color.",
+            "negativePrompt": "flat fabric, changed texture, changed color, full body, static",
+            "hardRules": "DYNAMIC SKIRT DRAPE CLOSE-UP. PRESERVE EXACT TEXTURE AND PLEATING.",
             "outputGoal": "Fabric behavior detail"
           }
         ]
