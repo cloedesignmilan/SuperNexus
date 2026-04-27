@@ -146,7 +146,7 @@ const SLIDESHOW_CONFIG = [
       "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154011.096.webp",
       "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154012.500.webp",
       "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154013.255.webp",
-      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T155201.087.jpg"
+      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T155201.087.webp"
     ]
   }
 ];
