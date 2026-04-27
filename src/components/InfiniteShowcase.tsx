@@ -24,7 +24,9 @@ const SLIDESHOW_CONFIG = [
     manualImages: [
       "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot1.jpg",
       "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot2.jpg",
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot3.jpg"
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot3.jpg",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot4.jpg",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot5.jpg"
     ]
   },
   {
