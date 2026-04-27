@@ -332,13 +332,15 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body, maintaining all proportions and straps.]";
 
+            const clientNegativePrompt = subcat.negative_prompt ? `${subcat.negative_prompt}, ` : '';
+
             variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${finalPositive}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-CRITICAL NEGATIVE PROMPT: ${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
+CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
 ` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective;
 
             if (isOutfit) {
