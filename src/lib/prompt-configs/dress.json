@@ -299,41 +299,41 @@
           {
             "shotNumber": 1,
             "shotName": "Wedding Guest Selfie",
-            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a luxury venue bathroom or upscale hotel room. Shot on iPhone, slightly grainy, authentic flash reflection. Wedding guest vibe.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model, messy room",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE AT AN ELEGANT EVENT. SHOW FULL DRESS.",
+            "positivePrompt": "Amateur iPhone mirror selfie of a {gender} wearing the {product} in a cramped bathroom. Messy background, harsh overhead light, grainy phone camera quality. Poorly framed, authentic snapshot.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, bokeh, depth of field, professional photographer, elegant composition",
+            "hardRules": "EXTREME AMATEUR IPHONE SELFIE. NO PROFESSIONAL LIGHTING. HARSH FLASH OR BAD BATHROOM LIGHT.",
             "outputGoal": "UGC Event Selfie"
           },
           {
             "shotNumber": 2,
             "shotName": "Gala Dinner POV",
-            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken by a friend across a beautifully decorated gala or restaurant table. Flash photography, authentic, slightly imperfect framing, wine glasses visible.",
-            "negativePrompt": "professional, studio, perfectly centered, softbox, casual diner",
-            "hardRules": "IMPERFECT FRAMING. IPHONE NIGHT FLASH AESTHETIC AT UPSCALE DINNER.",
+            "positivePrompt": "Low quality iPhone photo taken by a friend across a dark restaurant table. {gender} wearing the {product}. Harsh phone flash, red eye effect, dirty plates on table. Snapshot feeling, not posed.",
+            "negativePrompt": "professional, studio, centered perfectly, bokeh, DSLR, softbox, professional wedding photography",
+            "hardRules": "HARSH PHONE FLASH. AMATEUR SNAPSHOT AT A TABLE. NO BOKEH.",
             "outputGoal": "POV Gala Dinner"
           },
           {
             "shotNumber": 3,
             "shotName": "Theater Foyer Candid",
-            "positivePrompt": "UGC style candid shot of a {gender} wearing the {product} walking through a grand theater or opera house foyer. Elegant architecture in background. Casual, raw phone photo.",
-            "negativePrompt": "studio, high fashion, perfect focus, casual street",
-            "hardRules": "ELEGANT THEATER ENVIRONMENT. RAW IPHONE QUALITY.",
+            "positivePrompt": "Blurry candid snapshot of a {gender} wearing the {product} walking quickly. Taken with a phone in a crowded hallway. Grainy, low light, amateur composition.",
+            "negativePrompt": "studio, high fashion, perfect focus, DSLR, wedding photographer, cinematic, bokeh",
+            "hardRules": "MUST LOOK LIKE A CHEAP PHONE PHOTO. NO PROFESSIONAL FOCUS. SLIGHT MOTION BLUR.",
             "outputGoal": "UGC Theater Arrival"
           },
           {
             "shotNumber": 4,
             "shotName": "Upscale Birthday Party",
-            "positivePrompt": "UGC style candid photo of the {gender} wearing the {product} laughing at an exclusive birthday party or VIP lounge, holding a cocktail. Realistic venue lighting, iPhone flash.",
-            "negativePrompt": "macro lens, professional detail, studio, daylight",
-            "hardRules": "PHONE CAMERA FLASH. PARTY VIBE.",
+            "positivePrompt": "Casual phone snapshot of a {gender} wearing the {product} laughing at a party. Harsh flash lighting, dark room, unposed, messy hair. True UGC aesthetic.",
+            "negativePrompt": "macro lens, professional detail, studio, daylight, DSLR, event photographer, beautiful bokeh",
+            "hardRules": "HARSH IPHONE FLASH. NO BOKEH. MESSY AND UNPOSED.",
             "outputGoal": "UGC Party Emotion"
           },
           {
             "shotNumber": 5,
             "shotName": "Event Arrival Flash",
-            "positivePrompt": "UGC style photo of a {gender} wearing the {product} arriving at a formal event or red carpet, taken casually by a friend. Authentic paparazzi or quick snapshot feel. Grainy iPhone night aesthetic.",
-            "negativePrompt": "studio, perfect lighting, modeling, professional red carpet",
-            "hardRules": "FORMAL EVENT ARRIVAL. RELAXED AND REAL IPHONE SNAPSHOT.",
+            "positivePrompt": "Quick amateur phone photo of a {gender} wearing the {product} arriving at a party. Overexposed phone flash, bad framing, authentic snapshot.",
+            "negativePrompt": "studio, perfect lighting, modeling, professional red carpet, DSLR, bokeh, depth of field",
+            "hardRules": "OVEREXPOSED PHONE FLASH. AMATEUR FRAMING. ZERO PROFESSIONAL AESTHETIC.",
             "outputGoal": "UGC Event Arrival"
           }
         ]
@@ -347,41 +347,41 @@
           {
             "shotNumber": 1,
             "shotName": "Hotel Elevator Selfie",
-            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a luxury hotel elevator or upscale bathroom. Shot on iPhone, formal event context, authentic.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality, messy room",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE IN LUXURY SETTING.",
+            "positivePrompt": "Amateur iPhone mirror selfie of a {gender} wearing the {product} inside an elevator. Poor lighting, grainy, casual snapshot. Not posed professionally.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, bokeh, DSLR photographer",
+            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE. NO BOKEH. FLAT LIGHTING.",
             "outputGoal": "UGC Formal Selfie"
           },
           {
             "shotNumber": 2,
             "shotName": "Gala Dinner POV",
-            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken across a table at an upscale dinner or charity gala by a friend. Flash photography, wine glasses.",
-            "negativePrompt": "professional, studio, centered perfectly, casual diner",
-            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC AT FORMAL DINNER.",
+            "positivePrompt": "Low quality phone photo of a {gender} wearing the {product}, sitting at a crowded dinner table. Taken by a friend. Harsh flash, unposed, true amateur snapshot.",
+            "negativePrompt": "professional, studio, centered perfectly, bokeh, DSLR, softbox, professional wedding photography",
+            "hardRules": "HARSH PHONE FLASH. NO BOKEH. TRUE AMATEUR.",
             "outputGoal": "POV Gala Man"
           },
           {
             "shotNumber": 3,
             "shotName": "Theater Arrival",
-            "positivePrompt": "UGC style shot of a {gender} wearing the {product} walking up the stairs of a grand theater or opera house. Casual, raw phone photo.",
-            "negativePrompt": "studio, high fashion, perfect focus",
-            "hardRules": "OPERA OR THEATER ENVIRONMENT. RAW IPHONE QUALITY.",
+            "positivePrompt": "Quick, slightly blurry phone photo of a {gender} wearing the {product} on some stairs. Bad composition, natural grainy light. Not a professional portrait.",
+            "negativePrompt": "studio, high fashion, perfect focus, DSLR, wedding photographer, cinematic, bokeh",
+            "hardRules": "MUST LOOK LIKE A CHEAP PHONE PHOTO. ZERO PROFESSIONAL AESTHETIC.",
             "outputGoal": "UGC Theater Man"
           },
           {
             "shotNumber": 4,
             "shotName": "Upscale Party UGC",
-            "positivePrompt": "UGC style candid photo of a {gender} wearing the {product} laughing with friends at a premium birthday event or VIP lounge. Authentic phone flash lighting.",
-            "negativePrompt": "studio, perfect lighting",
-            "hardRules": "UPSCALE PARTY ENVIRONMENT. RAW VIBE FLASH.",
+            "positivePrompt": "Phone snapshot of a {gender} wearing the {product} holding a drink in a dark room with harsh phone flash. Candid, red eye effect, messy background.",
+            "negativePrompt": "studio, perfect lighting, DSLR, event photographer, beautiful bokeh",
+            "hardRules": "HARSH IPHONE FLASH. NO BOKEH. UNPOSED SNAPSHOT.",
             "outputGoal": "Active Event UGC Man"
           },
           {
             "shotNumber": 5,
             "shotName": "Wedding Reception Candid",
-            "positivePrompt": "UGC style photo of a {gender} wearing the {product} adjusting his tie or holding a drink at a beautiful wedding reception. Authentic everyday snapshot feel.",
-            "negativePrompt": "studio, modeling, stiff pose",
-            "hardRules": "WEDDING RECEPTION VIBE. IPHONE SNAPSHOT.",
+            "positivePrompt": "Amateur phone photo of a {gender} wearing the {product} at a busy event. Someone's arm in the frame, bad lighting, typical iPhone snapshot at a party.",
+            "negativePrompt": "studio, modeling, stiff pose, DSLR, bokeh, professional wedding photography",
+            "hardRules": "BAD FRAMING. TYPICAL IPHONE SNAPSHOT. NO BOKEH.",
             "outputGoal": "UGC Wedding Man"
           }
         ]
