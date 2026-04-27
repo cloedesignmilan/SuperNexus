@@ -19,6 +19,16 @@ interface Props {
 const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'DRESS / ELEGANT',
+    displaySubcategory: 'ADS / SCROLL STOPPER → MODEL PHOTO',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
+    manualImages: [
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot1.jpg",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot2.jpg",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot3.jpg"
+    ]
+  },
+  {
+    displayCategory: 'DRESS / ELEGANT',
     displaySubcategory: 'DETAIL / TEXTURE → NO MODEL',
     originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
     manualImages: [
