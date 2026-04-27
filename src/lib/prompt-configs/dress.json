@@ -499,9 +499,9 @@
           {
             "shotNumber": 2,
             "shotName": "Waistline / Belt Detail",
-            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Macro close-up of the {product} waistline or belt area on the model. Maintain the exact original belt or waist trim (braided, chain, rope, or fabric). Showing the exact fit and original fabric cinching.",
-            "negativePrompt": "different belt, leather belt, added accessories, redesigned waist, full body, face",
-            "hardRules": "MACRO WAIST DETAIL ONLY. MUST REPLICATE EXACT ORIGINAL WAIST/BELT DETAILS.",
+            "positivePrompt": "[ABSOLUTE PRODUCT FIDELITY] Macro close-up of the {product} waistline or belt area on the model. Replicate the EXACT thickness, material, and design of the original belt or waist trim. Showing the exact fit and original fabric cinching.",
+            "negativePrompt": "different belt, leather belt, thick belt, altered belt structure, added accessories, redesigned waist, full body, face",
+            "hardRules": "MACRO WAIST DETAIL ONLY. DO NOT INVENT A NEW BELT. MUST REPLICATE EXACT ORIGINAL WAIST/BELT THICKNESS AND DETAILS.",
             "outputGoal": "Waistline fit detail"
           },
           {
