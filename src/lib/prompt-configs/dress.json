@@ -298,43 +298,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Mirror Selfie Dress",
-            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a bedroom or nice bathroom. Shot on iPhone, slightly grainy, authentic flash reflection. Full dress visible.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE. SHOW FULL DRESS.",
-            "outputGoal": "UGC Selfie"
+            "shotName": "Wedding Guest Selfie",
+            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a luxury venue bathroom or upscale hotel room. Shot on iPhone, slightly grainy, authentic flash reflection. Wedding guest vibe.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model, messy room",
+            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE AT AN ELEGANT EVENT. SHOW FULL DRESS.",
+            "outputGoal": "UGC Event Selfie"
           },
           {
             "shotNumber": 2,
-            "shotName": "Night Out Point of View",
-            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken by a friend on a night out. Flash photography, authentic, slightly imperfect framing.",
-            "negativePrompt": "professional, studio, perfectly centered, softbox",
-            "hardRules": "IMPERFECT FRAMING. IPHONE NIGHT FLASH AESTHETIC.",
-            "outputGoal": "POV Night Out"
+            "shotName": "Gala Dinner POV",
+            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken by a friend across a beautifully decorated gala or restaurant table. Flash photography, authentic, slightly imperfect framing, wine glasses visible.",
+            "negativePrompt": "professional, studio, perfectly centered, softbox, casual diner",
+            "hardRules": "IMPERFECT FRAMING. IPHONE NIGHT FLASH AESTHETIC AT UPSCALE DINNER.",
+            "outputGoal": "POV Gala Dinner"
           },
           {
             "shotNumber": 3,
-            "shotName": "Back UGC",
-            "positivePrompt": "UGC style back shot of a {gender} wearing the {product} walking ahead on a sidewalk. Casual, raw phone photo.",
-            "negativePrompt": "studio, high fashion, perfect focus",
-            "hardRules": "BACK VIEW. RAW IPHONE QUALITY.",
-            "outputGoal": "UGC Back view"
+            "shotName": "Theater Foyer Candid",
+            "positivePrompt": "UGC style candid shot of a {gender} wearing the {product} walking through a grand theater or opera house foyer. Elegant architecture in background. Casual, raw phone photo.",
+            "negativePrompt": "studio, high fashion, perfect focus, casual street",
+            "hardRules": "ELEGANT THEATER ENVIRONMENT. RAW IPHONE QUALITY.",
+            "outputGoal": "UGC Theater Arrival"
           },
           {
             "shotNumber": 4,
-            "shotName": "Close up details UGC",
-            "positivePrompt": "UGC style close up of the {product} fabric and neckline, taken casually with a phone. Realistic home or venue lighting.",
-            "negativePrompt": "macro lens, professional detail, studio",
-            "hardRules": "PHONE CAMERA CLOSE UP.",
-            "outputGoal": "UGC Texture"
+            "shotName": "Upscale Birthday Party",
+            "positivePrompt": "UGC style candid photo of the {gender} wearing the {product} laughing at an exclusive birthday party or VIP lounge, holding a cocktail. Realistic venue lighting, iPhone flash.",
+            "negativePrompt": "macro lens, professional detail, studio, daylight",
+            "hardRules": "PHONE CAMERA FLASH. PARTY VIBE.",
+            "outputGoal": "UGC Party Emotion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Getting ready",
-            "positivePrompt": "UGC style photo of a {gender} wearing the {product} fixing her hair in a hallway. Authentic everyday shot. Grainy iPhone aesthetic.",
-            "negativePrompt": "studio, perfect lighting, modeling",
-            "hardRules": "EVERYDAY ENVIRONMENT. RELAXED AND REAL.",
-            "outputGoal": "UGC Getting Ready"
+            "shotName": "Event Arrival Flash",
+            "positivePrompt": "UGC style photo of a {gender} wearing the {product} arriving at a formal event or red carpet, taken casually by a friend. Authentic paparazzi or quick snapshot feel. Grainy iPhone night aesthetic.",
+            "negativePrompt": "studio, perfect lighting, modeling, professional red carpet",
+            "hardRules": "FORMAL EVENT ARRIVAL. RELAXED AND REAL IPHONE SNAPSHOT.",
+            "outputGoal": "UGC Event Arrival"
           }
         ]
       },
@@ -346,43 +346,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Mirror Selfie Man",
-            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product}. Shot on iPhone, messy room background, authentic.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
-            "outputGoal": "UGC Selfie Man"
+            "shotName": "Hotel Elevator Selfie",
+            "positivePrompt": "UGC style mirror selfie of a Real {gender} wearing the {product} in a luxury hotel elevator or upscale bathroom. Shot on iPhone, formal event context, authentic.",
+            "negativePrompt": "professional lighting, DSLR, studio, high quality, messy room",
+            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE IN LUXURY SETTING.",
+            "outputGoal": "UGC Formal Selfie"
           },
           {
             "shotNumber": 2,
-            "shotName": "Casual street UGC",
-            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, walking on the street, taken quickly by a friend.",
-            "negativePrompt": "professional, studio, centered perfectly",
-            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
-            "outputGoal": "POV Friend Man"
+            "shotName": "Gala Dinner POV",
+            "positivePrompt": "UGC style photo of a Real {gender} wearing the {product}, taken across a table at an upscale dinner or charity gala by a friend. Flash photography, wine glasses.",
+            "negativePrompt": "professional, studio, centered perfectly, casual diner",
+            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC AT FORMAL DINNER.",
+            "outputGoal": "POV Gala Man"
           },
           {
             "shotNumber": 3,
-            "shotName": "Back UGC Man",
-            "positivePrompt": "UGC style back shot of a {gender} wearing the {product} looking at a view. Casual, raw phone photo.",
+            "shotName": "Theater Arrival",
+            "positivePrompt": "UGC style shot of a {gender} wearing the {product} walking up the stairs of a grand theater or opera house. Casual, raw phone photo.",
             "negativePrompt": "studio, high fashion, perfect focus",
-            "hardRules": "BACK VIEW. RAW IPHONE QUALITY.",
-            "outputGoal": "UGC Back view man"
+            "hardRules": "OPERA OR THEATER ENVIRONMENT. RAW IPHONE QUALITY.",
+            "outputGoal": "UGC Theater Man"
           },
           {
             "shotNumber": 4,
-            "shotName": "Party UGC",
-            "positivePrompt": "UGC style photo of a {gender} wearing the {product} at a party. Authentic phone flash lighting.",
+            "shotName": "Upscale Party UGC",
+            "positivePrompt": "UGC style candid photo of a {gender} wearing the {product} laughing with friends at a premium birthday event or VIP lounge. Authentic phone flash lighting.",
             "negativePrompt": "studio, perfect lighting",
-            "hardRules": "PARTY ENVIRONMENT. RAW VIBE FLASH.",
-            "outputGoal": "Active UGC"
+            "hardRules": "UPSCALE PARTY ENVIRONMENT. RAW VIBE FLASH.",
+            "outputGoal": "Active Event UGC Man"
           },
           {
             "shotNumber": 5,
-            "shotName": "Sitting casual",
-            "positivePrompt": "UGC style photo of a {gender} wearing the {product} sitting in a car or cafe. Authentic everyday shot.",
-            "negativePrompt": "studio, modeling",
-            "hardRules": "CASUAL SEATED. IPHONE VIBE.",
-            "outputGoal": "UGC Casual Seat"
+            "shotName": "Wedding Reception Candid",
+            "positivePrompt": "UGC style photo of a {gender} wearing the {product} adjusting his tie or holding a drink at a beautiful wedding reception. Authentic everyday snapshot feel.",
+            "negativePrompt": "studio, modeling, stiff pose",
+            "hardRules": "WEDDING RECEPTION VIBE. IPHONE SNAPSHOT.",
+            "outputGoal": "UGC Wedding Man"
           }
         ]
       },
