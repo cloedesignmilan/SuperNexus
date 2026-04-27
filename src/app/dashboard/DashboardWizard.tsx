@@ -19,6 +19,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [selections, setSelections] = useState<Record<string, Snippet | null>>({
     CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null
   })
+  const [modelAge, setModelAge] = useState<number>(25)
 
   // Final Prompts
   const [finalPrompt, setFinalPrompt] = useState<string>('')
@@ -61,6 +62,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             nPrompt += s.negative_fragment.trim() + ", ";
          }
       });
+
+      if (selections['MODEL_OPTION'] && selections['MODEL_OPTION'].label !== 'No Model' && selections['MODEL_OPTION'].label !== 'STILL LIFE PACK') {
+         fPrompt = `${modelAge} years old model, ` + fPrompt;
+      }
 
       const isUGC = selections['IMAGE_TYPE']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('UGC') || selections['MODEL_OPTION']?.label?.includes('Candid');
       if (isUGC) {
@@ -508,14 +513,30 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   const renderSnippetGrid = (type: string, stepIndex: number) => {
     if (type === 'FORMAT_QUANTITY') {
+      const hasModel = selections['MODEL_OPTION'] && selections['MODEL_OPTION'].label !== 'No Model' && selections['MODEL_OPTION'].label !== 'STILL LIFE PACK';
       return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          {hasModel && (
+            <div>
+              <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>1. Model Age</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <input 
+                  type="range" 
+                  min="18" max="50" 
+                  value={modelAge} 
+                  onChange={e => setModelAge(parseInt(e.target.value))} 
+                  style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--color-primary)' }} 
+                />
+                <span style={{ fontSize: '1.2rem', fontWeight: 600, minWidth: '60px', textAlign: 'right' }}>{modelAge} yrs</span>
+              </div>
+            </div>
+          )}
           <div>
-            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>1. Aspect Ratio</h3>
+            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>{hasModel ? '2' : '1'}. Aspect Ratio</h3>
             {renderSnippetGridInternal('FORMAT', stepIndex)}
           </div>
           <div>
-            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>2. Quantity</h3>
+            <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>{hasModel ? '3' : '2'}. Quantity</h3>
             {renderSnippetGridInternal('QUANTITY', stepIndex)}
           </div>
         </div>
