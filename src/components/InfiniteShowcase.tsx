@@ -270,7 +270,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
         </p>
 
         {/* CATEGORY ICONS */}
-        <div style={{ 
+        <div className="category-icons-container" style={{ 
           display: 'flex', 
           gap: 'clamp(1rem, 3vw, 2.5rem)', 
           marginTop: '3rem', 
@@ -435,6 +435,15 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
           }
           .static-showcase-container::-webkit-scrollbar {
             display: none;
+          }
+          .category-icons-container {
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+            gap: 1.5rem !important;
+          }
+          .category-icons-container > div {
+            flex-basis: 25%;
           }
           .slide-up-card {
             width: 80vw;
