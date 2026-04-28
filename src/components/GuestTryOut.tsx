@@ -406,6 +406,30 @@ export default function GuestTryOut() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={url} alt={`Result ${idx + 1}`} style={{ width: '100%', display: 'block', pointerEvents: 'none' }} draggable={false} />
                 <div style={{ position: 'absolute', inset: 0, border: '2px solid rgba(204,255,0,0.2)', borderRadius: '24px', pointerEvents: 'none' }} />
+                
+                {/* Elegant Watermark */}
+                <div style={{
+                  position: 'absolute', 
+                  bottom: '16px', 
+                  right: '16px', 
+                  background: 'rgba(0,0,0,0.5)', 
+                  backdropFilter: 'blur(8px)', 
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  padding: '6px 12px', 
+                  borderRadius: '12px', 
+                  color: 'rgba(255,255,255,0.8)', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 600, 
+                  letterSpacing: '1px', 
+                  pointerEvents: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                }}>
+                  <Sparkles size={12} color="#ccff00" /> SUPERNEXUS AI
+                </div>
               </div>
             ))}
           </div>
