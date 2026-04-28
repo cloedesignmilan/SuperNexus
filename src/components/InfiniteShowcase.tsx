@@ -31,22 +31,13 @@ const SLIDESHOW_CONFIG = [
   },
   {
     displayCategory: 'DRESS / ELEGANT',
-    displaySubcategory: 'DETAIL / TEXTURE → NO MODEL',
-    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
-    manualImages: [
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot3.jpg"
-    ]
-  },
-  {
-    displayCategory: 'DRESS / ELEGANT',
-    displaySubcategory: 'DETAIL / TEXTURE → MODEL PHOTO',
+    displaySubcategory: 'DETAIL / TEXTURE → MODEL & NO MODEL',
     originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
     manualImages: [
       "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot1.jpg",
       "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot2.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot3.jpg"
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.jpg"
     ]
   },
   {
