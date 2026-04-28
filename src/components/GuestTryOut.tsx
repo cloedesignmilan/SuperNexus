@@ -5,27 +5,52 @@ import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIco
 
 const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   'T-shirt': {
-    'Clean Catalog': ['Ghost Mannequin', 'Flat Lay', 'No Model'],
-    'Model Studio': ['Model Photo', 'Curvy', 'Detail'],
-    'UGC': ['Candid Photo'],
-    'Ads': ['Model Photo']
+    'Clean Catalog': ['No Model', 'Still Life Pack'],
+    'Model Studio': ['Model Photo', 'Curvy'],
+    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
+    'UGC': ['Candid Woman', 'Candid Man', 'UGC Creator Pack'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
   },
   'Dress': {
+    'Clean Catalog': ['No Model'],
     'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid'],
-    'Clean Catalog': ['Ghost Mannequin']
+    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
+    'UGC': ['Candid Woman', 'Candid Man'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
   },
   'Swimwear': {
+    'Clean Catalog': ['No Model'],
     'Model Studio': ['Model Photo', 'Curvy'],
-    'Clean Catalog': ['No Model', 'Flat Lay'],
     'Lifestyle': ['Model Photo'],
     'UGC': ['Candid Woman'],
-    'Ads': ['Model Photo', 'No Model']
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
   },
   'Shoes': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo'],
-    'UGC': ['Candid Photo']
+    'Model Studio': ['Model Photo', 'Curvy'],
+    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
+    'UGC': ['Candid Woman', 'Candid Man'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
+  },
+  'Bags': {
+    'Clean Catalog': ['No Model'],
+    'Model Studio': ['Model Photo', 'Curvy'],
+    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
+    'UGC': ['Candid Woman', 'Candid Man'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
+  },
+  'Jewelry': {
+    'Clean Catalog': ['No Model'],
+    'Model Studio': ['Model Photo', 'Curvy'],
+    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
+    'UGC': ['Candid Woman', 'Candid Man'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
   }
 };
 
@@ -99,8 +124,10 @@ export default function GuestTryOut() {
       if (analyzeData.success && analyzeData.analysis) {
         const type = analyzeData.analysis.detectedProductType;
         if (type === 'swimwear') setSelectedCat('Swimwear');
-        else if (type === 'ceremony_elegant' || type === 'women_clothing') setSelectedCat('Dress');
+        else if (type === 'ceremony_elegant' || type === 'women_clothing' || type === 'men_clothing') setSelectedCat('Dress');
         else if (type === 'shoes') setSelectedCat('Shoes');
+        else if (type === 'bags' || type === 'accessories') setSelectedCat('Bags');
+        else if (type === 'jewelry') setSelectedCat('Jewelry');
         else setSelectedCat('T-shirt');
       }
 
