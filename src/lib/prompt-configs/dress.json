@@ -438,47 +438,71 @@
         "mode": "ads",
         "presentation": "no-model",
         "scene": "all",
-        "quantity": 5,
+        "quantity": 8,
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Floating Magic Dress",
-            "positivePrompt": "{product} magically floating in mid-air with dynamic elegant ripples in the skirt. Bright contrasting studio background. High impact advertising.",
-            "negativePrompt": "model, mannequin, flat lay, boring",
-            "hardRules": "FLOATING GHOST EFFECT WITH VOLUME. NO MODEL.",
-            "outputGoal": "Floating magic"
+            "shotName": "AI Rebuild",
+            "positivePrompt": "{product} magically floating in mid-air undergoing a futuristic AI reconstruction process. Glowing digital wireframes and neon geometric grids assembling the fabric. Cyber-couture, high impact advertising, 8k.",
+            "negativePrompt": "model, mannequin, messy, flat lay, boring",
+            "hardRules": "AI RECONSTRUCTION VISUAL EFFECT. FLOATING. NO MODEL.",
+            "outputGoal": "AI Rebuild VFX"
           },
           {
             "shotNumber": 2,
-            "shotName": "Pedestal Showcase",
-            "positivePrompt": "{product} displayed majestically on an elegant marble or glowing pedestal. High-end premium product photography. Dramatic lighting.",
-            "negativePrompt": "model, messy, flat lay",
-            "hardRules": "ON PREMIUM PEDESTAL. DRAMATIC LIGHT. NO MODEL.",
-            "outputGoal": "Premium pedestal ad"
+            "shotName": "Disintegration",
+            "positivePrompt": "{product} floating in mid-air with the edges dramatically disintegrating into glowing embers, stardust, or flocking birds. Epic cinematic lighting, surreal high fashion advertising, hyperrealistic.",
+            "negativePrompt": "model, mannequin, flat lay, boring",
+            "hardRules": "DISINTEGRATION / DISPERSION EFFECT. FLOATING. NO MODEL.",
+            "outputGoal": "Disintegration VFX"
           },
           {
             "shotNumber": 3,
-            "shotName": "Back View Floating",
-            "positivePrompt": "Back view of the {product} floating in mid-air. Dramatic under-lighting emphasizing the silhouette and back details. Epic product presentation.",
-            "negativePrompt": "front view, model",
-            "hardRules": "BACK VIEW FLOATING. NO MODEL.",
-            "outputGoal": "Epic back float"
+            "shotName": "Premium Mirror",
+            "positivePrompt": "{product} floating above a pristine, hyper-reflective black obsidian mirror surface. Perfect symmetric reflection, dramatic spotlights, premium luxury aesthetic, 8k.",
+            "negativePrompt": "model, messy, flat lay",
+            "hardRules": "PRISTINE MIRROR REFLECTION. LUXURY AESTHETIC. NO MODEL.",
+            "outputGoal": "Premium mirror reflection"
           },
           {
             "shotNumber": 4,
-            "shotName": "Floral/Nature Abstract",
-            "positivePrompt": "{product} hanging elegantly against a background of oversized abstract flowers or tropical leaves. Advertising campaign style.",
-            "negativePrompt": "model, people, dirty",
-            "hardRules": "HANGING WITH ABSTRACT NATURE BACKGROUND. NO MODEL.",
-            "outputGoal": "Nature contrast ad"
+            "shotName": "Fabric Flow",
+            "positivePrompt": "{product} floating in an anti-gravity chamber. The skirt and fabric are flowing with impossible fluid dynamics, creating massive elegant ripples. High impact advertising.",
+            "negativePrompt": "model, people, dirty, flat",
+            "hardRules": "IMPOSSIBLE ANTI-GRAVITY FABRIC MOTION. NO MODEL.",
+            "outputGoal": "Fluid fabric motion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Hanging Minimalist Pop",
-            "positivePrompt": "{product} hanging on a modern minimalist brass hanger against a bright pop-color background with a hard drop shadow.",
-            "negativePrompt": "model, floating, complex background",
-            "hardRules": "ON BRASS HANGER. HARD SHADOW. NO MODEL.",
-            "outputGoal": "Pop minimal hanger"
+            "shotName": "Hologram Projection",
+            "positivePrompt": "{product} rendered as a futuristic, glowing, translucent 3D hologram projection. Laser light beams, cyberpunk high fashion aesthetic, deep black background.",
+            "negativePrompt": "model, floating, complex background, natural light",
+            "hardRules": "GLOWING TRANSLUCENT HOLOGRAM EFFECT. NO MODEL.",
+            "outputGoal": "Hologram projection"
+          },
+          {
+            "shotNumber": 6,
+            "shotName": "Time Freeze",
+            "positivePrompt": "{product} frozen in time while floating. The air is filled with frozen water splashes, floating flower petals, and suspended dust particles catching the cinematic light. Masterpiece advertising.",
+            "negativePrompt": "model, normal, boring",
+            "hardRules": "TIME FREEZE MATRIX EFFECT WITH SUSPENDED PARTICLES. NO MODEL.",
+            "outputGoal": "Time freeze VFX"
+          },
+          {
+            "shotNumber": 7,
+            "shotName": "Infinite Duplication",
+            "positivePrompt": "{product} surrounded by an infinite hall of mirrors, creating mesmerizing infinite duplications fading into the distance. Optical illusion advertising.",
+            "negativePrompt": "model, flat, single object",
+            "hardRules": "INFINITE MIRROR DUPLICATION. NO MODEL.",
+            "outputGoal": "Infinite duplication"
+          },
+          {
+            "shotNumber": 8,
+            "shotName": "Glass Shatter",
+            "positivePrompt": "{product} floating in the center of an exploding, shattering pane of thick glass. Ultra-crisp flying glass shards catching the intense studio light. Epic dynamic advertising.",
+            "negativePrompt": "model, soft, calm",
+            "hardRules": "EXPLODING SHATTERED GLASS SHARDS IN MIDAIR. NO MODEL.",
+            "outputGoal": "Glass shatter VFX"
           }
         ]
       },
