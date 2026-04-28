@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Shirt, Sparkles, Waves, Footprints, Layers } from 'lucide-react';
+import { Shirt, Sparkles, Waves, Footprints, Layers, ShoppingBag } from 'lucide-react';
 
 interface ShowcaseItem {
   id: string;
@@ -92,6 +92,17 @@ const SLIDESHOW_CONFIG = [
       "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_2.webp",
       "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_3.webp",
       "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_4.webp"
+    ]
+  },
+  {
+    displayCategory: 'BAGS',
+    displaySubcategory: 'CLEAN CATALOG',
+    originalImage: '/prove nuove/BAGS/CLEAN CATALOG/prima_1.webp',
+    manualImages: [
+      "/prove nuove/BAGS/CLEAN CATALOG/dopo_1.webp",
+      "/prove nuove/BAGS/CLEAN CATALOG/dopo_2.webp",
+      "/prove nuove/BAGS/CLEAN CATALOG/dopo_3.webp",
+      "/prove nuove/BAGS/CLEAN CATALOG/dopo_4.webp"
     ]
   },
   {
@@ -192,6 +203,7 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   'SWIMWEAR': Waves,
   'FOOTWEAR': Footprints,
   'HOODIES': Layers,
+  'BAGS': ShoppingBag,
 };
 
 export default function InfiniteShowcase({ showcaseData }: Props) {
