@@ -6,7 +6,7 @@ import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIco
 const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   'T-shirt': {
     'Clean Catalog': ['No Model', 'Still Life Pack'],
-    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Model Studio': ['Model Photo'],
     'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
     'UGC': ['Candid Real Woman', 'Candid Real Man', 'UGC Creator Pack'],
     'Ads': ['Model Photo', 'No Model'],
@@ -14,7 +14,7 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   },
   'Dress': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Model Studio': ['Model Photo'],
     'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
     'UGC': ['Candid Real Woman', 'Candid Real Man'],
     'Ads': ['Model Photo', 'No Model'],
@@ -22,7 +22,7 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   },
   'Swimwear': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Model Studio': ['Model Photo'],
     'Lifestyle': ['Model Photo'],
     'UGC': ['Candid Real Woman'],
     'Ads': ['Model Photo', 'No Model'],
@@ -30,7 +30,7 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   },
   'Shoes': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Model Studio': ['Model Photo'],
     'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
     'UGC': ['Candid Real Woman', 'Candid Real Man'],
     'Ads': ['Model Photo', 'No Model'],
