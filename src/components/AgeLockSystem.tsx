@@ -112,6 +112,7 @@ export default function AgeLockSystem() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
               {/* Wow Effect: HUD Target Scanner */}
+              <div className="hud-glow"></div>
               <div className="hud-background">
                 <div className="hud-text">AGE DETECT: LOCK</div>
                 <div className="hud-scan-line"></div>
@@ -140,6 +141,7 @@ export default function AgeLockSystem() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
               {/* Wow Effect: HUD Target Scanner */}
+              <div className="hud-glow"></div>
               <div className="hud-background">
                 <div className="hud-text">AGE DETECT: LOCK</div>
                 <div className="hud-scan-line"></div>
@@ -187,6 +189,15 @@ export default function AgeLockSystem() {
         }
 
         /* WOW Background: HUD Target Scanner */
+        .hud-glow {
+          position: absolute;
+          top: 50%; left: 50%;
+          width: 150%; aspect-ratio: 1;
+          transform: translate(-50%, -50%);
+          background: radial-gradient(circle at center, rgba(255, 255, 255, 0.15) 0%, rgba(204, 255, 0, 0.05) 40%, transparent 70%);
+          z-index: 0;
+          pointer-events: none;
+        }
         .hud-background {
           position: absolute;
           top: 15%; left: 10%;
