@@ -120,7 +120,7 @@ export default function AgeLockSystem() {
               {frames.map((frame, idx) => (
                 <img 
                   key={`man-${idx}`}
-                  src={`/age-system/v2/transparent/man_${frame.age}.png`} 
+                  src={`/age-system/v2/original/man_${frame.age}.jpg`} 
                   alt={`Man Age ${frame.age}`} 
                   className="mezzo-busto shadow-model"
                   style={{
@@ -149,7 +149,7 @@ export default function AgeLockSystem() {
               {frames.map((frame, idx) => (
                 <img 
                   key={`woman-${idx}`}
-                  src={`/age-system/v2/transparent/woman_${frame.age}.png`} 
+                  src={`/age-system/v2/original/woman_${frame.age}.jpg`} 
                   alt={`Woman Age ${frame.age}`} 
                   className="mezzo-busto shadow-model"
                   style={{
