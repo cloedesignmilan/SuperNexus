@@ -109,11 +109,24 @@ const CATEGORY_STRUCTURE = [
       { name: "Poolside Lifestyle", showcaseId: "swimwear-poolside-lifestyle", icon: <Sun size={12} /> },
       { name: "Fitting Room UGC", showcaseId: "swimwear-fitting-room-ugc", icon: <Smartphone size={12} /> },
     ]
+  },
+  {
+    name: "Bags & Accessories",
+    shortName: "Bags",
+    icon: <ShoppingBag size={20} className="text-amber-400" />,
+    color: "rgba(251, 191, 36, 0.5)",
+    border: "rgba(251, 191, 36, 0.8)",
+    bgImage: "/prove nuove/BAGS/CLEAN CATALOG/dopo_1.webp",
+    subcategories: [
+      { name: "Clean Catalog", showcaseId: "bags-clean-catalog", icon: <ShoppingBag size={12} /> },
+      { name: "Luxury Lifestyle", showcaseId: "bags-luxury-lifestyle", icon: <Building size={12} /> },
+      { name: "Model Studio", showcaseId: "bags-model-studio", icon: <Star size={12} /> },
+    ]
   }
 ];
 
 export default function ShowcaseCategories({ showcaseData = [] }: { showcaseData?: any[] }) {
-  const displayOrder = [2, 3, 0, 1, 6, 4, 5]; // Women(2), Men(3), T-Shirts(0), Footwear(1), Swim(6), Bridal(4), Kids(5)
+  const displayOrder = [2, 3, 0, 7, 1, 6, 4, 5]; // Women(2), Men(3), T-Shirts(0), Bags(7), Footwear(1), Swim(6), Bridal(4), Kids(5)
   const [activeExample, setActiveExample] = useState<{catIndex: number, subName: string, showcaseId?: string} | null>(null);
 
   const renderExampleReveal = (cat: any, index: number) => {
