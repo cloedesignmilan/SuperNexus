@@ -11,6 +11,7 @@ import TargetAudience from '@/components/TargetAudience';
 import GuestTryOut from '@/components/GuestTryOut';
 import GalleryMockup from '@/components/GalleryMockup';
 import Testimonials from '@/components/Testimonials';
+import AgeLockSystem from '@/components/AgeLockSystem';
 import ChatBot from '@/components/ChatBot';
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
@@ -282,10 +283,13 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* VISUAL STORYTELLING */}
+      {/* VISUAL STORYTELLING (Magic Scene Variance) */}
       <VisualStorytelling />
 
-      {/* TARGET AUDIENCE */}
+      {/* AGE LOCK SYSTEM (Demographic Control) */}
+      <AgeLockSystem />
+
+      {/* TARGET AUDIENCE MAP */}
       <TargetAudience />
 
       {/* SHOWCASE DA ZERO */}
