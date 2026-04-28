@@ -4,18 +4,27 @@ import React, { useState, useEffect } from 'react';
 import { UserCheck } from 'lucide-react';
 
 export default function AgeLockSystem() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeManIndex, setActiveManIndex] = useState(0);
+  const [activeWomanIndex, setActiveWomanIndex] = useState(0);
 
-  // Both models now use a synchronized 2-frame morphing logic (20 -> 50)
-  const frames = [{ age: 20 }, { age: 50 }];
+  const manFrames = [{ age: 20 }, { age: 27 }, { age: 35 }, { age: 42 }, { age: 50 }, { age: 42 }, { age: 35 }, { age: 27 }];
+  const womanFrames = [{ age: 20 }, { age: 30 }, { age: 40 }, { age: 50 }, { age: 40 }, { age: 30 }];
 
   useEffect(() => {
-    // Extremely slow morphing crossfade between young and old
-    const interval = setInterval(() => {
-      setActiveIndex(prev => (prev + 1) % frames.length);
-    }, 6000);
+    // Man: Continuous morphing through 5 frames
+    const manInterval = setInterval(() => {
+      setActiveManIndex(prev => (prev + 1) % manFrames.length);
+    }, 2500);
 
-    return () => clearInterval(interval);
+    // Woman: Continuous morphing through 4 frames
+    const womanInterval = setInterval(() => {
+      setActiveWomanIndex(prev => (prev + 1) % womanFrames.length);
+    }, 3000);
+
+    return () => {
+      clearInterval(manInterval);
+      clearInterval(womanInterval);
+    };
   }, []);
 
   return (
@@ -117,22 +126,22 @@ export default function AgeLockSystem() {
                 <div className="hud-scan-line"></div>
               </div>
               
-              {frames.map((frame, idx) => (
+              {manFrames.map((frame, idx) => (
                 <img 
                   key={`man-${idx}`}
                   src={`/age-system/v2/transparent/man_${frame.age}.png`} 
                   alt={`Man Age ${frame.age}`} 
                   className="mezzo-busto shadow-model"
                   style={{
-                    opacity: activeIndex === idx ? 1 : 0,
-                    transition: 'opacity 5s ease-in-out' /* Super slow fade for morphing illusion */
+                    opacity: activeManIndex === idx ? 1 : 0,
+                    transition: 'opacity 2.5s ease-in-out' /* Continuous fade */
                   }}
                 />
               ))}
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Male, Age {frames[activeIndex].age}
+              Male, Age {manFrames[activeManIndex].age}
             </div>
           </div>
 
@@ -146,22 +155,22 @@ export default function AgeLockSystem() {
                 <div className="hud-scan-line"></div>
               </div>
 
-              {frames.map((frame, idx) => (
+              {womanFrames.map((frame, idx) => (
                 <img 
                   key={`woman-${idx}`}
                   src={`/age-system/v2/transparent/woman_${frame.age}.png`} 
                   alt={`Woman Age ${frame.age}`} 
                   className="mezzo-busto shadow-model"
                   style={{
-                    opacity: activeIndex === idx ? 1 : 0,
-                    transition: 'opacity 5s ease-in-out' /* Super slow fade for morphing illusion */
+                    opacity: activeWomanIndex === idx ? 1 : 0,
+                    transition: 'opacity 3s ease-in-out' /* Continuous fade */
                   }}
                 />
               ))}
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Female, Age {frames[activeIndex].age}
+              Female, Age {womanFrames[activeWomanIndex].age}
             </div>
           </div>
 
