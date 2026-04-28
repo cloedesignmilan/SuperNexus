@@ -111,11 +111,8 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Cyber Grid & Spotlight */}
-              <div className="spotlight"></div>
-              <div className="grid-background">
-                <div className="cyber-grid"></div>
-              </div>
+              {/* Wow Effect: AI Nebula Glow */}
+              <div className="ai-glow-background"></div>
               
               {frames.map((frame, idx) => (
                 <img 
@@ -139,11 +136,8 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Cyber Grid & Spotlight */}
-              <div className="spotlight"></div>
-              <div className="grid-background">
-                <div className="cyber-grid"></div>
-              </div>
+              {/* Wow Effect: AI Nebula Glow */}
+              <div className="ai-glow-background"></div>
 
               {frames.map((frame, idx) => (
                 <img 
@@ -186,38 +180,27 @@ export default function AgeLockSystem() {
           z-index: 10;
         }
 
-        /* WOW Background: Spotlight & Grid */
-        .spotlight {
+        /* WOW Background: AI Nebula Glow */
+        .ai-glow-background {
           position: absolute;
-          top: -20%; left: 50%;
+          top: 50%; left: 50%;
           width: 150%; height: 150%;
-          transform: translateX(-50%);
-          background: radial-gradient(ellipse at top, rgba(204, 255, 0, 0.15), transparent 70%);
+          background: conic-gradient(
+            from 0deg, 
+            rgba(204, 255, 0, 0.5) 0%,
+            rgba(0, 255, 255, 0.4) 25%,
+            rgba(255, 0, 255, 0.4) 50%,
+            rgba(100, 0, 255, 0.4) 75%,
+            rgba(204, 255, 0, 0.5) 100%
+          );
+          filter: blur(60px);
+          animation: spin-glow 15s linear infinite;
           z-index: 0;
           pointer-events: none;
         }
-        .grid-background {
-          position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          z-index: 0;
-          pointer-events: none;
-          perspective: 600px; /* Perspective applied to container */
-        }
-        .cyber-grid {
-          position: absolute;
-          bottom: -50%; left: -50%;
-          width: 200%; height: 200%;
-          background-image: 
-            linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-          background-size: 50px 50px;
-          transform: rotateX(60deg) translateY(0);
-          animation: grid-move 3s linear infinite;
-        }
-        @keyframes grid-move {
-          0% { transform: rotateX(60deg) translateY(0); }
-          100% { transform: rotateX(60deg) translateY(50px); } /* Must match background-size */
+        @keyframes spin-glow {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .mezzo-busto {
