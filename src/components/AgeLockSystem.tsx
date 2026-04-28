@@ -111,8 +111,8 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Animated Aurora */}
-              <div className="aurora-bg"></div>
+              {/* Wow Effect: Neon Eclipse */}
+              <div className="eclipse-bg"></div>
               
               {frames.map((frame, idx) => (
                 <img 
@@ -136,8 +136,8 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Animated Aurora */}
-              <div className="aurora-bg"></div>
+              {/* Wow Effect: Neon Eclipse */}
+              <div className="eclipse-bg"></div>
 
               {frames.map((frame, idx) => (
                 <img 
@@ -180,24 +180,37 @@ export default function AgeLockSystem() {
           z-index: 10;
         }
 
-        /* WOW Background: Animated Aurora Borealis */
-        .aurora-bg {
+        /* WOW Background: Neon Eclipse */
+        .eclipse-bg {
           position: absolute;
-          top: -20%; left: -20%;
-          width: 140%; height: 140%;
-          background: 
-            radial-gradient(ellipse at top left, rgba(204, 255, 0, 0.4), transparent 50%),
-            radial-gradient(ellipse at bottom right, rgba(0, 255, 200, 0.4), transparent 50%),
-            radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 60%);
-          filter: blur(40px);
-          animation: aurora-move 12s ease-in-out infinite alternate;
+          top: 30%; left: 50%;
+          width: 70%; aspect-ratio: 1;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: #050505; /* Dark core */
+          box-shadow: 
+            0 0 40px 10px rgba(204, 255, 0, 0.5), 
+            0 0 80px 30px rgba(204, 255, 0, 0.3), 
+            0 0 150px 60px rgba(255, 255, 255, 0.1);
+          animation: eclipse-pulse 4s ease-in-out infinite alternate;
           z-index: 0;
           pointer-events: none;
         }
-        @keyframes aurora-move {
-          0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
-          50% { opacity: 1; transform: scale(1.1) rotate(15deg); }
-          100% { opacity: 0.5; transform: scale(1.2) rotate(-15deg); }
+        @keyframes eclipse-pulse {
+          0% { 
+            box-shadow: 
+              0 0 30px 5px rgba(204, 255, 0, 0.3), 
+              0 0 60px 20px rgba(204, 255, 0, 0.2), 
+              0 0 100px 40px rgba(255, 255, 255, 0.05); 
+            transform: translate(-50%, -50%) scale(0.95); 
+          }
+          100% { 
+            box-shadow: 
+              0 0 50px 15px rgba(204, 255, 0, 0.6), 
+              0 0 100px 40px rgba(204, 255, 0, 0.4), 
+              0 0 180px 80px rgba(255, 255, 255, 0.2); 
+            transform: translate(-50%, -50%) scale(1.05); 
+          }
         }
 
         .mezzo-busto {
