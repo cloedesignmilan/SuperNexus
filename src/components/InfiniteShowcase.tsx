@@ -84,6 +84,17 @@ const SLIDESHOW_CONFIG = [
     ]
   },
   {
+    displayCategory: 'SWIMWEAR',
+    displaySubcategory: 'CLEAN CATALOG → NO MODEL',
+    originalImage: '/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/prima_1.webp',
+    manualImages: [
+      "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_1.webp",
+      "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_2.webp",
+      "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_3.webp",
+      "/prove nuove/swimwear/CLEAN CATALOG → NO MODEL/dopo_4.webp"
+    ]
+  },
+  {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'WOMAN → MODEL STUDIO',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_04.png',
