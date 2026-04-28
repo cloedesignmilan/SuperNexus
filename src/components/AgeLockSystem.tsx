@@ -7,8 +7,8 @@ export default function AgeLockSystem() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const frames = [
-    { age: 20, ext: 'png' }, { age: 30, ext: 'png' }, { age: 40, ext: 'png' }, { age: 50, ext: 'png' }, { age: 60, ext: 'jpg' },
-    { age: 50, ext: 'png' }, { age: 40, ext: 'png' }, { age: 30, ext: 'png' }
+    { age: 20, ext: 'png' }, { age: 30, ext: 'png' }, { age: 40, ext: 'png' }, { age: 50, ext: 'png' },
+    { age: 40, ext: 'png' }, { age: 30, ext: 'png' }
   ];
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export default function AgeLockSystem() {
             letterSpacing: '-1px'
           }}>
             Absolute Demographic Control. <br />
-            <span style={{ color: '#aaa' }}>Age 18 to 60+.</span>
+            <span style={{ color: '#aaa' }}>Age 18 to 50.</span>
           </h2>
           <p style={{
             fontSize: '1.2rem',
@@ -108,41 +108,45 @@ export default function AgeLockSystem() {
           maxWidth: '800px' // Restrict max width for just 2 cards
         }}>
           
-          {/* Man Card */}
-          <div className="age-card">
-            {frames.map((frame, idx) => (
-              <img 
-                key={`man-${idx}`}
-                src={`/age-system/v2/man_${frame.age}.${frame.ext}`} 
-                alt={`Man Age ${frame.age}`} 
-                className="mezzo-busto"
-                style={{
-                  opacity: activeIndex === idx ? 1 : 0,
-                  transition: 'opacity 1s ease-in-out'
-                }}
-              />
-            ))}
-            <div className="age-label">
+          {/* Man Floating Model */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+            <div className="model-container">
+              {frames.map((frame, idx) => (
+                <img 
+                  key={`man-${idx}`}
+                  src={`/age-system/v2/transparent/man_${frame.age}.png`} 
+                  alt={`Man Age ${frame.age}`} 
+                  className="mezzo-busto shadow-model"
+                  style={{
+                    opacity: activeIndex === idx ? 1 : 0,
+                    transition: 'opacity 1s ease-in-out'
+                  }}
+                />
+              ))}
+            </div>
+            <div className="age-label-floating">
               <span className="live-dot" />
               Male, Age {frames[activeIndex].age}
             </div>
           </div>
 
-          {/* Woman Card */}
-          <div className="age-card">
-            {frames.map((frame, idx) => (
-              <img 
-                key={`woman-${idx}`}
-                src={`/age-system/v2/woman_${frame.age}.${frame.ext}`} 
-                alt={`Woman Age ${frame.age}`} 
-                className="mezzo-busto"
-                style={{
-                  opacity: activeIndex === idx ? 1 : 0,
-                  transition: 'opacity 1s ease-in-out'
-                }}
-              />
-            ))}
-            <div className="age-label">
+          {/* Woman Floating Model */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
+            <div className="model-container">
+              {frames.map((frame, idx) => (
+                <img 
+                  key={`woman-${idx}`}
+                  src={`/age-system/v2/transparent/woman_${frame.age}.png`} 
+                  alt={`Woman Age ${frame.age}`} 
+                  className="mezzo-busto shadow-model"
+                  style={{
+                    opacity: activeIndex === idx ? 1 : 0,
+                    transition: 'opacity 1s ease-in-out'
+                  }}
+                />
+              ))}
+            </div>
+            <div className="age-label-floating">
               <span className="live-dot" />
               Female, Age {frames[activeIndex].age}
             </div>
@@ -153,19 +157,20 @@ export default function AgeLockSystem() {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
-        .age-card {
+        .model-container {
           position: relative;
-          border-radius: 20px;
-          overflow: hidden;
+          width: 100%;
           aspect-ratio: 3/4;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
-          border: 1px solid rgba(255,255,255,0.1);
-          background: #111;
+          overflow: hidden;
+          background: transparent;
+          -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+          -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+          mask-composite: intersect;
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .age-card:hover {
+        .model-container:hover {
           transform: translateY(-10px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(204,255,0,0.2);
           z-index: 10;
         }
         .mezzo-busto {
@@ -174,16 +179,21 @@ export default function AgeLockSystem() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          object-position: center 8%; /* Crop to upper body/face */
-          transform: scale(1.6); /* Zoom in for mezzo-busto */
+          object-position: center 5%; /* Keep focus near the top/face */
+          transform: scale(1.7); /* Even bigger characters */
           transform-origin: top center;
           transition: transform 0.5s ease, opacity 1s ease-in-out;
         }
-        .age-card:hover .mezzo-busto {
-          transform: scale(1.65); /* Slight zoom on hover while maintaining the crop */
+        .model-container:hover .mezzo-busto {
+          transform: scale(1.75); /* Slight zoom on hover */
         }
-        .age-label {
-          position: absolute;
+        .shadow-model {
+          filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.8));
+        }
+        .age-label-floating {
+          position: relative;
+          margin-top: -3.5rem; /* Pull up into the faded area */
+          z-index: 20;
           bottom: 1.5rem;
           left: 50%;
           transform: translateX(-50%);
@@ -218,9 +228,9 @@ export default function AgeLockSystem() {
           100% { box-shadow: 0 0 0 0 rgba(204, 255, 0, 0); }
         }
         @media (max-width: 768px) {
-          .age-card {
+          .model-container {
             aspect-ratio: auto;
-            height: 500px;
+            height: 400px;
           }
         }
       `}} />
