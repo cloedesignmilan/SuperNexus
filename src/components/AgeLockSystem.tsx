@@ -111,13 +111,8 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Tech Rings */}
-              <div className="soft-spotlight"></div>
-              <div className="rings-background">
-                <div className="ring ring-1"></div>
-                <div className="ring ring-2"></div>
-                <div className="ring ring-3"></div>
-              </div>
+              {/* Wow Effect: Morphing Liquid Blob */}
+              <div className="morphing-blob"></div>
               
               {frames.map((frame, idx) => (
                 <img 
@@ -141,13 +136,8 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Tech Rings */}
-              <div className="soft-spotlight"></div>
-              <div className="rings-background">
-                <div className="ring ring-1"></div>
-                <div className="ring ring-2"></div>
-                <div className="ring ring-3"></div>
-              </div>
+              {/* Wow Effect: Morphing Liquid Blob */}
+              <div className="morphing-blob"></div>
 
               {frames.map((frame, idx) => (
                 <img 
@@ -190,49 +180,31 @@ export default function AgeLockSystem() {
           z-index: 10;
         }
 
-        /* WOW Background: Tech Rings & Spotlight */
-        .soft-spotlight {
+        /* WOW Background: Morphing Liquid Blob */
+        .morphing-blob {
           position: absolute;
           top: 30%; left: 50%;
-          width: 150%; aspect-ratio: 1;
-          transform: translate(-50%, -50%);
-          background: radial-gradient(circle at center, rgba(204, 255, 0, 0.08), transparent 60%);
+          width: 130%; aspect-ratio: 1;
+          background: linear-gradient(45deg, rgba(204, 255, 0, 0.25), rgba(0, 255, 200, 0.15));
+          filter: blur(40px);
+          animation: morph 12s ease-in-out infinite;
+          transform-origin: center;
           z-index: 0;
           pointer-events: none;
         }
-        .rings-background {
-          position: absolute;
-          top: 30%; left: 50%;
-          width: 80%; aspect-ratio: 1;
-          transform: translate(-50%, -50%);
-          z-index: 0;
-          pointer-events: none;
-        }
-        .ring {
-          position: absolute;
-          top: 50%; left: 50%;
-          border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          transform: translate(-50%, -50%);
-        }
-        .ring-1 {
-          width: 100%; height: 100%;
-          border-top: 1px solid rgba(204, 255, 0, 0.5);
-          animation: spin-ring 15s linear infinite;
-        }
-        .ring-2 {
-          width: 80%; height: 80%;
-          border-right: 1px solid rgba(204, 255, 0, 0.3);
-          animation: spin-ring 10s linear infinite reverse;
-        }
-        .ring-3 {
-          width: 60%; height: 60%;
-          border-bottom: 1px solid rgba(204, 255, 0, 0.8);
-          animation: spin-ring 5s linear infinite;
-        }
-        @keyframes spin-ring {
-          0% { transform: translate(-50%, -50%) rotate(0deg); }
-          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes morph {
+          0% { 
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
+            transform: translate(-50%, -50%) rotate(0deg) scale(1); 
+          }
+          50% { 
+            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; 
+            transform: translate(-50%, -50%) rotate(180deg) scale(1.1); 
+          }
+          100% { 
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
+            transform: translate(-50%, -50%) rotate(360deg) scale(1); 
+          }
         }
 
         .mezzo-busto {
