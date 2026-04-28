@@ -111,11 +111,8 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Sci-Fi Radar */}
-              <div className="radar-container">
-                <div className="radar-grid"></div>
-                <div className="radar-sweep"></div>
-              </div>
+              {/* Wow Effect: Animated Aurora */}
+              <div className="aurora-bg"></div>
               
               {frames.map((frame, idx) => (
                 <img 
@@ -139,11 +136,8 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Sci-Fi Radar */}
-              <div className="radar-container">
-                <div className="radar-grid"></div>
-                <div className="radar-sweep"></div>
-              </div>
+              {/* Wow Effect: Animated Aurora */}
+              <div className="aurora-bg"></div>
 
               {frames.map((frame, idx) => (
                 <img 
@@ -186,58 +180,24 @@ export default function AgeLockSystem() {
           z-index: 10;
         }
 
-        /* WOW Background: Sci-Fi Radar */
-        .radar-container {
+        /* WOW Background: Animated Aurora Borealis */
+        .aurora-bg {
           position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
+          top: -20%; left: -20%;
+          width: 140%; height: 140%;
+          background: 
+            radial-gradient(ellipse at top left, rgba(204, 255, 0, 0.4), transparent 50%),
+            radial-gradient(ellipse at bottom right, rgba(0, 255, 200, 0.4), transparent 50%),
+            radial-gradient(ellipse at center, rgba(255, 0, 255, 0.2), transparent 60%);
+          filter: blur(40px);
+          animation: aurora-move 12s ease-in-out infinite alternate;
           z-index: 0;
           pointer-events: none;
-          overflow: hidden;
         }
-        .radar-grid {
-          position: absolute;
-          top: 50%; left: 50%;
-          width: 150%; aspect-ratio: 1;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          background-image: 
-            radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-          background-size: 20px 20px;
-          border: 1px solid rgba(204, 255, 0, 0.1);
-          box-shadow: inset 0 0 50px rgba(204, 255, 0, 0.05);
-        }
-        .radar-grid::before {
-          content: '';
-          position: absolute;
-          top: 50%; left: 50%;
-          width: 60%; height: 60%;
-          transform: translate(-50%, -50%);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 50%;
-        }
-        .radar-grid::after {
-          content: '';
-          position: absolute;
-          top: 50%; left: 50%;
-          width: 30%; height: 30%;
-          transform: translate(-50%, -50%);
-          border: 1px dashed rgba(204, 255, 0, 0.2);
-          border-radius: 50%;
-        }
-        .radar-sweep {
-          position: absolute;
-          top: 50%; left: 50%;
-          width: 150%; aspect-ratio: 1;
-          transform: translate(-50%, -50%);
-          border-radius: 50%;
-          background: conic-gradient(from 0deg, transparent 70%, rgba(204, 255, 0, 0.6) 100%);
-          animation: sweep 4s linear infinite;
-          mix-blend-mode: screen;
-        }
-        @keyframes sweep {
-          0% { transform: translate(-50%, -50%) rotate(0deg); }
-          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        @keyframes aurora-move {
+          0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1.1) rotate(15deg); }
+          100% { opacity: 0.5; transform: scale(1.2) rotate(-15deg); }
         }
 
         .mezzo-busto {
