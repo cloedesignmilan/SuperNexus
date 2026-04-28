@@ -35,22 +35,6 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
     'UGC': ['Candid Woman', 'Candid Man'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
-  },
-  'Bags': {
-    'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
-    'UGC': ['Candid Woman', 'Candid Man'],
-    'Ads': ['Model Photo', 'No Model'],
-    'Detail': ['Model Photo', 'No Model']
-  },
-  'Jewelry': {
-    'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
-    'UGC': ['Candid Woman', 'Candid Man'],
-    'Ads': ['Model Photo', 'No Model'],
-    'Detail': ['Model Photo', 'No Model']
   }
 };
 
@@ -126,8 +110,6 @@ export default function GuestTryOut() {
         if (type === 'swimwear') setSelectedCat('Swimwear');
         else if (type === 'ceremony_elegant' || type === 'women_clothing' || type === 'men_clothing') setSelectedCat('Dress');
         else if (type === 'shoes') setSelectedCat('Shoes');
-        else if (type === 'bags' || type === 'accessories') setSelectedCat('Bags');
-        else if (type === 'jewelry') setSelectedCat('Jewelry');
         else setSelectedCat('T-shirt');
       }
 
