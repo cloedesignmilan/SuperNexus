@@ -1,7 +1,23 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw } from 'lucide-react';
+import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw, Waves, Footprints, MonitorPlay, Smartphone, Search, Users } from 'lucide-react';
+
+const CAT_ICONS: Record<string, React.ElementType> = {
+  'T-shirt': Shirt,
+  'Dress': Star,
+  'Swimwear': Waves,
+  'Shoes': Footprints
+};
+
+const MODE_ICONS: Record<string, React.ElementType> = {
+  'Clean Catalog': Sparkles,
+  'Model Studio': Camera,
+  'Lifestyle': Users,
+  'UGC': Smartphone,
+  'Ads': MonitorPlay,
+  'Detail': Search
+};
 
 const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   'T-shirt': {
@@ -274,26 +290,31 @@ export default function GuestTryOut() {
                     {/* Category Selection */}
                     <div>
                       <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>1. Select Category</h4>
-                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                        {Object.keys(TAXONOMY_TREE).map(cat => (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '0.8rem' }}>
+                        {Object.keys(TAXONOMY_TREE).map(cat => {
+                          const Icon = CAT_ICONS[cat] || Box;
+                          const isSel = selectedCat === cat;
+                          return (
                           <button
                             key={cat}
                             onClick={() => { setSelectedCat(cat); setSelectedMode(null); setSelectedSubcat(null); }}
                             style={{
-                              padding: '0.8rem 1.2rem',
-                              background: selectedCat === cat ? '#ccff00' : 'rgba(255,255,255,0.05)',
-                              color: selectedCat === cat ? '#000' : '#fff',
+                              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                              padding: '1rem 0.5rem',
+                              background: isSel ? 'rgba(204,255,0,0.1)' : 'rgba(255,255,255,0.03)',
+                              color: isSel ? '#ccff00' : '#888',
                               border: '1px solid',
-                              borderColor: selectedCat === cat ? '#ccff00' : 'rgba(255,255,255,0.1)',
-                              borderRadius: '8px',
+                              borderColor: isSel ? '#ccff00' : 'rgba(255,255,255,0.05)',
+                              borderRadius: '16px',
                               cursor: 'pointer',
-                              fontWeight: 600,
-                              transition: 'all 0.2s'
+                              transition: 'all 0.3s ease',
+                              gap: '0.5rem'
                             }}
                           >
-                            {cat}
+                            <Icon size={24} color={isSel ? '#ccff00' : '#888'} />
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{cat}</span>
                           </button>
-                        ))}
+                        )})}
                       </div>
                     </div>
 
@@ -301,26 +322,31 @@ export default function GuestTryOut() {
                     {selectedCat && (
                       <div>
                         <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>2. Select Presentation Mode</h4>
-                        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                          {Object.keys(TAXONOMY_TREE[selectedCat]).map(mode => (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '0.8rem' }}>
+                          {Object.keys(TAXONOMY_TREE[selectedCat]).map(mode => {
+                            const Icon = MODE_ICONS[mode] || Box;
+                            const isSel = selectedMode === mode;
+                            return (
                             <button
                               key={mode}
                               onClick={() => { setSelectedMode(mode); setSelectedSubcat(null); }}
                               style={{
-                                padding: '0.8rem 1.2rem',
-                                background: selectedMode === mode ? '#fff' : 'rgba(255,255,255,0.05)',
-                                color: selectedMode === mode ? '#000' : '#fff',
+                                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                                padding: '1rem 0.5rem',
+                                background: isSel ? 'rgba(204,255,0,0.1)' : 'rgba(255,255,255,0.03)',
+                                color: isSel ? '#ccff00' : '#888',
                                 border: '1px solid',
-                                borderColor: selectedMode === mode ? '#fff' : 'rgba(255,255,255,0.1)',
-                                borderRadius: '8px',
+                                borderColor: isSel ? '#ccff00' : 'rgba(255,255,255,0.05)',
+                                borderRadius: '16px',
                                 cursor: 'pointer',
-                                fontWeight: 600,
-                                transition: 'all 0.2s'
+                                transition: 'all 0.3s ease',
+                                gap: '0.5rem'
                               }}
                             >
-                              {mode}
+                              <Icon size={24} color={isSel ? '#ccff00' : '#888'} />
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center' }}>{mode}</span>
                             </button>
-                          ))}
+                          )})}
                         </div>
                       </div>
                     )}
