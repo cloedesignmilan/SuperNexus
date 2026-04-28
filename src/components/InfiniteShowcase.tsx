@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Shirt, Sparkles, Waves, Footprints, Layers, ShoppingBag } from 'lucide-react';
+import { Shirt, Sparkles, Waves, Footprints, Layers, ShoppingBag, Play, Pause, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ShowcaseItem {
   id: string;
@@ -210,6 +210,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     // Fallback: force visibility after 2 seconds in case observer fails completely
@@ -238,7 +239,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!isAnimating) return;
+    if (!isAnimating || !isPlaying) return;
 
     const slideDuration = 6000;
     const fadeOutDuration = 600;
@@ -257,7 +258,25 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
     }, slideDuration);
 
     return () => clearInterval(interval);
-  }, [isAnimating]);
+  }, [isAnimating, isPlaying]);
+
+  const handleNext = () => {
+    if (!isVisible) return;
+    setIsVisible(false);
+    setTimeout(() => {
+      setActiveIndex(prev => (prev + 1) % SLIDESHOW_CONFIG.length);
+      setTimeout(() => setIsVisible(true), 50);
+    }, 400);
+  };
+
+  const handlePrev = () => {
+    if (!isVisible) return;
+    setIsVisible(false);
+    setTimeout(() => {
+      setActiveIndex(prev => (prev - 1 + SLIDESHOW_CONFIG.length) % SLIDESHOW_CONFIG.length);
+      setTimeout(() => setIsVisible(true), 50);
+    }, 400);
+  };
 
   useEffect(() => {
     // Prefetch next slide's images to prevent blank flashes
@@ -396,7 +415,7 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
       </div>
 
       {/* CATEGORY TITLE BELOW IMAGES */}
-      <div key={`title-${activeIndex}`} className={`slide-up-title ${isVisible ? 'visible' : ''}`} style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '5rem', transitionDelay: '0.8s' }}>
+      <div key={`title-${activeIndex}`} className={`slide-up-title ${isVisible ? 'visible' : ''}`} style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5rem', transitionDelay: '0.8s' }}>
         <h2 style={{ 
           fontSize: 'clamp(1.2rem, 5vw, 2.5rem)', 
           fontWeight: '900', 
@@ -418,6 +437,33 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
             {config.displaySubcategory.includes('→') ? config.displaySubcategory.split('→').slice(1).join('→').trim() : config.displaySubcategory}
           </span>
         </h2>
+        
+        {/* PLAYBACK CONTROLS */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '1.5rem', 
+          marginTop: '1.5rem', 
+          padding: '0.6rem 1.5rem', 
+          background: 'rgba(255,255,255,0.05)', 
+          borderRadius: '30px', 
+          border: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(10px)',
+          pointerEvents: isVisible ? 'auto' : 'none',
+          opacity: isVisible ? 1 : 0.5
+        }}>
+          <button onClick={handlePrev} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', padding: '0.5rem', opacity: 0.7, transition: 'all 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity='1'} onMouseLeave={e => e.currentTarget.style.opacity='0.7'}>
+            <ChevronLeft size={20} />
+          </button>
+          
+          <button onClick={() => setIsPlaying(!isPlaying)} style={{ background: 'none', border: 'none', color: '#ccff00', cursor: 'pointer', display: 'flex', padding: '0.5rem', transform: 'scale(1.1)', transition: 'all 0.2s' }} onMouseEnter={e => e.currentTarget.style.transform='scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform='scale(1.1)'}>
+            {isPlaying ? <Pause size={20} /> : <Play size={20} fill="currentColor" />}
+          </button>
+          
+          <button onClick={handleNext} style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', padding: '0.5rem', opacity: 0.7, transition: 'all 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity='1'} onMouseLeave={e => e.currentTarget.style.opacity='0.7'}>
+            <ChevronRight size={20} />
+          </button>
+        </div>
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
