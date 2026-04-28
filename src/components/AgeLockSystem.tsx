@@ -111,6 +111,12 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
+              {/* Wow Effect Aura */}
+              <div className="aura-container">
+                <div className="aura-orb orb-1"></div>
+                <div className="aura-orb orb-2"></div>
+              </div>
+              
               {frames.map((frame, idx) => (
                 <img 
                   key={`man-${idx}`}
@@ -133,6 +139,12 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
+              {/* Wow Effect Aura */}
+              <div className="aura-container">
+                <div className="aura-orb orb-1"></div>
+                <div className="aura-orb orb-2"></div>
+              </div>
+
               {frames.map((frame, idx) => (
                 <img 
                   key={`woman-${idx}`}
@@ -173,6 +185,40 @@ export default function AgeLockSystem() {
           transform: translateY(-10px) scale(1.02);
           z-index: 10;
         }
+
+        /* WOW Background Aura */
+        .aura-container {
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .aura-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(50px);
+          opacity: 0.4;
+          mix-blend-mode: screen;
+          animation: float-orb 8s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+          top: 10%; left: 10%;
+          width: 60%; height: 60%;
+          background: rgba(204, 255, 0, 0.8); /* Lime Green */
+          animation-delay: 0s;
+        }
+        .orb-2 {
+          bottom: 10%; right: 10%;
+          width: 70%; height: 70%;
+          background: rgba(0, 200, 255, 0.8); /* Cyan/Blue */
+          animation-delay: -4s;
+        }
+        @keyframes float-orb {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(30px, -30px) scale(1.3); }
+        }
+
         .mezzo-busto {
           position: absolute;
           top: 0; left: 0;
@@ -183,6 +229,7 @@ export default function AgeLockSystem() {
           transform: scale(2.0); /* Even bigger characters */
           transform-origin: top center;
           transition: transform 0.5s ease, opacity 1s ease-in-out;
+          z-index: 1; /* Above the aura */
         }
         .model-container:hover .mezzo-busto {
           transform: scale(2.05); /* Slight zoom on hover */
