@@ -111,8 +111,11 @@ export default function AgeLockSystem() {
           {/* Man Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Morphing Liquid Blob */}
-              <div className="morphing-blob"></div>
+              {/* Wow Effect: Sci-Fi Radar */}
+              <div className="radar-container">
+                <div className="radar-grid"></div>
+                <div className="radar-sweep"></div>
+              </div>
               
               {frames.map((frame, idx) => (
                 <img 
@@ -136,8 +139,11 @@ export default function AgeLockSystem() {
           {/* Woman Floating Model */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <div className="model-container">
-              {/* Wow Effect: Morphing Liquid Blob */}
-              <div className="morphing-blob"></div>
+              {/* Wow Effect: Sci-Fi Radar */}
+              <div className="radar-container">
+                <div className="radar-grid"></div>
+                <div className="radar-sweep"></div>
+              </div>
 
               {frames.map((frame, idx) => (
                 <img 
@@ -180,31 +186,58 @@ export default function AgeLockSystem() {
           z-index: 10;
         }
 
-        /* WOW Background: Morphing Liquid Blob */
-        .morphing-blob {
+        /* WOW Background: Sci-Fi Radar */
+        .radar-container {
           position: absolute;
-          top: 30%; left: 50%;
-          width: 130%; aspect-ratio: 1;
-          background: linear-gradient(45deg, rgba(204, 255, 0, 0.25), rgba(0, 255, 200, 0.15));
-          filter: blur(40px);
-          animation: morph 12s ease-in-out infinite;
-          transform-origin: center;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
           z-index: 0;
           pointer-events: none;
+          overflow: hidden;
         }
-        @keyframes morph {
-          0% { 
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
-            transform: translate(-50%, -50%) rotate(0deg) scale(1); 
-          }
-          50% { 
-            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; 
-            transform: translate(-50%, -50%) rotate(180deg) scale(1.1); 
-          }
-          100% { 
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; 
-            transform: translate(-50%, -50%) rotate(360deg) scale(1); 
-          }
+        .radar-grid {
+          position: absolute;
+          top: 50%; left: 50%;
+          width: 150%; aspect-ratio: 1;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background-image: 
+            radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+          background-size: 20px 20px;
+          border: 1px solid rgba(204, 255, 0, 0.1);
+          box-shadow: inset 0 0 50px rgba(204, 255, 0, 0.05);
+        }
+        .radar-grid::before {
+          content: '';
+          position: absolute;
+          top: 50%; left: 50%;
+          width: 60%; height: 60%;
+          transform: translate(-50%, -50%);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          border-radius: 50%;
+        }
+        .radar-grid::after {
+          content: '';
+          position: absolute;
+          top: 50%; left: 50%;
+          width: 30%; height: 30%;
+          transform: translate(-50%, -50%);
+          border: 1px dashed rgba(204, 255, 0, 0.2);
+          border-radius: 50%;
+        }
+        .radar-sweep {
+          position: absolute;
+          top: 50%; left: 50%;
+          width: 150%; aspect-ratio: 1;
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: conic-gradient(from 0deg, transparent 70%, rgba(204, 255, 0, 0.6) 100%);
+          animation: sweep 4s linear infinite;
+          mix-blend-mode: screen;
+        }
+        @keyframes sweep {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .mezzo-busto {
