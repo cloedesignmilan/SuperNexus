@@ -163,9 +163,9 @@ export default function AgeLockSystem() {
           aspect-ratio: 3/4;
           overflow: hidden;
           background: transparent;
-          -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
           -webkit-mask-composite: source-in;
-          mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
           mask-composite: intersect;
           transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -180,12 +180,12 @@ export default function AgeLockSystem() {
           height: 100%;
           object-fit: cover;
           object-position: center 5%; /* Keep focus near the top/face */
-          transform: scale(1.7); /* Even bigger characters */
+          transform: scale(2.0); /* Even bigger characters */
           transform-origin: top center;
           transition: transform 0.5s ease, opacity 1s ease-in-out;
         }
         .model-container:hover .mezzo-busto {
-          transform: scale(1.75); /* Slight zoom on hover */
+          transform: scale(2.05); /* Slight zoom on hover */
         }
         .shadow-model {
           filter: drop-shadow(0px 20px 30px rgba(0,0,0,0.8));
