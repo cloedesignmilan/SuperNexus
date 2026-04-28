@@ -11,10 +11,10 @@ export default function AgeLockSystem() {
   const frames = [{ age: 20 }, { age: 50 }];
 
   useEffect(() => {
-    // Extremely slow morphing crossfade between young and old
+    // Faster morphing crossfade between young and old
     const interval = setInterval(() => {
       setActiveIndex(prev => (prev + 1) % frames.length);
-    }, 6000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -23,7 +23,7 @@ export default function AgeLockSystem() {
     const targetAge = frames[activeIndex].age;
     if (displayAge === targetAge) return;
 
-    const duration = 5000; // Match the 5s CSS transition
+    const duration = 2000; // Match the 2s CSS transition
     const steps = Math.abs(targetAge - displayAge);
     const stepTime = Math.max(20, duration / steps); // Avoid dividing by zero if steps is 0 somehow
 
@@ -150,7 +150,7 @@ export default function AgeLockSystem() {
                   className="mezzo-busto shadow-model"
                   style={{
                     opacity: activeIndex === idx ? 1 : 0,
-                    transition: 'opacity 5s ease-in-out' /* Super slow fade for morphing illusion */
+                    transition: 'opacity 2s ease-in-out' /* Faster fade */
                   }}
                 />
               ))}
@@ -179,7 +179,7 @@ export default function AgeLockSystem() {
                   className="mezzo-busto shadow-model"
                   style={{
                     opacity: activeIndex === idx ? 1 : 0,
-                    transition: 'opacity 5s ease-in-out' /* Super slow fade for morphing illusion */
+                    transition: 'opacity 2s ease-in-out' /* Faster fade */
                   }}
                 />
               ))}
