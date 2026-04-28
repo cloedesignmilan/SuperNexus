@@ -5,6 +5,7 @@ import { UserCheck } from 'lucide-react';
 
 export default function AgeLockSystem() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [displayAge, setDisplayAge] = useState(20);
 
   // Both models now use a synchronized 2-frame morphing logic (20 -> 50)
   const frames = [{ age: 20 }, { age: 50 }];
@@ -17,6 +18,30 @@ export default function AgeLockSystem() {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const targetAge = frames[activeIndex].age;
+    if (displayAge === targetAge) return;
+
+    const duration = 5000; // Match the 5s CSS transition
+    const steps = Math.abs(targetAge - displayAge);
+    const stepTime = Math.max(20, duration / steps); // Avoid dividing by zero if steps is 0 somehow
+
+    let current = displayAge;
+    const increment = targetAge > current ? 1 : -1;
+
+    const timer = setInterval(() => {
+      current += increment;
+      setDisplayAge(current);
+      if (current === targetAge) {
+        clearInterval(timer);
+      }
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  // We explicitly want to trigger this only when activeIndex changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
 
   return (
     <section style={{
@@ -132,7 +157,7 @@ export default function AgeLockSystem() {
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Male, Age {frames[activeIndex].age}
+              Male, Age {displayAge}
             </div>
           </div>
 
@@ -161,7 +186,7 @@ export default function AgeLockSystem() {
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Female, Age {frames[activeIndex].age}
+              Female, Age {displayAge}
             </div>
           </div>
 
