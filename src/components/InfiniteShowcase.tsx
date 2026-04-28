@@ -20,13 +20,12 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'DRESS / ELEGANT',
     displaySubcategory: 'ADS / SCROLL STOPPER → MODEL PHOTO',
-    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
+    originalImage: '/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/original.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot1.png",
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot2.png",
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot3.png",
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot4.png",
-      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/shot5.png"
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/green1.webp",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/green2.webp",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/red1.webp",
+      "/prove nuove/ceremony elegant/ADS_SCROLL_STOPPER_MODEL/red2.webp"
     ]
   },
   {
