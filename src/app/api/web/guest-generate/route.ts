@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
     }
 
-    // Per gli ospiti, forziamo qty a 1
-    const requestedQty = 1
+    // Per gli ospiti, forziamo qty a 3 (prima era 1)
+    const requestedQty = 3
 
     // Trova la Subcategory reale selezionata per il routing
     let subcat = null;
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
         const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
-        const oFileName = `guest_output_${timestamp}.jpg`
+        const oFileName = `guest_output_${timestamp}_${i}.jpg`
         const { error: upErr } = await adminSupabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
             contentType: 'image/jpeg',
             upsert: true

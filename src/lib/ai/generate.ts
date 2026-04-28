@@ -373,9 +373,11 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
             const finalNegative = shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
 
+            let swimwearNegative = "";
             let productLockSystem = "";
             if (categorySlug === 'swimwear') {
-                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction, exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. The straps MUST match exactly, the pattern MUST remain identical, all seams and proportions must match the original image. SWIMWEAR STRAP RULE: If the reference image shows loose strings or a bow hanging below the bikini top, DO NOT place the bow on the model's front stomach or underbust. The lower straps go directly backwards under the armpits to tie at the back. DO NOT draw strings wrapping around the front stomach, waist, or criss-crossing the torso. The front stomach must be completely BARE and free of any strings. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+                swimwearNegative = "straps on stomach, laces on front stomach, strings around waist, criss-cross torso strings, bikini strings on belly, ";
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction, exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. The straps MUST match exactly, the pattern MUST remain identical, all seams and proportions must match the original image. SWIMWEAR STRAP RULE: ABSOLUTELY NO STRAPS, LACES, OR STRINGS ON THE FRONT OF THE MODEL'S STOMACH OR WAIST. If the reference image shows loose strings or a bow hanging below the bikini top, DO NOT place the bow on the model's front stomach or underbust. The lower straps go directly backwards under the armpits to tie at the back. DO NOT draw strings wrapping around the front stomach, waist, or criss-crossing the torso. THE FRONT STOMACH AND WAIST MUST BE COMPLETELY BARE AND FREE OF ANY STRINGS OR LACES. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
             } else {
                 productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, patterns, and construction. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
             }
@@ -391,7 +393,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
+CRITICAL NEGATIVE PROMPT: ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
 ` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective;
 
             if (base64BackPart) {
@@ -436,7 +438,12 @@ CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerc
                 genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
             }
 
-            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: ${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
+            let swimwearNegative = "";
+            if (categorySlug === 'swimwear') {
+                swimwearNegative = "straps on stomach, laces on front stomach, strings around waist, criss-cross torso strings, bikini strings on belly, ";
+            }
+            
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${swimwearNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: ${swimwearNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
@@ -450,7 +457,7 @@ CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerc
 
             let productLockSystem = "";
             if (categorySlug === 'swimwear') {
-                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, cuts, stitching, strap positions, patterns. SWIMWEAR STRAP RULE: If the reference shows loose strings or a bow hanging below the top, DO NOT place the bow on the model's front stomach. The lower straps go directly backwards under the armpits to tie at the back. DO NOT draw strings wrapping around the front stomach, waist, or criss-crossing the torso. The front stomach must be completely BARE and free of any strings. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+                productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, cuts, stitching, strap positions, patterns. SWIMWEAR STRAP RULE: ABSOLUTELY NO STRAPS, LACES, OR STRINGS ON THE FRONT OF THE MODEL'S STOMACH OR WAIST. If the reference shows loose strings or a bow hanging below the top, DO NOT place the bow on the model's front stomach. The lower straps go directly backwards under the armpits to tie at the back. DO NOT draw strings wrapping around the front stomach, waist, or criss-crossing the torso. THE FRONT STOMACH AND WAIST MUST BE COMPLETELY BARE AND FREE OF ANY STRINGS OR LACES. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
             } else {
                 productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure and construction. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
             }

@@ -1,0 +1,75 @@
+T-shirt -> Clean Catalog -> No Model
+System -> System Mode -> Dynamic Engine
+Swimwear -> Lifestyle -> Candid Photo
+Bags -> Lifestyle -> Candid Photo
+Bags -> UGC -> Candid Photo
+Jewelry -> Lifestyle -> Candid Photo
+Jewelry -> UGC -> Candid Photo
+Swimwear -> UGC -> Candid Photo
+Shoes -> Lifestyle -> Candid Photo
+Shoes -> UGC -> Candid Photo
+T-shirt -> UGC -> Candid Real Man
+Swimwear -> Lifestyle -> Candid Real Man
+Swimwear -> UGC -> Candid Real Man
+Bags -> Lifestyle -> Candid Real Man
+Bags -> UGC -> Candid Real Man
+Jewelry -> Lifestyle -> Candid Real Man
+Jewelry -> UGC -> Candid Real Man
+Shoes -> Lifestyle -> Candid Real Man
+T-shirt -> Clean Catalog -> STILL LIFE PACK
+T-shirt -> UGC -> UGC CREATOR PACK
+T-shirt -> Model Studio -> Model Photo
+T-shirt -> Lifestyle -> Model Photo
+T-shirt -> Ads / Scroll Stopper -> Model Photo
+T-shirt -> Ads / Scroll Stopper -> No Model
+T-shirt -> Detail / Texture -> No Model
+T-shirt -> Detail / Texture -> Model Photo
+Swimwear -> Clean Catalog -> No Model
+Swimwear -> Model Studio -> Model Photo
+Swimwear -> Lifestyle -> Model Photo
+Swimwear -> Ads / Scroll Stopper -> Model Photo
+Swimwear -> Ads / Scroll Stopper -> No Model
+Swimwear -> Detail / Texture -> No Model
+Swimwear -> Detail / Texture -> Model Photo
+T-shirt -> Model Studio -> Curvy / Plus Size
+Swimwear -> Model Studio -> Curvy / Plus Size
+Dress / Elegant -> Clean Catalog -> No Model
+Shoes -> Clean Catalog -> No Model
+Shoes -> Model Studio -> Model Photo
+Shoes -> Model Studio -> Curvy / Plus Size
+Shoes -> Lifestyle -> Model Photo
+Shoes -> Ads / Scroll Stopper -> Model Photo
+Shoes -> Ads / Scroll Stopper -> No Model
+Shoes -> Detail / Texture -> No Model
+Shoes -> Detail / Texture -> Model Photo
+T-shirt -> Lifestyle -> Candid Photo
+T-shirt -> UGC -> Candid Photo
+Shoes -> UGC -> Candid Real Man
+T-shirt -> Lifestyle -> Candid Real Man
+Bags -> Clean Catalog -> No Model
+Bags -> Model Studio -> Model Photo
+Bags -> Model Studio -> Curvy / Plus Size
+Bags -> Lifestyle -> Model Photo
+Bags -> Ads / Scroll Stopper -> Model Photo
+Bags -> Ads / Scroll Stopper -> No Model
+Bags -> Detail / Texture -> No Model
+Bags -> Detail / Texture -> Model Photo
+Jewelry -> Clean Catalog -> No Model
+Jewelry -> Model Studio -> Model Photo
+Jewelry -> Model Studio -> Curvy / Plus Size
+Jewelry -> Lifestyle -> Model Photo
+Jewelry -> Ads / Scroll Stopper -> Model Photo
+Jewelry -> Ads / Scroll Stopper -> No Model
+Jewelry -> Detail / Texture -> No Model
+Jewelry -> Detail / Texture -> Model Photo
+Dress / Elegant -> Lifestyle -> Candid Photo
+Dress / Elegant -> UGC -> Candid Photo
+Dress / Elegant -> Lifestyle -> Candid Real Man
+Dress / Elegant -> UGC -> Candid Real Man
+Dress / Elegant -> Model Studio -> Model Photo
+Dress / Elegant -> Model Studio -> Curvy / Plus Size
+Dress / Elegant -> Lifestyle -> Model Photo
+Dress / Elegant -> Ads / Scroll Stopper -> Model Photo
+Dress / Elegant -> Ads / Scroll Stopper -> No Model
+Dress / Elegant -> Detail / Texture -> No Model
+Dress / Elegant -> Detail / Texture -> Model Photo
