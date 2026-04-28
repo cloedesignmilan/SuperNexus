@@ -27,6 +27,8 @@ export interface GenerateImagesOptions {
     clientGender?: string;
     detectedProductType?: string;
     aspectRatio?: string;
+    printLocation?: string;
+    imageBackUrl?: string;
 }
 
 export async function generateImagesWithAI({
@@ -43,7 +45,9 @@ export async function generateImagesWithAI({
     specificShotNumber,
     clientGender,
     detectedProductType,
-    aspectRatio
+    aspectRatio,
+    printLocation,
+    imageBackUrl
 }: GenerateImagesOptions) {
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
     
@@ -57,6 +61,8 @@ export async function generateImagesWithAI({
     
     // 1. Fetch input images and convert to base64
     let base64OutfitParts: any[] = [];
+    let base64BackPart: any | null = null;
+    
     for (const url of publicUrls) {
         try {
             const res = await fetch(url);
@@ -68,6 +74,20 @@ export async function generateImagesWithAI({
             }
         } catch(e) {
             console.error("Error fetching publicUrl:", url, e);
+        }
+    }
+    
+    if (imageBackUrl) {
+        try {
+            const res = await fetch(imageBackUrl);
+            if (res.ok) {
+                const ab = await res.arrayBuffer();
+                base64BackPart = {
+                    inlineData: { data: Buffer.from(ab).toString('base64'), mimeType: res.headers.get('content-type') || 'image/jpeg' }
+                };
+            }
+        } catch(e) {
+            console.error("Error fetching imageBackUrl:", imageBackUrl, e);
         }
     }
     
@@ -148,7 +168,7 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
         isTshirtClean = userPrompt.toLowerCase().includes('clean catalog');
         isTshirtUGC = userPrompt.toLowerCase().includes('ugc');
         isTshirtAds = userPrompt.toLowerCase().includes('ads') || userPrompt.toLowerCase().includes('scroll stopper');
-        isTshirtBackPrint = userPrompt.toLowerCase().includes('back print') || userPrompt.toLowerCase().includes('back design');
+        isTshirtBackPrint = printLocation === 'back' || userPrompt.toLowerCase().includes('back print') || userPrompt.toLowerCase().includes('back design');
         isTshirtNoModel = userPrompt.toLowerCase().includes('no model');
         isTshirtColorVariants = userPrompt.toLowerCase().includes('color variants') || userPrompt.toLowerCase().includes('different colors');
         isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
@@ -295,7 +315,12 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             currentShotNumber = i + 1;
             variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
             
-            if (isOutfit) {
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
@@ -331,7 +356,15 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
             }
 
             const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT");
-            const backShotOverride = isBackShotNoPrint ? `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.` : "";
+            
+            let backShotOverride = "";
+            if (base64BackPart) {
+                backShotOverride = `\n\n[CRITICAL DUAL-REFERENCE RULE]: The user uploaded BOTH the Front View and Back View of the garment. If the shot shows the front of the model, strictly replicate the FRONT VIEW graphic. If the shot shows the back of the model, strictly replicate the BACK VIEW graphic. NEVER mix them. NEVER assume the back is blank unless the Back View image is blank.`;
+            } else if (printLocation === 'back') {
+                backShotOverride = `\n\n[CRITICAL PRINT OVERRIDE]: The reference image shows the BACK PRINT of the t-shirt. You MUST generate ALL images showing the BACK of the model/garment. If this is a flat-lay, folded stack, or hanger shot, you MUST arrange the garment FACE-DOWN so the BACK is fully visible to the camera. The front collar/tag MUST be hidden. You MUST replicate the uploaded design perfectly on the BACK of the shirt. Do NOT assume the back is blank.`;
+            } else if (isBackShotNoPrint) {
+                backShotOverride = `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.`;
+            }
 
             // Replace dynamic placeholders
             const productNoun = categorySlug === 'swimwear' ? 'swimsuit' : categorySlug.replace('-', ' ');
@@ -361,7 +394,12 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
 ` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective;
 
-            if (isOutfit) {
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
@@ -425,7 +463,12 @@ CRITICAL NEGATIVE PROMPT: ${clientNegativePrompt}${genderLockNegative}${ecommerc
 
             variantPrompt = userPrompt + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
-            if (isOutfit) {
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {

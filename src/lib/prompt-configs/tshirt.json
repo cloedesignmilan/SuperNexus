@@ -44,10 +44,10 @@
           {
             "shotNumber": 5,
             "shotName": "Detail Close-Up",
-            "positivePrompt": "Close-up of t-shirt print or fabric. High detail, sharp focus.",
-            "negativePrompt": "full t-shirt, zoomed out, people, models",
-            "hardRules": "MACRO SHOT, EXTREME DETAIL",
-            "outputGoal": "Detail View Ecommerce"
+            "positivePrompt": "Close-up mid-shot focusing on the t-shirt graphic design. The original print must be perfectly preserved. Natural flat fabric.",
+            "negativePrompt": "embroidery, 3d logo, embossed, invented seams, extra pockets, macro fabric texture, collage, split screen, multiple panels, grid, divided frame, multiple images, full t-shirt, zoomed out, people, models",
+            "hardRules": "SHOW THE PRINT CLEARLY. MUST BE A SINGLE UNBROKEN IMAGE. DO NOT INVENT EMBROIDERY OR 3D TEXTURES. KEEP THE PRINT FLAT AS IN THE ORIGINAL IMAGE.",
+            "outputGoal": "Print Detail Ecommerce"
           }
         ]
       },
@@ -61,41 +61,41 @@
           {
             "shotNumber": 1,
             "shotName": "Hanger Presentation",
-            "positivePrompt": "T-shirt perfectly hanging straight on a premium wooden hanger. Clean bright white studio background. Symmetric and professional e-commerce product shot. Smooth fabric. High-end retail presentation.",
-            "negativePrompt": "human, model, hands, flat lay, folded, wrinkles, messy, natural background",
-            "hardRules": "MUST BE HANGING ON A WOODEN HANGER. VERTICAL ORIENTATION. CLEAN STUDIO.",
+            "positivePrompt": "T-shirt perfectly hanging straight on a premium wooden hanger. Premium seamless soft light grey studio background. Symmetric and professional e-commerce product shot. Smooth fabric. High-end retail presentation.",
+            "negativePrompt": "human, model, hands, flat lay, folded, wrinkles, messy, natural background, wood surface, concrete",
+            "hardRules": "MUST BE HANGING ON A WOODEN HANGER. VERTICAL ORIENTATION. PERFECTLY UNIFORM LIGHT GREY STUDIO BACKGROUND.",
             "outputGoal": "Classic Ghost/Hanger Shot"
           },
           {
             "shotNumber": 2,
             "shotName": "Classic Flat Lay",
-            "positivePrompt": "Premium ecommerce flat lay photography. The t-shirt is neatly laid perfectly flat on a clean light studio surface. True top-down 90-degree camera angle (bird's-eye view). Smooth fabric, even lighting, subtle drop shadow.",
-            "negativePrompt": "hanger, mannequin, strong wrinkles, human, folded, perspective angle",
-            "hardRules": "TRUE BIRD'S-EYE VIEW. PERFECTLY FLAT UNWRINKLED FABRIC. OBVIOUS SURFACE DROP SHADOW.",
+            "positivePrompt": "Premium ecommerce flat lay photography. The t-shirt is neatly laid perfectly flat on a premium seamless soft light grey studio surface. True top-down 90-degree camera angle (bird's-eye view). Smooth fabric, even lighting, subtle drop shadow.",
+            "negativePrompt": "hanger, mannequin, strong wrinkles, human, folded, perspective angle, wood surface, concrete",
+            "hardRules": "TRUE BIRD'S-EYE VIEW. PERFECTLY UNIFORM LIGHT GREY STUDIO SURFACE.",
             "outputGoal": "Perfect Flat Presentation"
           },
           {
             "shotNumber": 3,
             "shotName": "Studio Folded",
-            "positivePrompt": "T-shirt perfectly and neatly folded into a crisp rectangle, resting on a bright white studio surface. Top-down angle. Crisp edges, professional retail merchandising presentation. Only front graphic visible.",
-            "negativePrompt": "unfolded, hanging, human, messy, multiple shirts, rustic",
-            "hardRules": "MUST BE COMPLETELY FOLDED INTO A RECTANGLE. CLEAN STUDIO.",
+            "positivePrompt": "T-shirt perfectly and neatly folded into a crisp rectangle, resting on a premium seamless soft light grey studio surface. Top-down angle. Crisp edges, professional retail merchandising presentation. Only front graphic visible.",
+            "negativePrompt": "unfolded, hanging, human, messy, multiple shirts, rustic, wood surface, concrete",
+            "hardRules": "MUST BE COMPLETELY FOLDED INTO A RECTANGLE. PERFECTLY UNIFORM LIGHT GREY STUDIO SURFACE.",
             "outputGoal": "Folded Stack Presentation"
           },
           {
             "shotNumber": 4,
-            "shotName": "Casual Wood Flat Lay",
-            "positivePrompt": "T-shirt laid casually on a rustic white wooden plank surface. Natural bright lighting, soft shadows. Fabric has realistic natural wrinkles and folds, giving an organic authentic feel. Top-down camera angle.",
-            "negativePrompt": "hanger, perfectly smooth, studio white seamless, folded",
-            "hardRules": "RUSTIC WOOD SURFACE BACKGROUND. REALISTIC FABRIC WRINKLES. CASUAL LAYOUT.",
-            "outputGoal": "Organic Instagram Flat Lay"
+            "shotName": "Casual Flat Lay",
+            "positivePrompt": "T-shirt laid casually on a premium seamless soft light grey studio surface. Natural bright lighting, soft shadows. Fabric has realistic natural wrinkles and folds, giving an organic authentic feel. Top-down camera angle.",
+            "negativePrompt": "hanger, perfectly smooth, folded, wood surface, concrete, rustic",
+            "hardRules": "REALISTIC FABRIC WRINKLES. CASUAL LAYOUT. PERFECTLY UNIFORM LIGHT GREY STUDIO SURFACE.",
+            "outputGoal": "Organic Flat Lay"
           },
           {
             "shotNumber": 5,
             "shotName": "Folded Stack",
-            "positivePrompt": "A very neat vertical stack of identical folded t-shirts resting perfectly on a flat wooden surface. Slight high-angle shot showing the thickness and sides of the stack. Premium retail aesthetic.",
-            "negativePrompt": "single shirt, unfolded, hanging, human, messy pile",
-            "hardRules": "MUST SHOW A THICK STACK OF MULTIPLE FOLDED SHIRTS.",
+            "positivePrompt": "A very neat vertical stack of identical folded t-shirts resting perfectly on a premium seamless soft light grey studio surface. Slight high-angle shot showing the thickness and sides of the stack. Premium retail aesthetic.",
+            "negativePrompt": "single shirt, unfolded, hanging, human, messy pile, wood surface, concrete",
+            "hardRules": "MUST SHOW A THICK STACK OF MULTIPLE FOLDED SHIRTS. PERFECTLY UNIFORM LIGHT GREY STUDIO SURFACE.",
             "outputGoal": "Merchandising Stack Presentation"
           }
         ]

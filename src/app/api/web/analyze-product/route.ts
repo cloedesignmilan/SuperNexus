@@ -29,6 +29,7 @@ export async function POST(req: Request) {
         "colors": ["array of main colors"],
         "style": "enum(casual | elegant | sporty | beach | premium | streetwear | unknown)",
         "hasLogoOrPrint": boolean,
+        "printLocation": "enum(front | back | none | unknown)",
         "recommendedModelOptions": ["array of recommended model types, e.g., 'Candid Real Woman', 'No Model'"],
         "recommendedScenes": ["array of highly recommended background scenes"],
         "blockedOrLowPriorityOptions": ["array of scenes or models that DO NOT match this product"]
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
     - Se è un costume (bikini, intero), detectedProductType deve essere "swimwear", style "beach", recommendedScenes ["Tropical Beach", "Pool", "Summer Lifestyle"].
     - Se è un abito da donna, detectedProductType "women_clothing" o "ceremony_elegant" (se elegante).
     - Se sono scarpe, detectedProductType "shoes", recommendedScenes ["Street Lifestyle", "On-Foot", "Studio Softbox"].
+    - Se il prodotto è una T-shirt o felpa con grafica, analizza se l'immagine ritrae la parte ANTERIORE (scollo scavato) o POSTERIORE (collo alto, schiena) e imposta "printLocation" su "front" o "back". Se non ha stampe, "none".
     - Sii molto preciso. Non omettere campi. Restituisci SOLO IL JSON.`;
 
     // Proviamo prima a recuperare l'immagine come base64 se l'URL è pubblico

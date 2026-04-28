@@ -15,6 +15,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   
+  // Back Upload State
+  const [uploadedBackUrl, setUploadedBackUrl] = useState<string | null>(null)
+  const [isUploadingBack, setIsUploadingBack] = useState(false)
+  const backFileInputRef = useRef<HTMLInputElement>(null)
+  
   // Selections
   const [selections, setSelections] = useState<Record<string, Snippet | null>>({
     CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null
@@ -34,9 +39,35 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [availableShots, setAvailableShots] = useState<any[]>([])
 
+  // Print Location State
+  const [printLocation, setPrintLocation] = useState<string>('front')
+  const [showPrintConfirm, setShowPrintConfirm] = useState<boolean>(false)
+
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Il prompt viene ora calcolato in modo sincrono dentro handleGenerate
+
+  const handleBackFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0]
+      setIsUploadingBack(true)
+      try {
+        const formData = new FormData()
+        formData.append('file', selected)
+        const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
+        const data = await res.json()
+        if (data.url) {
+          setUploadedBackUrl(data.url)
+        } else {
+          setError(data.error || 'Upload failed')
+        }
+      } catch (err) {
+        setError('Network error during upload')
+      } finally {
+        setIsUploadingBack(false)
+      }
+    }
+  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -65,6 +96,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             if (analysisRes.success && analysisRes.analysis) {
               setAnalysisData(analysisRes.analysis)
               
+              const pLoc = analysisRes.analysis.detectedAttributes?.printLocation;
+              if (analysisRes.analysis.detectedProductType === 'tshirt_hoodie' && (pLoc === 'front' || pLoc === 'back')) {
+                 setPrintLocation(pLoc);
+                 setShowPrintConfirm(true);
+              }
+
               if (analysisRes.analysis.confidence >= 0.8 && analysisRes.analysis.detectedProductType) {
                 const matchMap: Record<string, string> = {
                   'swimwear': 'Swimwear',
@@ -284,7 +321,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
         clientGender,
-        detectedProductType: analysisData?.detectedProductType
+        detectedProductType: analysisData?.detectedProductType,
+        printLocation: printLocation,
+        imageBackUrl: uploadedBackUrl
       }
 
       const res = await fetch('/api/web/generate', {
@@ -1035,6 +1074,43 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                       </div>
                     )}
                   </div>
+
+                  {showPrintConfirm && (
+                     <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
+                        <div style={{ fontWeight: 600, marginBottom: '1rem' }}>AI detected a print on the: {printLocation.toUpperCase()}. Please confirm.</div>
+                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                          <button onClick={() => setPrintLocation('front')} style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', border: '1px solid', borderColor: printLocation === 'front' ? '#3b82f6' : 'rgba(255,255,255,0.2)', background: printLocation === 'front' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}>
+                            Front Print
+                          </button>
+                          <button onClick={() => setPrintLocation('back')} style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', border: '1px solid', borderColor: printLocation === 'back' ? '#3b82f6' : 'rgba(255,255,255,0.2)', background: printLocation === 'back' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}>
+                            Back Print
+                          </button>
+                        </div>
+                     </div>
+                  )}
+
+                  {analysisData.detectedProductType === 'tshirt_hoodie' && !uploadedBackUrl && (
+                     <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Do you also have an image of the back? Upload it to allow the AI to generate perfect front/back shots.</div>
+                        <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
+                        <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#fff', color: '#000', padding: '0.6rem 1.5rem', borderRadius: '99px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                           {isUploadingBack ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                           {isUploadingBack ? 'Uploading...' : 'Add Back View (Optional)'}
+                        </button>
+                     </div>
+                  )}
+                  {uploadedBackUrl && (
+                     <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ width: '60px', height: '60px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)' }}>
+                           <img src={uploadedBackUrl} alt="Back" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                        <div style={{ textAlign: 'left' }}>
+                           <div style={{ fontWeight: 600, color: '#10b981' }}>Back View Uploaded</div>
+                           <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>The AI will now generate mixed 360° shots</div>
+                        </div>
+                     </div>
+                  )}
+
                   <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                     <button onClick={() => setStep(1)} className="btn-magic">
                       Looks Good <ArrowRight size={18} />
