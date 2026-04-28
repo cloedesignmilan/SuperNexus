@@ -6,33 +6,33 @@ import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIco
 const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   'T-shirt': {
     'Clean Catalog': ['No Model', 'Still Life Pack'],
-    'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
-    'UGC': ['Candid Woman', 'Candid Man', 'UGC Creator Pack'],
+    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
+    'UGC': ['Candid Real Woman', 'Candid Real Man', 'UGC Creator Pack'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
   },
   'Dress': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
-    'UGC': ['Candid Woman', 'Candid Man'],
+    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
+    'UGC': ['Candid Real Woman', 'Candid Real Man'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
   },
   'Swimwear': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy'],
+    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
     'Lifestyle': ['Model Photo'],
-    'UGC': ['Candid Woman'],
+    'UGC': ['Candid Real Woman'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
   },
   'Shoes': {
     'Clean Catalog': ['No Model'],
-    'Model Studio': ['Model Photo', 'Curvy'],
-    'Lifestyle': ['Model Photo', 'Candid Woman', 'Candid Man'],
-    'UGC': ['Candid Woman', 'Candid Man'],
+    'Model Studio': ['Model Photo', 'Curvy / Plus Size'],
+    'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
+    'UGC': ['Candid Real Woman', 'Candid Real Man'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
   }
