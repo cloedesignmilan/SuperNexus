@@ -163,9 +163,9 @@ export default function AgeLockSystem() {
           aspect-ratio: 3/4;
           overflow: hidden;
           background: transparent;
-          -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
           -webkit-mask-composite: source-in;
-          mask-image: linear-gradient(to bottom, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 80%, transparent 100%), linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%);
           mask-composite: intersect;
           transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
