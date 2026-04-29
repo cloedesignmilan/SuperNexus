@@ -333,7 +333,7 @@ export default async function LandingPage() {
             <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '3rem', color: '#fff', lineHeight: 1.1 }}>
               {t.problem.title} <span style={{ color: '#ff5470' }}>{t.problem.titleHighlight}</span>
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', textAlign: 'left' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2rem', textAlign: 'left' }}>
               {t.problem.pains.map((pain, i) => (
                 <div key={i} className="laser-border-red" style={{ borderRadius: '24px', boxShadow: '0 0 25px rgba(255,84,112,0.1)' }}>
                   <div style={{ position: 'relative', zIndex: 2, padding: '2rem', height: '100%', boxShadow: 'inset 0 0 15px rgba(255,84,112,0.05)', borderRadius: '23px' }}>
