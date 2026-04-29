@@ -41,21 +41,24 @@ export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
       description: t.targetAudience.boutiques.desc,
       icon: <Store size={28} />,
       color: "#a3cc00", // Neon yellow/green
-      handwrittenTip: t.targetAudience.boutiques.tip
+      handwrittenTip: t.targetAudience.boutiques.tip,
+      image: '/immagini/IMG_2053.webp'
     },
     {
       title: t.targetAudience.ecommerce.title,
       description: t.targetAudience.ecommerce.desc,
       icon: <ShoppingBag size={28} />,
       color: "#00b3a6", // Neon cyan
-      handwrittenTip: t.targetAudience.ecommerce.tip
+      handwrittenTip: t.targetAudience.ecommerce.tip,
+      image: '/immagini/IMG_2061.webp'
     },
     {
       title: t.targetAudience.creators.title,
       description: t.targetAudience.creators.desc,
       icon: <Camera size={28} />,
       color: "#9933ff", // Neon purple
-      handwrittenTip: t.targetAudience.creators.tip
+      handwrittenTip: t.targetAudience.creators.tip,
+      image: '/immagini/IMG_2052.webp'
     }
   ];
 
@@ -92,6 +95,10 @@ export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
                      
                      <h3 className="card-title">{item.title}</h3>
                      <p className="card-desc">{item.description}</p>
+                     
+                     <div style={{ marginTop: '1.5rem', marginBottom: '2.5rem', width: '100%', height: '220px', borderRadius: '16px', overflow: 'hidden', position: 'relative' }}>
+                        <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                     </div>
                      
                      {/* Elegant Pill Badge */}
                      <div className="badge-wrapper">
