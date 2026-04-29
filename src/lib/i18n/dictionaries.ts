@@ -98,7 +98,7 @@ export const dictionaries = {
         title2: "AI Models",
         subtitle: "Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.",
         features: ["Bespoke Categories", "Custom Subcategories", "Dedicated Support", "Priority Generation"],
-        button: "Request a Quote"
+        button: "Starting at $299/ea"
       }
     },
     footer: {
@@ -277,7 +277,7 @@ export const dictionaries = {
         title2: "Personalizzati",
         subtitle: "Addestra l'IA esattamente sull'estetica del tuo brand. Perfetto per nicchie uniche e cataloghi specializzati.",
         features: ["Categorie su Misura", "Sottocategorie Personalizzate", "Supporto Dedicato", "Generazioni Prioritarie"],
-        button: "Richiedi un Preventivo"
+        button: "A partire da 299€/cad"
       }
     },
     footer: {

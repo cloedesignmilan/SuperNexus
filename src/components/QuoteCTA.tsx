@@ -2,8 +2,14 @@
 
 import React, { useState } from 'react';
 import QuoteModal from './QuoteModal';
+import { Locale, dictionaries } from '@/lib/i18n/dictionaries';
 
-export default function QuoteCTA() {
+interface QuoteCTAProps {
+  lang?: Locale;
+}
+
+export default function QuoteCTA({ lang = 'en' }: QuoteCTAProps) {
+  const t = dictionaries[lang];
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -27,7 +33,7 @@ export default function QuoteCTA() {
           cursor: 'pointer'
         }}
       >
-        Starting at $299/ea
+        {t.pricing.custom.button}
       </button>
 
       <QuoteModal 

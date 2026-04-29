@@ -580,7 +580,7 @@ export default async function LandingPage() {
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px', zIndex: 2 }}>
-                <QuoteCTA />
+                <QuoteCTA lang={lang} />
             </div>
           </div>
 
