@@ -508,8 +508,6 @@ export default async function LandingPage() {
             <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Contact Support</a>
                 <span style={{ color: '#222' }}>•</span>
-                <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>Temporarily Paused</span>
-                <span style={{ color: '#222' }}>•</span>
                 <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Terms & Privacy</Link>
             </div>
 
