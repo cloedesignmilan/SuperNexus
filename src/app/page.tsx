@@ -331,17 +331,10 @@ export default async function LandingPage() {
           {/* PROBLEM SECTION */}
           <div style={{ textAlign: 'center' }}>
             <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '3rem', color: '#fff', lineHeight: 1.1 }}>
-              Why Your Products <span style={{ color: '#ff5470' }}>Don’t Sell</span> Online
+              {t.problem.title} <span style={{ color: '#ff5470' }}>{t.problem.titleHighlight}</span>
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', textAlign: 'left' }}>
-              {[
-                { title: 'Flat Visuals', text: 'Your photos look flat, boring, and lack the premium touch that builds trust.' },
-                { title: 'High Costs', text: 'You don’t have the huge budget for professional models, photographers, and studios.' },
-                { title: 'Brand Restrictions', text: 'You are often not authorized to use official supplier images, leaving you with poor alternatives.' },
-                { title: 'Social Burnout', text: 'Posting daily requires constant new visuals, which is exhausting and hard to maintain.' },
-                { title: 'DIY AI Struggles', text: 'Generic AI tools take hours of prompting and still yield fake, unprofessional results.' },
-                { title: 'Slow Turnaround', text: 'Shooting and editing content takes too much time, delaying your product launches.' }
-              ].map((pain, i) => (
+              {t.problem.pains.map((pain, i) => (
                 <div key={i} className="laser-border-red" style={{ borderRadius: '24px', boxShadow: '0 0 25px rgba(255,84,112,0.1)' }}>
                   <div style={{ position: 'relative', zIndex: 2, padding: '2rem', height: '100%', boxShadow: 'inset 0 0 15px rgba(255,84,112,0.05)', borderRadius: '23px' }}>
                     <div style={{ color: '#ff5470', fontWeight: '800', fontSize: '1.2rem', marginBottom: '0.5rem' }}>✕ {pain.title}</div>
@@ -358,18 +351,13 @@ export default async function LandingPage() {
               THE SOLUTION
             </div>
             <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1.5rem', color: '#fff', lineHeight: 1.1 }}>
-              From Warehouse Photo <br/><span style={{ color: '#a0a0a0' }}>→ High-End Campaign</span>
+              {t.solution.title} <br/><span style={{ color: '#a0a0a0' }}>{t.solution.titleHighlight}</span>
             </h2>
             <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '600px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
-              Take a quick photo of your product… and turn it into images that look like a professional photoshoot.
+              {t.solution.subtitle}
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'left' }}>
-              {[
-                { title: 'Studio Lighting', text: 'Studio-quality lighting and shadows applied automatically.' },
-                { title: 'Realistic Models', text: 'Generate ultra-realistic human models or mannequin styling.' },
-                { title: 'Platform Ready', text: 'Perfectly formatted for Meta Ads, E-Commerce, and Instagram.' },
-                { title: 'Instant Delivery', text: 'Ready in seconds. Zero editing or Photoshop skills required.' }
-              ].map((benefit, i) => (
+              {t.solution.benefits.map((benefit, i) => (
                 <div key={i} className="laser-border-green" style={{ borderRadius: '24px', boxShadow: '0 0 25px rgba(204,255,0,0.1)' }}>
                   <div style={{ position: 'relative', zIndex: 2, padding: '2rem', height: '100%', boxShadow: 'inset 0 0 15px rgba(204,255,0,0.05)', borderRadius: '23px' }}>
                     <div style={{ color: '#ccff00', fontWeight: '800', fontSize: '1.2rem', marginBottom: '0.5rem' }}>✓ {benefit.title}</div>
@@ -383,14 +371,15 @@ export default async function LandingPage() {
           {/* ECONOMICS SECTION */}
           <div style={{ textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)', padding: '4rem 2rem', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: '800', letterSpacing: '-0.02em', marginBottom: '1.5rem', color: '#fff' }}>
-              Stop Wasting Money on Photoshoots
+              {t.economics.title}
             </h2>
             <p style={{ fontSize: '1.1rem', color: '#aaa', maxWidth: '600px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
-              You no longer need to hire expensive photographers, models, rent studios, or pay for post-production editing. Replace ALL of it with one powerful tool.
+              {t.economics.text1} <strong>{t.economics.text1Bold}</strong> {t.economics.text1End}<br/><br/>
+              {t.economics.text2} <strong>{t.economics.text2Bold}</strong>
             </p>
             <div style={{ display: 'inline-block', padding: '1rem 2rem', background: 'rgba(204,255,0,0.1)', borderRadius: '16px', border: '1px solid rgba(204,255,0,0.4)' }}>
-              <span style={{ display: 'block', color: '#ccff00', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Average Saving</span>
-              <span style={{ display: 'block', color: '#fff', fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-0.05em' }}>$2,000–$10,000 / year</span>
+              <span style={{ display: 'block', color: '#ccff00', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t.economics.savings}</span>
+              <span style={{ display: 'block', color: '#fff', fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-0.05em' }}>{t.economics.savingsValue}</span>
             </div>
           </div>
 
@@ -414,14 +403,14 @@ export default async function LandingPage() {
 
       {/* BENTO GRID FEATURES (Shortened) */}
       <section id="features" className="bento-section" style={{ marginTop: '8rem' }}>
-        <h2 className="section-title">No photo sets.<br/>No Apps to install.</h2>
+        <h2 className="section-title">{t.features.title1}<br/>{t.features.title2}</h2>
         <div className="bento-grid" style={{ marginTop: '4rem' }}>
           
           {/* BENTO 1 */}
           <div className="bento-card bento-half">
             <div className="bento-icon"><Smartphone /></div>
-            <h3 className="bento-title">Everything via Web App.</h3>
-            <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
+            <h3 className="bento-title">{t.features.webApp.title}</h3>
+            <p className="bento-subtitle">{t.features.webApp.subtitle}</p>
             <div className="bento-visual-center">
               <PhoneMockup imgSrc={[
                 '/immagini/IMG_2048.webp', 
@@ -439,8 +428,8 @@ export default async function LandingPage() {
           {/* BENTO 2 */}
           <div className="bento-card bento-half" style={{ background: '#111111', color: 'white', display: 'flex', flexDirection: 'column' }}>
             <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
-            <h3 className="bento-title" style={{ color: 'white' }}>Cut Shooting Costs.</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>Eliminate the monthly budget for models, makeup artists, photographers, and studios once and for all. All your creations remain accessible 24/7 in your secure Web App Dashboard.</p>
+            <h3 className="bento-title" style={{ color: 'white' }}>{t.features.costs.title}</h3>
+            <p className="bento-subtitle" style={{ color: '#aaa' }}>{t.features.costs.subtitle}</p>
             <ul className="bento-list">
               <li style={{ color: 'white' }}>❌ No models to pay</li>
               <li style={{ color: 'white' }}>❌ No schedules to meet</li>
@@ -470,7 +459,7 @@ export default async function LandingPage() {
 
       {/* PRICING */}
       <section id="pricing" className="bento-section" style={{ marginBottom: '8rem', marginTop: '4rem' }}>
-        <h2 className="section-title">Start converting today.</h2>
+        <h2 className="section-title">{t.pricing.title}</h2>
         <div className="pricing-grid">
           
           {/* FREE TRIAL HORIZONTAL BANNERR */}
@@ -509,57 +498,57 @@ export default async function LandingPage() {
           {/* Starter Pack */}
           <div className="pricing-card" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '1px solid rgba(255,10,179,0.3)' }}>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#fff' }}>STARTER PACK</h3>
-            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Perfect for testing without subscription.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.starter_pack.price}<span style={{ color: '#888' }}>/one-time</span></div>
+            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>{t.pricing.starter.tag}</p>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.starter_pack.price}<span style={{ color: '#888' }}>{t.pricing.starter.per}</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> <strong>{PRICING_CONFIG.starter_pack.images} images</strong></li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Web App Dashboard Access</li>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> Instant Setup</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> <strong>{PRICING_CONFIG.starter_pack.images} {t.pricing.starter.features[0]}</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> {t.pricing.starter.features[1]}</li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> {t.pricing.starter.features[2]}</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ff0ab3" /> No recurring fees</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
-              No expiration date
+              {t.pricing.starter.features[3]}
             </div>
-            <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ display: 'block', width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Get Started</a>
+            <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ display: 'block', width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>{t.pricing.starter.button}</a>
           </div>
 
           {/* Retail Pack */}
           <div className="pricing-card" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '1px solid rgba(0,255,255,0.3)' }}>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#fff' }}>RETAIL PACK</h3>
-            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Scale your volumes without a subscription.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_pack.price}<span style={{ color: '#888' }}>/one-time</span></div>
+            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>{t.pricing.retail.tag}</p>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_pack.price}<span style={{ color: '#888' }}>{t.pricing.retail.per}</span></div>
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> <strong>{PRICING_CONFIG.retail_pack.images} images</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> <strong>{PRICING_CONFIG.retail_pack.images} {t.pricing.retail.features[0]}</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> Nano Pro absolute fidelity</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> Priority GPU Ultra Bot</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#00ffff" /> No recurring fees</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
-              No expiration date
+              {t.pricing.retail.features[3]}
             </div>
-            <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Buy Now</a>
+            <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>{t.pricing.retail.button}</a>
           </div>
 
           {/* Retail Subscription */}
           <div className="pricing-card popular" style={{ background: 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', border: '2px solid #ccff00', position: 'relative', boxShadow: '0 0 30px rgba(204,255,0,0.15)' }}>
             <div style={{ position: 'absolute', top: '-14px', right: '20px', background: '#ccff00', color: '#000', padding: '0.4rem 1rem', borderRadius: '50px', fontSize: '0.8rem', fontWeight: '800', letterSpacing: '0.05em' }}>
-              POPULAR
+              {t.pricing.subscription.badge}
             </div>
             <h3 className="bento-title" style={{ fontSize: '1.5rem', margin: '0', color: '#ccff00' }}>RETAIL MONTHLY</h3>
-            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>Scale your social volumes.</p>
-            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_monthly.price}<span>/month</span></div>
+            <p style={{ color: '#A0A0A0', marginBottom: '2rem' }}>{t.pricing.subscription.tag}</p>
+            <div className="pricing-price" style={{ color: 'white' }}>${PRICING_CONFIG.retail_monthly.price}<span>{t.pricing.subscription.per}</span></div>
             <div style={{ fontSize: '0.85rem', color: '#ccff00', fontWeight: 'bold', marginTop: '-32px', marginBottom: '1.5rem', position: 'relative', zIndex: 1, opacity: 0 }}>Spacer</div>
             
             <ul className="bento-list" style={{ flex: 1 }}>
-              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>{PRICING_CONFIG.retail_monthly.images} images unlocked monthly</strong></li>
+              <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> <strong>{PRICING_CONFIG.retail_monthly.images} {t.pricing.subscription.features[0]}</strong></li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Nano Pro absolute fidelity</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> Priority GPU Ultra Bot</li>
               <li style={{ color: '#fff' }}><CheckCircle2 size={20} color="#ccff00" /> All niches unlocked</li>
             </ul>
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
-              Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
+              {t.pricing.subscription.extraLabel} <strong>+{PRICING_CONFIG.top_up.images} {t.pricing.subscription.extraDesc} ${PRICING_CONFIG.top_up.price}</strong>
             </div>
-            <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Subscribe Now</a>
+            <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>{t.pricing.subscription.button}</a>
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
@@ -580,13 +569,13 @@ export default async function LandingPage() {
             boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
           }}>
             <div style={{ flex: '1 1 300px', zIndex: 2 }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#000' }}>Custom <span style={{ color: '#888', textShadow: 'none' }}>AI Models</span></h3>
-                <p style={{ color: '#555', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Train the AI exactly on your brand's aesthetic. Perfect for unique niches and specialized catalogs.</p>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#000' }}>{t.pricing.custom.title1} <span style={{ color: '#888', textShadow: 'none' }}>{t.pricing.custom.title2}</span></h3>
+                <p style={{ color: '#555', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>{t.pricing.custom.subtitle}</p>
             </div>
             
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0, zIndex: 2 }}>
-              <li><CheckCircle2 size={24} color="#000" /> <strong style={{ fontSize: '1.1rem', color: '#000' }}>Bespoke Categories</strong></li>
-              <li><CheckCircle2 size={24} color="#000" /> <span style={{ fontSize: '1.1rem', color: '#000' }}>Custom Subcategories</span></li>
+              <li><CheckCircle2 size={24} color="#000" /> <strong style={{ fontSize: '1.1rem', color: '#000' }}>{t.pricing.custom.features[0]}</strong></li>
+              <li><CheckCircle2 size={24} color="#000" /> <span style={{ fontSize: '1.1rem', color: '#000' }}>{t.pricing.custom.features[1]}</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px', zIndex: 2 }}>
@@ -597,7 +586,7 @@ export default async function LandingPage() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '2.5rem', color: '#888', fontSize: '0.95rem', fontWeight: '500' }}>
-            <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> Cancel anytime. Your plan will remain active until expiration or until all images are fully utilized.
+            <span style={{color: '#03dac6', marginRight: '6px'}}>✓</span> {t.pricing.cancelAnytime}
         </div>
       </section>
       <footer style={{ 
@@ -616,20 +605,20 @@ export default async function LandingPage() {
                 SuperNexus<span style={{color: '#ff0ab3', WebkitTextFillColor: '#ff0ab3'}}>.</span>AI
             </h2>
             <p style={{ maxWidth: '450px', color: '#888', fontSize: '1rem', lineHeight: '1.6', marginBottom: '3rem' }}>
-                The ultimate AI generative engine built exclusively for fashion e-commerce. Scale your social volumes, reduce photography costs, and drive higher conversions.
+                {t.footer.desc}
             </p>
 
             <div style={{ display: 'flex', gap: '2rem', marginBottom: '4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Contact Support</a>
+                <a href="mailto:info@supernexusai.com" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>{t.footer.contact}</a>
                 <span style={{ color: '#222' }}>•</span>
-                <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>Terms & Privacy</Link>
+                <Link href="#" style={{ color: '#a0a0a0', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.2s' }}>{t.footer.terms}</Link>
             </div>
 
             <div style={{ width: '100%', height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '2rem' }} />
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem', color: '#444' }}>
-                <p>© 2025 SuperNexus AI. All rights reserved.</p>
-                <p>Engineered for High-Performance Generative Fashion.</p>
+                <p>{t.footer.rights}</p>
+                <p>{t.footer.slogan}</p>
             </div>
         </div>
       </footer>
