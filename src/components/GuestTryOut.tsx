@@ -270,7 +270,7 @@ export default function GuestTryOut() {
           <Lock size={48} color="#ccff00" style={{ margin: '0 auto 1.5rem auto' }} />
           <h4 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '1rem' }}>Free Trial Exhausted</h4>
           <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>You have reached the maximum limit of 2 free generations on this device. Create an account to unlock unlimited access, higher resolution, and commercial rights.</p>
-          <a href="/auth" style={{ display: 'inline-block', padding: '1rem 2.5rem', background: '#ccff00', color: '#000', fontWeight: 700, borderRadius: '8px', textDecoration: 'none', fontSize: '1.1rem' }}>
+          <a href="/auth" style={{ display: 'inline-block', padding: '1rem 2.5rem', background: '#ccff00', color: '#000', fontWeight: 700, borderRadius: '12px', textDecoration: 'none', fontSize: '1.1rem' }}>
             Register for Full Access
           </a>
         </div>
@@ -302,7 +302,7 @@ export default function GuestTryOut() {
                 style={{
                   width: '100%',
                   padding: '1rem',
-                  borderRadius: '8px',
+                  borderRadius: '12px',
                   border: '1px solid rgba(255,255,255,0.2)',
                   background: 'rgba(0,0,0,0.5)',
                   color: '#fff',
@@ -320,7 +320,7 @@ export default function GuestTryOut() {
                   background: '#ccff00',
                   color: '#000',
                   border: 'none',
-                  borderRadius: '8px',
+                  borderRadius: '12px',
                   fontSize: '1.1rem',
                   fontWeight: 700,
                   cursor: isSubmittingEmail ? 'not-allowed' : 'pointer',
@@ -332,7 +332,7 @@ export default function GuestTryOut() {
                 }}
               >
                 {isSubmittingEmail ? <Loader2 className="animate-spin" /> : <Sparkles size={20} />}
-                {isSubmittingEmail ? 'Unlocking...' : 'Start Free Trial'}
+                {isSubmittingEmail ? 'Unlocking...' : 'Generate Your First Images Free'}
               </button>
               <p style={{ color: '#666', fontSize: '0.8rem', marginTop: '1.5rem' }}>
                 No credit card required.
@@ -385,8 +385,8 @@ export default function GuestTryOut() {
 
                   {!uploadedImageUrl && !isAnalyzing && (
                     <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => { setPreviewUrl(null); setFile(null); }} style={{ flex: 1, padding: '0.8rem', background: 'rgba(0,0,0,0.8)', color: '#fff', border: '1px solid #333', borderRadius: '8px', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-                      <button onClick={handleUploadAndAnalyze} style={{ flex: 2, padding: '0.8rem', background: '#ccff00', color: '#000', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 700 }}>Start Configuration</button>
+                      <button onClick={() => { setPreviewUrl(null); setFile(null); }} style={{ flex: 1, padding: '0.8rem', background: 'rgba(0,0,0,0.8)', color: '#fff', border: '1px solid #333', borderRadius: '12px', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
+                      <button onClick={handleUploadAndAnalyze} style={{ flex: 2, padding: '0.8rem', background: '#ccff00', color: '#000', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 700 }}>Start Configuration</button>
                     </div>
                   )}
                 </div>
@@ -473,7 +473,7 @@ export default function GuestTryOut() {
                                 color: selectedSubcat === subcat ? '#ccff00' : '#aaa',
                                 border: '1px solid',
                                 borderColor: selectedSubcat === subcat ? '#ccff00' : 'rgba(255,255,255,0.1)',
-                                borderRadius: '8px',
+                                borderRadius: '12px',
                                 cursor: 'pointer',
                                 fontWeight: 500,
                                 transition: 'all 0.2s'
@@ -497,7 +497,7 @@ export default function GuestTryOut() {
                           background: isConfigComplete ? '#ccff00' : 'rgba(255,255,255,0.1)',
                           color: isConfigComplete ? '#000' : '#666',
                           border: 'none',
-                          borderRadius: '8px',
+                          borderRadius: '12px',
                           cursor: isConfigComplete && !isGenerating ? 'pointer' : 'not-allowed',
                           fontWeight: 700,
                           fontSize: '1.2rem',
@@ -580,7 +580,7 @@ export default function GuestTryOut() {
             {trialUsesCount < 2 ? (
               <>
                 <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem' }}>You have 1 free trial remaining!</h4>
-                <button onClick={resetForNextTrial} style={{ padding: '1rem 2rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                <button onClick={resetForNextTrial} style={{ padding: '1rem 2rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
                   <RefreshCw size={20} /> Try Another Style
                 </button>
               </>

@@ -6,7 +6,7 @@ export default function VisualStorytelling() {
   return (
     <section style={{ 
       position: 'relative', 
-      minHeight: '85vh', 
+      minHeight: '100vh', 
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'center',
@@ -53,6 +53,18 @@ export default function VisualStorytelling() {
       >
         <source src="/Video/video-breve-mobile-compresso.mp4" type="video/mp4" />
       </video>
+
+      {/* Fade to Black Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(to bottom, #0a0a0a 0%, transparent 15%, transparent 80%, #0a0a0a 100%)',
+        zIndex: 1,
+        pointerEvents: 'none'
+      }} />
     </section>
   );
 }

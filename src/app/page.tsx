@@ -2,17 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2, Sparkles, Store, Shirt, Footprints, Heart, Briefcase, Baby, Star } from 'lucide-react';
 import AnimatedCounter from '@/components/AnimatedCounter';
-import AnimatedTelegramMockup from '@/components/AnimatedTelegramMockup';
+import dynamic from 'next/dynamic';
 import PhoneMockup from '@/components/PhoneMockup';
-import SocialPostMockup from '@/components/SocialPostMockup';
 import InfiniteShowcase from '@/components/InfiniteShowcase';
 import VisualStorytelling from '@/components/VisualStorytelling';
-import TargetAudience from '@/components/TargetAudience';
-import GuestTryOut from '@/components/GuestTryOut';
-import GalleryMockup from '@/components/GalleryMockup';
-import Testimonials from '@/components/Testimonials';
 import AgeLockSystem from '@/components/AgeLockSystem';
-import ChatBot from '@/components/ChatBot';
+
+const AnimatedTelegramMockup = dynamic(() => import('@/components/AnimatedTelegramMockup'));
+const SocialPostMockup = dynamic(() => import('@/components/SocialPostMockup'));
+const TargetAudience = dynamic(() => import('@/components/TargetAudience'));
+const GuestTryOut = dynamic(() => import('@/components/GuestTryOut'));
+const GalleryMockup = dynamic(() => import('@/components/GalleryMockup'));
+const Testimonials = dynamic(() => import('@/components/Testimonials'));
+const ChatBot = dynamic(() => import('@/components/ChatBot'), { ssr: false });
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
@@ -166,6 +168,26 @@ export default async function LandingPage() {
             @keyframes spin-border {
               100% { transform: rotate(360deg); }
             }
+            .laser-border-red, .laser-border-green {
+              position: relative;
+              overflow: hidden;
+            }
+            .laser-border-red::before {
+              content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+              background: conic-gradient(transparent, transparent, transparent, #ff5470);
+              animation: spin-border 3s linear infinite; z-index: 0;
+            }
+            .laser-border-red::after {
+              content: ''; position: absolute; inset: 1px; background: #0d0d0d; border-radius: 23px; z-index: 1;
+            }
+            .laser-border-green::before {
+              content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+              background: conic-gradient(transparent, transparent, transparent, #ccff00);
+              animation: spin-border 3s linear infinite; z-index: 0;
+            }
+            .laser-border-green::after {
+              content: ''; position: absolute; inset: 1px; background: #0d0d0d; border-radius: 23px; z-index: 1;
+            }
             .hero-buttons {
               display: flex;
               gap: 1rem;
@@ -214,6 +236,18 @@ export default async function LandingPage() {
               className="carousel-video mobile-video" 
             />
           </div>
+          
+          {/* Fade to Black Overlay at the Bottom */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '35%',
+            background: 'linear-gradient(to top, #0a0a0a 0%, transparent 100%)',
+            zIndex: 5,
+            pointerEvents: 'none'
+          }} />
         </div>
 
         {/* Dynamic Glowing Orbs Background */}
@@ -232,28 +266,22 @@ export default async function LandingPage() {
           </div>
 
           <h1 className="hero-title fade-up-enter delay-1">
-            Fewer boring hangers.<br />
-            <span className="animated-gradient-text">More online sales.</span>
+            Stop Posting Photos<br />
+            <span className="animated-gradient-text">That Don’t Sell.</span>
           </h1>
-          <p className="hero-subtitle fade-up-enter delay-2">
-            The indispensable AI software for Boutiques and Clothing Stores. Snap a quick photo of the garment in your warehouse and instantly get a hyper-realistic shooting perfect for Facebook, Instagram, and your E-Commerce.
+          <p className="hero-subtitle fade-up-enter delay-2" style={{ fontSize: '1.25rem', color: '#eaeaea', fontWeight: '500' }}>
+            Turn any product photo into high-converting images in seconds.
           </p>
-          <h2 className="fade-up-enter delay-3" style={{ 
-            fontSize: '2rem', 
-            fontWeight: '800', 
-            marginBottom: '3rem', 
-            letterSpacing: '-0.02em',
-            textTransform: 'uppercase',
-            color: '#ffffff',
-            display: 'inline-block'
-          }}>
-            ✨ Create Photos that actually sell
-          </h2>
-          <div className="hero-buttons fade-up-enter delay-4">
-            <div style={{ width: '100%', maxWidth: '250px' }}>
-              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Start Free Trial</a>
+          <p className="hero-subtitle fade-up-enter delay-3" style={{ fontSize: '1.1rem', color: '#888', marginTop: '-1rem' }}>
+            No photographers. No models. No skills required. Just your smartphone.
+          </p>
+          
+          <div className="hero-buttons fade-up-enter delay-4" style={{ alignItems: 'flex-start' }}>
+            <div style={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
+              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Generate Your First Images Free</a>
+              <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>Trusted by growing fashion brands worldwide</span>
             </div>
-            <a href="#showcase" className="btn-secondary" style={{ padding: '1.2rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap' }}>
+            <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '12px', textDecoration: 'none', fontWeight: '800' }}>
               See the Results
             </a>
           </div>
@@ -280,6 +308,79 @@ export default async function LandingPage() {
             </div>
             <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Active Stores</p>
           </div>
+        </div>
+      </section>
+
+      {/* PAIN, SOLUTION & ECONOMICS SECTIONS */}
+      <section style={{ padding: '8rem 5%', background: '#0a0a0a' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '8rem' }}>
+          
+          {/* PROBLEM SECTION */}
+          <div style={{ textAlign: 'center' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '3rem', color: '#fff', lineHeight: 1.1 }}>
+              Why Your Products <span style={{ color: '#ff5470' }}>Don’t Sell</span> Online
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', textAlign: 'left' }}>
+              {[
+                { title: 'Flat Visuals', text: 'Your photos look flat, boring, and lack the premium touch that builds trust.' },
+                { title: 'High Costs', text: 'You don’t have the huge budget for professional models, photographers, and studios.' },
+                { title: 'Brand Restrictions', text: 'You are often not authorized to use official supplier images, leaving you with poor alternatives.' },
+                { title: 'Social Burnout', text: 'Posting daily requires constant new visuals, which is exhausting and hard to maintain.' },
+                { title: 'DIY AI Struggles', text: 'Generic AI tools take hours of prompting and still yield fake, unprofessional results.' },
+                { title: 'Slow Turnaround', text: 'Shooting and editing content takes too much time, delaying your product launches.' }
+              ].map((pain, i) => (
+                <div key={i} className="laser-border-red" style={{ borderRadius: '24px', boxShadow: '0 0 25px rgba(255,84,112,0.1)' }}>
+                  <div style={{ position: 'relative', zIndex: 2, padding: '2rem', height: '100%', boxShadow: 'inset 0 0 15px rgba(255,84,112,0.05)', borderRadius: '23px' }}>
+                    <div style={{ color: '#ff5470', fontWeight: '800', fontSize: '1.2rem', marginBottom: '0.5rem' }}>✕ {pain.title}</div>
+                    <p style={{ color: '#aaa', lineHeight: 1.6, fontSize: '1rem', margin: 0 }}>{pain.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SOLUTION SECTION */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'inline-block', padding: '0.5rem 1rem', background: 'rgba(204,255,0,0.1)', border: '1px solid rgba(204,255,0,0.3)', borderRadius: '100px', marginBottom: '1.5rem', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.1em', color: '#ccff00' }}>
+              THE SOLUTION
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1.5rem', color: '#fff', lineHeight: 1.1 }}>
+              From Warehouse Photo <br/><span style={{ color: '#a0a0a0' }}>→ High-End Campaign</span>
+            </h2>
+            <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '600px', margin: '0 auto 3rem', lineHeight: 1.6 }}>
+              Take a quick photo of your product… and turn it into images that look like a professional photoshoot.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'left' }}>
+              {[
+                { title: 'Studio Lighting', text: 'Studio-quality lighting and shadows applied automatically.' },
+                { title: 'Realistic Models', text: 'Generate ultra-realistic human models or mannequin styling.' },
+                { title: 'Platform Ready', text: 'Perfectly formatted for Meta Ads, E-Commerce, and Instagram.' },
+                { title: 'Instant Delivery', text: 'Ready in seconds. Zero editing or Photoshop skills required.' }
+              ].map((benefit, i) => (
+                <div key={i} className="laser-border-green" style={{ borderRadius: '24px', boxShadow: '0 0 25px rgba(204,255,0,0.1)' }}>
+                  <div style={{ position: 'relative', zIndex: 2, padding: '2rem', height: '100%', boxShadow: 'inset 0 0 15px rgba(204,255,0,0.05)', borderRadius: '23px' }}>
+                    <div style={{ color: '#ccff00', fontWeight: '800', fontSize: '1.2rem', marginBottom: '0.5rem' }}>✓ {benefit.title}</div>
+                    <p style={{ color: '#ddd', lineHeight: 1.6, fontSize: '1rem', margin: 0 }}>{benefit.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ECONOMICS SECTION */}
+          <div style={{ textAlign: 'center', background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)', padding: '4rem 2rem', borderRadius: '32px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: '800', letterSpacing: '-0.02em', marginBottom: '1.5rem', color: '#fff' }}>
+              Stop Wasting Money on Photoshoots
+            </h2>
+            <p style={{ fontSize: '1.1rem', color: '#aaa', maxWidth: '600px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
+              You no longer need to hire expensive photographers, models, rent studios, or pay for post-production editing. Replace ALL of it with one powerful tool.
+            </p>
+            <div style={{ display: 'inline-block', padding: '1rem 2rem', background: 'rgba(204,255,0,0.1)', borderRadius: '16px', border: '1px solid rgba(204,255,0,0.4)' }}>
+              <span style={{ display: 'block', color: '#ccff00', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Average Saving</span>
+              <span style={{ display: 'block', color: '#fff', fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-0.05em' }}>$2,000–$10,000 / year</span>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -365,7 +466,7 @@ export default async function LandingPage() {
             border: '2px solid #ff0ab3', 
             background: 'linear-gradient(135deg, rgba(255,10,179,0.08) 0%, rgba(0,0,0,0) 100%)',
             boxShadow: '0 0 20px rgba(255,10,179,0.15)',
-            display: 'flex',
+            display: 'none',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -387,7 +488,7 @@ export default async function LandingPage() {
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
                 <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>
-                  Start Free Trial
+                  Generate Images That Sell
                 </a>
             </div>
           </div>
@@ -406,7 +507,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ display: 'block', width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Get Started</a>
+            <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ display: 'block', width: '100%', padding: '1.2rem', fontWeight: '800', background: '#ff0ab3', color: '#fff', border: 'none', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Get Started</a>
           </div>
 
           {/* Retail Pack */}
@@ -423,7 +524,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#888', textAlign: 'center', marginBottom: '1.5rem' }}>
               No expiration date
             </div>
-            <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Buy Now</a>
+            <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#00ffff', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Buy Now</a>
           </div>
 
           {/* Retail Subscription */}
@@ -445,7 +546,7 @@ export default async function LandingPage() {
             <div style={{ fontSize: '0.85rem', color: '#ccff00', textAlign: 'center', marginBottom: '1.5rem', opacity: 0.8 }}>
               Extra Top-up: <strong>+{PRICING_CONFIG.top_up.images} images for ${PRICING_CONFIG.top_up.price}</strong>
             </div>
-            <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '8px' }}>Subscribe Now</a>
+            <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ display: 'block', padding: '1.2rem', fontWeight: '800', background: '#ccff00', color: '#000', border: 'none', width: '100%', textAlign: 'center', textDecoration: 'none', borderRadius: '12px' }}>Subscribe Now</a>
           </div>
 
           {/* CUSTOM CATEGORIES HORIZONTAL BANNER */}
