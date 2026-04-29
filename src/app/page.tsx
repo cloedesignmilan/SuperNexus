@@ -278,10 +278,10 @@ export default async function LandingPage() {
           
           <div className="hero-buttons fade-up-enter delay-4" style={{ alignItems: 'flex-start' }}>
             <div style={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
-              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Generate Your First Images Free</a>
+              <a href="#guest-try-out" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Try it Free</a>
               <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>Trusted by growing fashion brands worldwide</span>
             </div>
-            <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '12px', textDecoration: 'none', fontWeight: '800' }}>
+            <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '100px', textDecoration: 'none', fontWeight: '800' }}>
               See the Results
             </a>
           </div>

@@ -237,7 +237,7 @@ export default function GuestTryOut() {
   const isConfigComplete = selectedCat && selectedMode && selectedSubcat;
 
   return (
-    <div className="guest-try-out" style={{
+    <div id="guest-try-out" className="guest-try-out" style={{
       width: '100%',
       maxWidth: '1200px',
       margin: '0 auto',
