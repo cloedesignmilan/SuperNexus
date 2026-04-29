@@ -14,7 +14,7 @@ const TargetAudience = dynamic(() => import('@/components/TargetAudience'));
 const GuestTryOut = dynamic(() => import('@/components/GuestTryOut'));
 const GalleryMockup = dynamic(() => import('@/components/GalleryMockup'));
 const Testimonials = dynamic(() => import('@/components/Testimonials'));
-const ChatBot = dynamic(() => import('@/components/ChatBot'), { ssr: false });
+import ChatBot from '@/components/ChatBot';
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
