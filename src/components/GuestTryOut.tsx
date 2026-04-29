@@ -64,6 +64,11 @@ export default function GuestTryOut() {
   const [trialUsesCount, setTrialUsesCount] = useState<number>(0);
   const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   
+  // Email Lead States
+  const [email, setEmail] = useState('');
+  const [isEmailSubmitted, setIsEmailSubmitted] = useState(false);
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
+  
   // Selection States
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
   const [selectedMode, setSelectedMode] = useState<string | null>(null);
@@ -75,6 +80,11 @@ export default function GuestTryOut() {
     // Check uses count on load
     const uses = parseInt(localStorage.getItem('supernexus_guest_uses') || '0', 10);
     setTrialUsesCount(uses);
+    
+    // Check if email was already provided
+    if (localStorage.getItem('supernexus_guest_email_submitted') === 'true') {
+      setIsEmailSubmitted(true);
+    }
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +96,44 @@ export default function GuestTryOut() {
       setSelectedCat(null);
       setSelectedMode(null);
       setSelectedSubcat(null);
+    }
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    setIsSubmittingEmail(true);
+    setError(null);
+
+    const WEBHOOK_URL = process.env.NEXT_PUBLIC_WAITLIST_WEBHOOK_URL || '';
+    
+    if (!WEBHOOK_URL) {
+      setError("Configuration Error: Missing Webhook URL.");
+      setIsSubmittingEmail(false);
+      return;
+    }
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify({ email, timestamp: new Date().toISOString(), source: 'GuestTryOut' })
+      });
+
+      // Siccome usiamo no-cors, la fetch non ritornerà i dati json ma andrà a buon fine se non lancia eccezioni di rete
+      setIsEmailSubmitted(true);
+      localStorage.setItem('supernexus_guest_email_submitted', 'true');
+    } catch (err: any) {
+      setError("Connection error. Please try again.");
+    } finally {
+      setIsSubmittingEmail(false);
     }
   };
 
@@ -228,10 +276,69 @@ export default function GuestTryOut() {
         </div>
       )}
 
-      {/* Upload Zone */}
+      {/* Email Capture / Upload Zone */}
       {resultUrls.length === 0 && trialUsesCount < 2 && (
         <div style={{ width: '100%', maxWidth: '900px' }}>
-          {!previewUrl ? (
+          {!isEmailSubmitted ? (
+            <form onSubmit={handleEmailSubmit} style={{
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '16px',
+              padding: '4rem 2rem',
+              textAlign: 'center',
+              background: 'rgba(255,255,255,0.03)',
+              maxWidth: '500px',
+              margin: '0 auto'
+            }}>
+              <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 600 }}>Unlock Your Free Trials</h4>
+              <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1rem' }}>
+                Enter your best email to get 2 free AI generations.
+              </p>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address..."
+                required
+                style={{
+                  width: '100%',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  background: 'rgba(0,0,0,0.5)',
+                  color: '#fff',
+                  fontSize: '1.1rem',
+                  marginBottom: '1rem',
+                  outline: 'none'
+                }}
+              />
+              <button
+                type="submit"
+                disabled={isSubmittingEmail}
+                style={{
+                  width: '100%',
+                  padding: '1rem',
+                  background: '#ccff00',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
+                  cursor: isSubmittingEmail ? 'not-allowed' : 'pointer',
+                  opacity: isSubmittingEmail ? 0.7 : 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                {isSubmittingEmail ? <Loader2 className="animate-spin" /> : <Sparkles size={20} />}
+                {isSubmittingEmail ? 'Unlocking...' : 'Start Free Trial'}
+              </button>
+              <p style={{ color: '#666', fontSize: '0.8rem', marginTop: '1.5rem' }}>
+                No credit card required.
+              </p>
+            </form>
+          ) : !previewUrl ? (
             <div 
               onClick={() => fileInputRef.current?.click()}
               style={{
