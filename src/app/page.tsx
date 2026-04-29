@@ -374,7 +374,7 @@ export default async function LandingPage() {
               {t.economics.title}
             </h2>
             <p style={{ fontSize: '1.1rem', color: '#aaa', maxWidth: '600px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
-              {t.economics.text1}<br/><br/>
+              {t.economics.text1}<br/>{t.economics.text1Sub}<br/><br/>
               {t.economics.text2}<br/><br/>
               <strong>{t.economics.text3}</strong>
             </p>

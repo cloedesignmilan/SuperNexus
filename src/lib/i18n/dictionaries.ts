@@ -50,7 +50,8 @@ export const dictionaries = {
     },
     economics: {
       title: "The Economics of AI.",
-      text1: "A single photoshoot can cost hundreds or even thousands (models, studio, photographer).",
+      text1: "A single photoshoot can cost hundreds or even thousands",
+      text1Sub: "(models, studio, photographer).",
       text2: "Generating 100 high-quality images cost around $29.",
       text3: "More content. Faster. At a fraction of the cost.",
       savings: "Average Annual Savings",
@@ -227,7 +228,8 @@ export const dictionaries = {
     },
     economics: {
       title: "L'Economia dell'Intelligenza Artificiale.",
-      text1: "Un singolo servizio fotografico può costare centinaia o addirittura migliaia di euro (modelle, studio, fotografo).",
+      text1: "Un singolo servizio fotografico può costare centinaia o addirittura migliaia di euro",
+      text1Sub: "(modelle, studio, fotografo).",
       text2: "Generare 100 immagini di alta qualità costa circa 29€.",
       text3: "Più contenuti. Più velocemente. A una frazione del costo.",
       savings: "Risparmio Medio Annuo",
