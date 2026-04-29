@@ -31,12 +31,10 @@ export const dictionaries = {
       title: "Your beautiful images",
       titleHighlight: "aren't converting.",
       pains: [
-        { title: 'Flat Visuals', text: 'Your photos look flat, boring, and lack the premium touch that builds trust.' },
         { title: 'High Costs', text: 'You don’t have the huge budget for professional models, photographers, and studios.' },
         { title: 'Brand Restrictions', text: 'You are often not authorized to use official supplier images, leaving you with poor alternatives.' },
-        { title: 'Social Burnout', text: 'Posting daily requires constant new visuals, which is exhausting and hard to maintain.' },
-        { title: 'DIY AI Struggles', text: 'Generic AI tools take hours of prompting and still yield fake, unprofessional results.' },
-        { title: 'Slow Turnaround', text: 'Shooting and editing content takes too much time, delaying your product launches.' }
+        { title: 'Social Burnout', text: 'Shooting, Editing, and Posting every day requires constantly new content, an exhausting effort that is hard to maintain.' },
+        { title: 'DIY AI Struggles', text: 'Generic AI tools take hours of prompting and still yield fake, unprofessional results.' }
       ]
     },
     solution: {
@@ -212,12 +210,10 @@ export const dictionaries = {
       title: "Le tue belle immagini",
       titleHighlight: "non convertono.",
       pains: [
-        { title: 'Immagini Piatte', text: 'Le tue foto sembrano piatte, noiose e mancano di quel tocco premium che genera fiducia.' },
         { title: 'Costi Eccessivi', text: 'Non hai a disposizione budget enormi per modelli professionisti, fotografi o studi fotografici.' },
         { title: 'Restrizioni Brand', text: 'Spesso non sei autorizzato a usare le foto ufficiali dei fornitori, restando con alternative scadenti.' },
-        { title: 'Burnout Social', text: 'Pubblicare ogni giorno richiede contenuti sempre nuovi, uno sforzo estenuante e difficile da mantenere.' },
-        { title: 'Difficoltà IA Fai-da-te', text: 'I tool IA generici richiedono ore di test e producono comunque risultati finti e poco professionali.' },
-        { title: 'Tempi Lunghi', text: 'Scattare ed editare richiede troppo tempo, rallentando i lanci dei tuoi nuovi prodotti.' }
+        { title: 'Burnout Social', text: 'Scattare, Editare e Pubblicare ogni giorno richiede contenuti sempre nuovi, uno sforzo estenuante e difficile da mantenere.' },
+        { title: 'Difficoltà IA Fai-da-te', text: 'I tool IA generici richiedono ore di test e producono comunque risultati finti e poco professionali.' }
       ]
     },
     solution: {
