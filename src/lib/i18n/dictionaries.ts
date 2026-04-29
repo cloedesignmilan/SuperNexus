@@ -227,7 +227,7 @@ export const dictionaries = {
     },
     solution: {
       title: "Progettato per essere",
-      titleHighlight: "Una Macchina di Vendita.",
+      titleHighlight: "Una Macchina da Vendita.",
       subtitle: "Scatta una foto rapida del tuo prodotto... e trasformala in immagini che sembrano uscite da uno shooting professionale.",
       benefits: [
         { title: 'Illuminazione Studio', text: 'Luci e ombre di qualità fotografica applicate in automatico.' },
