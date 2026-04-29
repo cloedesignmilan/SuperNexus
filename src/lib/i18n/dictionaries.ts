@@ -12,6 +12,17 @@ export const dictionaries = {
       trusted: "Trusted by growing fashion brands worldwide",
       seeResults: "See the Results"
     },
+    nav: {
+      categories: {
+        tshirts: "T-Shirts & Tops",
+        swimwear: "Swimwear",
+        ceremony: "Ceremony & Elegant",
+        everyday: "Everyday Fashion",
+        footwear: "Footwear"
+      },
+      login: "Login",
+      tryFree: "Try it Free"
+    },
     metrics: {
       images: "Images Created",
       stores: "Stores Growing With Us"
@@ -128,6 +139,17 @@ export const dictionaries = {
       tryItFree: "Provalo Gratis",
       trusted: "Scelto da brand di moda in rapida crescita",
       seeResults: "Guarda i Risultati"
+    },
+    nav: {
+      categories: {
+        tshirts: "T-Shirt e Top",
+        swimwear: "Costumi da Bagno",
+        ceremony: "Cerimonia ed Elegante",
+        everyday: "Moda Quotidiana",
+        footwear: "Calzature"
+      },
+      login: "Accedi",
+      tryFree: "Provalo Gratis"
     },
     metrics: {
       images: "Immagini Create",
