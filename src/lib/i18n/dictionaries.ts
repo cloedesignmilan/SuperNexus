@@ -50,11 +50,9 @@ export const dictionaries = {
     },
     economics: {
       title: "The Economics of AI.",
-      text1: "Average traditional photoshoot costs ",
-      text1Bold: "$1,500/day",
-      text1End: " (models, studio, photographer).",
-      text2: "Generating 100 images with SuperNexus costs ",
-      text2Bold: "less than a coffee.",
+      text1: "A single photoshoot can cost hundreds or even thousands (models, studio, photographer).",
+      text2: "Generating 100 high-quality images cost around $29.",
+      text3: "More content. Faster. At a fraction of the cost.",
       savings: "Average Annual Savings",
       savingsValue: "$2,000–$10,000 / year"
     },
@@ -229,13 +227,11 @@ export const dictionaries = {
     },
     economics: {
       title: "L'Economia dell'Intelligenza Artificiale.",
-      text1: "Uno shooting tradizionale costa in media ",
-      text1Bold: "1.500€/giorno",
-      text1End: " (modelli, studio, fotografo).",
-      text2: "Generare 100 immagini con SuperNexus costa ",
-      text2Bold: "meno di un caffè.",
-      savings: "Risparmio Medio Annuale",
-      savingsValue: "2.000€ – 10.000€ / anno"
+      text1: "Un singolo servizio fotografico può costare centinaia o addirittura migliaia di euro (modelle, studio, fotografo).",
+      text2: "Generare 100 immagini di alta qualità costa circa 29€.",
+      text3: "Più contenuti. Più velocemente. A una frazione del costo.",
+      savings: "Risparmio Medio Annuo",
+      savingsValue: "€ 2.000–€ 10.000 / anno"
     },
     features: {
       title1: "Nessun set fotografico.",

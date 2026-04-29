@@ -374,8 +374,9 @@ export default async function LandingPage() {
               {t.economics.title}
             </h2>
             <p style={{ fontSize: '1.1rem', color: '#aaa', maxWidth: '600px', margin: '0 auto 2rem', lineHeight: 1.6 }}>
-              {t.economics.text1} <strong>{t.economics.text1Bold}</strong> {t.economics.text1End}<br/><br/>
-              {t.economics.text2} <strong>{t.economics.text2Bold}</strong>
+              {t.economics.text1}<br/><br/>
+              {t.economics.text2}<br/><br/>
+              <strong>{t.economics.text3}</strong>
             </p>
             <div style={{ display: 'inline-block', padding: '1rem 2rem', background: 'rgba(204,255,0,0.1)', borderRadius: '16px', border: '1px solid rgba(204,255,0,0.4)' }}>
               <span style={{ display: 'block', color: '#ccff00', fontSize: '0.9rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t.economics.savings}</span>
