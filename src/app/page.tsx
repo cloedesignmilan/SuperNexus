@@ -310,14 +310,14 @@ export default async function LandingPage() {
             <p className="bento-subtitle">Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device.</p>
             <div className="bento-visual-center">
               <PhoneMockup imgSrc={[
-                '/immagini/IMG_2048.png', 
-                '/immagini/IMG_2049.png', 
-                '/immagini/IMG_2050.png', 
-                '/immagini/IMG_2051.png',
-                '/immagini/IMG_2052.png',
-                '/immagini/IMG_2053.png',
-                '/immagini/IMG_2054.png',
-                '/immagini/IMG_2055.png'
+                '/immagini/IMG_2048.webp', 
+                '/immagini/IMG_2049.webp', 
+                '/immagini/IMG_2050.webp', 
+                '/immagini/IMG_2051.webp',
+                '/immagini/IMG_2052.webp',
+                '/immagini/IMG_2053.webp',
+                '/immagini/IMG_2054.webp',
+                '/immagini/IMG_2055.webp'
               ]} />
             </div>
           </div>
@@ -336,15 +336,15 @@ export default async function LandingPage() {
             {/* GALLERIA MOCKUP ROOT */}
             <div className="bento-visual-center" style={{ marginBottom: '-250px' }}>
               <PhoneMockup imgSrc={[
-                '/immagini/IMG_2058.PNG',
-                '/immagini/IMG_2059.PNG',
-                '/immagini/IMG_2060.PNG',
-                '/immagini/IMG_2061.PNG',
-                '/immagini/IMG_2062.PNG',
-                '/immagini/IMG_2063.PNG',
-                '/immagini/IMG_2064.PNG',
-                '/immagini/IMG_2065.PNG',
-                '/immagini/IMG_2067.PNG'
+                '/immagini/IMG_2058.webp',
+                '/immagini/IMG_2059.webp',
+                '/immagini/IMG_2060.webp',
+                '/immagini/IMG_2061.webp',
+                '/immagini/IMG_2062.webp',
+                '/immagini/IMG_2063.webp',
+                '/immagini/IMG_2064.webp',
+                '/immagini/IMG_2065.webp',
+                '/immagini/IMG_2067.webp'
               ]} />
             </div>
           </div>

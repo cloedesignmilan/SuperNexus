@@ -31,18 +31,18 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'DRESS / ELEGANT',
     displaySubcategory: 'DETAIL / TEXTURE → MODEL & NO MODEL',
-    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.jpg',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot1.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot2.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.jpg",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.jpg"
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot1.webp",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot2.webp",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.webp",
+      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.webp"
     ]
   },
   {
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'CLEAN CATALOG → NO MODEL',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.webp',
     manualImages: [
       "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (62).webp",
       "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (63).webp",
@@ -53,7 +53,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'MODEL STUDIO → MODEL PHOTO',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.webp',
     manualImages: [
       "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (62) 2.webp",
       "/prove nuove/T-SHIRT/T-SHIRT → MODEL STUDIO → MODEL PHOTO/supernexus_image (63).webp",
@@ -64,7 +64,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'UGC CREATOR PACK',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 18_59_01.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 18_59_01.webp',
     manualImages: [
       "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (83).webp",
       "/prove nuove/T-SHIRT/UGC CREATOR PACK/supernexus_image (84).webp",
@@ -75,7 +75,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'SWIMWEAR',
     displaySubcategory: 'UGC CREATOR PACK',
-    originalImage: '/prove nuove/Immagini originali/10CDB780-50B9-4B50-8262-CA2EDA1AD623_1_105_c.jpeg',
+    originalImage: '/prove nuove/Immagini originali/10CDB780-50B9-4B50-8262-CA2EDA1AD623_1_105_c.webp',
     manualImages: [
       "/prove nuove/swimwear/UGC/supernexus_image (88).webp",
       "/prove nuove/swimwear/UGC/supernexus_image (89).webp",
@@ -108,7 +108,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'WOMAN → MODEL STUDIO',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_04.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_04.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144434.579.webp",
       "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144435.534.webp",
@@ -119,7 +119,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'SWIMWEAR',
     displaySubcategory: 'E-COMMERCE → LIFESTYLE',
-    originalImage: '/prove nuove/Immagini originali/10CDB780-50B9-4B50-8262-CA2EDA1AD623_1_105_c.jpeg',
+    originalImage: '/prove nuove/Immagini originali/10CDB780-50B9-4B50-8262-CA2EDA1AD623_1_105_c.webp',
     manualImages: [
       "/prove nuove/swimwear/Lifestyle/supernexus_image - 2026-04-26T143030.399.webp",
       "/prove nuove/swimwear/Lifestyle/supernexus_image - 2026-04-26T143031.202.webp",
@@ -130,7 +130,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'WOMAN → CLEAN CATALOG',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_57_55.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_57_55.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143925.322.webp",
       "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143926.199.webp",
@@ -141,7 +141,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'FOOTWEAR',
     displaySubcategory: 'SHOES → CLEAN CATALOG',
-    originalImage: '/prove nuove/Immagini originali/A524FD31-E7B5-4BB7-BDA7-D287BBE82174_1_105_c.jpeg',
+    originalImage: '/prove nuove/Immagini originali/A524FD31-E7B5-4BB7-BDA7-D287BBE82174_1_105_c.webp',
     manualImages: [
       "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162327.009.webp",
       "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162331.765.webp",
@@ -152,7 +152,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'MAN → MODEL STUDIO',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/MAN/men clothing/Model Studio/supernexus_image - 2026-04-26T154306.446.webp",
       "/prove nuove/ceremony elegant/MAN/men clothing/Model Studio/supernexus_image - 2026-04-26T154307.147.webp",
@@ -163,7 +163,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'HOODIES',
     displaySubcategory: 'MAN → CASUAL',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_14.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_14.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/MAN/VARIE/FELPE/supernexus_image - 2026-04-26T155529.465.webp",
       "/prove nuove/ceremony elegant/MAN/VARIE/FELPE/supernexus_image - 2026-04-26T155530.388.webp",
@@ -174,7 +174,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'MAN → LIFESTYLE',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/MAN/men clothing/Lifestyle/supernexus_image - 2026-04-26T154833.097.webp",
       "/prove nuove/ceremony elegant/MAN/men clothing/Lifestyle/supernexus_image - 2026-04-26T154833.967.webp",
@@ -185,7 +185,7 @@ const SLIDESHOW_CONFIG = [
   {
     displayCategory: 'CEREMONY ELEGANT',
     displaySubcategory: 'MAN → CLEAN CATALOG',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.png',
+    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.webp',
     manualImages: [
       "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154011.096.webp",
       "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154012.500.webp",

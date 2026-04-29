@@ -23,7 +23,7 @@ const CATEGORIES = [
     icon: <Briefcase size={28} strokeWidth={1.5} />, 
     title: 'Men\'s Apparel & Business', 
     desc: 'Showcase your suits in their natural habitat: luxury offices, metropolitan streets, or social events. Instantly elevate the value of your menswear.',
-    imgSrc: '/showcase/uomo/prima.jpg', phoneLabel: 'BEFORE (WINDOW)', 
+    imgSrc: '/showcase/uomo/prima.webp', phoneLabel: 'BEFORE (WINDOW)', 
     post1Src: '/showcase/uomo/1.webp', post1Label: 'CITY LOOKBOOK', 
     post2Src: '/showcase/uomo/2.webp', post2Label: 'STREET ADS', 
     account: 'uomo_style', likes: '2.100'
@@ -57,9 +57,9 @@ const CATEGORIES = [
     icon: <PartyPopper size={28} strokeWidth={1.5} />, 
     title: '18th Birthday & Evening Gowns', 
     desc: 'Show the hypnotic attraction of your evening wear against backgrounds of chic clubs and vibrant night lights. Your Stories will skyrocket.',
-    imgSrc: '/showcase/festa/prima.jpg', phoneLabel: 'BEFORE (STORE)', 
-    post1Src: '/showcase/festa/dopo1.jpg', post1Label: 'IG STORY', 
-    post2Src: '/showcase/festa/dopo2.jpg', post2Label: 'TIKTOK COVER', 
+    imgSrc: '/showcase/festa/prima.webp', phoneLabel: 'BEFORE (STORE)', 
+    post1Src: '/showcase/festa/dopo1.webp', post1Label: 'IG STORY', 
+    post2Src: '/showcase/festa/dopo2.webp', post2Label: 'TIKTOK COVER', 
     account: 'party_dress_store', likes: '6.890'
   },
   { 
@@ -68,9 +68,9 @@ const CATEGORIES = [
     icon: <Footprints size={28} strokeWidth={1.5} />, 
     title: 'Footwear & Sneakers', 
     desc: 'Total elimination of defects, hands, or ruined backgrounds. Your warehouse shots become perfect still-lifes, ready for the store.',
-    imgSrc: '/showcase/scarpe/prima.jpg', phoneLabel: 'BEFORE (STORE)', 
-    post1Src: '/showcase/scarpe/negozio.jpg', post1Label: 'E-COMMERCE', 
-    post2Src: '/showcase/scarpe/indossata.jpg', post2Label: 'IG POST', 
+    imgSrc: '/showcase/scarpe/prima.webp', phoneLabel: 'BEFORE (STORE)', 
+    post1Src: '/showcase/scarpe/negozio.webp', post1Label: 'E-COMMERCE', 
+    post2Src: '/showcase/scarpe/indossata.webp', post2Label: 'IG POST', 
     account: 'footwear_boutique', likes: '1.240'
   },
   { 
@@ -79,7 +79,7 @@ const CATEGORIES = [
     icon: <Smartphone size={28} strokeWidth={1.5} />, 
     title: 'Compositions for Quick Sales', 
     desc: 'Quickly transform surplus and outlet items into irresistible posts to clear out inventory on Amazon, eBay, Vinted, or Depop.',
-    imgSrc: '/showcase/invitati/prima.jpg', phoneLabel: 'WAREHOUSE SHOT', 
+    imgSrc: '/showcase/invitati/prima.webp', phoneLabel: 'WAREHOUSE SHOT', 
     post1Src: '/showcase/vendita/marketplace.webp', post1Label: 'MARKETPLACE', 
     post2Src: '/showcase/vendita/vetrina.webp', post2Label: 'FB SHOP', 
     account: 'outlet_store', likes: '902'

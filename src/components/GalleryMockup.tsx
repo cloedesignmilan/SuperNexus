@@ -21,12 +21,12 @@ export default function GalleryMockup() {
       <div className="chat-window" style={{ background: '#0a0a0a' }}>
         <div style={{ paddingTop: '100px', display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '100px 4px 0 4px', height: '100%', overflow: 'hidden' }}>
           
-          <img src="/1-b.jpeg" alt="Gallery 1" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
-          <img src="/4-b.jpeg" alt="Gallery 4" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
-          <img src="/2-b.jpeg" alt="Gallery 2" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
-          <img src="/5-b.jpeg" alt="Gallery 5" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
-          <img src="/3-b.jpeg" alt="Gallery 3" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
-          <img src="/6-b.jpeg" alt="Gallery 6" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/1-b.webp" alt="Gallery 1" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/4-b.webp" alt="Gallery 4" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/2-b.webp" alt="Gallery 2" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/5-b.webp" alt="Gallery 5" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/3-b.webp" alt="Gallery 3" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
+          <img src="/6-b.webp" alt="Gallery 6" style={{ width: '48%', height: '160px', objectFit: 'cover', borderRadius: '8px' }} />
 
         </div>
         

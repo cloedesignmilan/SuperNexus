@@ -15,7 +15,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Shirt size={20} className="text-blue-400" />,
     color: "rgba(59, 130, 246, 0.5)",
     border: "rgba(59, 130, 246, 0.8)",
-    bgImage: "/prove/Tshirt/Ecommerce Clean/627D75E3-D637-42B7-94EB-1672B1AB8C88.jpeg",
+    bgImage: "/prove/Tshirt/Ecommerce Clean/627D75E3-D637-42B7-94EB-1672B1AB8C88.webp",
     subcategories: [
       { name: "Streetwear FlatLay", showcaseId: "t-shirt & knitwear-streetwear-flatlay", icon: <Camera size={12} /> },
       { name: "E-Commerce Clean", showcaseId: "t-shirt & knitwear-e-commerce-clean", icon: <ShoppingBag size={12} /> },
@@ -28,7 +28,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Footprints size={20} className="text-orange-400" />,
     color: "rgba(249, 115, 22, 0.5)",
     border: "rgba(249, 115, 22, 0.8)",
-    bgImage: "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.jpeg",
+    bgImage: "/prove/Donna/Instagram Lifestyle/9D7AAA55-49BF-44F2-AAEE-0C4A60F1ED95.webp",
     subcategories: [
       { name: "Women's Sneakers", showcaseId: "footwear-womens-sneakers", icon: <Star size={12} /> },
       { name: "Product Clean", showcaseId: "footwear & sneakers-product-clean", icon: <ShoppingBag size={12} /> },
@@ -42,7 +42,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Sparkles size={20} className="text-purple-400" />,
     color: "rgba(168, 85, 247, 0.5)",
     border: "rgba(168, 85, 247, 0.8)",
-    bgImage: "/prove/Donna/Luxury Villa Shoot/195E2086-E0B9-4CBD-B2BB-DDA2D3913BA0.jpeg",
+    bgImage: "/prove/Donna/Luxury Villa Shoot/195E2086-E0B9-4CBD-B2BB-DDA2D3913BA0.webp",
     subcategories: [
       { name: "Mannequin Display", showcaseId: "women's fashion-mannequin-display", icon: <UserCheck size={12} /> },
       { name: "Runway Editorial", showcaseId: "women's fashion-runway-editorial", icon: <Star size={12} /> },
@@ -60,7 +60,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Briefcase size={20} className="text-emerald-400" />,
     color: "rgba(16, 185, 129, 0.5)",
     border: "rgba(16, 185, 129, 0.8)",
-    bgImage: "/prove/Uomo/Street Style/BE25B3F8-3623-4189-988E-AF4258A61ADA.jpeg",
+    bgImage: "/prove/Uomo/Street Style/BE25B3F8-3623-4189-988E-AF4258A61ADA.webp",
     subcategories: [
       { name: "Ecommerce Studio", showcaseId: "mens-apparel-ecommerce-studio", icon: <ShoppingBag size={12} /> },
       { name: "Street Style", showcaseId: "mens-apparel-street-style", icon: <MapPin size={12} /> },
@@ -74,7 +74,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Heart size={20} className="text-rose-400" />,
     color: "rgba(244, 63, 94, 0.5)",
     border: "rgba(244, 63, 94, 0.8)",
-    bgImage: "/prove/Sposa/Romantic Venue/7B9D7519-83A0-4912-A5BD-C99401EBB01A.jpeg",
+    bgImage: "/prove/Sposa/Romantic Venue/7B9D7519-83A0-4912-A5BD-C99401EBB01A.webp",
     subcategories: [
       { name: "Bridal Collection", showcaseId: "bridal-bridal-collection", icon: <Sparkles size={12} /> },
       { name: "Groom Collection", showcaseId: "groom & formal-groom-collection", icon: <UserCheck size={12} /> },
@@ -88,7 +88,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Baby size={20} className="text-yellow-400" />,
     color: "rgba(234, 179, 8, 0.5)",
     border: "rgba(234, 179, 8, 0.8)",
-    bgImage: "/prove/Bambino/Elegant Event/1.jpeg",
+    bgImage: "/prove/Bambino/Elegant Event/1.webp",
     subcategories: [
       { name: "Elegant Event", showcaseId: "kids collection-elegant-event", icon: <Star size={12} /> },
       { name: "Playful Lifestyle", showcaseId: "kids collection-playful-lifestyle", icon: <Trees size={12} /> },
@@ -103,7 +103,7 @@ const CATEGORY_STRUCTURE = [
     icon: <Sun size={20} className="text-cyan-400" />,
     color: "rgba(34, 211, 238, 0.5)",
     border: "rgba(34, 211, 238, 0.8)",
-    bgImage: "/prove/Donna/Costumi/In spiaggia/1.jpeg",
+    bgImage: "/prove/Donna/Costumi/In spiaggia/1.webp",
     subcategories: [
       { name: "E-Commerce Clean", showcaseId: "swimwear-e-commerce-clean", icon: <ShoppingBag size={12} /> },
       { name: "Poolside Lifestyle", showcaseId: "swimwear-poolside-lifestyle", icon: <Sun size={12} /> },

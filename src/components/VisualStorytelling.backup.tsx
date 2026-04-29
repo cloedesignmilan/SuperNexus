@@ -5,22 +5,22 @@ import Image from 'next/image';
 
 const STORY_SLIDES = [
   {
-    image: '/story-wow/001.png',
+    image: '/story-wow/001.webp',
     title: 'Take pictures like this?',
     description: 'Real photos... but they don\'t sell.',
   },
   {
-    image: '/story-wow/002.png',
+    image: '/story-wow/002.webp',
     title: 'AI transforms them',
     description: 'Same product. Completely different result.',
   },
   {
-    image: '/story-wow/003.png',
+    image: '/story-wow/003.webp',
     title: 'Publish in a snap',
     description: 'Ready for Instagram and your shop.',
   },
   {
-    image: '/story-wow/004.jpg',
+    image: '/story-wow/004.webp',
     title: 'And customers buy',
     description: 'From photo to sale, in seconds.',
   }
