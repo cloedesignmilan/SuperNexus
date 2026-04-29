@@ -50,7 +50,7 @@ import LanguageDetector from '@/components/LanguageDetector';
 import LanguageToggle from '@/components/LanguageToggle';
 
 export default async function LandingPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const localeCookie = cookieStore.get('NEXT_LOCALE');
   const hasCookie = !!localeCookie;
   const lang: Locale = (localeCookie?.value as Locale) === 'it' ? 'it' : 'en';

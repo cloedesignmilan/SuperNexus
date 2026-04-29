@@ -1,9 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { MAX_GUEST_USES } from '@/lib/pricingConfig';
-import { trackGuestGeneration } from '@/app/actions/tracking';
-import { getCookie } from 'cookies-next';
 import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
 import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw, Waves, Footprints, MonitorPlay, Smartphone, Search, Users } from 'lucide-react';
 
