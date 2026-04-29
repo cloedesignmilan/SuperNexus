@@ -96,7 +96,7 @@ export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
                      <h3 className="card-title">{item.title}</h3>
                      <p className="card-desc">{item.description}</p>
                      
-                     <div style={{ marginTop: '1.5rem', marginBottom: '2.5rem', width: '100%', height: '220px', borderRadius: '16px', overflow: 'hidden', position: 'relative' }}>
+                     <div style={{ marginTop: '1.5rem', marginBottom: '2.5rem', width: '100%', aspectRatio: '1 / 1', borderRadius: '16px', overflow: 'hidden', position: 'relative' }}>
                         <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                      </div>
                      
