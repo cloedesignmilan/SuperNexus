@@ -113,7 +113,8 @@ export const dictionaries = {
       tag: "True Identity Lock",
       title: "Absolute Demographic Control.",
       subtitle: "Age 18 to 50.",
-      desc: "Stop settling for generic \"flawless 20-something\" AI models. Our proprietary Age Lock System lets you target your exact buyer persona with breathtaking, realistic aging—from mature skin textures to natural expression lines.",
+      desc1: "Stop settling for generic \"flawless 20-something\" AI models.",
+      desc2: "Our proprietary Age Lock System lets you target your exact buyer persona with breathtaking, realistic aging—from mature skin textures to natural expression lines.",
       male: "Male, Age",
       female: "Female, Age"
     },
@@ -291,7 +292,8 @@ export const dictionaries = {
       tag: "True Identity Lock",
       title: "Controllo Demografico Assoluto.",
       subtitle: "Età 18 - 50.",
-      desc: "Basta accontentarsi di modelli IA generici e \"perfetti ventenni\". Il nostro esclusivo Age Lock System ti permette di intercettare il tuo cliente ideale con un invecchiamento realistico mozzafiato—dalla texture della pelle matura alle naturali linee d'espressione.",
+      desc1: "Basta accontentarsi di modelli IA generici e \"perfetti ventenni\".",
+      desc2: "Il nostro esclusivo Age Lock System ti permette di intercettare il tuo cliente ideale con un invecchiamento realistico mozzafiato—dalla texture della pelle matura alle naturali linee d'espressione.",
       male: "Uomo, Età",
       female: "Donna, Età"
     },

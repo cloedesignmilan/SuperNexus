@@ -125,7 +125,8 @@ export default function AgeLockSystem({ lang = 'en' }: AgeLockSystemProps) {
             color: '#888',
             lineHeight: 1.6
           }}>
-            {t.ageLock.desc}
+            {t.ageLock.desc1}<br/>
+            {t.ageLock.desc2}
           </p>
         </div>
 
