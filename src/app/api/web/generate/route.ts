@@ -118,8 +118,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Log Costs
+    let jobCost = 0;
     if (aiResult.totalTokensIn > 0 || aiResult.totalTokensOut > 0) {
-      await logApiCost("web_generation", generationModel, aiResult.totalTokensIn, aiResult.totalTokensOut, dbUser.id, aiResult.generatedBase64s.length)
+      jobCost = await logApiCost("web_generation", generationModel, aiResult.totalTokensIn, aiResult.totalTokensOut, dbUser.id, aiResult.generatedBase64s.length)
     }
 
     // Save outputs to Supabase Cloud
@@ -166,7 +167,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.generationJob.update({
         where: { id: newJob.id },
-        data: { status: 'completed', results_count: outputResults.length }
+        data: { status: 'completed', results_count: outputResults.length, total_cost_eur: jobCost }
     })
 
     return NextResponse.json({ success: true, results: outputResults, jobId: newJob.id })

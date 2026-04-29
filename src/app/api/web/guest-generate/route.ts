@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { prisma } from '@/lib/prisma'
 import { generateImagesWithAI } from '@/lib/ai/generate'
+import { logApiCost } from '@/lib/gemini-cost'
 
 export const maxDuration = 300 // Max duration for Vercel
 
@@ -124,9 +125,15 @@ export async function POST(req: NextRequest) {
         }
     }
 
+    // Log Costs
+    let jobCost = 0;
+    if (aiResult.totalTokensIn > 0 || aiResult.totalTokensOut > 0) {
+      jobCost = await logApiCost("guest_web_generation", generationModel, aiResult.totalTokensIn, aiResult.totalTokensOut, systemUser.id, aiResult.generatedBase64s.length)
+    }
+
     await prisma.generationJob.update({
         where: { id: newJob.id },
-        data: { status: 'completed', results_count: outputResults.length }
+        data: { status: 'completed', results_count: outputResults.length, total_cost_eur: jobCost }
     })
 
     return NextResponse.json({ success: true, results: outputResults, jobId: newJob.id })
