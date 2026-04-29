@@ -44,12 +44,24 @@ function getDynamicMetrics() {
   return { images, stores };
 }
 
+import { cookies } from 'next/headers';
+import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
+import LanguageDetector from '@/components/LanguageDetector';
+import LanguageToggle from '@/components/LanguageToggle';
+
 export default async function LandingPage() {
+  const cookieStore = cookies();
+  const localeCookie = cookieStore.get('NEXT_LOCALE');
+  const hasCookie = !!localeCookie;
+  const lang: Locale = (localeCookie?.value as Locale) === 'it' ? 'it' : 'en';
+  const t = dictionaries[lang];
+
   const showcaseData = await getShowcaseData();
   const metrics = getDynamicMetrics();
 
   return (
     <div className="landing-container">
+      <LanguageDetector hasCookie={hasCookie} />
       <ChatBot />
       {/* HEADER */}
       <header className="landing-header" id="top">
@@ -57,6 +69,7 @@ export default async function LandingPage() {
           SuperNexus <span className="animated-gradient-text">AI</span>
         </a>
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <LanguageToggle currentLocale={lang} />
           {/* Conversion Focus */}
           <div style={{ 
             display: 'flex', 
@@ -266,23 +279,23 @@ export default async function LandingPage() {
           </div>
 
           <h1 className="hero-title fade-up-enter delay-1">
-            Stop Posting Photos<br />
-            <span className="animated-gradient-text">That Don’t Sell.</span>
+            {t.hero.title1}<br />
+            <span className="animated-gradient-text">{t.hero.title2}</span>
           </h1>
           <p className="hero-subtitle fade-up-enter delay-2" style={{ fontSize: '1.25rem', color: '#eaeaea', fontWeight: '500' }}>
-            Turn any product photo into high-converting images in seconds.
+            {t.hero.subtitle}
           </p>
           <p className="hero-subtitle fade-up-enter delay-3" style={{ fontSize: '1.1rem', color: '#888', marginTop: '-1rem' }}>
-            No photographers. No models. No skills required. Just your smartphone.
+            {t.hero.subtitle2}
           </p>
           
           <div className="hero-buttons fade-up-enter delay-4" style={{ alignItems: 'flex-start' }}>
             <div style={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
-              <a href="#guest-try-out" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Try it Free</a>
-              <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>Trusted by growing fashion brands worldwide</span>
+              <a href="#guest-try-out" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>{t.hero.tryItFree}</a>
+              <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>{t.hero.trusted}</span>
             </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '100px', textDecoration: 'none', fontWeight: '800' }}>
-              See the Results
+              {t.hero.seeResults}
             </a>
           </div>
         </div>
@@ -297,7 +310,7 @@ export default async function LandingPage() {
                 <AnimatedCounter endValue={metrics.images} duration={2500} />
               </h3>
             </div>
-            <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Images Created</p>
+            <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>{t.metrics.images}</p>
           </div>
           <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} className="hide-mobile"></div>
           <div style={{ textAlign: 'center', width: '100%', maxWidth: '400px' }}>
@@ -306,7 +319,7 @@ export default async function LandingPage() {
                 <AnimatedCounter endValue={metrics.stores} duration={2000} />
               </h3>
             </div>
-            <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>Active Stores</p>
+            <p style={{ color: '#888', fontSize: '0.9rem', margin: '0', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800' }}>{t.metrics.stores}</p>
           </div>
         </div>
       </section>
@@ -396,7 +409,7 @@ export default async function LandingPage() {
       {/* SHOWCASE DA ZERO */}
       <section id="showcase">
         <InfiniteShowcase showcaseData={showcaseData} />
-        <GuestTryOut />
+        <GuestTryOut lang={lang} />
       </section>
 
       {/* BENTO GRID FEATURES (Shortened) */}

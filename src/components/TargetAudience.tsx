@@ -31,32 +31,25 @@ export default function TargetAudience() {
   }, []);
   const audiences = [
     {
-      title: "Clothing Stores",
-      description: "Upload your entire new collection to your website in a fraction of the time and eliminate studio photography costs.",
+      title: "For Boutiques",
+      description: "Turn in-store mirror selfies into Instagram-ready campaigns without hiring a photographer.",
       icon: <Store size={28} />,
       color: "#a3cc00", // Neon yellow/green
-      handwrittenTip: "Perfect for T-Shirts!"
+      handwrittenTip: "Sell more on Instagram"
     },
     {
-      title: "Marketplace Sellers",
-      description: "Clear out excess inventory quickly while looking hyper-professional as a seller on eBay, Etsy, and Outlet stores.",
+      title: "For E-Commerce",
+      description: "Increase conversion rates with consistent, premium product visuals that look like a high-end studio.",
       icon: <ShoppingBag size={28} />,
-      color: "#ff5470", // Neon Pink
-      handwrittenTip: "Perfect for Footwear!"
-    },
-    {
-      title: "Fashion E-commerce",
-      description: "Skyrocket your conversion rates with consistent, premium, and fully-branded editorial imagery.",
-      icon: <Globe size={28} />,
       color: "#00b3a6", // Neon cyan
-      handwrittenTip: "Perfect for Combined Outfits!"
+      handwrittenTip: "Lower return rates"
     },
     {
-      title: "Instagram Creators",
-      description: "Stop your followers' scrolling with beautiful editorial shots that inspire immediate engagement and purchases.",
+      title: "For Content Creators",
+      description: "Create scroll-stopping lifestyle content in seconds without ever needing a real photoshoot.",
       icon: <Camera size={28} />,
       color: "#9933ff", // Neon purple
-      handwrittenTip: "Perfect for UGC Content!"
+      handwrittenTip: "Boost engagement"
     }
   ];
 
@@ -114,7 +107,7 @@ export default function TargetAudience() {
        <style dangerouslySetInnerHTML={{__html: `
          .wow-grid {
            display: grid;
-           grid-template-columns: repeat(4, 1fr);
+           grid-template-columns: repeat(3, 1fr);
            gap: 1.5rem;
          }
          @media (max-width: 1024px) {

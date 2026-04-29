@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { MAX_GUEST_USES } from '@/lib/pricingConfig';
+import { trackGuestGeneration } from '@/app/actions/tracking';
+import { getCookie } from 'cookies-next';
+import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
 import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw, Waves, Footprints, MonitorPlay, Smartphone, Search, Users } from 'lucide-react';
 
 const CAT_ICONS: Record<string, React.ElementType> = {
@@ -54,7 +58,8 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
   }
 };
 
-export default function GuestTryOut() {
+export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
+  const t = dictionaries[lang].guestTryOut;
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -252,10 +257,10 @@ export default function GuestTryOut() {
       boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
     }}>
       <h3 style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textAlign: 'center' }}>
-        Experience the Magic.
+        {t.title}
       </h3>
       <p style={{ color: '#aaaaaa', textAlign: 'center', maxWidth: '600px', marginBottom: '3rem', fontSize: '1.1rem' }}>
-        Upload a raw photo and choose any style from our full taxonomy. Generate up to 2 times for free (3 images each).
+        {t.subtitle}
       </p>
 
       {error && (
@@ -268,10 +273,10 @@ export default function GuestTryOut() {
       {trialUsesCount >= 2 && resultUrls.length === 0 && !isGenerating && (
         <div style={{ padding: '3rem 2rem', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '600px', width: '100%' }}>
           <Lock size={48} color="#ccff00" style={{ margin: '0 auto 1.5rem auto' }} />
-          <h4 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '1rem' }}>Free Trial Exhausted</h4>
-          <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>You have reached the maximum limit of 2 free generations on this device. Create an account to unlock unlimited access, higher resolution, and commercial rights.</p>
+          <h4 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '1rem' }}>{t.freeTrialExhausted}</h4>
+          <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>{t.exhaustedDesc}</p>
           <a href="/auth" style={{ display: 'inline-block', padding: '1rem 2.5rem', background: '#ccff00', color: '#000', fontWeight: 700, borderRadius: '12px', textDecoration: 'none', fontSize: '1.1rem' }}>
-            Register for Full Access
+            {t.registerBtn}
           </a>
         </div>
       )}
