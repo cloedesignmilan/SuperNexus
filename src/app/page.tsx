@@ -411,7 +411,11 @@ export default async function LandingPage() {
           <div className="bento-card bento-half">
             <div className="bento-icon"><Smartphone /></div>
             <h3 className="bento-title">{t.features.webApp.title}</h3>
-            <p className="bento-subtitle">{t.features.webApp.subtitle}</p>
+            <p className="bento-subtitle">
+              {t.features.webApp.subtitle1}<br/>
+              {t.features.webApp.subtitle2}<br/>
+              {t.features.webApp.subtitle3}
+            </p>
             <div className="bento-visual-center">
               <PhoneMockup imgSrc={[
                 '/immagini/IMG_2048.webp', 
@@ -430,11 +434,15 @@ export default async function LandingPage() {
           <div className="bento-card bento-half" style={{ background: '#111111', color: 'white', display: 'flex', flexDirection: 'column' }}>
             <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
             <h3 className="bento-title" style={{ color: 'white' }}>{t.features.costs.title}</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>{t.features.costs.subtitle}</p>
+            <p className="bento-subtitle" style={{ color: '#aaa' }}>
+              {t.features.costs.subtitle1}<br/>
+              {t.features.costs.subtitle2}<br/>
+              {t.features.costs.subtitle3}
+            </p>
             <ul className="bento-list">
-              <li style={{ color: 'white' }}>❌ No models to pay</li>
-              <li style={{ color: 'white' }}>❌ No schedules to meet</li>
-              <li style={{ color: 'white' }}>✅ Media library accessible 24/7</li>
+              {t.features.costs.list.map((item, i) => (
+                <li key={i} style={{ color: 'white' }}>{item}</li>
+              ))}
             </ul>
             
             {/* GALLERIA MOCKUP ROOT */}

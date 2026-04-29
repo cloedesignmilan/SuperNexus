@@ -62,11 +62,20 @@ export const dictionaries = {
       title2: "No Apps to install.",
       webApp: {
         title: "Everything via Web App.",
-        subtitle: "Upload the photo on the Dashboard, get perfect versions back. Secure and mobile-first, with no apps to install on your device."
+        subtitle1: "Take a photo. Upload it. Done.",
+        subtitle2: "Your images are ready in seconds — directly from your phone.",
+        subtitle3: "No downloads. No learning curve."
       },
       costs: {
         title: "Cut Shooting Costs.",
-        subtitle: "Eliminate the monthly budget for models, makeup artists, photographers, and studios once and for all. All your creations remain accessible 24/7 in your secure Web App Dashboard."
+        subtitle1: "Eliminate the ongoing costs of photoshoots — for good.",
+        subtitle2: "No more models, photographers, studios, or tight schedules.",
+        subtitle3: "Create when you want, access everything anytime.",
+        list: [
+          "❌ No models to pay",
+          "❌ No scheduling headaches",
+          "✅ Your images, available 24/7"
+        ]
       }
     },
     pricing: {
@@ -241,11 +250,20 @@ export const dictionaries = {
       title2: "Nessuna App da installare.",
       webApp: {
         title: "Tutto tramite Web App.",
-        subtitle: "Carica la foto sulla Dashboard, ottieni indietro versioni perfette. Sicuro e pensato per mobile, senza nessuna app da installare sul tuo dispositivo."
+        subtitle1: "Scatta una foto. Caricala. Fatto.",
+        subtitle2: "Le tue immagini sono pronte in pochi secondi — direttamente dal tuo telefono.",
+        subtitle3: "Nessun download. Nessuna curva di apprendimento."
       },
       costs: {
-        title: "Abbatti i Costi Fotografici.",
-        subtitle: "Elimina una volta per tutte il budget mensile per modelli, truccatori, fotografi e studi. Tutte le tue creazioni restano accessibili 24/7 nella tua sicura Dashboard Web."
+        title: "Abbatti i Costi di Shooting.",
+        subtitle1: "Elimina i costi continui dei servizi fotografici — per sempre.",
+        subtitle2: "Basta modelli, fotografi, studi o orari rigidi.",
+        subtitle3: "Crea quando vuoi, accedi a tutto in qualsiasi momento.",
+        list: [
+          "❌ Nessun modello da pagare",
+          "❌ Nessun mal di testa per gli orari",
+          "✅ Le tue immagini, disponibili 24/7"
+        ]
       }
     },
     pricing: {
