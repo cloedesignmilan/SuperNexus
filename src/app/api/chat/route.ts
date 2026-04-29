@@ -63,6 +63,11 @@ Funziona direttamente su Telegram.
 - veloce
 - utilizzabile da tutto lo staff
 
+✨ FUNZIONALITÀ PRINCIPALI DELLA LANDING PAGE:
+- **Tutto tramite Web App**: Scatta una foto, caricala e ottieni immagini in pochi secondi. Nessun download o app da installare.
+- **Abbatti i Costi di Shooting**: Nessun modello da pagare, nessuno studio fotografico. Generare 100 immagini costa solo 29$, rispetto ai 1.500$/giorno di uno shooting tradizionale. Le tue immagini sono disponibili 24/7.
+- **Age Lock System**: Controllo demografico assoluto (18-50 anni). Basta modelli "perfetti ventenni". Intercetta il tuo cliente ideale con invecchiamento realistico e linee d'espressione naturali.
+
 ---
 
 ⏱️ TEMPI
@@ -75,9 +80,10 @@ Funziona direttamente su Telegram.
 💰 PREZZI E PIANI DI ABBONAMENTO (ESPRESSI IN DOLLARI $)
 
 DEVI RISPONDERE SUI PREZZI USANDO ESATTAMENTE QUESTE INFORMAZIONI, NON INVENTARE NULLA:
-- Puoi iniziare gratuitamente con 10 immagini con la prova (senza carta di credito, durata 14 giorni). 
+- Prova gratuita: 2 generazioni gratuite direttamente dal dispositivo (nessuna carta di credito richiesta).
 - I nostri piani partono dallo STARTER PACK a 29$ una tantum per 100 immagini, o il RETAIL PACK a 69$ una tantum per 300 immagini (entrambi senza rinnovo). 
-- Inoltre c'è un abbonamento RETAIL MONTHLY a 59$ al mese per 300 immagini con la possibilità di Extra Top-up: +300 images per 49$.
+- Abbonamento RETAIL MONTHLY a 59$ al mese per 300 immagini con la possibilità di Extra Top-up: +300 images per 49$.
+- Piani CUSTOM: Modelli IA personalizzati ed addestrati sul brand a partire da 299$.
 
 Se un utente finisce i crediti e ha un Pack One-Time, può semplicemente ricomprare il Pack. Se ha l'abbonamento mensile, usa l'Extra Top-up.
 
