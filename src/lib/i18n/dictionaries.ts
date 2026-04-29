@@ -112,6 +112,59 @@ export const dictionaries = {
       rights: "© 2026 SuperNexus AI. All rights reserved.",
       slogan: "Engineered for High-Performance Generative Fashion."
     },
+    ageLock: {
+      tag: "True Identity Lock",
+      title: "Absolute Demographic Control.",
+      subtitle: "Age 18 to 50.",
+      desc: "Stop settling for generic \"flawless 20-something\" AI models. Our proprietary Age Lock System lets you target your exact buyer persona with breathtaking, realistic aging—from mature skin textures to natural expression lines.",
+      male: "Male, Age",
+      female: "Female, Age"
+    },
+    targetAudience: {
+      tag: "TAILOR-MADE FOR YOU",
+      title1: "An absolute game-changer",
+      title2: "for fashion entrepreneurs.",
+      subtitle: "Whether you run a local boutique or a global fashion empire, SuperNexus AI gives you the power of a high-end photography studio right on your smartphone.",
+      boutiques: {
+        title: "For Boutiques",
+        desc: "Turn in-store mirror selfies into Instagram-ready campaigns without hiring a photographer.",
+        tip: "Sell more on Instagram"
+      },
+      ecommerce: {
+        title: "For E-Commerce",
+        desc: "Increase conversion rates with consistent, premium product visuals that look like a high-end studio.",
+        tip: "Lower return rates"
+      },
+      creators: {
+        title: "For Content Creators",
+        desc: "Create scroll-stopping lifestyle content in seconds without ever needing a real photoshoot.",
+        tip: "Boost engagement"
+      }
+    },
+    showcase: {
+      title1: "One Shot.",
+      title2: "Infinite Possibilities.",
+      subtitle: "From a single warehouse photo to stunning, platform-ready lifestyle shots."
+    },
+    testimonials: {
+      title1: "Over 100 shop owners",
+      title2: "have already made the switch.",
+      subtitle: "Discover what the pioneers of AI applied to retail are saying.",
+      row1: [
+        { text: "An absolute game changer. I used to spend thousands of dollars a year on photographers and models. Now the entire budget goes into ads.", author: "Martina V.", role: "Women's Boutique Owner" },
+        { text: "Incredible how it respects the fabric texture. Sales generated from Instagram stories have objectively doubled in two months.", author: "David S.", role: "Fashion E-Commerce" },
+        { text: "As soon as we uploaded the catalog generated with SuperNexus, our flagship items sold out. They look like stolen catwalk shots.", author: "Julia L.", role: "Store Manager" },
+        { text: "My clients think I hired a prestigious agency from Milan. No one knows I do everything from the back of the store on Telegram.", author: "Francesca G.", role: "Concept Store Owner" },
+        { text: "I save 3 hours a week on shooting. I take a picture of the mannequin and publish editorial photos. I would NEVER go back.", author: "Lorenzo M.", role: "Clothing Outlet" }
+      ],
+      row2: [
+        { text: "I had strong doubts about formal wear. Instead, Artificial Intelligence manages to define lace and tulle perfectly.", author: "Elena R.", role: "Bridal Atelier & Ceremony" },
+        { text: "No more sizing or fit problems. The AI wears the garment and models it on digital mannequins, proportioning it to the best.", author: "Sarah D.", role: "Curvy Boutique" },
+        { text: "The feature for menswear has crazy visual quality. Now we use these images directly to run Facebook Ads.", author: "Mark P.", role: "Menswear Store" },
+        { text: "It allowed us to launch weekly capsule collections without having to organize mini-shoots every Friday. Innovative.", author: "Valentina F.", role: "Multi-Brand Store" },
+        { text: "It's so intuitive that the sales assistants started using it. They now create the social media content for the store during downtime.", author: "Robert T.", role: "Retail Entrepreneur" }
+      ]
+    },
     guestTryOut: {
       title: "Experience the Magic.",
       subtitle: "Upload a raw photo and choose any style from our full taxonomy. Generate up to 2 times for free (3 images each).",
@@ -239,6 +292,59 @@ export const dictionaries = {
       privacy: "Privacy Policy",
       rights: "© 2026 SuperNexus AI. Tutti i diritti riservati.",
       slogan: "Ingegnerizzato per Moda Generativa ad Alte Prestazioni."
+    },
+    ageLock: {
+      tag: "True Identity Lock",
+      title: "Controllo Demografico Assoluto.",
+      subtitle: "Età 18 - 50.",
+      desc: "Basta accontentarsi di modelli IA generici e \"perfetti ventenni\". Il nostro esclusivo Age Lock System ti permette di intercettare il tuo cliente ideale con un invecchiamento realistico mozzafiato—dalla texture della pelle matura alle naturali linee d'espressione.",
+      male: "Uomo, Età",
+      female: "Donna, Età"
+    },
+    targetAudience: {
+      tag: "SU MISURA PER TE",
+      title1: "Un vero punto di svolta",
+      title2: "per gli imprenditori della moda.",
+      subtitle: "Che tu gestisca una boutique locale o un impero globale della moda, SuperNexus AI ti dà la potenza di uno studio fotografico di fascia alta direttamente sul tuo smartphone.",
+      boutiques: {
+        title: "Per le Boutique",
+        desc: "Trasforma i selfie allo specchio in negozio in campagne pronte per Instagram senza assumere fotografi.",
+        tip: "Vendi di più su Instagram"
+      },
+      ecommerce: {
+        title: "Per E-Commerce",
+        desc: "Aumenta le conversioni con foto prodotto premium e coerenti che sembrano scattate in uno studio di fascia alta.",
+        tip: "Riduci i resi"
+      },
+      creators: {
+        title: "Per Content Creator",
+        desc: "Crea contenuti lifestyle in pochi secondi senza bisogno di uno shooting reale.",
+        tip: "Aumenta l'engagement"
+      }
+    },
+    showcase: {
+      title1: "Uno Scatto.",
+      title2: "Infinite Possibilità.",
+      subtitle: "Da una singola foto di magazzino a scatti lifestyle sbalorditivi e pronti per le piattaforme."
+    },
+    testimonials: {
+      title1: "Oltre 100 negozianti",
+      title2: "hanno già fatto il salto.",
+      subtitle: "Scopri cosa dicono i pionieri dell'IA applicata al retail.",
+      row1: [
+        { text: "Un punto di svolta assoluto. Prima spendevo migliaia di euro l'anno per fotografi e modelle. Ora l'intero budget va in pubblicità.", author: "Martina V.", role: "Proprietaria Boutique Donna" },
+        { text: "Incredibile come rispetti la trama del tessuto. Le vendite generate dalle storie di Instagram sono oggettivamente raddoppiate in due mesi.", author: "David S.", role: "E-Commerce Moda" },
+        { text: "Appena abbiamo caricato il catalogo generato con SuperNexus, i nostri articoli di punta sono andati sold out. Sembrano scatti rubati in passerella.", author: "Julia L.", role: "Store Manager" },
+        { text: "I miei clienti pensano che abbia ingaggiato un'agenzia prestigiosa di Milano. Nessuno sa che faccio tutto dal retrobottega su Telegram.", author: "Francesca G.", role: "Proprietaria Concept Store" },
+        { text: "Risparmio 3 ore a settimana sugli shooting. Faccio una foto al manichino e pubblico foto editoriali. Non tornerei MAI indietro.", author: "Lorenzo M.", role: "Outlet Abbigliamento" }
+      ],
+      row2: [
+        { text: "Avevo forti dubbi sugli abiti da cerimonia. Invece, l'Intelligenza Artificiale riesce a definire pizzo e tulle perfettamente.", author: "Elena R.", role: "Atelier Sposa & Cerimonia" },
+        { text: "Niente più problemi di taglie o vestibilità. L'IA indossa il capo e lo modella sui manichini digitali, proporzionandolo al meglio.", author: "Sarah D.", role: "Boutique Curvy" },
+        { text: "La funzione per l'abbigliamento maschile ha una qualità visiva pazzesca. Ora usiamo queste immagini direttamente per le Facebook Ads.", author: "Mark P.", role: "Negozio Abbigliamento Uomo" },
+        { text: "Ci ha permesso di lanciare capsule collection settimanali senza dover organizzare mini-shooting ogni venerdì. Innovativo.", author: "Valentina F.", role: "Negozio Multi-Brand" },
+        { text: "È così intuitivo che hanno iniziato a usarlo anche i commessi. Ora creano loro i contenuti social per il negozio nei momenti morti.", author: "Robert T.", role: "Imprenditore Retail" }
+      ]
     },
     guestTryOut: {
       title: "Vivi la Magia.",

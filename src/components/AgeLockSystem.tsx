@@ -2,8 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { UserCheck } from 'lucide-react';
+import { Locale, dictionaries } from '@/lib/i18n/dictionaries';
 
-export default function AgeLockSystem() {
+interface AgeLockSystemProps {
+  lang?: Locale;
+}
+
+export default function AgeLockSystem({ lang = 'en' }: AgeLockSystemProps) {
+  const t = dictionaries[lang];
   const [activeIndex, setActiveIndex] = useState(0);
   const [displayAge, setDisplayAge] = useState(20);
 
@@ -101,7 +107,7 @@ export default function AgeLockSystem() {
             fontSize: '0.9rem',
             marginBottom: '1.5rem'
           }}>
-            <UserCheck size={16} /> True Identity Lock
+            <UserCheck size={16} /> {t.ageLock.tag}
           </div>
           <h2 style={{
             fontSize: '3.5rem',
@@ -111,15 +117,15 @@ export default function AgeLockSystem() {
             marginBottom: '1.5rem',
             letterSpacing: '-1px'
           }}>
-            Absolute Demographic Control. <br />
-            <span style={{ color: '#aaa' }}>Age 18 to 50.</span>
+            {t.ageLock.title} <br />
+            <span style={{ color: '#aaa' }}>{t.ageLock.subtitle}</span>
           </h2>
           <p style={{
             fontSize: '1.2rem',
             color: '#888',
             lineHeight: 1.6
           }}>
-            Stop settling for generic "flawless 20-something" AI models. Our proprietary Age Lock System lets you target your exact buyer persona with breathtaking, realistic aging—from mature skin textures to natural expression lines.
+            {t.ageLock.desc}
           </p>
         </div>
 
@@ -157,7 +163,7 @@ export default function AgeLockSystem() {
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Male, Age {displayAge}
+              {t.ageLock.male} {displayAge}
             </div>
           </div>
 
@@ -186,7 +192,7 @@ export default function AgeLockSystem() {
             </div>
             <div className="age-label-floating">
               <span className="live-dot" />
-              Female, Age {displayAge}
+              {t.ageLock.female} {displayAge}
             </div>
           </div>
 

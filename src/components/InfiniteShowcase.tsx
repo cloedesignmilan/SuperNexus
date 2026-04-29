@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Shirt, Sparkles, Waves, Footprints, Layers, ShoppingBag, Play, Pause, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Locale, dictionaries } from '@/lib/i18n/dictionaries';
 
 interface ShowcaseItem {
   id: string;
@@ -14,6 +15,7 @@ interface ShowcaseItem {
 
 interface Props {
   showcaseData: ShowcaseItem[];
+  lang?: Locale;
 }
 
 const SLIDESHOW_CONFIG = [
@@ -206,7 +208,8 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   'BAGS': ShoppingBag,
 };
 
-export default function InfiniteShowcase({ showcaseData }: Props) {
+export default function InfiniteShowcase({ showcaseData, lang = 'en' }: Props) {
+  const t = dictionaries[lang];
   const [activeIndex, setActiveIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -328,9 +331,9 @@ export default function InfiniteShowcase({ showcaseData }: Props) {
   return (
     <section id="infinite-showcase-section" className="infinite-showcase-wrapper" style={{ padding: '4rem 0 8rem 0', overflow: 'hidden' }}>
       <div className="infinite-showcase-header" style={{ color: '#ffffff', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h2 className="section-title" style={{ color: '#ffffff', textAlign: 'center' }}>One Shot.<br/>Infinite Possibilities.</h2>
+        <h2 className="section-title" style={{ color: '#ffffff', textAlign: 'center' }}>{t.showcase.title1}<br/>{t.showcase.title2}</h2>
         <p className="section-subtitle" style={{ color: '#aaaaaa', textAlign: 'center' }}>
-          From a single warehouse photo to stunning, platform-ready lifestyle shots.
+          {t.showcase.subtitle}
         </p>
 
         {/* CATEGORY ICONS */}

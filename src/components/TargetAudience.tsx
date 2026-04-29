@@ -2,10 +2,16 @@
 import React, { useEffect, useRef } from 'react';
 import { Store, ShoppingBag, Globe, Camera, ArrowUpRight } from 'lucide-react';
 import { Caveat } from 'next/font/google';
+import { Locale, dictionaries } from '@/lib/i18n/dictionaries';
 
 const caveat = Caveat({ subsets: ['latin'], weight: '700' });
 
-export default function TargetAudience() {
+interface TargetAudienceProps {
+  lang?: Locale;
+}
+
+export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
+  const t = dictionaries[lang];
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,25 +37,25 @@ export default function TargetAudience() {
   }, []);
   const audiences = [
     {
-      title: "For Boutiques",
-      description: "Turn in-store mirror selfies into Instagram-ready campaigns without hiring a photographer.",
+      title: t.targetAudience.boutiques.title,
+      description: t.targetAudience.boutiques.desc,
       icon: <Store size={28} />,
       color: "#a3cc00", // Neon yellow/green
-      handwrittenTip: "Sell more on Instagram"
+      handwrittenTip: t.targetAudience.boutiques.tip
     },
     {
-      title: "For E-Commerce",
-      description: "Increase conversion rates with consistent, premium product visuals that look like a high-end studio.",
+      title: t.targetAudience.ecommerce.title,
+      description: t.targetAudience.ecommerce.desc,
       icon: <ShoppingBag size={28} />,
       color: "#00b3a6", // Neon cyan
-      handwrittenTip: "Lower return rates"
+      handwrittenTip: t.targetAudience.ecommerce.tip
     },
     {
-      title: "For Content Creators",
-      description: "Create scroll-stopping lifestyle content in seconds without ever needing a real photoshoot.",
+      title: t.targetAudience.creators.title,
+      description: t.targetAudience.creators.desc,
       icon: <Camera size={28} />,
       color: "#9933ff", // Neon purple
-      handwrittenTip: "Boost engagement"
+      handwrittenTip: t.targetAudience.creators.tip
     }
   ];
 
@@ -63,14 +69,14 @@ export default function TargetAudience() {
          {/* HEADER */}
          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
            <div style={{ display: 'inline-block', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', marginBottom: '1.5rem', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.1em', color: '#aaa' }}>
-              TAILOR-MADE FOR YOU
+              {t.targetAudience.tag}
            </div>
            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1.5rem', lineHeight: 1.1 }}>
-             An absolute game-changer<br/>
-             <span style={{ color: '#666' }}>for fashion entrepreneurs.</span>
+             {t.targetAudience.title1}<br/>
+             <span style={{ color: '#666' }}>{t.targetAudience.title2}</span>
            </h2>
            <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '600px', margin: '0 auto', lineHeight: 1.6 }}>
-             Whether you run a local boutique or a global fashion empire, SuperNexus AI gives you the power of a high-end photography studio right on your smartphone.
+             {t.targetAudience.subtitle}
            </p>
          </div>
          

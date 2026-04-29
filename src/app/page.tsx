@@ -390,14 +390,14 @@ export default async function LandingPage() {
       <VisualStorytelling />
 
       {/* AGE LOCK SYSTEM (Demographic Control) */}
-      <AgeLockSystem />
+      <AgeLockSystem lang={lang} />
 
       {/* TARGET AUDIENCE MAP */}
-      <TargetAudience />
+      <TargetAudience lang={lang} />
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase">
-        <InfiniteShowcase showcaseData={showcaseData} />
+        <InfiniteShowcase showcaseData={showcaseData} lang={lang} />
         <GuestTryOut lang={lang} />
       </section>
 
@@ -455,7 +455,7 @@ export default async function LandingPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <Testimonials />
+      <Testimonials lang={lang} />
 
       {/* PRICING */}
       <section id="pricing" className="bento-section" style={{ marginBottom: '8rem', marginTop: '4rem' }}>
