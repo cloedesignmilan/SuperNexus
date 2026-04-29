@@ -68,7 +68,7 @@ export default async function LandingPage() {
         <a href="/" className="landing-logo" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
           SuperNexus <span className="animated-gradient-text">AI</span>
         </a>
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+        <nav className="mobile-nav" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           <LanguageToggle currentLocale={lang} />
           {/* Conversion Focus */}
           <div style={{ 
@@ -87,8 +87,8 @@ export default async function LandingPage() {
              <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> {t.nav.categories.footwear}</a>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <a href="/auth" className="stagger-anim" style={{ 
+          <div className="mobile-nav-group" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <a href="/auth" className="stagger-anim mobile-nav-login" style={{ 
               color: '#ffffff', 
               textDecoration: 'none', 
               fontSize: '0.95rem', 
@@ -152,6 +152,19 @@ export default async function LandingPage() {
             @media (max-width: 1024px) {
               .desktop-only-nav {
                 display: none !important;
+              }
+            }
+            @media (max-width: 480px) {
+              .landing-logo { font-size: 1.25rem !important; }
+              .mobile-nav { gap: 0.5rem !important; }
+              .mobile-nav-group { gap: 0.75rem !important; }
+              .mobile-nav-group .btn-animated-gradient {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.8rem !important;
+                white-space: nowrap;
+              }
+              .mobile-nav-login {
+                font-size: 0.85rem !important;
               }
             }
             
