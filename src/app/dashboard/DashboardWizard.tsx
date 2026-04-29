@@ -558,15 +558,26 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           {hasModel && (
             <div>
               <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>1. Model Age</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'rgba(255,255,255,0.02)', padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <input 
-                  type="range" 
-                  min="18" max="50" 
-                  value={modelAge} 
-                  onChange={e => setModelAge(parseInt(e.target.value))} 
-                  style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--color-primary)' }} 
-                />
-                <span style={{ fontSize: '1.2rem', fontWeight: 600, minWidth: '60px', textAlign: 'right' }}>{modelAge} yrs</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <input 
+                    type="range" 
+                    min="20" max="50" step="5"
+                    value={modelAge} 
+                    onChange={e => setModelAge(parseInt(e.target.value))} 
+                    style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--color-primary)' }} 
+                  />
+                  <span style={{ fontSize: '1.2rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: 'var(--color-primary)' }}>{modelAge} yrs</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 5px', color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
+                  <span>20</span>
+                  <span>25</span>
+                  <span>30</span>
+                  <span>35</span>
+                  <span>40</span>
+                  <span>45</span>
+                  <span>50</span>
+                </div>
               </div>
             </div>
           )}
