@@ -76,22 +76,22 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
       `}} />
       <header className="glass-panel dashboard-header">
         <div className="header-left">
-          <h1 className="title-gradient" style={{ fontSize: '1.5rem', margin: 0, color: '#D4AF37' }}>SuperNexus</h1>
+          <h1 className="title-gradient" style={{ fontSize: '1.5rem', margin: 0, color: '#00d2ff' }}>SuperNexus</h1>
           <nav style={{ display: 'flex', gap: '1.5rem' }}>
             <Link href="/dashboard" style={{ 
               display: 'flex', alignItems: 'center', gap: '0.5rem', 
-              color: pathname === '/dashboard' ? '#D4AF37' : 'var(--color-text-muted)', 
+              color: pathname === '/dashboard' ? '#00d2ff' : 'var(--color-text-muted)', 
               textDecoration: 'none', fontWeight: 600,
-              borderBottom: pathname === '/dashboard' ? '2px solid #D4AF37' : '2px solid transparent',
+              borderBottom: pathname === '/dashboard' ? '2px solid #00d2ff' : '2px solid transparent',
               paddingBottom: '0.25rem', transition: 'all 0.2s'
             }}>
               <Home size={18} /> <span className="nav-text">Studio</span>
             </Link>
             <Link href="/dashboard/gallery" style={{ 
               display: 'flex', alignItems: 'center', gap: '0.5rem', 
-              color: pathname === '/dashboard/gallery' ? '#D4AF37' : 'var(--color-text-muted)', 
+              color: pathname === '/dashboard/gallery' ? '#00d2ff' : 'var(--color-text-muted)', 
               textDecoration: 'none', fontWeight: 600,
-              borderBottom: pathname === '/dashboard/gallery' ? '2px solid #D4AF37' : '2px solid transparent',
+              borderBottom: pathname === '/dashboard/gallery' ? '2px solid #00d2ff' : '2px solid transparent',
               paddingBottom: '0.25rem', transition: 'all 0.2s'
             }}>
               <ImageIcon size={18} /> <span className="nav-text">My Gallery</span>
@@ -107,9 +107,9 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
              </span>
           </div>
 
-          <div className="credits-pill" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: isAdmin ? 'rgba(212, 175, 55, 0.1)' : 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap', border: isAdmin ? '1px solid rgba(212, 175, 55, 0.3)' : 'none' }}>
-             <span className="credits-label" style={{ fontSize: '0.8rem', color: isAdmin ? '#D4AF37' : 'var(--color-text-muted)' }}>{isAdmin ? 'God Mode:' : 'Credits:'}</span>
-             <span style={{ fontWeight: 800, color: isAdmin ? '#D4AF37' : '#D4AF37', fontSize: isAdmin ? '1.2rem' : '1rem' }}>{isAdmin ? '∞' : remaining}</span>
+          <div className="credits-pill" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: isAdmin ? 'rgba(0, 210, 255, 0.1)' : 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap', border: isAdmin ? '1px solid rgba(0, 210, 255, 0.3)' : 'none' }}>
+             <span className="credits-label" style={{ fontSize: '0.8rem', color: isAdmin ? '#00d2ff' : 'var(--color-text-muted)' }}>{isAdmin ? 'God Mode:' : 'Credits:'}</span>
+             <span style={{ fontWeight: 800, color: isAdmin ? '#00d2ff' : '#00d2ff', fontSize: isAdmin ? '1.2rem' : '1rem' }}>{isAdmin ? '∞' : remaining}</span>
           </div>
 
           <button onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: 600 }}>

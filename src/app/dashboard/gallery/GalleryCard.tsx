@@ -34,7 +34,7 @@ export default function GalleryCard({ url, path }: { url: string, path?: string 
   return (
     <div style={{ padding: '1rem', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.75rem', background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
       {path && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, color: '#D4AF37', letterSpacing: '0.05em', padding: '0.3rem 0.6rem', background: 'rgba(212, 175, 55, 0.1)', borderRadius: '6px', alignSelf: 'flex-start', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, color: '#00d2ff', letterSpacing: '0.05em', padding: '0.3rem 0.6rem', background: 'rgba(0, 210, 255, 0.1)', borderRadius: '6px', alignSelf: 'flex-start', textTransform: 'uppercase' }}>
           <Tag size={12} />
           {path}
         </div>
@@ -54,7 +54,7 @@ export default function GalleryCard({ url, path }: { url: string, path?: string 
           onClick={handleDownload}
           style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
           title="Save to Camera Roll / Download"
-          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(212,175,55,0.8)'}
+          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(0,210,255,0.8)'}
           onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
         >
           <Download size={20} />

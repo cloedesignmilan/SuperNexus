@@ -645,9 +645,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     min="20" max="50" step="5"
                     value={modelAge} 
                     onChange={e => setModelAge(parseInt(e.target.value))} 
-                    style={{ flex: 1, cursor: 'pointer', accentColor: '#D4AF37' }} 
+                    style={{ flex: 1, cursor: 'pointer', accentColor: '#00d2ff' }} 
                   />
-                  <span style={{ fontSize: '1.1rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: '#D4AF37' }}>{modelAge} yrs</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: '#00d2ff' }}>{modelAge} yrs</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 5px', color: '#8e8e93', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
                   <span>20</span>
@@ -809,16 +809,16 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .glass-card:active { transform: scale(0.95); }
 
         .glass-card.selected {
-          background: #D4AF37;
-          border-color: #D4AF37;
+          background: #00d2ff;
+          border-color: #00d2ff;
           transform: scale(1.02);
-          box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+          box-shadow: 0 4px 12px rgba(0, 210, 255, 0.4);
           color: #000;
         }
 
         .glass-card.warning { opacity: 0.5; }
 
-        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #D4AF37; }
+        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #00d2ff; }
         .glass-card.selected .sparkle-icon { color: rgba(255,255,255,0.8); }
         
         .card-icon { margin-bottom: 0.5rem; color: #8e8e93; transition: all 0.2s ease; }
@@ -854,7 +854,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .btn-giant:active { transform: scale(0.96); opacity: 0.9; }
 
         .btn-magic {
-          background: #D4AF37;
+          background: #00d2ff;
           color: #000;
           border: none;
           padding: 1.1rem 2rem;
@@ -868,7 +868,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           justify-content: center;
           gap: 8px;
           width: 100%;
-          box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
+          box-shadow: 0 4px 14px rgba(0, 210, 255, 0.2);
         }
         .btn-magic:active { transform: scale(0.96); background: #B5952F; }
         
@@ -1108,7 +1108,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                 onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
               >
                 {isUploading ? (
-                  <><Loader2 className="animate-spin" size={48} color="#D4AF37" style={{ margin: '0 auto 1rem auto' }} /> <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Uploading...</div></>
+                  <><Loader2 className="animate-spin" size={48} color="#00d2ff" style={{ margin: '0 auto 1rem auto' }} /> <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Uploading...</div></>
                 ) : (
                   <>
                     <Upload size={48} color="rgba(255,255,255,0.3)" style={{ margin: '0 auto 1rem auto' }} />
@@ -1121,10 +1121,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <div style={{ background: '#1c1c1e', borderRadius: '24px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ fontWeight: 600, marginBottom: '1rem', fontSize: '0.95rem' }}>Tips for best results</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Use a clear, well-lit photo</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Plain background works best</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Show the entire product</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> High resolution recommended</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Use a clear, well-lit photo</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Plain background works best</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Show the entire product</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> High resolution recommended</div>
                 </div>
               </div>
             </div>
@@ -1397,8 +1397,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             <div className="fade-up-enter" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
               <div style={{ position: 'relative', width: '120px', height: '120px', margin: '0 auto 3rem auto' }}>
                 <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
-                  <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(212, 175, 55, 0.1)" strokeWidth="4" />
-                  <circle cx="50" cy="50" r="45" fill="none" stroke="#D4AF37" strokeWidth="4" strokeDasharray="283" strokeDashoffset="70" style={{ animation: 'spin 2s linear infinite' }} />
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(0, 210, 255, 0.1)" strokeWidth="4" />
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="#00d2ff" strokeWidth="4" strokeDasharray="283" strokeDashoffset="70" style={{ animation: 'spin 2s linear infinite' }} />
                 </svg>
               </div>
               <h2 className="step-header" style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Analyzing Product...</h2>
@@ -1407,26 +1407,26 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px', margin: '0 auto', textAlign: 'left' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Image Analysis</span>
-                  <CheckCircle2 size={20} color="#D4AF37" />
+                  <CheckCircle2 size={20} color="#00d2ff" />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Material Detection</span>
-                  <CheckCircle2 size={20} color="#D4AF37" />
+                  <CheckCircle2 size={20} color="#00d2ff" />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Style Matching</span>
-                  <CheckCircle2 size={20} color="#D4AF37" />
+                  <CheckCircle2 size={20} color="#00d2ff" />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <span style={{ fontSize: '0.9rem', color: '#D4AF37', fontWeight: 600 }}>Generating Magic</span>
+                    <span style={{ fontSize: '0.9rem', color: '#00d2ff', fontWeight: 600 }}>Generating Magic</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ fontSize: '0.85rem', color: '#D4AF37', fontWeight: 600 }}>{Math.floor(generationProgress)}%</span>
-                      <Loader2 size={16} color="#D4AF37" className="animate-spin" />
+                      <span style={{ fontSize: '0.85rem', color: '#00d2ff', fontWeight: 600 }}>{Math.floor(generationProgress)}%</span>
+                      <Loader2 size={16} color="#00d2ff" className="animate-spin" />
                     </div>
                   </div>
                   <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
-                    <div style={{ width: `${generationProgress}%`, height: '100%', background: '#D4AF37', transition: 'width 0.5s linear' }} />
+                    <div style={{ width: `${generationProgress}%`, height: '100%', background: '#00d2ff', transition: 'width 0.5s linear' }} />
                   </div>
                 </div>
               </div>
@@ -1440,7 +1440,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           {step === 6 && results.length > 0 && (
             <div className="fade-up-enter">
               <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.1)', color: '#D4AF37', marginBottom: '1.5rem', border: '1px solid rgba(212, 175, 55, 0.3)' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(0, 210, 255, 0.1)', color: '#00d2ff', marginBottom: '1.5rem', border: '1px solid rgba(0, 210, 255, 0.3)' }}>
                   <CheckCircle2 size={32} />
                 </div>
                 <h2 className="step-header" style={{ marginBottom: '0.5rem' }}>Your images are ready!</h2>
@@ -1462,14 +1462,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                           onClick={() => handleDownloadImage(url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`, downloadFilename)}
                           style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
                           title="Save to Camera Roll / Download"
-                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(212,175,55,0.8)'}
+                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(0,210,255,0.8)'}
                           onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
                         >
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                         </button>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#00d2ff', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                           {shotNum}
                         </span>
                         {shotName && (
