@@ -239,7 +239,38 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
   const isConfigComplete = selectedCat && selectedMode && selectedSubcat;
 
   return (
-    <div id="guest-try-out" className="guest-try-out" style={{
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes borderSpin {
+          100% { transform: rotate(360deg); }
+        }
+        .wow-border-card {
+          position: relative;
+          background: rgba(255,255,255,0.02);
+          border-radius: 18px;
+          text-align: center;
+          overflow: hidden;
+          padding: 2px;
+          margin: 0 auto;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .wow-border-card::before {
+          content: "";
+          position: absolute;
+          top: -50%; left: -50%; right: -50%; bottom: -50%;
+          background: conic-gradient(transparent, transparent, transparent, #ccff00);
+          animation: borderSpin 3s linear infinite;
+        }
+        .wow-border-inner {
+          position: relative;
+          background: #0f0f0f;
+          border-radius: 16px;
+          padding: 3rem 2rem;
+          height: 100%;
+          z-index: 1;
+        }
+      `}} />
+      <div id="guest-try-out" className="guest-try-out" style={{
       width: '100%',
       maxWidth: '1200px',
       margin: '0 auto',
@@ -268,13 +299,15 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       )}
 
       {trialUsesCount >= 2 && resultUrls.length === 0 && !isGenerating && (
-        <div style={{ padding: '3rem 2rem', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '600px', width: '100%' }}>
-          <Lock size={48} color="#ccff00" style={{ margin: '0 auto 1.5rem auto' }} />
-          <h4 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '1rem' }}>{t.freeTrialExhausted}</h4>
-          <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>{t.exhaustedDesc}</p>
-          <a href="/auth" style={{ display: 'inline-block', padding: '1rem 2.5rem', background: '#ccff00', color: '#000', fontWeight: 700, borderRadius: '12px', textDecoration: 'none', fontSize: '1.1rem' }}>
-            {t.registerBtn}
-          </a>
+        <div className="wow-border-card" style={{ maxWidth: '600px', width: '100%' }}>
+          <div className="wow-border-inner">
+            <Lock size={48} color="#ccff00" style={{ margin: '0 auto 1.5rem auto' }} />
+            <h4 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '1rem' }}>{t.freeTrialExhausted}</h4>
+            <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>{t.exhaustedDesc}</p>
+            <a href="/auth" style={{ display: 'inline-block', padding: '1rem 2.5rem', background: '#ccff00', color: '#000', fontWeight: 700, borderRadius: '12px', textDecoration: 'none', fontSize: '1.1rem' }}>
+              {t.registerBtn}
+            </a>
+          </div>
         </div>
       )}
 
@@ -599,5 +632,6 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
         </div>
       )}
     </div>
+    </>
   );
 }
