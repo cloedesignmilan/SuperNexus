@@ -235,6 +235,19 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     try {
       const response = await fetch(url);
       const blob = await response.blob();
+      const file = new File([blob], filename, { type: 'image/jpeg' });
+      
+      // Web Share API per Mobile (Apre il menu nativo di iOS/Android con l'opzione "Salva Immagine")
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'SuperNexus AI',
+          text: 'My stunning AI product imagery'
+        });
+        return;
+      }
+
+      // Fallback per Desktop: Download Diretto
       const objectUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = objectUrl;
@@ -245,7 +258,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       window.URL.revokeObjectURL(objectUrl);
     } catch (error) {
       console.error('Error downloading image:', error);
-      // Fallback: apri l'immagine in una nuova scheda
+      // Fallback finale: apri in nuova scheda
       window.open(url, '_blank');
     }
   };
@@ -867,12 +880,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         }
 
         @media (max-width: 1024px) {
-          .studio-layout { flex-direction: column; top: 60px; height: calc(100vh - 60px); }
+          .studio-layout { flex-direction: column; top: 60px; height: calc(100dvh - 60px); }
           
           /* The Image Stage takes top space */
           .studio-left { 
             flex: none; 
-            height: 25vh; 
+            height: 25dvh; 
             padding: 1rem; 
             border-right: none; 
             background: #000;
@@ -880,7 +893,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           }
           
           .studio-left.collapsed {
-            height: 20vh;
+            height: 20dvh;
             display: flex;
             background: #000;
             border-bottom: none;
@@ -928,8 +941,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           .sticky-bottom-action {
             position: sticky;
             bottom: 0;
-            margin: 2rem -1rem -6rem -1rem;
-            padding: 1rem;
+            margin: 2rem -1rem 0 -1rem;
+            padding: 1rem 1rem calc(1.5rem + env(safe-area-inset-bottom, 20px)) 1rem;
             background: rgba(18, 18, 20, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -940,7 +953,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             gap: 1rem;
           }
           
-          .scroll-container { padding: 1.5rem 1rem 6rem 1rem; }
+          .scroll-container { padding: 1.5rem 1rem calc(8rem + env(safe-area-inset-bottom, 20px)) 1rem; }
           
           .step-header { font-size: 1.5rem; }
           .step-desc { font-size: 0.9rem; margin-bottom: 1.5rem; }
