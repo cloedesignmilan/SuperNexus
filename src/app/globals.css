@@ -235,9 +235,9 @@ body {
   width: 100%;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(247, 248, 250, 0.75);
+  background: rgba(5, 5, 5, 0.55);
   z-index: 100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .landing-logo {
@@ -1468,6 +1468,22 @@ body {
   font-weight: 800;
   letter-spacing: 1px;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.glow-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 6px;

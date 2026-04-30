@@ -99,11 +99,11 @@ export default async function LandingPage() {
             flexWrap: 'wrap',
             justifyContent: 'center'
           }} className="desktop-only-nav">
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#000000" className="glow-icon" /> {t.nav.categories.tshirts}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#000000" className="glow-icon" /> {t.nav.categories.swimwear}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.2s' } as React.CSSProperties}><Star size={14} color="#000000" className="glow-icon" /> {t.nav.categories.ceremony}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#000000" className="glow-icon" /> {t.nav.categories.everyday}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#000000" className="glow-icon" /> {t.nav.categories.footwear}</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.tshirts}</a>
+             <a href="#visual-storytelling-section" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.2s' } as React.CSSProperties}><MonitorPlay size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.visual}</a>
+             <a href="#pricing-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ff0ab3', animationDelay: '0.3s' } as React.CSSProperties}><Rocket size={14} color="#ffffff" className="glow-icon" /> {t.nav.pricing}</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.everyday}</a>
+             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.footwear}</a>
           </div>
 
           <div className="mobile-nav-group" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
