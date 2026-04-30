@@ -215,5 +215,6 @@ export default function DimensionsGuide({ lang = 'en' }: { lang?: Locale }) {
         }
       `}} />
     </section>
+    </>
   );
 }
