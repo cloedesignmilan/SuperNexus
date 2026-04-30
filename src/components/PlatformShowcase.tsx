@@ -79,9 +79,10 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                             gap: '10px',
                             padding: '1rem 2rem',
                             borderRadius: '100px',
-                            background: activePlatform === idx ? `${plat.color}15` : 'rgba(0,0,0,0.03)',
-                            border: `1px solid ${activePlatform === idx ? plat.color : 'rgba(0,0,0,0.1)'}`,
+                            background: activePlatform === idx ? '#111' : '#fff',
+                            border: `1px solid ${activePlatform === idx ? plat.color : 'rgba(0,0,0,0.08)'}`,
                             color: activePlatform === idx ? plat.color : '#666',
+                            boxShadow: activePlatform === idx ? `0 4px 15px ${plat.color}33` : '0 2px 8px rgba(0,0,0,0.04)',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
                             fontWeight: '600',
@@ -105,7 +106,7 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                 
                 {/* Text Content */}
                 <div style={{ animation: 'fadeIn 0.5s ease-out' }} key={`text-${activePlatform}`}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.4rem 1rem', background: `${platforms[activePlatform].color}22`, borderRadius: '100px', marginBottom: '1.5rem', color: platforms[activePlatform].color, fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.4rem 1rem', background: '#111', border: `1px solid ${platforms[activePlatform].color}44`, borderRadius: '100px', marginBottom: '1.5rem', color: platforms[activePlatform].color, fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', boxShadow: `0 2px 10px ${platforms[activePlatform].color}22` }}>
                         <Zap size={14} /> {t.selected}
                     </div>
                     <h3 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#000', marginBottom: '1rem' }}>
