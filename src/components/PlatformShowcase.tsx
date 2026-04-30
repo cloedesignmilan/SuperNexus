@@ -157,7 +157,7 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                         position: 'relative',
                         width: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '280px' : '100%',
                         height: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '560px' : '350px',
-                        background: platforms[activePlatform].id === 'desktop' ? '#000' : '#f5f5f5',
+                        background: '#000',
                         borderRadius: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '40px' : '16px',
                         border: `8px solid #222`,
                         overflow: 'hidden',
