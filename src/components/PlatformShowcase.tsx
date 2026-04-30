@@ -217,12 +217,12 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
         @media (max-width: 768px) {
             .platform-container { padding: 1rem !important; }
             .device-frame-desktop {
-                height: 400px;
+                height: auto !important;
+                aspect-ratio: 16 / 9;
             }
             .device-img-desktop {
-                object-fit: cover !important;
-                clip-path: none !important;
-                object-position: center 15%;
+                object-fit: contain !important;
+                clip-path: inset(12% 1.5% 12% 1.5%) !important;
             }
         }
       `}} />
