@@ -845,32 +845,22 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           }
           
           .studio-left.collapsed {
-            height: 25vh;
-            display: flex;
-            background: #000;
-            border-bottom: none;
-            padding: 1rem;
+            display: none !important;
           }
           
-          .image-frame { max-width: 100%; max-height: 100%; aspect-ratio: auto; box-shadow: none; }
-          .studio-left.collapsed .image-frame { width: 100%; height: 100%; border-radius: 16px; margin: 0; padding: 0; border: none; }
-          .studio-left.collapsed .image-frame img { object-fit: contain; }
-
           /* The Controls Bottom Sheet */
           .studio-right { 
             flex: 1; 
             width: 100%;
-            background: rgba(28, 28, 30, 0.85); 
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            background: rgba(18, 18, 20, 0.95); 
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            box-shadow: none;
             z-index: 20; 
-            margin-top: -20px;
+            margin-top: 0;
           }
           
-          .scroll-container { padding: 2rem 1.5rem 4rem 1.5rem; }
+          .scroll-container { padding: 1.5rem 1rem 6rem 1rem; }
           
           .step-header { font-size: 1.5rem; }
           .step-desc { font-size: 0.9rem; margin-bottom: 1.5rem; }
@@ -1075,7 +1065,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               
               {/* Only show NEXT button if it's the FORMAT_QUANTITY step */}
               {step === 3 && (
-                <div style={{ marginTop: '4rem', display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ marginTop: '3rem', paddingBottom: '2rem' }}>
                   <button onClick={async () => {
                      const qtyStr = selections['QUANTITY']?.label?.toString().trim();
                      if (qtyStr === '1' || qtyStr === '1 Image' || qtyStr === '1 Foto') {
@@ -1103,7 +1093,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                          }
                      }
                      setStep(4);
-                  }} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-giant">
+                  }} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-magic">
                     Review Configuration <ArrowRight size={20} />
                   </button>
                 </div>
