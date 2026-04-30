@@ -139,16 +139,20 @@ export default async function LandingPage() {
               opacity: 0;
               animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             }
+            .glow-icon {
+              color: var(--glow-color, #ffffff) !important;
+              stroke: var(--glow-color, #ffffff) !important;
+              filter: drop-shadow(0 0 4px var(--glow-color, rgba(255,255,255,0.3)));
+              transition: all 0.3s ease;
+            }
             .glow-link:hover {
               background: rgba(255, 255, 255, 0.15);
               transform: translateY(-2px);
               box-shadow: 0 4px 15px var(--glow-color, rgba(255,255,255,0.1));
             }
             .glow-link:hover .glow-icon {
-              color: var(--glow-color, #ffffff) !important;
-              stroke: var(--glow-color, #ffffff) !important;
-              filter: drop-shadow(0 0 8px var(--glow-color, rgba(255,255,255,0.5)));
-              transform: scale(1.1);
+              filter: drop-shadow(0 0 10px var(--glow-color, rgba(255,255,255,0.8)));
+              transform: scale(1.15);
             }
             @media (max-width: 1024px) {
               .desktop-only-nav {
