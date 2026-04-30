@@ -759,15 +759,16 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .glass-card:active { transform: scale(0.95); }
 
         .glass-card.selected {
-          background: #007aff;
-          border-color: #007aff;
+          background: #D4AF37;
+          border-color: #D4AF37;
           transform: scale(1.02);
-          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+          box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+          color: #000;
         }
 
         .glass-card.warning { opacity: 0.5; }
 
-        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #007aff; }
+        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #D4AF37; }
         .glass-card.selected .sparkle-icon { color: rgba(255,255,255,0.8); }
         
         .card-icon { margin-bottom: 0.5rem; color: #8e8e93; transition: all 0.2s ease; }
@@ -959,8 +960,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           .step-desc { font-size: 0.9rem; margin-bottom: 1.5rem; }
 
           /* Glass Grid for Mobile */
-          .glass-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-          @media (max-width: 480px) { .glass-grid { grid-template-columns: repeat(2, 1fr); } }
+          .glass-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+          .gender-grid { grid-template-columns: repeat(2, 1fr) !important; }
           
           .glass-card { padding: 1rem 0.5rem; border-radius: 14px; }
           .glass-card .card-icon { transform: scale(0.9); margin-bottom: 0.25rem; }
@@ -1227,7 +1228,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <h2 className="step-header">Who is wearing it?</h2>
               <p className="step-desc">Please confirm the target audience to ensure perfect modeling.</p>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+              <div className="gender-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
                  {[
                    { label: 'MAN', display: 'MAN', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features' },
                    { label: 'WOMAN', display: 'WOMAN', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features' }
@@ -1252,7 +1253,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <h2 className="step-header">Select Specific Shot</h2>
               <p className="step-desc">Since you selected 1 image, which specific shot do you want?</p>
               
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+              <div className="gender-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
                  {availableShots.map(shot => (
                     <div 
                       key={shot.shot_number}

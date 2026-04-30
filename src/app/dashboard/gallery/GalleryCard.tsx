@@ -32,34 +32,26 @@ export default function GalleryCard({ url, path }: { url: string, path?: string 
   };
 
   return (
-    <div className="glass-panel hover-glow" style={{ padding: '1rem', borderRadius: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <div style={{ padding: '1rem', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.75rem', background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
       {path && (
-        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#10b981', letterSpacing: '0.05em', padding: '0.2rem 0.5rem', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '4px', alignSelf: 'flex-start' }}>
+        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#D4AF37', letterSpacing: '0.05em', padding: '0.3rem 0.6rem', background: 'rgba(212, 175, 55, 0.1)', borderRadius: '6px', alignSelf: 'flex-start', textTransform: 'uppercase' }}>
           {path}
         </div>
       )}
-      <img 
-        src={url} 
-        alt="AI Generated Output" 
-        style={{ width: '100%', height: 'auto', borderRadius: '8px', display: 'block' }} 
-      />
-      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
-        <style>{`
-          .dl-label-desktop { display: inline; }
-          .dl-label-mobile { display: none; }
-          @media (max-width: 768px) {
-            .dl-label-desktop { display: none; }
-            .dl-label-mobile { display: inline; }
-          }
-        `}</style>
+      <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
+        <img 
+          src={url} 
+          alt="AI Generated Output" 
+          style={{ width: '100%', height: 'auto', display: 'block' }} 
+        />
         <button 
           onClick={handleDownload}
-          className="btn-secondary"
-          style={{ border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: '100%', padding: '0.75rem', cursor: 'pointer', fontWeight: 600 }}
+          style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
+          title="Save to Camera Roll / Download"
+          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(212,175,55,0.8)'}
+          onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
         >
-          <Download size={18} />
-          <span className="dl-label-desktop">Download Image</span>
-          <span className="dl-label-mobile">Save to Phone</span>
+          <Download size={20} />
         </button>
       </div>
     </div>
