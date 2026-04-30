@@ -170,10 +170,11 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                         )}
                         <div style={{
                             position: 'absolute',
-                            top: platforms[activePlatform].id === 'mobile' ? '2%' : '0',
+                            top: 0,
                             left: 0,
                             right: 0,
-                            bottom: 0
+                            bottom: 0,
+                            transform: platforms[activePlatform].id === 'mobile' ? 'scale(1.05) translateY(2%)' : 'none'
                         }}>
                             <Image 
                                 src={platforms[activePlatform].image} 
