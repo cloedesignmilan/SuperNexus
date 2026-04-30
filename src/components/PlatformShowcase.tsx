@@ -173,7 +173,8 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                             top: 0,
                             left: 0,
                             right: 0,
-                            bottom: 0
+                            bottom: 0,
+                            background: '#000'
                         }}>
                             <Image 
                                 src={platforms[activePlatform].image} 
