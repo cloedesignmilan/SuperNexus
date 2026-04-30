@@ -139,33 +139,15 @@ export default async function LandingPage() {
               opacity: 0;
               animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             }
-            .glow-link {
-              text-decoration: none;
-              padding: 4px 10px;
-              border-radius: 30px;
-              background: #ffffff; /* White background like Try it Free */
-              border: 1px solid #eeeeee;
-              transition: all 0.3s ease;
-              color: #000000 !important; /* Black text */
-              display: flex;
-              align-items: center;
-              gap: 6px;
-              font-weight: 600;
-              box-shadow: 0 2px 10px rgba(255,255,255,0.1);
-              white-space: nowrap;
-            }
-            .glow-icon {
-              transition: all 0.3s ease;
-            }
             .glow-link:hover {
-              background: #f8f8f8;
-              border-color: #ddd;
-              box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+              background: rgba(255, 255, 255, 0.15);
               transform: translateY(-2px);
+              box-shadow: 0 4px 15px var(--glow-color, rgba(255,255,255,0.1));
             }
             .glow-link:hover .glow-icon {
-              stroke: #ccff00;
-              filter: drop-shadow(0 0 8px rgba(204, 255, 0, 0.6));
+              color: var(--glow-color, #ffffff) !important;
+              stroke: var(--glow-color, #ffffff) !important;
+              filter: drop-shadow(0 0 8px var(--glow-color, rgba(255,255,255,0.5)));
               transform: scale(1.1);
             }
             @media (max-width: 1024px) {
