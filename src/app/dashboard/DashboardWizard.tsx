@@ -1278,21 +1278,24 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <h2 className="step-header">Who is wearing it?</h2>
               <p className="step-desc">Please confirm the target audience to ensure perfect modeling.</p>
               
-              <div className="gender-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
+              <div className="glass-grid gender-grid" style={{ marginTop: '2rem' }}>
                  {[
-                   { label: 'MAN', display: 'MAN', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features' },
-                   { label: 'WOMAN', display: 'WOMAN', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features' }
-                 ].map(gender => (
-                    <div 
-                      key={gender.id}
-                      className={`snippet-card ${selections['CLIENT_TYPE']?.id === gender.id ? 'active' : ''}`}
-                      onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, negative_fragment: gender.negative, intensity_level: 'strong' }, 2.5)}
-                    >
-                      <Icons.User size={24} style={{ color: selections['CLIENT_TYPE']?.id === gender.id ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
-                      <div className="snippet-title">{gender.display}</div>
-                      <div className="snippet-desc">Generate images using a {gender.label.toLowerCase()}</div>
-                    </div>
-                 ))}
+                   { label: 'MAN', display: 'MAN', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features', icon: 'User' },
+                   { label: 'WOMAN', display: 'WOMAN', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features', icon: 'User' }
+                 ].map(gender => {
+                    const isSelected = selections['CLIENT_TYPE']?.id === gender.id;
+                    const IconComp = (Icons as any)[gender.icon];
+                    return (
+                      <button 
+                        key={gender.id}
+                        className={`glass-card ${isSelected ? 'selected' : ''}`}
+                        onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, negative_fragment: gender.negative, intensity_level: 'strong' }, 2.5)}
+                      >
+                        <IconComp size={38} className="card-icon" />
+                        <div className="card-title">{gender.display}</div>
+                      </button>
+                    )
+                 })}
               </div>
             </div>
           )}
@@ -1303,34 +1306,36 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               <h2 className="step-header">Select Specific Shot</h2>
               <p className="step-desc">Since you selected 1 image, which specific shot do you want?</p>
               
-              <div className="gender-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '2rem' }}>
-                 {availableShots.map(shot => (
-                    <div 
-                      key={shot.shot_number}
-                      className={`snippet-card ${selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number ? 'active' : ''}`}
-                      onClick={() => {
-                          setSelections({ ...selections, SPECIFIC_SHOT: shot });
-                          setTimeout(() => setStep(4), 350);
-                      }}
-                    >
-                      <Icons.Camera size={24} style={{ color: selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
-                      <div className="snippet-title">{shot.shot_name}</div>
-                      <div className="snippet-desc" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.5rem' }}>Shot {shot.shot_number}</div>
-                    </div>
-                 ))}
+              <div className="glass-grid gender-grid" style={{ marginTop: '2rem' }}>
+                 {availableShots.map(shot => {
+                    const isSelected = selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number;
+                    return (
+                      <button 
+                        key={shot.shot_number}
+                        className={`glass-card ${isSelected ? 'selected' : ''}`}
+                        onClick={() => {
+                            setSelections({ ...selections, SPECIFIC_SHOT: shot });
+                            setTimeout(() => setStep(4), 350);
+                        }}
+                      >
+                        <Icons.Camera size={38} className="card-icon" />
+                        <div className="card-title">{shot.shot_name}</div>
+                        <div className="snippet-desc" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.5rem', color: 'rgba(255,255,255,0.5)' }}>Shot {shot.shot_number}</div>
+                      </button>
+                    )
+                 })}
                  
                  {/* Fallback Option */}
-                 <div 
-                    className={`snippet-card ${!selections['SPECIFIC_SHOT'] ? 'active' : ''}`}
+                 <button 
+                    className={`glass-card ${!selections['SPECIFIC_SHOT'] ? 'selected' : ''}`}
                     onClick={() => {
                         setSelections({ ...selections, SPECIFIC_SHOT: null });
                         setTimeout(() => setStep(4), 350);
                     }}
                   >
-                    <Icons.Wand2 size={24} style={{ color: !selections['SPECIFIC_SHOT'] ? '#60a5fa' : 'rgba(255,255,255,0.4)', marginBottom: '1rem' }} />
-                    <div className="snippet-title">Any / Random</div>
-                    <div className="snippet-desc" style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.5rem' }}>Let AI decide</div>
-                  </div>
+                    <Icons.Wand2 size={38} className="card-icon" />
+                    <div className="card-title">Any / Random</div>
+                  </button>
               </div>
             </div>
           )}
