@@ -57,6 +57,38 @@ export default function DimensionsGuide({ lang = 'en' }: { lang?: Locale }) {
   ];
 
   return (
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes dimBorderSpin {
+          100% { transform: rotate(360deg); }
+        }
+        .dim-wow-border {
+          position: relative;
+          border-radius: 26px;
+          padding: 2px;
+          overflow: hidden;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+          background: rgba(255,255,255,0.03);
+        }
+        .dim-wow-border::before {
+          content: "";
+          position: absolute;
+          top: -50%; left: -50%; right: -50%; bottom: -50%;
+          background: conic-gradient(transparent, transparent, transparent, var(--border-color));
+          animation: dimBorderSpin 4s linear infinite;
+        }
+        .dim-wow-inner {
+          position: relative;
+          background: #111111;
+          border-radius: 24px;
+          height: 100%;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          text-align: left;
+        }
+      `}} />
     <section className="dimensions-section" style={{ padding: '8rem 5%', background: '#050505', position: 'relative', overflow: 'hidden' }}>
       {/* Background glow */}
       <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100%', height: '100%', background: 'radial-gradient(circle, rgba(0,255,255,0.03) 0%, transparent 70%)', pointerEvents: 'none' }} />
@@ -76,31 +108,20 @@ export default function DimensionsGuide({ lang = 'en' }: { lang?: Locale }) {
 
         <div className="dimensions-grid">
           {dimensions.map((dim, i) => (
-            <div key={i} className="dimension-card" style={{
-              background: '#111111',
-              borderRadius: '24px',
-              padding: '1.5rem',
-              border: '1px solid rgba(255,255,255,0.05)',
-              position: 'relative',
-              overflow: 'hidden',
-              transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-              textAlign: 'left'
-            }}
+            <div key={i} className="dim-wow-border" style={{ 
+              '--border-color': dim.borderColor 
+            } as React.CSSProperties}
             onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                e.currentTarget.style.borderColor = dim.borderColor;
                 e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = `0 20px 40px ${dim.borderColor}22`;
+                e.currentTarget.style.boxShadow = `0 20px 40px ${dim.borderColor}33`;
             }}
             onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
             }}
             >
-              {/* Image Preview Area */}
+              <div className="dim-wow-inner" style={{ padding: '1.5rem' }}>
+                {/* Image Preview Area */}
               <div style={{
                 width: '100%',
                 height: '240px',
@@ -176,6 +197,7 @@ export default function DimensionsGuide({ lang = 'en' }: { lang?: Locale }) {
               }}>
                 {dim.images}
               </div>
+             </div>
             </div>
           ))}
         </div>
