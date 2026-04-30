@@ -231,6 +231,25 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     }
   }
 
+  const handleDownloadImage = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const objectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(objectUrl);
+    } catch (error) {
+      console.error('Error downloading image:', error);
+      // Fallback: apri l'immagine in una nuova scheda
+      window.open(url, '_blank');
+    }
+  };
+
   const handleGenerate = async () => {
     if (!uploadedUrl) return;
     setIsGenerating(true)
@@ -563,9 +582,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     min="20" max="50" step="5"
                     value={modelAge} 
                     onChange={e => setModelAge(parseInt(e.target.value))} 
-                    style={{ flex: 1, cursor: 'pointer', accentColor: '#007aff' }} 
+                    style={{ flex: 1, cursor: 'pointer', accentColor: '#D4AF37' }} 
                   />
-                  <span style={{ fontSize: '1.1rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: '#007aff' }}>{modelAge} yrs</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: '#D4AF37' }}>{modelAge} yrs</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 5px', color: '#8e8e93', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
                   <span>20</span>
@@ -771,8 +790,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .btn-giant:active { transform: scale(0.96); opacity: 0.9; }
 
         .btn-magic {
-          background: #007aff;
-          color: #fff;
+          background: #D4AF37;
+          color: #000;
           border: none;
           padding: 1.1rem 2rem;
           border-radius: 16px;
@@ -785,9 +804,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           justify-content: center;
           gap: 8px;
           width: 100%;
-          box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+          box-shadow: 0 4px 14px rgba(212, 175, 55, 0.2);
         }
-        .btn-magic:active { transform: scale(0.96); background: #0066d6; }
+        .btn-magic:active { transform: scale(0.96); background: #B5952F; }
         
         .sticky-bottom-action {
           position: sticky;
@@ -810,7 +829,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .back-button {
           background: transparent;
           border: none;
-          color: #007aff;
+          color: #fff;
           display: inline-flex;
           align-items: center;
           gap: 4px;
@@ -861,9 +880,39 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           }
           
           .studio-left.collapsed {
-            display: none !important;
+            height: 20vh;
+            display: flex;
+            background: #000;
+            border-bottom: none;
+            padding: 1rem;
           }
-          
+
+          .mobile-header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: #000;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+          }
+
+          .mobile-back-button {
+            position: absolute;
+            left: 1rem;
+            background: transparent;
+            border: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+
+          .desktop-back-button { display: none; }
+
           /* The Controls Bottom Sheet */
           .studio-right { 
             flex: 1; 
@@ -877,9 +926,18 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           }
           
           .sticky-bottom-action {
+            position: sticky;
+            bottom: 0;
             margin: 2rem -1rem -6rem -1rem;
             padding: 1rem;
             background: rgba(18, 18, 20, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
           }
           
           .scroll-container { padding: 1.5rem 1rem 6rem 1rem; }
@@ -933,13 +991,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         {/* Mobile Compact Header Content */}
         {step > 0 && step < 9 && uploadedUrl && (
           <div className="mobile-header-content">
-            <div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 600 }}>Product Uploaded</div>
-              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>{analysisData ? analysisData.detectedProductType?.replace('_', ' ').toUpperCase() : 'Ready'}</div>
+            {!isGenerating && (
+              <button className="mobile-back-button" onClick={handleBack}>
+                <ChevronLeft size={24} />
+              </button>
+            )}
+            <div style={{ fontSize: '1rem', fontWeight: 600 }}>
+              {step === 0.25 ? 'AI Detection' : step === 0.75 ? 'Select Product Type' : step === 3.5 ? 'Select Specific Shot' : step === 4 ? 'Configuration Review' : step === 5 ? 'Generation Complete' : stepsData[Math.floor(step)-1]?.title || 'Options'}
             </div>
-            <button onClick={() => { setStep(0); setUploadedUrl(null); }} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', padding: '0.5rem 1rem', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600 }}>
-              Change
-            </button>
           </div>
         )}
       </div>
@@ -948,7 +1007,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       <div className="studio-right">
         
         {step > 0 && step < 9 && !isGenerating && (
-            <button className="back-button" onClick={handleBack}>
+            <button className="back-button desktop-back-button" onClick={handleBack}>
               <ChevronLeft size={20} /> <span>Back</span>
             </button>
         )}
@@ -965,18 +1024,44 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           {/* STEP 0: UPLOAD */}
           {step === 0 && (
             <div className="fade-up-enter">
-              <h1 className="step-header">Virtual Studio</h1>
-              <p className="step-desc" style={{ maxWidth: '600px' }}>Upload your raw product photo. We'll transform it into high-end editorial imagery without touching the original product.</p>
+              <h1 className="step-header">Upload Product</h1>
               
               <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
               
-              <button onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="btn-giant">
-                {isUploading ? <><Loader2 className="animate-spin" /> Uploading...</> : <><Upload size={24} /> Upload Image</>}
-              </button>
+              <div 
+                onClick={() => fileInputRef.current?.click()} 
+                style={{ 
+                  border: '2px dashed rgba(255,255,255,0.15)', 
+                  borderRadius: '24px', 
+                  padding: '3rem 2rem', 
+                  textAlign: 'center', 
+                  cursor: 'pointer', 
+                  background: 'rgba(255,255,255,0.02)',
+                  marginBottom: '2rem',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
+              >
+                {isUploading ? (
+                  <><Loader2 className="animate-spin" size={48} color="#D4AF37" style={{ margin: '0 auto 1rem auto' }} /> <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Uploading...</div></>
+                ) : (
+                  <>
+                    <Upload size={48} color="rgba(255,255,255,0.3)" style={{ margin: '0 auto 1rem auto' }} />
+                    <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Drag & drop your image here<br/>or tap to browse</div>
+                    <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>JPG, PNG, WebP up to 50MB</div>
+                  </>
+                )}
+              </div>
 
-              <div style={{ marginTop: '3rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.9rem' }}>
-                <CheckCircle2 size={16} color="#10b981" />
-                <span>Pixel-perfect product preservation. Colors and patterns remain exactly as uploaded.</span>
+              <div style={{ background: '#1c1c1e', borderRadius: '24px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontWeight: 600, marginBottom: '1rem', fontSize: '0.95rem' }}>Tips for best results</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Use a clear, well-lit photo</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Plain background works best</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> Show the entire product</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#D4AF37" /> High resolution recommended</div>
+                </div>
               </div>
             </div>
           )}
@@ -1187,47 +1272,52 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           )}
 
           {/* FINAL STEP 4: SUMMARY & GENERATE */}
-          {step === 4 && (
+          {step === 4 && !isGenerating && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Ready to Generate</h2>
-              <p className="step-desc">Your product will stay 100% faithful to your original image.</p>
+              <h2 className="step-header">Configuration Review</h2>
+              <p className="step-desc">Review your settings before we generate your premium imagery.</p>
               
-              <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2.5rem', marginBottom: '3rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
-                {uploadedUrl && (
-                  <div style={{ width: '80px', height: '80px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
-                    <img src={uploadedUrl} alt="Product" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </div>
-                )}
-                
-                <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2rem' }}>
+              <div style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  {uploadedUrl && (
+                    <div style={{ width: '60px', height: '60px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
+                      <img src={uploadedUrl} alt="Product" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  )}
                   <div>
-                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>Product</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 500, textTransform: 'capitalize' }}>{analysisData?.detectedProductType?.replace('_', ' ') || 'Custom'}</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 600, textTransform: 'capitalize' }}>{analysisData?.detectedProductType?.replace('_', ' ') || 'Custom Product'}</div>
+                    <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category: {analysisData?.detectedProductType?.replace('_', ' ')}</div>
                   </div>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1.5rem' }}>
                   {stepsData.map(st => {
+                    const sel = selections[st.type];
+                    if (!sel) return null;
                     if (st.type === 'FORMAT_QUANTITY') {
                       return (
-                        <div key={st.type}>
-                          <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>{st.title.split('?')[0]}</div>
-                          <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{selections['FORMAT']?.label || '-'} / {selections['QUANTITY']?.label || '-'}</div>
+                        <div key={st.type} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>{st.title.split('?')[0]}</div>
+                          <div style={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>{selections['FORMAT']?.label || '-'} / {selections['QUANTITY']?.label || '-'}</div>
                         </div>
                       )
                     }
-                    const sel = selections[st.type];
-                    if (!sel) return null;
                     return (
-                      <div key={st.type}>
-                        <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem' }}>{st.title.split('?')[0]}</div>
-                        <div style={{ fontSize: '1.1rem', fontWeight: 500 }}>{sel.label}</div>
+                      <div key={st.type} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>{st.title.split('?')[0]}</div>
+                        <div style={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>{sel.label}</div>
                       </div>
                     )
                   })}
                 </div>
               </div>
 
-               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-                 <button onClick={handleGenerate} className="btn-magic" style={{ maxWidth: '400px' }}>
-                   Generate {selections['QUANTITY']?.label || '1'} {selections['QUANTITY']?.label === '1' ? 'Image' : 'Images'} <Wand2 size={24} />
+               <div className="sticky-bottom-action">
+                 <button onClick={handleGenerate} className="btn-magic">
+                   Looks Good <ArrowRight size={20} />
+                 </button>
+                 <button onClick={() => { setStep(3); }} style={{ background: 'transparent', border: 'none', color: '#8e8e93', fontSize: '0.9rem', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 600, width: '100%', padding: '0.5rem' }} onMouseOver={(e) => e.currentTarget.style.color = '#fff'} onMouseOut={(e) => e.currentTarget.style.color = '#8e8e93'}>
+                   Change Settings
                  </button>
                </div>
             </div>
@@ -1235,36 +1325,72 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
           {/* GENERATING STATE */}
           {isGenerating && (
-            <div className="fade-up-enter" style={{ textAlign: 'center' }}>
-              <div style={{ width: '120px', height: '120px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 3rem auto', border: '1px solid rgba(59, 130, 246, 0.3)', boxShadow: '0 0 50px rgba(59, 130, 246, 0.2)' }}>
-                <Loader2 size={48} color="#3b82f6" className="animate-spin" />
+            <div className="fade-up-enter" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+              <div style={{ position: 'relative', width: '120px', height: '120px', margin: '0 auto 3rem auto' }}>
+                <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(212, 175, 55, 0.1)" strokeWidth="4" />
+                  <circle cx="50" cy="50" r="45" fill="none" stroke="#D4AF37" strokeWidth="4" strokeDasharray="283" strokeDashoffset="70" style={{ animation: 'spin 2s linear infinite' }} />
+                </svg>
               </div>
-              <h2 className="step-header" style={{ fontSize: '3rem' }}>Rendering...</h2>
-              <p className="step-desc">Applying photorealistic materials and lighting.</p>
+              <h2 className="step-header" style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Analyzing Product...</h2>
+              <p className="step-desc" style={{ marginBottom: '3rem' }}>AI is detecting materials, style, structure and details.</p>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px', margin: '0 auto', textAlign: 'left' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Image Analysis</span>
+                  <CheckCircle2 size={20} color="#D4AF37" />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Material Detection</span>
+                  <CheckCircle2 size={20} color="#D4AF37" />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Style Matching</span>
+                  <CheckCircle2 size={20} color="#D4AF37" />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span style={{ fontSize: '0.9rem', color: '#D4AF37', fontWeight: 600 }}>Generating Magic</span>
+                  <Loader2 size={20} color="#D4AF37" className="animate-spin" />
+                </div>
+              </div>
+              <div style={{ marginTop: '3rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>This may take 30–60 seconds</div>
             </div>
           )}
 
           {/* RESULTS STEP */}
           {step === 6 && results.length > 0 && (
             <div className="fade-up-enter">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
-                <div>
-                  <h2 className="step-header" style={{ marginBottom: 0 }}>Results</h2>
+              <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.1)', color: '#D4AF37', marginBottom: '1.5rem', border: '1px solid rgba(212, 175, 55, 0.3)' }}>
+                  <CheckCircle2 size={32} />
                 </div>
-                <button onClick={() => { setStep(1); setResults([]); }} className="btn-giant" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', padding: '1rem 2rem', color: '#fff', fontSize: '1rem' }}>
-                  Generate More
-                </button>
+                <h2 className="step-header" style={{ marginBottom: '0.5rem' }}>Your images are ready!</h2>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>We've created {results.length} stunning images for your product.</p>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
                 {results.map((resItem, i) => {
                   const url = typeof resItem === 'string' ? resItem : resItem.url;
                   const shotNum = resItem.shotNumber ? `Shot ${resItem.shotNumber}` : `Image ${i+1}`;
                   const shotName = resItem.shotName || '';
+                  const downloadFilename = `SuperNexus_${shotName.replace(/\s+/g, '_')}_${shotNum.replace(/\s+/g, '')}.jpg`;
                   
                   return (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000', position: 'relative' }}>
+                        <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
+                        <button 
+                          onClick={() => handleDownloadImage(url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`, downloadFilename)}
+                          style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
+                          title="Save to Camera Roll / Download"
+                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(212,175,55,0.8)'}
+                          onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+                        >
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </button>
+                      </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#3b82f6', textTransform: 'uppercase', letterSpacing: '0.1em', background: 'rgba(59, 130, 246, 0.1)', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#D4AF37', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                           {shotNum}
                         </span>
                         {shotName && (
@@ -1273,12 +1399,18 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                           </span>
                         )}
                       </div>
-                      <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000' }}>
-                        <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
-                      </div>
                     </div>
                   );
                 })}
+              </div>
+
+              <div className="sticky-bottom-action" style={{ background: 'transparent', backdropFilter: 'none', borderTop: 'none', margin: '0', padding: '0' }}>
+                <button onClick={() => { window.location.href = '/dashboard/gallery'; }} className="btn-magic">
+                  View All Images <ArrowRight size={20} />
+                </button>
+                <button onClick={() => { setStep(1); setResults([]); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', fontSize: '1rem', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 600, width: '100%', padding: '1.1rem', borderRadius: '16px' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
+                  Create More
+                </button>
               </div>
             </div>
           )}
