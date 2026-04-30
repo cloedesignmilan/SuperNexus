@@ -174,7 +174,8 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            background: '#000'
+                            background: '#000',
+                            transform: platforms[activePlatform].id === 'desktop' ? 'scale(1.15)' : 'none'
                         }}>
                             <Image 
                                 src={platforms[activePlatform].image} 
