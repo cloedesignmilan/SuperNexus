@@ -48,29 +48,30 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
         }
         @media (max-width: 768px) {
           .dashboard-header {
-            flex-direction: column;
-            padding: 1rem;
-            margin: 0.5rem;
-          }
-          .header-left {
-            width: 100%;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-          }
-          .header-right {
-            width: 100%;
-            justify-content: space-between;
+            flex-direction: row;
+            padding: 0.5rem 1rem;
+            margin: 0;
+            top: 0;
+            border-radius: 0;
+            background: rgba(10,10,10,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             gap: 0.5rem;
           }
-          .email-pill {
-            max-width: 140px;
-            padding: 0.5rem;
-          }
-          .email-text {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
+          .title-gradient { font-size: 1.1rem !important; }
+          
+          .header-left { gap: 0.75rem; }
+          .header-left nav { gap: 0.75rem !important; }
+          .nav-text { display: none; } /* Hide 'Studio', 'My Gallery' */
+          
+          .email-pill { display: none; } /* Hide email entirely on mobile */
+          .header-right { gap: 0.5rem; }
+          
+          .credits-pill { padding: 0.3rem 0.6rem !important; border-radius: 8px !important; }
+          .credits-label { display: none; } /* Hide 'God Mode:' text */
+          
+          .hide-on-mobile { display: none !important; }
         }
       `}} />
       <header className="glass-panel dashboard-header">
@@ -84,7 +85,7 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
               borderBottom: pathname === '/dashboard' ? '2px solid var(--color-primary)' : '2px solid transparent',
               paddingBottom: '0.25rem', transition: 'all 0.2s'
             }}>
-              <Home size={18} /> Studio
+              <Home size={18} /> <span className="nav-text">Studio</span>
             </Link>
             <Link href="/dashboard/gallery" style={{ 
               display: 'flex', alignItems: 'center', gap: '0.5rem', 
@@ -93,7 +94,7 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
               borderBottom: pathname === '/dashboard/gallery' ? '2px solid var(--color-primary)' : '2px solid transparent',
               paddingBottom: '0.25rem', transition: 'all 0.2s'
             }}>
-              <ImageIcon size={18} /> My Gallery
+              <ImageIcon size={18} /> <span className="nav-text">My Gallery</span>
             </Link>
           </nav>
         </div>
@@ -106,8 +107,8 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
              </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: isAdmin ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap', border: isAdmin ? '1px solid rgba(255, 215, 0, 0.3)' : 'none' }}>
-             <span style={{ fontSize: '0.8rem', color: isAdmin ? '#ffd700' : 'var(--color-text-muted)' }}>{isAdmin ? 'God Mode:' : 'Credits:'}</span>
+          <div className="credits-pill" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: isAdmin ? 'rgba(255, 215, 0, 0.1)' : 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '20px', whiteSpace: 'nowrap', border: isAdmin ? '1px solid rgba(255, 215, 0, 0.3)' : 'none' }}>
+             <span className="credits-label" style={{ fontSize: '0.8rem', color: isAdmin ? '#ffd700' : 'var(--color-text-muted)' }}>{isAdmin ? 'God Mode:' : 'Credits:'}</span>
              <span style={{ fontWeight: 800, color: isAdmin ? '#ffd700' : 'var(--color-primary)', fontSize: isAdmin ? '1.2rem' : '1rem' }}>{isAdmin ? '∞' : remaining}</span>
           </div>
 

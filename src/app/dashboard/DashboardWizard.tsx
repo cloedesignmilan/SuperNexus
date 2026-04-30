@@ -837,7 +837,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           /* The Image Stage takes top space */
           .studio-left { 
             flex: none; 
-            height: 45vh; 
+            height: 25vh; 
             padding: 1rem; 
             border-right: none; 
             background: #000;
@@ -845,7 +845,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           }
           
           .studio-left.collapsed {
-            height: 45vh;
+            height: 25vh;
             display: flex;
             background: #000;
             border-bottom: none;
@@ -982,9 +982,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                 </>
               ) : analysisData ? (
                 <>
-                  <div style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '24px', padding: '2rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#10b981', marginBottom: '1rem', fontWeight: 600 }}>
-                      <CheckCircle2 size={24} /> AI Detection Complete
+                  <div style={{ background: '#2c2c2e', border: 'none', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#34c759', marginBottom: '0.5rem', fontWeight: 600, fontSize: '0.9rem' }}>
+                      <CheckCircle2 size={18} /> AI Detection Complete
                     </div>
                     <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'capitalize' }}>
                       {analysisData.detectedProductType?.replace('_', ' ') || 'Unknown'}
@@ -1004,11 +1004,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   {showPrintConfirm && (
                      <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
                         <div style={{ fontWeight: 600, marginBottom: '1rem' }}>AI detected a print on the: {printLocation.toUpperCase()}. Please confirm.</div>
-                        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                          <button onClick={() => setPrintLocation('front')} style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', border: '1px solid', borderColor: printLocation === 'front' ? '#3b82f6' : 'rgba(255,255,255,0.2)', background: printLocation === 'front' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', background: '#2c2c2e', padding: '4px', borderRadius: '12px' }}>
+                          <button onClick={() => setPrintLocation('front')} style={{ flex: 1, padding: '0.6rem', borderRadius: '8px', border: 'none', background: printLocation === 'front' ? '#3a3a3c' : 'transparent', color: printLocation === 'front' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'front' ? 600 : 500, cursor: 'pointer', transition: 'all 0.2s', boxShadow: printLocation === 'front' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none' }}>
                             Front Print
                           </button>
-                          <button onClick={() => setPrintLocation('back')} style={{ flex: 1, padding: '0.8rem', borderRadius: '12px', border: '1px solid', borderColor: printLocation === 'back' ? '#3b82f6' : 'rgba(255,255,255,0.2)', background: printLocation === 'back' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}>
+                          <button onClick={() => setPrintLocation('back')} style={{ flex: 1, padding: '0.6rem', borderRadius: '8px', border: 'none', background: printLocation === 'back' ? '#3a3a3c' : 'transparent', color: printLocation === 'back' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'back' ? 600 : 500, cursor: 'pointer', transition: 'all 0.2s', boxShadow: printLocation === 'back' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none' }}>
                             Back Print
                           </button>
                         </div>
@@ -1019,7 +1019,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                         <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Do you also have an image of the back? Upload it to allow the AI to generate perfect front/back shots.</div>
                         <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
-                        <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#fff', color: '#000', padding: '0.6rem 1.5rem', borderRadius: '99px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingBack ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
                            {isUploadingBack ? 'Uploading...' : 'Add Back View (Optional)'}
                         </button>
