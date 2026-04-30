@@ -43,7 +43,32 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [printLocation, setPrintLocation] = useState<string>('front')
   const [showPrintConfirm, setShowPrintConfirm] = useState<boolean>(false)
 
+  // Dynamic Progress State
+  const [generationProgress, setGenerationProgress] = useState(0)
+
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Dynamic Progress Effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isGenerating) {
+      setGenerationProgress(0);
+      const qtyLabel = selections['QUANTITY']?.label?.toString().trim() || '3';
+      const qty = parseInt(qtyLabel.split(' ')[0]) || 3;
+      const totalSeconds = qty * 30;
+      const updateIntervalMs = 500;
+      const totalSteps = (totalSeconds * 1000) / updateIntervalMs;
+      const increment = 100 / totalSteps;
+      
+      interval = setInterval(() => {
+        setGenerationProgress(prev => {
+          if (prev >= 98) return prev; // Hold at 98% until actually done
+          return prev + increment;
+        });
+      }, updateIntervalMs);
+    }
+    return () => clearInterval(interval);
+  }, [isGenerating, selections]);
 
   // Default selections per Format e Quantity
   useEffect(() => {
@@ -1387,12 +1412,22 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>Style Matching</span>
                   <CheckCircle2 size={20} color="#D4AF37" />
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <span style={{ fontSize: '0.9rem', color: '#D4AF37', fontWeight: 600 }}>Generating Magic</span>
-                  <Loader2 size={20} color="#D4AF37" className="animate-spin" />
+                <div style={{ display: 'flex', flexDirection: 'column', background: '#1c1c1e', padding: '1rem 1.5rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                    <span style={{ fontSize: '0.9rem', color: '#D4AF37', fontWeight: 600 }}>Generating Magic</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ fontSize: '0.85rem', color: '#D4AF37', fontWeight: 600 }}>{Math.floor(generationProgress)}%</span>
+                      <Loader2 size={16} color="#D4AF37" className="animate-spin" />
+                    </div>
+                  </div>
+                  <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                    <div style={{ width: `${generationProgress}%`, height: '100%', background: '#D4AF37', transition: 'width 0.5s linear' }} />
+                  </div>
                 </div>
               </div>
-              <div style={{ marginTop: '3rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>This may take 30–60 seconds</div>
+              <div style={{ marginTop: '3rem', fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>
+                This may take {parseInt(selections['QUANTITY']?.label?.toString().split(' ')[0] || '3') * 30} seconds
+              </div>
             </div>
           )}
 

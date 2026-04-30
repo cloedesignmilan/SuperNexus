@@ -39,12 +39,17 @@ export default function GalleryCard({ url, path }: { url: string, path?: string 
           {path}
         </div>
       )}
-      <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
-        <img 
-          src={url} 
-          alt="AI Generated Output" 
-          style={{ width: '100%', height: 'auto', display: 'block' }} 
-        />
+      <div style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', position: 'relative', aspectRatio: '3/4', backgroundColor: '#111', minHeight: '200px' }}>
+        {url ? (
+          <img 
+            src={url} 
+            alt="AI Generated Output" 
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'absolute', inset: 0 }} 
+            onError={(e) => { e.currentTarget.style.opacity = '0'; }}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.3)' }}>No Image</div>
+        )}
         <button 
           onClick={handleDownload}
           style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
