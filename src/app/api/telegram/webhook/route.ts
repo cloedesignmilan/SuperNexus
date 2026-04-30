@@ -91,6 +91,15 @@ export async function POST(req: NextRequest) {
         }
     }
 
+    if (incomingText === '/logout' || incomingText === '/esci') {
+        await prisma.user.updateMany({
+            where: { telegram_chat_id: globalChatId },
+            data: { telegram_chat_id: null }
+        });
+        await bot.telegram.sendMessage(globalChatId, `👋 **Disconnessione Completata**\n\nIl tuo account è stato scollegato con successo da questo dispositivo Telegram.\n\nPer accedere nuovamente, digita in qualsiasi momento la tua email di registrazione.`, { parse_mode: 'Markdown' });
+        return NextResponse.json({ ok: true });
+    }
+
     let existingUser = await prisma.user.findFirst({
         where: {
             OR: [
