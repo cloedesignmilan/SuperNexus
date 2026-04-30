@@ -67,8 +67,25 @@ export default async function LandingPage() {
       <ChatBot />
       {/* HEADER */}
       <header className="landing-header" id="top">
-        <a href="/" className="landing-logo" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
-          SuperNexus <span className="animated-gradient-text">AI</span>
+        <style dangerouslySetInnerHTML={{__html: `
+          .header-brand-wow {
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #ffffff 0%, #00ffff 33%, #ff0ab3 66%, #ffffff 100%);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: brandGlowPan 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+            display: inline-block;
+          }
+          .header-brand-wow:hover {
+            transform: scale(1.05);
+            animation-duration: 2s;
+          }
+        `}} />
+        <a href="/" className="landing-logo header-brand-wow" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+          SuperNexus.AI
         </a>
         <nav className="mobile-nav" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
           <LanguageToggle currentLocale={lang} />
