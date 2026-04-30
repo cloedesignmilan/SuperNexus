@@ -181,7 +181,7 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                                 alt={platforms[activePlatform].title}
                                 fill
                                 style={{ 
-                                    objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
+                                    objectFit: 'cover', 
                                     opacity: 1 
                                 }}
                             />
