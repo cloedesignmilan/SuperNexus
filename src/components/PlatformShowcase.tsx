@@ -174,16 +174,16 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                             left: 0,
                             right: 0,
                             bottom: 0,
-                            background: '#000',
-                            transform: platforms[activePlatform].id === 'desktop' ? 'scale(1.15)' : 'none'
+                            background: '#000'
                         }}>
                             <Image 
                                 src={platforms[activePlatform].image} 
                                 alt={platforms[activePlatform].title}
                                 fill
                                 style={{ 
-                                    objectFit: 'cover', 
-                                    opacity: 1 
+                                    objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
+                                    opacity: 1,
+                                    backgroundColor: '#000'
                                 }}
                             />
                         </div>
