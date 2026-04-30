@@ -394,9 +394,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                 onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
                 className={`glass-card ${isSelected ? 'selected' : ''}`} 
               >
-                <IconComp size={28} className="card-icon" />
+                <IconComp size={38} className="card-icon" />
                 <div className="card-title">{snip.label}</div>
-                <div className="card-desc">{snip.description}</div>
               </button>
             )
           })}
@@ -529,10 +528,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                       onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
                       className={`glass-card ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
                     >
-                      {snip.is_recommended && <Sparkles className="sparkle-icon" size={16} />}
-                      <IconComp size={28} className="card-icon" />
+                      {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
+                      <IconComp size={38} className="card-icon" />
                       <div className="card-title">{snip.label}</div>
-                      {snip.description && <div className="card-desc">{snip.description}</div>}
                       
                       {isWarning && (
                          <div className="conflict-warning">
@@ -558,18 +556,18 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           {hasModel && (
             <div>
               <h3 style={{fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem'}}>1. Model Age</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: 'rgba(255,255,255,0.02)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: '#2c2c2e', padding: '1.5rem', borderRadius: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                   <input 
                     type="range" 
                     min="20" max="50" step="5"
                     value={modelAge} 
                     onChange={e => setModelAge(parseInt(e.target.value))} 
-                    style={{ flex: 1, cursor: 'pointer', accentColor: 'var(--color-primary)' }} 
+                    style={{ flex: 1, cursor: 'pointer', accentColor: '#007aff' }} 
                   />
-                  <span style={{ fontSize: '1.2rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: 'var(--color-primary)' }}>{modelAge} yrs</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 600, minWidth: '60px', textAlign: 'right', color: '#007aff' }}>{modelAge} yrs</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 5px', color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 5px', color: '#8e8e93', fontSize: '0.75rem', fontWeight: 600, fontFamily: 'monospace' }}>
                   <span>20</span>
                   <span>25</span>
                   <span>30</span>
@@ -612,71 +610,57 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           min-height: 0;
           background: #000;
           color: #fff;
-          font-family: 'Inter', sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
           overflow: hidden;
+          position: fixed;
+          top: 72px; /* Assuming header is ~72px */
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 50;
         }
 
-        /* Ambient Orbs */
-        .orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(100px);
-          opacity: 0.3;
-          z-index: 0;
-          pointer-events: none;
-        }
-        .orb-1 { width: 500px; height: 500px; background: #3b82f6; top: -100px; left: -100px; animation: float 10s infinite alternate; }
-        .orb-2 { width: 400px; height: 400px; background: #8b5cf6; bottom: -100px; right: -100px; animation: float 15s infinite alternate-reverse; }
+        /* Remove the orbs */
+        .orb { display: none; }
 
-        @keyframes float {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
-        }
-
-        /* Split Screen */
+        /* Split Screen - Desktop */
         .studio-left {
-          flex: 1;
+          flex: 1.5; /* Takes more space for the image */
           display: flex;
           align-items: center;
           justify-content: center;
+          background: #000;
           position: relative;
           z-index: 10;
           padding: 2rem;
-          background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
           border-right: 1px solid rgba(255,255,255,0.05);
         }
 
         .studio-right {
-          flex: 1.2;
+          width: 450px;
+          flex-shrink: 0;
           overflow-y: auto;
-          min-height: 0;
+          background: #1c1c1e;
           position: relative;
           z-index: 10;
-          background: rgba(5,5,5,0.6);
-          backdrop-filter: blur(40px);
-          -webkit-backdrop-filter: blur(40px);
         }
 
         .scroll-container {
-          padding: 4rem 10%;
-          max-width: 900px;
-          margin: 0 auto;
-          min-height: 100%;
+          padding: 2.5rem 2.5rem 6rem 2.5rem;
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          min-height: 100%;
         }
 
         /* Image Frame */
         .image-frame {
           width: 100%;
-          max-width: 450px;
-          aspect-ratio: 4/5;
-          border-radius: 24px;
+          height: 100%;
+          max-height: 85vh;
+          max-width: 85vh;
+          border-radius: 20px;
           overflow: hidden;
-          position: relative;
-          box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
-          background: #0a0a0a;
+          background: #000;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -685,129 +669,86 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .image-frame img {
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
+          object-fit: contain;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .image-frame.empty {
-          border: 1px dashed rgba(255,255,255,0.2);
-          background: transparent;
-          box-shadow: none;
-        }
+        .image-frame.empty { border: none; }
 
         /* UI Elements */
         .step-header {
-          font-size: 3.5rem;
-          font-weight: 300;
-          letter-spacing: -0.04em;
-          margin-bottom: 1rem;
+          font-size: 2rem;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          margin-bottom: 0.5rem;
           line-height: 1.1;
         }
 
         .step-desc {
-          color: rgba(255,255,255,0.5);
-          font-size: 1.25rem;
-          margin-bottom: 4rem;
+          color: #8e8e93;
+          font-size: 1rem;
+          margin-bottom: 2.5rem;
           font-weight: 400;
         }
 
         .group-title {
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           text-transform: uppercase;
-          letter-spacing: 0.2em;
-          color: rgba(255,255,255,0.4);
-          margin-bottom: 1.5rem;
-          font-weight: 700;
+          letter-spacing: 0.05em;
+          color: #8e8e93;
+          margin-bottom: 1rem;
+          font-weight: 600;
+          padding-left: 4px;
         }
 
         .glass-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 1.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+          gap: 12px;
         }
 
         .glass-card {
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.05);
-          border-radius: 20px;
-          padding: 1.5rem;
-          text-align: left;
+          background: #2c2c2e;
+          border: 2px solid transparent;
+          border-radius: 16px;
+          padding: 1rem 0.5rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           cursor: pointer;
-          position: relative;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
           color: #fff;
+          aspect-ratio: 1 / 1;
         }
 
-        .glass-card:hover {
-          background: rgba(255,255,255,0.05);
-          transform: translateY(-4px);
-        }
+        .glass-card:hover { background: #3a3a3c; }
+        .glass-card:active { transform: scale(0.95); }
 
         .glass-card.selected {
-          background: rgba(59, 130, 246, 0.1);
-          border-color: rgba(59, 130, 246, 0.5);
-          box-shadow: 0 0 30px rgba(59, 130, 246, 0.2), inset 0 0 20px rgba(59, 130, 246, 0.1);
-          transform: translateY(-4px);
+          background: #007aff;
+          border-color: #007aff;
+          transform: scale(1.02);
+          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
         }
 
         .glass-card.warning { opacity: 0.5; }
 
-        .sparkle-icon { position: absolute; top: 1rem; right: 1rem; color: #3b82f6; }
-        .card-icon { margin-bottom: 1.5rem; color: rgba(255,255,255,0.6); transition: color 0.3s ease; }
-        .glass-card.selected .card-icon { color: #3b82f6; }
+        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #007aff; }
+        .glass-card.selected .sparkle-icon { color: rgba(255,255,255,0.8); }
+        
+        .card-icon { margin-bottom: 0.5rem; color: #8e8e93; transition: all 0.2s ease; }
+        .glass-card:hover .card-icon { color: #fff; }
+        .glass-card.selected .card-icon { color: #fff; transform: scale(1.05); }
 
-        .card-title { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .card-desc { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.5; }
+        .card-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 0; line-height: 1.2; padding: 0 4px; }
+        .card-desc { display: none; }
 
-        .conflict-warning {
-          margin-top: 1rem;
-          font-size: 0.75rem;
-          color: #fbbf24;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
+        .conflict-warning { display: none; }
         /* Overlay Badge */
-        .desktop-overlay-badge {
-           position: absolute;
-           bottom: 16px;
-           left: 16px;
-           background: rgba(0, 0, 0, 0.4);
-           backdrop-filter: blur(12px);
-           -webkit-backdrop-filter: blur(12px);
-           border: 1px solid rgba(255, 255, 255, 0.15);
-           border-radius: 16px;
-           padding: 10px 14px;
-           display: flex;
-           align-items: center;
-           gap: 12px;
-           z-index: 10;
-           box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-           max-width: calc(100% - 32px);
-           overflow: hidden;
-        }
-
-        .desktop-change-btn {
-           position: absolute;
-           top: 16px;
-           right: 16px;
-           background: rgba(0, 0, 0, 0.4);
-           backdrop-filter: blur(12px);
-           border: 1px solid rgba(255, 255, 255, 0.15);
-           color: #fff;
-           padding: 6px 12px;
-           border-radius: 99px;
-           font-size: 0.75rem;
-           font-weight: 600;
-           cursor: pointer;
-           z-index: 10;
-           transition: background 0.2s;
-           display: flex;
-           align-items: center;
-           gap: 4px;
-        }
-        .desktop-change-btn:hover { background: rgba(255, 255, 255, 0.15); }
-
+        .desktop-overlay-badge { display: none; }
+        .desktop-change-btn { display: none; }
         .mobile-header-content { display: none; }
 
         /* Buttons */
@@ -815,81 +756,65 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           background: #fff;
           color: #000;
           border: none;
-          padding: 1.5rem 3rem;
-          border-radius: 99px;
-          font-size: 1.25rem;
+          padding: 1rem 2rem;
+          border-radius: 14px;
+          font-size: 1.1rem;
           font-weight: 600;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: transform 0.2s;
           display: inline-flex;
           align-items: center;
-          gap: 12px;
+          justify-content: center;
+          gap: 8px;
+          width: 100%;
         }
-        .btn-giant:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(255,255,255,0.2); }
+        .btn-giant:active { transform: scale(0.98); }
 
         .btn-magic {
-          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          background: #007aff;
           color: #fff;
           border: none;
-          padding: 1.5rem 4rem;
-          border-radius: 99px;
-          font-size: 1.4rem;
-          font-weight: 700;
+          padding: 1.2rem 2rem;
+          border-radius: 16px;
+          font-size: 1.1rem;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.3s ease;
-          box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+          transition: transform 0.2s, background 0.2s;
           display: flex;
           align-items: center;
-          gap: 12px;
-          width: 100%;
           justify-content: center;
+          gap: 8px;
+          width: 100%;
         }
-        .btn-magic:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 30px 60px rgba(8b, 92, 246, 0.6); }
+        .btn-magic:active { transform: scale(0.98); background: #0066d6; }
 
         /* Navigation Dots */
-        .nav-dots {
-          position: absolute;
-          top: 3rem;
-          right: 4rem;
-          display: flex;
-          gap: 8px;
-          z-index: 50;
-        }
-        .dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.2);
-          transition: all 0.3s ease;
-        }
-        .dot.active { background: #fff; transform: scale(1.5); }
-        .dot.completed { background: rgba(255,255,255,0.6); }
+        .nav-dots { display: none; }
 
         .back-button {
-          position: absolute;
-          top: 3rem;
-          left: 4rem;
           background: transparent;
-          border: 1px solid rgba(255,255,255,0.1);
-          color: #fff;
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          display: flex;
+          border: none;
+          color: #007aff;
+          display: inline-flex;
           align-items: center;
-          justify-content: center;
+          gap: 4px;
+          font-size: 1rem;
           cursor: pointer;
-          transition: all 0.2s;
-          z-index: 50;
+          padding: 0;
+          margin-bottom: 1rem;
+          font-weight: 500;
+          transition: opacity 0.2s;
         }
-        .back-button:hover { background: rgba(255,255,255,0.1); }
+        .back-button:hover { opacity: 0.8; }
+        .back-button span { margin-top: -2px; }
 
+        /* Step Slide Animation */
         .fade-up-enter {
-          animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(30px); }
+          to { opacity: 1; transform: translateX(0); }
         }
 
         /* Input overrides for God Mode */
@@ -907,59 +832,56 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         }
 
         @media (max-width: 1024px) {
-          .desktop-overlay-badge { display: none !important; }
-          .desktop-change-btn { display: none !important; }
-
-          .studio-layout { flex-direction: column; overflow: hidden; }
-          .studio-left { flex: none; height: 35dvh; padding: 1rem; border-right: none; position: relative; background: #000; z-index: 50; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+          .studio-layout { flex-direction: column; top: 60px; height: calc(100vh - 60px); }
           
-          .studio-left.collapsed { 
-            height: 72px; 
-            min-height: 72px; 
-            padding: 0.5rem 1rem;
+          /* The Image Stage takes top space */
+          .studio-left { 
+            flex: none; 
+            height: 45vh; 
+            padding: 1rem; 
+            border-right: none; 
+            background: #000;
+            z-index: 10;
+          }
+          
+          .studio-left.collapsed {
+            height: 45vh;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(10,10,10,0.95);
-            backdrop-filter: blur(20px);
-            z-index: 100;
+            background: #000;
+            border-bottom: none;
+            padding: 1rem;
           }
           
-          .studio-right { flex: 1; overflow-y: auto; min-height: 0; margin-top: -20px; border-radius: 24px 24px 0 0; background: rgba(10,10,10,0.85); z-index: 20; -webkit-overflow-scrolling: touch; }
-          .studio-left.collapsed ~ .studio-right { margin-top: 0; border-radius: 0; }
-          
-          .image-frame { height: 100%; max-width: 250px; margin: 0 auto; aspect-ratio: auto; }
-          .studio-left.collapsed .image-frame { height: 48px; width: 48px; border-radius: 8px; margin: 0; padding: 0; border: none; flex-shrink: 0; }
-          .studio-left.collapsed .image-frame img { border-radius: 8px; object-fit: cover; width: 100%; height: 100%; }
+          .image-frame { max-width: 100%; max-height: 100%; aspect-ratio: auto; box-shadow: none; }
+          .studio-left.collapsed .image-frame { width: 100%; height: 100%; border-radius: 16px; margin: 0; padding: 0; border: none; }
+          .studio-left.collapsed .image-frame img { object-fit: contain; }
 
-          .mobile-header-content { display: none; }
-          .studio-left.collapsed .mobile-header-content { display: flex; flex: 1; justify-content: space-between; align-items: center; margin-left: 1rem; }
-
-          .scroll-container { padding: 3rem 1.5rem 8rem 1.5rem; min-height: max-content; }
-          .studio-left.collapsed ~ .studio-right .scroll-container { padding-top: 5rem; }
-          
-          .nav-dots { top: 1.5rem; right: 1.5rem; }
-          .back-button { top: 1.5rem; left: 1.5rem; width: 40px; height: 40px; }
-          .studio-left.collapsed ~ .studio-right .nav-dots { top: 1.5rem; right: 1.5rem; }
-          .studio-left.collapsed ~ .studio-right .back-button { top: 1.2rem; left: 1.5rem; }
-
-          .step-header { font-size: 2.2rem; }
-
-          /* Cards Mobile Optimization */
-          .glass-grid { grid-template-columns: 1fr; gap: 1rem; }
-          .glass-card { display: flex; align-items: center; gap: 1rem; padding: 1rem; height: auto; }
-          .glass-card .card-icon { margin-bottom: 0; }
-          .glass-card .card-title { font-size: 1.1rem; margin-bottom: 0; }
-          .glass-card .card-desc { display: none; }
-          .glass-card .sparkle-icon { position: static; margin-left: auto; }
-          .glass-card .conflict-warning { display: none; }
-          
-          .glass-card.selected {
-             background: rgba(59, 130, 246, 0.15);
-             border: 2px solid rgba(59, 130, 246, 0.8);
-             transform: translateY(0) scale(1.01);
+          /* The Controls Bottom Sheet */
+          .studio-right { 
+            flex: 1; 
+            width: 100%;
+            background: rgba(28, 28, 30, 0.85); 
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            z-index: 20; 
+            margin-top: -20px;
           }
+          
+          .scroll-container { padding: 2rem 1.5rem 4rem 1.5rem; }
+          
+          .step-header { font-size: 1.5rem; }
+          .step-desc { font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+          /* Glass Grid for Mobile */
+          .glass-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+          @media (max-width: 480px) { .glass-grid { grid-template-columns: repeat(2, 1fr); } }
+          
+          .glass-card { padding: 1rem 0.5rem; border-radius: 14px; }
+          .glass-card .card-icon { transform: scale(0.9); margin-bottom: 0.25rem; }
+          .glass-card .card-title { font-size: 0.75rem; }
         }
       `}} />
 
@@ -1014,16 +936,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       <div className="studio-right">
         
         {step > 0 && step < 9 && !isGenerating && (
-          <>
             <button className="back-button" onClick={handleBack}>
-              <ChevronLeft size={24} />
+              <ChevronLeft size={20} /> <span>Back</span>
             </button>
-            <div className="nav-dots">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className={`dot ${i === step ? 'active' : ''} ${i < step ? 'completed' : ''}`} />
-              ))}
-            </div>
-          </>
         )}
 
         <div className="scroll-container">
