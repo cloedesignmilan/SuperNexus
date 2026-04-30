@@ -153,13 +153,9 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                     <div style={{ position: 'absolute', width: '300px', height: '300px', background: platforms[activePlatform].color, borderRadius: '50%', filter: 'blur(100px)', opacity: 0.15 }} />
                     
                     {/* Device Frame */}
-                    <div style={{
+                    <div className={`device-frame-${platforms[activePlatform].id}`} style={{
                         position: 'relative',
-                        width: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '280px' : '100%',
-                        height: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '560px' : '350px',
                         background: '#000',
-                        borderRadius: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '40px' : '16px',
-                        border: `8px solid #222`,
                         overflow: 'hidden',
                         boxShadow: `0 30px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1)`,
                         zIndex: 2
@@ -180,11 +176,10 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                                 src={platforms[activePlatform].image} 
                                 alt={platforms[activePlatform].title}
                                 fill
+                                className={`device-img-${platforms[activePlatform].id}`}
                                 style={{ 
-                                    objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
                                     opacity: 1,
                                     backgroundColor: '#000',
-                                    clipPath: platforms[activePlatform].id === 'desktop' ? 'inset(12% 1.5% 12% 1.5%)' : 'none'
                                 }}
                             />
                         </div>
@@ -200,8 +195,35 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .device-frame-mobile, .device-frame-telegram {
+            width: 280px;
+            height: 560px;
+            border-radius: 40px;
+            border: 8px solid #222;
+        }
+        .device-frame-desktop {
+            width: 100%;
+            height: 380px;
+            border-radius: 16px;
+            border: 8px solid #222;
+        }
+        .device-img-mobile, .device-img-telegram {
+            object-fit: cover;
+        }
+        .device-img-desktop {
+            object-fit: contain;
+            clip-path: inset(12% 1.5% 12% 1.5%);
+        }
         @media (max-width: 768px) {
             .platform-container { padding: 1rem !important; }
+            .device-frame-desktop {
+                height: 400px;
+            }
+            .device-img-desktop {
+                object-fit: cover !important;
+                clip-path: none !important;
+                object-position: center 15%;
+            }
         }
       `}} />
     </section>
