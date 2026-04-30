@@ -269,6 +269,17 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
           height: 100%;
           z-index: 1;
         }
+        @media (max-width: 768px) {
+          .guest-try-out {
+            border-radius: 0 !important;
+            border-left: none !important;
+            border-right: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 3rem 1rem !important;
+          }
+        }
       `}} />
       <div id="guest-try-out" className="guest-try-out" style={{
       width: '100%',
