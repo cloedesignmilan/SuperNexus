@@ -1,6 +1,6 @@
 'use client'
 
-import { Download } from 'lucide-react'
+import { Download, Tag } from 'lucide-react'
 
 export default function GalleryCard({ url, path }: { url: string, path?: string }) {
   const handleDownload = async () => {
@@ -34,7 +34,8 @@ export default function GalleryCard({ url, path }: { url: string, path?: string 
   return (
     <div style={{ padding: '1rem', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: '0.75rem', background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
       {path && (
-        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#D4AF37', letterSpacing: '0.05em', padding: '0.3rem 0.6rem', background: 'rgba(212, 175, 55, 0.1)', borderRadius: '6px', alignSelf: 'flex-start', textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', fontWeight: 600, color: '#D4AF37', letterSpacing: '0.05em', padding: '0.3rem 0.6rem', background: 'rgba(212, 175, 55, 0.1)', borderRadius: '6px', alignSelf: 'flex-start', textTransform: 'uppercase' }}>
+          <Tag size={12} />
           {path}
         </div>
       )}

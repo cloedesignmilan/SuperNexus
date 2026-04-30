@@ -50,14 +50,10 @@ export default async function GalleryPage() {
   // Generate objects with url and formatted path
   const userGalleryItems = jobImages.map(img => {
     const job = img.job;
-    const pathParts = [];
-    if (job.category) pathParts.push(job.category.name);
-    if (job.business_mode) pathParts.push(job.business_mode.name);
-    if (job.subcategory && job.subcategory.slug !== 'dynamic-engine') pathParts.push(job.subcategory.name);
     
     return {
       url: img.image_url,
-      path: pathParts.join(' → ').toUpperCase() || 'CUSTOM CONFIGURATION'
+      path: job.category?.name?.toUpperCase() || 'CUSTOM'
     };
   });
 
