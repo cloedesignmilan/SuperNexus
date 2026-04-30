@@ -2,28 +2,31 @@ import { prisma } from "@/lib/prisma";
 import { getActiveAiModel, getAiSceneVariance } from "./actions";
 import ModelToggle from "./ModelToggle";
 import AiSceneToggle from "./AiSceneToggle";
+import AdminDashboardClient from "./AdminDashboardClient";
+import { Zap, Image as ImageIcon, Users, Euro, Activity } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  const categoriesCount = await prisma.category.count();
-  const subcatsCount = await prisma.subcategory.count();
+  // 1. Core Counts
+  const usersCount = await prisma.user.count();
+  const premiumUsersCount = await prisma.user.count({ where: { subscription_active: true } });
+  
   const jobsCount = await prisma.generationJob.count();
+  
   const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
   const totalImagesCount = totalImagesAggr._sum.results_count || 0;
-  const totalVisionCount = await prisma.subcategory.count({ where: { base_prompt_prefix: { not: null } } });
 
-  // Calcoli odierni
+  // 2. Today's Metrics
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  
   const imagesTodayAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: today } },
      _sum: { results_count: true }
   });
   const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
-  const visionTodayCount = await prisma.subcategory.count({ where: { updatedAt: { gte: today }, base_prompt_prefix: { not: null } } });
 
-  // Calcolo Spesa API Reale in base al DB
   const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
       where: { createdAt: { gte: today } },
       _sum: { cost_eur: true }
@@ -36,90 +39,162 @@ export default async function AdminDashboard() {
   const costToday = costsTodayAggr._sum.cost_eur || 0.000;
   const costTotal = costsTotalAggr._sum.cost_eur || 0.000;
 
+  // 3. Last 7 Days Activity (for Recharts)
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(today.getDate() - 6);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+
+  const recentJobs = await prisma.generationJob.findMany({
+    where: { createdAt: { gte: sevenDaysAgo } },
+    select: { createdAt: true, results_count: true }
+  });
+
+  const recentCosts = await (prisma as any).apiCostLog.findMany({
+    where: { createdAt: { gte: sevenDaysAgo } },
+    select: { createdAt: true, cost_eur: true }
+  });
+
+  // Aggregate by day
+  const chartDataMap: Record<string, { date: string, images: number, cost: number }> = {};
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(sevenDaysAgo);
+    d.setDate(d.getDate() + i);
+    const dateStr = d.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
+    chartDataMap[dateStr] = { date: dateStr, images: 0, cost: 0 };
+  }
+
+  recentJobs.forEach(job => {
+    const d = new Date(job.createdAt);
+    const dateStr = d.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
+    if (chartDataMap[dateStr]) chartDataMap[dateStr].images += (job.results_count || 0);
+  });
+
+  recentCosts.forEach((cost: any) => {
+    const d = new Date(cost.createdAt);
+    const dateStr = d.toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
+    if (chartDataMap[dateStr]) chartDataMap[dateStr].cost += (cost.cost_eur || 0);
+  });
+
+  const chartData = Object.values(chartDataMap);
+
+  // 4. Live Feed (Last 10 Jobs)
+  const liveJobs = await prisma.generationJob.findMany({
+    take: 10,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      user: { select: { email: true, telegram_chat_id: true } },
+      category: { select: { name: true } },
+      images: { take: 1, select: { image_url: true } }
+    }
+  });
+
+  const activeModel = await getActiveAiModel();
+  const sceneVariance = await getAiSceneVariance();
+
   return (
-    <div>
-      <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#fff' }}>
+      <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Visore Centrale</h1>
-          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>Panoramica dello stato di salute dell'intelligenza artificiale.</p>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 0.5rem 0', letterSpacing: '-0.02em', color: 'white' }}>Mission Control</h1>
+          <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>SuperNexus AI real-time performance & metrics.</p>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end' }}>
-          <ModelToggle initialModel={await getActiveAiModel()} />
-          <AiSceneToggle initialEnabled={await getAiSceneVariance()} />
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
+            <ModelToggle initialModel={activeModel} />
+          </div>
+          <div style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
+            <AiSceneToggle initialEnabled={sceneVariance} />
+          </div>
         </div>
       </div>
 
-      <div className="dashboard-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
+      {/* KPI GRID */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '2.5rem' }}>
         
-        {/* Gradient Card Purple */}
-        <div className="admin-card card-gradient-purple" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, opacity: 0.9 }}>Database Nodi</h3>
-            <span style={{ color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.1)', padding: '0.5rem', borderRadius: '10px' }}>❖</span>
+        {/* Users Card */}
+        <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Users</h3>
+            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><Users size={20} /></div>
           </div>
-          <div style={{ display: 'flex', gap: '2rem' }}>
-            <div>
-              <p style={{ fontSize: '0.8rem', opacity: 0.8, margin: 0 }}>Macro</p>
-              <p style={{ fontSize: '2.2rem', fontWeight: '800', margin: 0 }}>{categoriesCount}</p>
-            </div>
-            <div>
-               <p style={{ fontSize: '0.8rem', opacity: 0.8, margin: 0 }}>Reference</p>
-               <p style={{ fontSize: '1.5rem', fontWeight: '600', margin: 'auto 0 0 0', display: 'flex', alignItems: 'flex-end', height: '100%', paddingBottom: '4px' }}>{subcatsCount}</p>
-            </div>
-          </div>
+          <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{usersCount}</p>
+          <p style={{ fontSize: '0.85rem', color: '#D4AF37', margin: '0.5rem 0 0 0', fontWeight: 500 }}>{premiumUsersCount} Premium Subscriptions</p>
         </div>
 
-        {/* Gradient Card Cyan */}
-        <div className="admin-card card-gradient-cyan" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '0.8rem', fontWeight: 600, margin: 0, opacity: 0.9 }}>Generazioni Oggi</h3>
-            <span style={{ color: 'rgba(255,255,255,0.8)', background: 'rgba(0,0,0,0.1)', padding: '0.5rem', borderRadius: '10px' }}>⚡</span>
+        {/* Images Card */}
+        <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Images Generated</h3>
+            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><ImageIcon size={20} /></div>
           </div>
-          <div>
-             <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, textShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>{imagesTodayCount}</p>
-             <p style={{ fontSize: '0.85rem', opacity: 0.9, margin: '0.5rem 0 0 0' }}>Job totali in vita: {jobsCount}</p>
-          </div>
+          <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{totalImagesCount}</p>
+          <p style={{ fontSize: '0.85rem', color: '#10b981', margin: '0.5rem 0 0 0', fontWeight: 500 }}>+{imagesTodayCount} generated today</p>
         </div>
 
-        {/* Dark Card */}
-        <div className="admin-card" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-primary)', margin: 0 }}>Spesa Odierna API</h3>
-            <span style={{ color: 'var(--color-primary)', background: 'rgba(230, 46, 191, 0.1)', padding: '0.5rem', borderRadius: '10px' }}>€</span>
+        {/* Cost Card */}
+        <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>API Spending</h3>
+            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><Euro size={20} /></div>
           </div>
-          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costToday.toFixed(3)}</p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>{visionTodayCount} Analisi Vision + {imagesTodayCount} Foto</p>
+          <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>€{costTotal.toFixed(2)}</p>
+          <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', margin: '0.5rem 0 0 0' }}>€{costToday.toFixed(2)} spent today</p>
         </div>
 
-        {/* Dark Card */}
-        <div className="admin-card" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-text-muted)', margin: 0 }}>Spesa Totale Vita</h3>
-            <span style={{ color: 'var(--color-text-muted)', background: 'rgba(255,255,255,0.05)', padding: '0.5rem', borderRadius: '10px' }}>📈</span>
-          </div>
-          <p className="stat-value" style={{ fontSize: '2rem', marginTop: 'auto', paddingTop: '20px' }}>€{costTotal.toFixed(4)}</p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', margin: '0.5rem 0 0 0' }}>Da inizio progetto</p>
-        </div>
       </div>
-      
-      {/* Bot Status */}
-      <div className="admin-card" style={{ marginTop: '3rem' }}>
-        <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          Stato Motore AI
-        </h2>
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', background: 'rgba(0,0,0,0.3)', padding: '15px 20px', borderRadius: '12px' }}>
-           <div>
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'block', marginBottom: '4px' }}>Provider Visione</span>
-              <span style={{ color: 'white', fontWeight: 600 }}>Gemini 2.5 Flash</span>
-           </div>
-           <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)', height: '30px' }}></div>
-           <div>
-              <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'block', marginBottom: '4px' }}>Connection Status</span>
-              <span style={{ color: 'var(--color-success)', fontSize: '0.9rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                 <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-success)', boxShadow: '0 0 10px var(--color-success)' }}></div>
-                 Operativo
-              </span>
-           </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+        {/* CHART WIDGET */}
+        <div style={{ background: '#1c1c1e', padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 40px rgba(0,0,0,0.3)', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Activity size={20} color="#D4AF37" /> 7-Day Activity
+            </h2>
+          </div>
+          <div style={{ height: '350px', width: '100%' }}>
+            <AdminDashboardClient chartData={chartData} />
+          </div>
+        </div>
+
+        {/* LIVE FEED WIDGET */}
+        <div style={{ background: '#1c1c1e', padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 40px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column' }}>
+          <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Zap size={20} color="#D4AF37" /> Live Feed
+          </h2>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
+            {liveJobs.length === 0 && <p style={{ color: 'var(--color-text-muted)' }}>No recent activity.</p>}
+            
+            {liveJobs.map(job => (
+              <div key={job.id} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                {job.images && job.images[0] ? (
+                  <div style={{ width: '48px', height: '48px', borderRadius: '10px', overflow: 'hidden', flexShrink: 0, background: '#111' }}>
+                    <img src={job.images[0].image_url} alt="Job output" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ) : (
+                  <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <ImageIcon size={20} />
+                  </div>
+                )}
+                
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontSize: '0.85rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {job.user.email || 'Telegram User'}
+                  </p>
+                  <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                    {job.category?.name || 'Custom'} • {job.results_count} imgs
+                  </p>
+                </div>
+                
+                <div style={{ fontSize: '0.7rem', padding: '0.3rem 0.6rem', borderRadius: '20px', fontWeight: 600, 
+                    background: job.status === 'completed' ? 'rgba(16, 185, 129, 0.1)' : job.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212, 175, 55, 0.1)',
+                    color: job.status === 'completed' ? '#10b981' : job.status === 'error' ? '#ef4444' : '#D4AF37'
+                }}>
+                  {job.status.toUpperCase()}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

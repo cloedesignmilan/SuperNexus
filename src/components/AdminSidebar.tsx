@@ -24,7 +24,7 @@ export default function AdminSidebar() {
     <aside className="admin-sidebar" style={{ width: '280px', background: 'var(--color-sidebar)', display: 'flex', flexDirection: 'column' }}>
         <div style={{ padding: '2rem 1.5rem', paddingBottom: '1rem' }}>
           <h1 style={{ fontSize: '1.4rem', margin: 0, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem' }}>
-            <span style={{ color: 'var(--color-primary)' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
+            <span style={{ color: '#D4AF37' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
           </h1>
           
           <Link href="/auth" style={{
@@ -60,8 +60,8 @@ export default function AdminSidebar() {
                   gap: '12px',
                   padding: '12px 16px',
                   color: isActive ? 'white' : 'var(--color-text-muted)',
-                  background: isActive ? 'linear-gradient(90deg, rgba(230,46,191,0.2) 0%, transparent 100%)' : 'transparent',
-                  borderLeft: isActive ? '4px solid var(--color-primary)' : '4px solid transparent',
+                  background: isActive ? 'linear-gradient(90deg, rgba(212,175,55,0.15) 0%, transparent 100%)' : 'transparent',
+                  borderLeft: isActive ? '4px solid #D4AF37' : '4px solid transparent',
                   borderRadius: '0 8px 8px 0',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
@@ -69,7 +69,7 @@ export default function AdminSidebar() {
                   transition: 'all 0.2s ease',
                 }}
               >
-                <div style={{ color: isActive ? 'var(--color-primary)' : 'currentColor' }}>
+                <div style={{ color: isActive ? '#D4AF37' : 'currentColor' }}>
                   {item.icon}
                 </div>
                 {item.label}
