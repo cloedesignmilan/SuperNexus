@@ -184,7 +184,7 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                                     objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
                                     opacity: 1,
                                     backgroundColor: '#000',
-                                    clipPath: platforms[activePlatform].id === 'desktop' ? 'inset(12% 0 12% 0)' : 'none'
+                                    clipPath: platforms[activePlatform].id === 'desktop' ? 'inset(12% 1.5% 12% 1.5%)' : 'none'
                                 }}
                             />
                         </div>
