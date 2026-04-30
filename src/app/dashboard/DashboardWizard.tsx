@@ -751,30 +751,30 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .desktop-change-btn { display: none; }
         .mobile-header-content { display: none; }
 
-        /* Buttons */
         .btn-giant {
           background: #fff;
           color: #000;
           border: none;
-          padding: 1rem 2rem;
-          border-radius: 14px;
+          padding: 1.1rem 2rem;
+          border-radius: 16px;
           font-size: 1.1rem;
           font-weight: 600;
           cursor: pointer;
-          transition: transform 0.2s;
-          display: inline-flex;
+          transition: transform 0.2s, opacity 0.2s;
+          display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
           width: 100%;
+          box-shadow: 0 4px 14px rgba(255,255,255,0.1);
         }
-        .btn-giant:active { transform: scale(0.98); }
+        .btn-giant:active { transform: scale(0.96); opacity: 0.9; }
 
         .btn-magic {
           background: #007aff;
           color: #fff;
           border: none;
-          padding: 1.2rem 2rem;
+          padding: 1.1rem 2rem;
           border-radius: 16px;
           font-size: 1.1rem;
           font-weight: 600;
@@ -785,8 +785,24 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           justify-content: center;
           gap: 8px;
           width: 100%;
+          box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
         }
-        .btn-magic:active { transform: scale(0.98); background: #0066d6; }
+        .btn-magic:active { transform: scale(0.96); background: #0066d6; }
+        
+        .sticky-bottom-action {
+          position: sticky;
+          bottom: 0;
+          padding: 1rem 1.5rem;
+          background: rgba(28, 28, 30, 0.85);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-top: 1px solid rgba(255,255,255,0.1);
+          margin: 2rem -1.5rem -4rem -1.5rem;
+          z-index: 50;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
 
         /* Navigation Dots */
         .nav-dots { display: none; }
@@ -858,6 +874,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             box-shadow: none;
             z-index: 20; 
             margin-top: 0;
+          }
+          
+          .sticky-bottom-action {
+            margin: 2rem -1rem -6rem -1rem;
+            padding: 1rem;
+            background: rgba(18, 18, 20, 0.95);
           }
           
           .scroll-container { padding: 1.5rem 1rem 6rem 1rem; }
@@ -1027,11 +1049,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      </div>
                   )}
 
-                  <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                  <div className="sticky-bottom-action">
                     <button onClick={() => setStep(1)} className="btn-magic">
                       Looks Good <ArrowRight size={18} />
                     </button>
-                    <button onClick={() => { setStep(0.75); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '100px', color: '#ffffff', fontSize: '0.9rem', padding: '0.8rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s ease' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
+                    <button onClick={() => { setStep(0.75); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '16px', color: '#ffffff', fontSize: '1rem', padding: '1.1rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 600, width: '100%' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
                       Change Type
                     </button>
                   </div>
@@ -1065,7 +1087,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               
               {/* Only show NEXT button if it's the FORMAT_QUANTITY step */}
               {step === 3 && (
-                <div style={{ marginTop: '3rem', paddingBottom: '2rem' }}>
+                <div className="sticky-bottom-action">
                   <button onClick={async () => {
                      const qtyStr = selections['QUANTITY']?.label?.toString().trim();
                      if (qtyStr === '1' || qtyStr === '1 Image' || qtyStr === '1 Foto') {
