@@ -265,7 +265,7 @@ export default function PromptConfigsAdmin() {
           <button 
             onClick={() => fileInputRef.current?.click()} 
             style={{ 
-              padding: '0.8rem 1.5rem', background: 'rgba(0,210,255,0.2)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+              padding: '0.8rem 1.5rem', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' 
             }}
           >
             <Upload size={18} /> Import JSON File
@@ -273,7 +273,7 @@ export default function PromptConfigsAdmin() {
           <button 
             onClick={() => setShowRawImport(!showRawImport)} 
             style={{ 
-              padding: '0.8rem 1.5rem', background: 'rgba(230,46,191,0.2)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+              padding: '0.8rem 1.5rem', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' 
             }}
           >
             <Sparkles size={18} /> Paste JSON
@@ -281,7 +281,7 @@ export default function PromptConfigsAdmin() {
           <button 
             onClick={handleExport} 
             style={{ 
-              padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.1)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' 
+              padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' 
             }}
           >
             <Download size={18} /> Export JSON
@@ -290,7 +290,7 @@ export default function PromptConfigsAdmin() {
       </div>
 
       {showRawImport && (
-        <div className="admin-card" style={{ padding: '1.5rem', marginBottom: '2rem', background: 'rgba(230,46,191,0.05)', border: '1px solid rgba(230,46,191,0.2)' }}>
+        <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '24px' }}>
           <h3 style={{ margin: '0 0 1rem 0', color: 'white', fontSize: '1.1rem' }}>Paste JSON Code</h3>
           <textarea
             value={rawJsonText}
@@ -300,7 +300,7 @@ export default function PromptConfigsAdmin() {
           />
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
             <button onClick={() => setShowRawImport(false)} style={{ padding: '0.6rem 1.2rem', background: 'transparent', color: 'var(--color-text-muted)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-            <button onClick={handleRawImport} disabled={saving} style={{ padding: '0.6rem 1.2rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 600, opacity: saving ? 0.7 : 1 }}>
+            <button onClick={handleRawImport} disabled={saving} style={{ padding: '0.6rem 1.2rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '12px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 700, opacity: saving ? 0.7 : 1 }}>
               {saving ? 'Importing...' : 'Import Now'}
             </button>
           </div>
@@ -308,7 +308,7 @@ export default function PromptConfigsAdmin() {
       )}
 
       {/* Filters */}
-      <div className="admin-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+      <div className="glass-card" style={{ padding: '1.5rem', marginBottom: '2rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', flexWrap: 'wrap', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ flex: 1, minWidth: '150px' }}>
           <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Category</label>
           <select 
@@ -344,7 +344,7 @@ export default function PromptConfigsAdmin() {
             onClick={handleCreate}
             disabled={saving}
             style={{ 
-              padding: '0.8rem 1.5rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px', opacity: saving ? 0.7 : 1
+              padding: '0.8rem 1.5rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '12px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px', opacity: saving ? 0.7 : 1
             }}
           >
             <Plus size={18} /> Add Shot
@@ -364,11 +364,11 @@ export default function PromptConfigsAdmin() {
             </div>
           ) : (
             filteredConfigs.map((shot, idx) => (
-              <div key={shot.id} className="admin-card" style={{ overflow: 'hidden', transition: 'all 0.2s ease', border: '1px solid var(--color-card-border)' }}>
+              <div key={shot.id} className="glass-card" style={{ overflow: 'hidden', transition: 'all 0.2s ease', border: '1px solid rgba(255,255,255,0.05)', background: '#1c1c1e', borderRadius: '24px' }}>
                 
                 {/* Header Row */}
-                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', borderBottom: '1px solid var(--color-card-border)' }}>
-                  <div style={{ background: 'rgba(0,210,255,0.1)', color: 'var(--color-secondary)', fontFamily: 'monospace', fontWeight: 700, padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.9rem', border: '1px solid rgba(0,210,255,0.2)' }}>
+                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div style={{ background: 'rgba(212,175,55,0.1)', color: '#D4AF37', fontFamily: 'monospace', fontWeight: 700, padding: '0.3rem 0.8rem', borderRadius: '8px', fontSize: '0.9rem', border: '1px solid rgba(212,175,55,0.2)' }}>
                     Shot {shot.shotNumber}
                   </div>
                   <input 
@@ -385,7 +385,7 @@ export default function PromptConfigsAdmin() {
                     placeholder="Shot Name..."
                   />
                   <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-text-muted)', cursor: 'pointer', marginRight: '1rem' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', color: 'var(--color-text-muted)', cursor: 'pointer', marginRight: '1rem' }}>
                       <input 
                         type="checkbox" 
                         checked={shot.isActive}
@@ -395,17 +395,17 @@ export default function PromptConfigsAdmin() {
                           if (s) s.isActive = e.target.checked;
                           setConfigs(newConfigs);
                         }}
-                        style={{ accentColor: 'var(--color-secondary)', width: '16px', height: '16px' }}
+                        style={{ accentColor: '#D4AF37', width: '16px', height: '16px' }}
                       />
                       Active
                     </label>
-                    <button onClick={() => handleUpdate(shot)} style={{ padding: '0.5rem', color: 'var(--color-success)', background: 'rgba(0,224,143,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Save Changes">
+                    <button onClick={() => handleUpdate(shot)} style={{ padding: '0.5rem', color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Save Changes">
                       <Save size={16} />
                     </button>
-                    <button onClick={() => handleDuplicate(shot)} style={{ padding: '0.5rem', color: 'var(--color-secondary)', background: 'rgba(0,210,255,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Duplicate Shot">
+                    <button onClick={() => handleDuplicate(shot)} style={{ padding: '0.5rem', color: '#D4AF37', background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Duplicate Shot">
                       <Copy size={16} />
                     </button>
-                    <button onClick={() => handleDelete(shot.id)} style={{ padding: '0.5rem', color: 'var(--color-danger)', background: 'rgba(255,77,109,0.1)', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Delete Shot">
+                    <button onClick={() => handleDelete(shot.id)} style={{ padding: '0.5rem', color: '#ef4444', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Delete Shot">
                       <Trash2 size={16} />
                     </button>
                   </div>
@@ -459,12 +459,12 @@ export default function PromptConfigsAdmin() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     
                     {/* AI Assistant Bar */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(230, 46, 191, 0.1)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(230, 46, 191, 0.2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(212, 175, 55, 0.05)', padding: '1rem', borderRadius: '12px', border: '1px solid rgba(212, 175, 55, 0.2)' }}>
                       <div style={{ flex: 1 }}>
                         <input 
                           type="text" 
                           placeholder="✨ Describe how you want this shot in plain language (e.g., 'a single t-shirt lying flat on a wooden table, top down view')"
-                          style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.6rem 1rem', color: 'white', outline: 'none' }}
+                          style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '0.9rem', padding: '0.6rem 1rem', color: 'white', outline: 'none' }}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               handleAiGenerate(shot.id, e.currentTarget.value);
@@ -478,7 +478,7 @@ export default function PromptConfigsAdmin() {
                           if (input) handleAiGenerate(shot.id, input.value);
                         }}
                         disabled={generatingPromptId === shot.id}
-                        style={{ padding: '0.6rem 1rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '6px', cursor: generatingPromptId === shot.id ? 'wait' : 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px', opacity: generatingPromptId === shot.id ? 0.7 : 1 }}
+                        style={{ padding: '0.6rem 1rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '8px', cursor: generatingPromptId === shot.id ? 'wait' : 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', opacity: generatingPromptId === shot.id ? 0.7 : 1 }}
                       >
                         {generatingPromptId === shot.id ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />} 
                         Auto-Write Prompt

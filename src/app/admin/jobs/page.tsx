@@ -29,7 +29,7 @@ export default async function JobsPage() {
                 <SaveOutputsToggle initialValue={outputsEnabled} />
             </div>
 
-            <div className="admin-card" style={{ padding: '0', overflow: 'hidden' }}>
+            <div className="glass-card" style={{ padding: '0', overflow: 'hidden', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ overflowX: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
                         <thead>

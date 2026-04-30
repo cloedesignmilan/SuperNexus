@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key, CheckCircle, XCircle } from "lucide-react";
+import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key, CheckCircle, Image as ImageIcon } from "lucide-react";
 import { toggleSubscription, updateAllowance, deleteClient } from "./actions";
+import Link from "next/link";
 
 export default function ClientList({ clients }: { clients: any[] }) {
   const [topupAmount, setTopupAmount] = useState<{ [key: string]: string }>({});
@@ -72,7 +73,7 @@ export default function ClientList({ clients }: { clients: any[] }) {
                      <span style={{ background: 'rgba(255, 255, 255, 0.08)', color: 'white', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>
                         {client.base_allowance === 100 ? 'Starter Pack' : client.base_allowance === 300 ? 'Retail Pack' : `Custom ${client.base_allowance}`}
                      </span>
-                     <span style={{ background: 'linear-gradient(135deg, rgba(230, 46, 191, 0.15), rgba(0, 210, 255, 0.15))', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontWeight: 600 }}>
+                     <span style={{ background: 'rgba(0, 210, 255, 0.1)', color: '#00d2ff', padding: '2px 8px', borderRadius: '12px', fontWeight: 600, border: '1px solid rgba(0, 210, 255, 0.2)' }}>
                         Spesa API: €{client.totalCost?.toFixed(4) || '0.0000'}
                      </span>
                   </div>
@@ -98,7 +99,7 @@ export default function ClientList({ clients }: { clients: any[] }) {
                         <div style={{ 
                             height: '100%', 
                             width: `${monthlyProgress}%`,
-                            background: isMonthlyExhausted ? '#4b5563' : 'linear-gradient(90deg, #e62ebf, #ff0055)',
+                            background: isMonthlyExhausted ? '#4b5563' : 'linear-gradient(90deg, #e62ebf, #00d2ff)',
                             transition: 'width 0.5s ease-out'
                         }}></div>
                     </div>
@@ -121,7 +122,7 @@ export default function ClientList({ clients }: { clients: any[] }) {
                             <div style={{ 
                                 height: '100%', 
                                 width: `${extraProgress}%`,
-                                background: extraGenerated >= extraLimit ? '#4b5563' : 'linear-gradient(90deg, #00d2ff, #3b82f6)',
+                                background: extraGenerated >= extraLimit ? '#4b5563' : 'linear-gradient(90deg, #00d2ff, #bb86fc)',
                                 transition: 'width 0.5s ease-out'
                             }}></div>
                         </div>
@@ -168,16 +169,19 @@ export default function ClientList({ clients }: { clients: any[] }) {
                   />
                   <button 
                     onClick={() => handleTopup(client.id)}
-                    style={{ background: 'var(--color-primary)', color: 'white', border: 'none', padding: '0 16px', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', transition: 'background 0.2s' }}
+                    style={{ background: '#00d2ff', color: '#1c1c1e', border: 'none', padding: '0 16px', cursor: 'pointer', fontWeight: 700, display: 'flex', alignItems: 'center', transition: 'background 0.2s' }}
                     title="Aggiungi Crediti e Ricarica"
                   >
                     Ricarica
                   </button>
                </div>
 
-               {/* BOTTONI SYSTEM */}
+               {/* BOTTONI SYSTEM E GALLERIA */}
                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button 
+                  <Link href={`/admin/clients/${client.id}`} style={{ padding: '10px', borderRadius: '10px', cursor: 'pointer', background: 'rgba(0, 210, 255, 0.1)', color: '#00d2ff', border: '1px solid rgba(0, 210, 255, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Vedi Generazioni">
+                     <ImageIcon size={18} />
+                  </Link>
+                  <button  
                     onClick={() => handleToggle(client.id, client.subscription_active)} 
                     style={{ 
                        padding: '10px', borderRadius: '10px', cursor: 'pointer', border: 'none',

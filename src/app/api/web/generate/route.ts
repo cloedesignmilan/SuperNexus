@@ -156,6 +156,22 @@ export async function POST(req: NextRequest) {
                 image_order: i
               }
             })
+
+            // Auto-cover logic: set as cover if missing (only on the first generated image)
+            if (i === 0 && subcat && subcat.slug !== 'dynamic-engine') {
+              if (subcat.business_mode?.category && !subcat.business_mode.category.cover_image) {
+                await prisma.category.update({ where: { id: subcat.business_mode.category.id }, data: { cover_image: publicUrl } });
+                subcat.business_mode.category.cover_image = publicUrl;
+              }
+              if (subcat.business_mode && !subcat.business_mode.cover_image) {
+                await prisma.businessMode.update({ where: { id: subcat.business_mode.id }, data: { cover_image: publicUrl } });
+                subcat.business_mode.cover_image = publicUrl;
+              }
+              if (!subcat.preview_image) {
+                await prisma.subcategory.update({ where: { id: subcat.id }, data: { preview_image: publicUrl } });
+                subcat.preview_image = publicUrl;
+              }
+            }
         }
     }
 

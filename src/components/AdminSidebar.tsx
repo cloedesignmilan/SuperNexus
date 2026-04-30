@@ -24,21 +24,22 @@ export default function AdminSidebar() {
     <aside className="admin-sidebar" style={{ width: '280px', background: 'var(--color-sidebar)', display: 'flex', flexDirection: 'column' }}>
         <div style={{ padding: '2rem 1.5rem', paddingBottom: '1rem' }}>
           <h1 style={{ fontSize: '1.4rem', margin: 0, fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1.5rem' }}>
-            <span style={{ color: '#D4AF37' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
+            <span style={{ color: '#00d2ff' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
           </h1>
           
           <Link href="/auth" style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-            padding: '10px 16px', borderRadius: '8px',
-            background: 'rgba(255, 255, 255, 0.05)', color: 'var(--color-text)',
-            textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600,
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            transition: 'all 0.2s ease',
+            padding: '10px 16px', borderRadius: '12px',
+            background: 'linear-gradient(90deg, #e62ebf, #00d2ff)', color: 'white',
+            textDecoration: 'none', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px',
+            border: 'none',
+            boxShadow: '0 4px 15px rgba(0, 210, 255, 0.3)',
+            transition: 'all 0.3s ease',
           }}
-          onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)' }}
-          onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)' }}
+          onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 210, 255, 0.4)' }}
+          onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 210, 255, 0.3)' }}
           >
-            ⬅️ Torna all'App
+            ← Torna all'App
           </Link>
         </div>
 
@@ -60,8 +61,8 @@ export default function AdminSidebar() {
                   gap: '12px',
                   padding: '12px 16px',
                   color: isActive ? 'white' : 'var(--color-text-muted)',
-                  background: isActive ? 'linear-gradient(90deg, rgba(212,175,55,0.15) 0%, transparent 100%)' : 'transparent',
-                  borderLeft: isActive ? '4px solid #D4AF37' : '4px solid transparent',
+                  background: isActive ? 'linear-gradient(90deg, rgba(0, 210, 255, 0.15) 0%, transparent 100%)' : 'transparent',
+                  borderLeft: isActive ? '4px solid #00d2ff' : '4px solid transparent',
                   borderRadius: '0 8px 8px 0',
                   textDecoration: 'none',
                   fontSize: '0.9rem',
@@ -69,7 +70,7 @@ export default function AdminSidebar() {
                   transition: 'all 0.2s ease',
                 }}
               >
-                <div style={{ color: isActive ? '#D4AF37' : 'currentColor' }}>
+                <div style={{ color: isActive ? '#00d2ff' : 'currentColor' }}>
                   {item.icon}
                 </div>
                 {item.label}

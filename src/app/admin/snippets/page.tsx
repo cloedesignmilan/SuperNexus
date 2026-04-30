@@ -30,9 +30,9 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
 
       {/* FILTRI */}
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-        <a href="?" style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: !filterType ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: !filterType ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: !filterType ? 600 : 400 }}>Tutti</a>
+        <a href="?" style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: !filterType ? '#D4AF37' : 'rgba(255,255,255,0.05)', color: !filterType ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: !filterType ? 700 : 400 }}>Tutti</a>
         {snippetTypes.map(t => (
-          <a key={t} href={`?type=\${t}`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterType === t ? 'var(--color-primary)' : 'rgba(255,255,255,0.05)', color: filterType === t ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterType === t ? 600 : 400 }}>
+          <a key={t} href={`?type=${t}`} style={{ padding: '0.5rem 1rem', borderRadius: '20px', background: filterType === t ? '#D4AF37' : 'rgba(255,255,255,0.05)', color: filterType === t ? '#0f172a' : 'var(--color-text-muted)', fontSize: '0.8rem', textDecoration: 'none', fontWeight: filterType === t ? 700 : 400 }}>
             {t}
           </a>
         ))}
@@ -42,7 +42,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
         
         {/* Form Creazione */}
         <div>
-          <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
+          <div className="glass-card" style={{ position: 'sticky', top: '2rem', padding: '1.5rem', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Mattoncino</h2>
             <form action={createSnippet as any} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               
@@ -100,7 +100,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
                   <label htmlFor="is_recommended" style={{ fontSize: '0.8rem', color: 'var(--color-text)' }}>Segna come "Consigliato" (Stella)</label>
               </div>
 
-              <button type="submit" className="btn-primary btn-action-purple" style={{ marginTop: '1rem' }}>
+              <button type="submit" style={{ marginTop: '1rem', background: '#D4AF37', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
                 Crea Snippet
               </button>
             </form>
@@ -110,12 +110,12 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
         {/* Lista Visuale */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {snippets.length === 0 ? (
-            <div className="admin-card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)' }}>
+            <div className="glass-card" style={{ textAlign: 'center', padding: '3rem', color: 'var(--color-text-muted)', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
               Nessun Mattoncino trovato in questa categoria.
             </div>
           ) : (
             snippets.map((snip: any) => (
-              <div key={snip.id} className="admin-card" style={{ padding: '1rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', borderLeft: `4px solid \${snip.is_active ? 'var(--color-primary)' : '#475569'}` }}>
+              <div key={snip.id} className="glass-card" style={{ padding: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', borderLeft: `4px solid ${snip.is_active ? '#D4AF37' : '#475569'}`, background: '#1c1c1e', borderRadius: '24px', borderTop: '1px solid rgba(255,255,255,0.05)', borderRight: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                 
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
@@ -154,7 +154,7 @@ export default async function SnippetsPage({ searchParams }: { searchParams: Pro
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   {/* Delete Button */}
                   <form action={deleteSnippet.bind(null, snip.id)}>
-                    <button type="submit" className="btn-action-amber" style={{ padding: '0.5rem', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                    <button type="submit" style={{ padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
                       🗑️
                     </button>
                   </form>

@@ -24,7 +24,7 @@ export default async function CategoriesPage() {
         
         {/* Form Categoria */}
         <div>
-          <div className="admin-card" style={{ position: 'sticky', top: '2rem' }}>
+          <div className="glass-card" style={{ position: 'sticky', top: '2rem', padding: '1.5rem', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '0 0 1.5rem 0' }}>Nuovo Nodo</h2>
             <form action={createCategory} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div>
@@ -55,7 +55,7 @@ export default async function CategoriesPage() {
                   className="input-glass"
                 />
               </div>
-              <button type="submit" className="btn-primary btn-action-purple" style={{ marginTop: '0.5rem' }}>
+              <button type="submit" style={{ marginTop: '0.5rem', background: '#D4AF37', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
                 Crea Macrocategoria
               </button>
             </form>
@@ -70,7 +70,7 @@ export default async function CategoriesPage() {
             </div>
           ) : (
             categories.map((cat: any) => (
-              <div key={cat.id} className="admin-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div key={cat.id} className="glass-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', background: '#1c1c1e', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
                 
                 {/* Cover Image */}
                 <div style={{ height: '140px', background: 'var(--color-bg)', position: 'relative', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -93,8 +93,8 @@ export default async function CategoriesPage() {
 
                 {/* Content */}
                 <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'var(--color-text)' }}>{cat.name}</h3>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'white' }}>{cat.name}</h3>
+                  <div style={{ fontSize: '0.75rem', color: '#D4AF37', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
                     {cat._count.business_modes} Categorie
                   </div>
                   
@@ -107,21 +107,21 @@ export default async function CategoriesPage() {
                   <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}>
                     {/* Pulsante Modifica a tendina */}
                     <details style={{ flex: 1, position: 'relative' }}>
-                      <summary className="btn-action-amber" style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none' }}>
+                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontWeight: 600 }}>
                         ✏️ Edit
                       </summary>
-                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1e293b', padding: '1rem', borderRadius: '8px', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(255,255,255,0.1)' }}>
+                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(212,175,55,0.2)' }}>
                         <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
                           <input type="text" name="cover_image" defaultValue={cat.cover_image || ''} placeholder="URL Immagine" className="input-glass" />
                           <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={3}></textarea>
-                          <button type="submit" className="btn-action-emerald" style={{ padding: '0.5rem', fontSize: '0.75rem' }}>Salva</button>
+                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
                         </form>
                       </div>
                     </details>
                     
                     <form action={deleteCategory.bind(null, cat.id)} style={{ flex: 1 }}>
-                      <button type="submit" className="btn-action-amber" style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                      <button type="submit" style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', fontWeight: 600 }}>
                         🗑️ Delete
                       </button>
                     </form>

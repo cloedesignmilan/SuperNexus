@@ -39,47 +39,20 @@ export async function POST(req: NextRequest) {
     // --- AUTENTICAZIONE CRM CLIENTE E CAMBIO ACCOUNT DINAMICO ---
     const incomingText = update?.message?.text?.trim() || "";
     
-    // --- RECUPERO PIN VIA EMAIL ---
+    // --- RECUPERO E BINDING VIA EMAIL ---
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (incomingText && emailRegex.test(incomingText)) {
-        const userByEmail = await prisma.user.findUnique({
-            where: { email: incomingText.toLowerCase() }
-        });
-        
-        if (userByEmail && userByEmail.bot_pin) {
-            await bot.telegram.sendMessage(globalChatId, `✅ **PIN Recovered**\n\nYour Secret PIN is: \`${userByEmail.bot_pin}\`\n\nType this PIN now to log in.`, { parse_mode: 'Markdown' });
-        } else {
-            await bot.telegram.sendMessage(globalChatId, `❌ **Email non trovata**\n\nNon abbiamo trovato nessun account associato a questa email. Assicurati di averla digitata correttamente o registrati sul nostro sito.`, { parse_mode: 'Markdown' });
-        }
-        return NextResponse.json({ ok: true });
-    }
+    let emailToBind = incomingText;
 
-    // --- SECRET SUPERADMIN COMMAND ---
-    if (incomingText === '/godmode') {
-        const existingBound = await prisma.user.findFirst({
-            where: { telegram_chat_id: globalChatId }
-        });
-        if (existingBound) {
-            await prisma.user.update({
-                where: { id: existingBound.id },
-                data: { role: 'admin', subscription_active: true }
-            });
-            await bot.telegram.sendMessage(globalChatId, `👑 **GOD MODE ACTIVATED**\n\nLimitless generation unlocked. Your account is now SUPERADMIN.`, { parse_mode: 'Markdown' });
-        } else {
-             await bot.telegram.sendMessage(globalChatId, `❌ **Associa prima un account con il PIN.**`, { parse_mode: 'Markdown' });
-        }
-        return NextResponse.json({ ok: true });
-    }
-
-    // Controlla se il messaggio in ingresso è un PIN valido per il cambio account (o il primo bind)
-    let possiblePin = incomingText;
     if (incomingText.startsWith('/start ')) {
-        possiblePin = incomingText.split(' ')[1].trim();
+        const potentialEmail = incomingText.split(' ')[1].trim();
+        if (emailRegex.test(potentialEmail)) {
+            emailToBind = potentialEmail;
+        }
     }
 
-    if (possiblePin && possiblePin.length === 6 && possiblePin.toUpperCase() === possiblePin) {
+    if (emailToBind && emailRegex.test(emailToBind)) {
         const userToBind = await prisma.user.findUnique({
-            where: { bot_pin: possiblePin }
+            where: { email: emailToBind.toLowerCase() }
         });
         
         if (userToBind) {
@@ -110,7 +83,10 @@ export async function POST(req: NextRequest) {
             const created = newlyBindedUser.images_generated;
             const remaining = newlyBindedUser.images_allowance - newlyBindedUser.images_generated;
             let roleContext = newlyBindedUser.paypal_subscription_id?.startsWith("free_trial") ? "Free Trial" : "Pro";
-            await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked!**\n\nWelcome to the SuperNexus ${roleContext} platform.\n\n📊 **Your Quota:**\n• Images Created: **${created}**\n• Images Remaining: **${remaining}**\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
+            await bot.telegram.sendMessage(globalChatId, `✅ **Account Linked Successfully!**\n\nWelcome to the SuperNexus ${roleContext} platform via email: ${newlyBindedUser.email}\n\n📊 **Your Quota:**\n• Images Created: **${created}**\n• Images Remaining: **${remaining}**\n\nPlease send me a photo of the clothing item you want to process.`, { parse_mode: 'Markdown' });
+            return NextResponse.json({ ok: true });
+        } else {
+            await bot.telegram.sendMessage(globalChatId, `❌ **Email non trovata**\n\nNon abbiamo trovato nessun account associato a questa email. Assicurati di averla digitata correttamente o registrati sul nostro sito.`, { parse_mode: 'Markdown' });
             return NextResponse.json({ ok: true });
         }
     }
@@ -125,7 +101,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!existingUser) {
-        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter your personal 6-character PIN provided by the agency to unlock your client area.\n\n_Forgot your PIN? Simply type the email you used to register right here in the chat._`, { parse_mode: 'Markdown' });
+        await bot.telegram.sendMessage(globalChatId, `🔒 **Restricted Access**\n\nThis Bot is private. Please enter the **Email address** you used to register on the main site to log in.`, { parse_mode: 'Markdown' });
         return NextResponse.json({ ok: true });
     }
 
@@ -533,7 +509,7 @@ REGOLE TASSATIVE:
                             globalChatId, 
                             msgId, 
                             undefined, 
-                            `💳 **Free Trial Exhausted**\n\nYour 10 free trial images have been used up.\n\n⚡️ **To unlock unlimited possibilities and priority GPU, please subscribe to a Pro Plan:**\n👉 [Click here to Subscribe / Log in](${upgradeLink})\n\n*(Your Secret PIN to bind is: \`${existingUser.bot_pin}\`)*`,
+                            `💳 **Free Trial Exhausted**\n\nYour 10 free trial images have been used up.\n\n⚡️ **To unlock unlimited possibilities and priority GPU, please subscribe to a Pro Plan:**\n👉 [Click here to Subscribe / Log in](${upgradeLink})`,
                             { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                         );
                     } else {
@@ -543,7 +519,7 @@ REGOLE TASSATIVE:
                             globalChatId, 
                             msgId, 
                             undefined, 
-                            `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available.\n\n⚡️ **To unlock new generations, purchase a new Pack or subscribe to a Monthly Plan:**\n👉 [Click here to Buy a new Pack](${upgradeLink})\n\n*(Your Secret PIN in case it is requested is: \`${existingUser.bot_pin}\`)*`,
+                            `💳 **Credit Exhausted**\n\nYou requested ${qty} images, but you only have **${remaining}** credits available.\n\n⚡️ **To unlock new generations, purchase a new Pack or subscribe to a Monthly Plan:**\n👉 [Click here to Buy a new Pack](${upgradeLink})`,
                             { parse_mode: 'Markdown', link_preview_options: { is_disabled: true } }
                         );
                     }
