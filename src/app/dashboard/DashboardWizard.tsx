@@ -45,6 +45,31 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Default selections per Format e Quantity
+  useEffect(() => {
+    if (snippets && snippets.length > 0) {
+      setSelections(prev => {
+        let updated = { ...prev };
+        let changed = false;
+        if (!prev.FORMAT) {
+          const defaultFormat = snippets.find(s => s.snippet_type === 'FORMAT' && s.label === '4:5');
+          if (defaultFormat) {
+            updated.FORMAT = defaultFormat;
+            changed = true;
+          }
+        }
+        if (!prev.QUANTITY) {
+          const defaultQty = snippets.find(s => s.snippet_type === 'QUANTITY' && s.label?.toString().trim().startsWith('3'));
+          if (defaultQty) {
+            updated.QUANTITY = defaultQty;
+            changed = true;
+          }
+        }
+        return changed ? updated : prev;
+      });
+    }
+  }, [snippets]);
+
   // Il prompt viene ora calcolato in modo sincrono dentro handleGenerate
 
   const handleBackFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
