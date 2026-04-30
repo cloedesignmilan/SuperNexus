@@ -168,15 +168,23 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
                         {(platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram') && (
                             <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '120px', height: '25px', background: '#222', borderBottomLeftRadius: '16px', borderBottomRightRadius: '16px', zIndex: 10 }} />
                         )}
-                        <Image 
-                            src={platforms[activePlatform].image} 
-                            alt={platforms[activePlatform].title}
-                            fill
-                            style={{ 
-                                objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
-                                opacity: 1 
-                            }}
-                        />
+                        <div style={{
+                            position: 'absolute',
+                            top: platforms[activePlatform].id === 'mobile' ? '2%' : '0',
+                            left: 0,
+                            right: 0,
+                            bottom: 0
+                        }}>
+                            <Image 
+                                src={platforms[activePlatform].image} 
+                                alt={platforms[activePlatform].title}
+                                fill
+                                style={{ 
+                                    objectFit: platforms[activePlatform].id === 'desktop' ? 'contain' : 'cover', 
+                                    opacity: 1 
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
 
