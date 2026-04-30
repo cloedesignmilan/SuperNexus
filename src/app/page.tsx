@@ -571,8 +571,32 @@ export default async function LandingPage() {
         <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '500px', height: '1px', background: 'linear-gradient(90deg, transparent, #00ffff, #ff0ab3, transparent)', opacity: 0.8, boxShadow: '0 0 30px 3px rgba(255,10,179,0.4)' }} />
         
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: '900', letterSpacing: '-1px', marginBottom: '1rem', background: 'linear-gradient(135deg, #fff 0%, #a0a0a0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                SuperNexus<span style={{color: '#ff0ab3', WebkitTextFillColor: '#ff0ab3'}}>.</span>AI
+            <style dangerouslySetInnerHTML={{__html: `
+              @keyframes brandGlowPan {
+                0% { background-position: 0% 50%; filter: drop-shadow(0 0 15px rgba(0,255,255,0.4)); }
+                50% { background-position: 100% 50%; filter: drop-shadow(0 0 25px rgba(255,10,179,0.7)); }
+                100% { background-position: 0% 50%; filter: drop-shadow(0 0 15px rgba(0,255,255,0.4)); }
+              }
+              .footer-brand-wow {
+                font-size: 3.5rem;
+                font-weight: 900;
+                letter-spacing: -2px;
+                margin-bottom: 1rem;
+                background: linear-gradient(90deg, #ffffff 0%, #00ffff 33%, #ff0ab3 66%, #ffffff 100%);
+                background-size: 300% 300%;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: brandGlowPan 6s ease-in-out infinite;
+                transition: transform 0.3s ease;
+                cursor: default;
+              }
+              .footer-brand-wow:hover {
+                transform: scale(1.05);
+                animation-duration: 2s;
+              }
+            `}} />
+            <h2 className="footer-brand-wow">
+                SuperNexus.AI
             </h2>
             <p style={{ maxWidth: '450px', color: '#888', fontSize: '1rem', lineHeight: '1.6', marginBottom: '3rem' }}>
                 {t.footer.desc}
