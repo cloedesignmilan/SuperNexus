@@ -4,49 +4,56 @@ import React, { useState } from 'react';
 import { Smartphone, Monitor, Send, Zap, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
-export default function PlatformShowcase() {
+import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
+
+export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
   const [activePlatform, setActivePlatform] = useState(0);
+  const t = dictionaries[lang].platformShowcase;
 
   const platforms = [
     {
       id: "mobile",
-      title: "App Mobile",
+      title: t.platforms.mobile.title,
       icon: <Smartphone size={24} />,
       color: "#ccff00",
-      desc: "Genera in movimento. L'interfaccia intuitiva della nostra Web App Mobile ti permette di scattare, caricare e trasformare i tuoi capi direttamente dal tuo smartphone, ovunque ti trovi.",
-      image: "/immagini/IMG_2048.webp", // Use a suitable mobile mockup or generated image
-      features: ["Interfaccia Touch Ottimizzata", "Caricamento Diretto da Fotocamera", "Notifiche Push (in arrivo)"]
+      desc: t.platforms.mobile.desc,
+      image: "/immagini/MobileApp.webp", 
+      features: [t.platforms.mobile.f1, t.platforms.mobile.f2, t.platforms.mobile.f3]
     },
     {
       id: "desktop",
-      title: "App Desktop",
+      title: t.platforms.desktop.title,
       icon: <Monitor size={24} />,
       color: "#00ffff",
-      desc: "Massima produttività. La dashboard Desktop offre una visione completa dei tuoi crediti, storico generazioni e strumenti avanzati di gestione per i tuoi cataloghi.",
-      image: "/immagini/IMG_2065.webp", // Desktop-oriented image
-      features: ["Gestione Cataloghi Estesa", "Scarica in Batch", "Pannello CRM Avanzato"]
+      desc: t.platforms.desktop.desc,
+      image: "/immagini/DesktopApp.webp", 
+      features: [t.platforms.desktop.f1, t.platforms.desktop.f2, t.platforms.desktop.f3]
     },
     {
       id: "telegram",
-      title: "Telegram Bot",
+      title: t.platforms.telegram.title,
       icon: <Send size={24} />,
-      color: "#2AABEE", // Telegram blue
-      desc: "Veloce e istantaneo. Invia una foto al nostro Bot Telegram ufficiale e ricevi le immagini processate direttamente in chat. Ideale per generazioni rapide.",
-      image: "/immagini/IMG_2059.webp", // Something vertical or conversational
-      features: ["Nessun Login Richiesto", "Generazione in 3 Secondi", "Accesso Rapido"]
+      color: "#2AABEE", 
+      desc: t.platforms.telegram.desc,
+      image: "/immagini/BotTelegram.webp", 
+      features: [t.platforms.telegram.f1, t.platforms.telegram.f2, t.platforms.telegram.f3]
     }
   ];
 
   return (
-    <section className="platform-section" style={{ padding: '8rem 5%', background: '#0a0a0a', position: 'relative' }}>
+    <section className="platform-section" style={{ padding: '8rem 5%', background: '#ffffff', position: 'relative' }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1 }}>
-            Lavora Dove Vuoi.<br/><span style={{ color: '#ff5470' }}>Senza Confini.</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', background: 'rgba(0,0,0,0.05)', borderRadius: '100px', marginBottom: '1.5rem', border: '1px solid rgba(0,0,0,0.1)' }}>
+                <Zap size={16} color="#ff5470" />
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#333', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{t.badge}</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', color: '#000', lineHeight: 1.1 }}>
+            {t.title1}<br/><span style={{ color: '#ff5470' }}>{t.title2}</span>
             </h2>
-            <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6 }}>
-            SuperNexus è progettato per adattarsi al tuo workflow. Scegli la piattaforma che preferisci per generare i tuoi contenuti.
+            <p style={{ fontSize: '1.2rem', color: '#555', maxWidth: '600px', margin: '1.5rem auto 0', lineHeight: 1.6 }}>
+            {t.subtitle}
             </p>
         </div>
 
@@ -54,10 +61,10 @@ export default function PlatformShowcase() {
             display: 'flex', 
             flexDirection: 'column', 
             gap: '3rem',
-            background: '#111',
+            background: '#f9f9f9',
             borderRadius: '32px',
             padding: '2rem',
-            border: '1px solid rgba(255,255,255,0.05)'
+            border: '1px solid rgba(0,0,0,0.05)'
         }}>
             
             {/* Platform Selector Tabs */}
@@ -72,16 +79,16 @@ export default function PlatformShowcase() {
                             gap: '10px',
                             padding: '1rem 2rem',
                             borderRadius: '100px',
-                            background: activePlatform === idx ? `${plat.color}15` : 'rgba(255,255,255,0.03)',
-                            border: `1px solid ${activePlatform === idx ? plat.color : 'rgba(255,255,255,0.1)'}`,
-                            color: activePlatform === idx ? plat.color : '#888',
+                            background: activePlatform === idx ? `${plat.color}15` : 'rgba(0,0,0,0.03)',
+                            border: `1px solid ${activePlatform === idx ? plat.color : 'rgba(0,0,0,0.1)'}`,
+                            color: activePlatform === idx ? plat.color : '#666',
                             cursor: 'pointer',
                             transition: 'all 0.3s ease',
                             fontWeight: '600',
                             fontSize: '1.1rem'
                         }}
                     >
-                        {React.cloneElement(plat.icon as React.ReactElement<any>, { color: activePlatform === idx ? plat.color : '#888' })}
+                        {React.cloneElement(plat.icon as React.ReactElement<any>, { color: activePlatform === idx ? plat.color : '#666' })}
                         {plat.title}
                     </button>
                 ))}
@@ -99,18 +106,18 @@ export default function PlatformShowcase() {
                 {/* Text Content */}
                 <div style={{ animation: 'fadeIn 0.5s ease-out' }} key={`text-${activePlatform}`}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.4rem 1rem', background: `${platforms[activePlatform].color}22`, borderRadius: '100px', marginBottom: '1.5rem', color: platforms[activePlatform].color, fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        <Zap size={14} /> Piattaforma Selezionata
+                        <Zap size={14} /> {t.selected}
                     </div>
-                    <h3 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#fff', marginBottom: '1rem' }}>
+                    <h3 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#000', marginBottom: '1rem' }}>
                         {platforms[activePlatform].title}
                     </h3>
-                    <p style={{ fontSize: '1.1rem', color: '#aaa', lineHeight: 1.6, marginBottom: '2rem' }}>
+                    <p style={{ fontSize: '1.1rem', color: '#444', lineHeight: 1.6, marginBottom: '2rem' }}>
                         {platforms[activePlatform].desc}
                     </p>
                     
                     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0' }}>
                         {platforms[activePlatform].features.map((feat, i) => (
-                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#fff', marginBottom: '1rem', fontWeight: '500' }}>
+                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#000', marginBottom: '1rem', fontWeight: '500' }}>
                                 <div style={{ background: platforms[activePlatform].color, borderRadius: '50%', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <ChevronRight size={14} color="#000" />
                                 </div>
@@ -135,7 +142,7 @@ export default function PlatformShowcase() {
                     onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.transform = 'scale(1.05)'}
                     onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => e.currentTarget.style.transform = 'scale(1)'}
                     >
-                        Prova su {platforms[activePlatform].title}
+                        {t.button} {platforms[activePlatform].title}
                     </a>
                 </div>
 
@@ -149,7 +156,7 @@ export default function PlatformShowcase() {
                         position: 'relative',
                         width: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '280px' : '100%',
                         height: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '560px' : '350px',
-                        background: '#000',
+                        background: '#f5f5f5',
                         borderRadius: platforms[activePlatform].id === 'mobile' || platforms[activePlatform].id === 'telegram' ? '40px' : '16px',
                         border: `8px solid #222`,
                         overflow: 'hidden',

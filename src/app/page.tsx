@@ -412,78 +412,18 @@ export default async function LandingPage() {
       <TargetAudience lang={lang} />
 
       {/* SHOWCASE DA ZERO */}
-      <section id="showcase">
+      <section id="showcase" style={{ paddingBottom: '8rem' }}>
         <InfiniteShowcase showcaseData={showcaseData} lang={lang} />
         <GuestTryOut lang={lang} />
       </section>
 
       {/* DIMENSIONI E FORMATI */}
-      <DimensionsGuide />
+      <DimensionsGuide lang={lang} />
 
       {/* PIATTAFORME */}
-      <PlatformShowcase />
+      <PlatformShowcase lang={lang} />
 
-      {/* BENTO GRID FEATURES (Shortened) */}
-      <section id="features" className="bento-section" style={{ marginTop: '8rem' }}>
-        <h2 className="section-title">{t.features.title1}<br/>{t.features.title2}</h2>
-        <div className="bento-grid bento-grid-carousel" style={{ marginTop: '4rem' }}>
-          
-          {/* BENTO 1 */}
-          <div className="bento-card bento-half">
-            <div className="bento-icon"><Smartphone /></div>
-            <h3 className="bento-title">{t.features.webApp.title}</h3>
-            <p className="bento-subtitle">
-              {t.features.webApp.subtitle1}<br/>
-              {t.features.webApp.subtitle2}<br/>
-              {t.features.webApp.subtitle3}
-            </p>
-            <div className="bento-visual-center">
-              <PhoneMockup imgSrc={[
-                '/immagini/IMG_2048.webp', 
-                '/immagini/IMG_2049.webp', 
-                '/immagini/IMG_2050.webp', 
-                '/immagini/IMG_2051.webp',
-                '/immagini/IMG_2052.webp',
-                '/immagini/IMG_2053.webp',
-                '/immagini/IMG_2054.webp',
-                '/immagini/IMG_2055.webp'
-              ]} />
-            </div>
-          </div>
-
-          {/* BENTO 2 */}
-          <div className="bento-card bento-half" style={{ background: '#111111', color: 'white', display: 'flex', flexDirection: 'column' }}>
-            <div className="bento-icon" style={{ background: '#222' }}><TrendingUp color="#ff5470" /></div>
-            <h3 className="bento-title" style={{ color: 'white' }}>{t.features.costs.title}</h3>
-            <p className="bento-subtitle" style={{ color: '#aaa' }}>
-              {t.features.costs.subtitle1}<br/>
-              {t.features.costs.subtitle2}<br/>
-              {t.features.costs.subtitle3}
-            </p>
-            <ul className="bento-list">
-              {t.features.costs.list.map((item, i) => (
-                <li key={i} style={{ color: 'white' }}>{item}</li>
-              ))}
-            </ul>
-            
-            {/* GALLERIA MOCKUP ROOT */}
-            <div className="bento-visual-center" style={{ marginBottom: '-250px' }}>
-              <PhoneMockup imgSrc={[
-                '/immagini/IMG_2058.webp',
-                '/immagini/IMG_2059.webp',
-                '/immagini/IMG_2060.webp',
-                '/immagini/IMG_2061.webp',
-                '/immagini/IMG_2062.webp',
-                '/immagini/IMG_2063.webp',
-                '/immagini/IMG_2064.webp',
-                '/immagini/IMG_2065.webp',
-                '/immagini/IMG_2067.webp'
-              ]} />
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* BENTO GRID FEATURES (Shortened) HIDDEN BY REQUEST */}
       {/* TESTIMONIALS */}
       <Testimonials lang={lang} />
 

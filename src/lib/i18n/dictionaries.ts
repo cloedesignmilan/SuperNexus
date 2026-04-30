@@ -172,6 +172,30 @@ export const dictionaries = {
         { text: "It's so intuitive that the sales assistants started using it. They now create the social media content for the store during downtime.", author: "Robert T.", role: "Retail Entrepreneur" }
       ]
     },
+    dimensionsGuide: {
+      badge: "Total Flexibility",
+      title1: "Choose the Format. ",
+      title2: "We Create the Magic.",
+      subtitle: "You're not limited to one style. Select the exact dimensions for your use case. We automatically generate 4 ultra-high resolution variations to give you maximum choice.",
+      imagesGen: "4 Images generated",
+      card1: { title: "Social Vertical", desc: "Ideal for Reels, TikTok, Shorts, and Stories. Maximum mobile impact." },
+      card2: { title: "Perfect Square", desc: "The classic format for Instagram Posts, Carousels, and E-commerce Catalogs." },
+      card3: { title: "Premium Portrait", desc: "The format that takes up the most space in Social feeds. Perfect for high fashion." },
+      card4: { title: "Desktop & Landscape", desc: "Horizontal orientation for YouTube, Covers, and Website Banners." }
+    },
+    platformShowcase: {
+      badge: "The Ecosystem",
+      title1: "Work Anywhere. ",
+      title2: "Without Limits.",
+      subtitle: "SuperNexus adapts to your workflow. Shoot from the back of the store with your phone, manage huge catalogs from desktop, or use our Telegram Bot for maximum speed.",
+      selected: "Selected Platform",
+      button: "Try on",
+      platforms: {
+        mobile: { title: "Mobile App", desc: "Shoot, upload, and generate directly from the palm of your hand. The mobile-first interface is designed for those always working in-store or in the warehouse.", f1: "Direct Camera Upload", f2: "Quick Previews", f3: "Optimized Interface" },
+        desktop: { title: "Desktop App", desc: "The command center for high volumes. Analyze data, manage thousands of SKUs, and batch download your campaigns with the comfort of a large screen.", f1: "Batch Catalog Management", f2: "Multiple High-Res Download", f3: "Campaign Organization" },
+        telegram: { title: "Telegram Bot", desc: "No app to install. Our integrated Bot allows you to generate photos on the fly by sending a simple message, ideal for teams and quick decisions.", f1: "No App Required", f2: "Instant Workflow", f3: "Team Collaboration" }
+      }
+    },
     guestTryOut: {
       title: "Experience the Magic.",
       subtitle: "Upload a raw photo and choose any style from our full taxonomy. Generate up to 2 times for free (3 images each).",
@@ -359,6 +383,30 @@ export const dictionaries = {
         { text: "Ci ha permesso di lanciare capsule collection settimanali senza dover organizzare mini-shooting ogni venerdì. Innovativo.", author: "Valentina F.", role: "Negozio Multi-Brand" },
         { text: "È così intuitivo che hanno iniziato a usarlo anche i commessi. Ora creano loro i contenuti social per il negozio nei momenti morti.", author: "Robert T.", role: "Imprenditore Retail" }
       ]
+    },
+    dimensionsGuide: {
+      badge: "Flessibilità Totale",
+      title1: "Scegli il Formato. ",
+      title2: "Noi Creiamo la Magia.",
+      subtitle: "Non sei limitato a un solo stile. Seleziona le dimensioni esatte per la tua destinazione d'uso. Generiamo automaticamente 4 variazioni ad altissima risoluzione per offrirti la massima scelta.",
+      imagesGen: "4 Immagini generate",
+      card1: { title: "Social Verticale", desc: "Ideale per Reels, TikTok, Shorts e Storie. Massimo impatto mobile." },
+      card2: { title: "Quadrato Perfetto", desc: "Il formato classico per Post Instagram, Caroselli e Cataloghi E-commerce." },
+      card3: { title: "Ritratto Premium", desc: "Il formato che occupa più spazio nel feed dei Social. Perfetto per l'alta moda." },
+      card4: { title: "Desktop & Landscape", desc: "Orientamento orizzontale per YouTube, Copertine e Banner per Siti Web." }
+    },
+    platformShowcase: {
+      badge: "L'Ecosistema",
+      title1: "Lavora Dove Vuoi. ",
+      title2: "Senza Confini.",
+      subtitle: "SuperNexus si adatta al tuo flusso di lavoro. Scatta dal retrobottega col telefono, gestisci enormi cataloghi da desktop o usa il nostro Bot Telegram per massima velocità.",
+      selected: "Piattaforma Selezionata",
+      button: "Prova su",
+      platforms: {
+        mobile: { title: "Mobile App", desc: "Scatta, carica e genera direttamente dal palmo della tua mano. L'interfaccia mobile-first è progettata per chi lavora sempre in negozio o in magazzino.", f1: "Caricamento Diretto da Fotocamera", f2: "Anteprime Rapide", f3: "Interfaccia Ottimizzata" },
+        desktop: { title: "Desktop App", desc: "Il centro di comando per volumi elevati. Analizza i dati, gestisci migliaia di SKU e scarica in batch le tue campagne con la massima comodità del grande schermo.", f1: "Gestione Cataloghi in Batch", f2: "Download Multiplo ad Alta Risoluzione", f3: "Organizzazione per Campagne" },
+        telegram: { title: "Telegram Bot", desc: "Nessuna app da installare. Il nostro Bot integrato ti permette di generare foto al volo inviando un semplice messaggio, ideale per i team e le decisioni rapide.", f1: "Nessuna App Richiesta", f2: "Flusso di Lavoro Istantaneo", f3: "Team Collaboration" }
+      }
     },
     guestTryOut: {
       title: "Vivi la Magia.",

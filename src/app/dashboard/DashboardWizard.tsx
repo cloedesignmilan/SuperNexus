@@ -306,8 +306,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(objectUrl);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error downloading image:', error);
+      
+      // Ignora l'errore se l'utente annulla il menu di share o clicca due volte velocemente
+      if (error.name === 'AbortError' || error.name === 'InvalidStateError') {
+        return;
+      }
+      
       // Fallback finale: apri in nuova scheda
       window.open(url, '_blank');
     }

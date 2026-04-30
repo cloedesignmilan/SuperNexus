@@ -4,50 +4,54 @@ import React from 'react';
 import { Smartphone, Monitor, Square, Layers, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
-export default function DimensionsGuide() {
+import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
+
+export default function DimensionsGuide({ lang = 'en' }: { lang?: Locale }) {
+  const t = dictionaries[lang].dimensionsGuide;
+
   const dimensions = [
     {
       ratio: "9:16",
-      name: "Social Verticale",
+      name: t.card1.title,
       icon: <Smartphone size={24} color="#ccff00" />,
-      desc: "Ideale per Reels, TikTok, Shorts e Storie. Massimo impatto mobile.",
-      images: "4 Immagini generate",
+      desc: t.card1.desc,
+      images: t.imagesGen,
       borderColor: "#ccff00",
       layoutClass: "ratio-9-16",
-      exampleImg: "/immagini/IMG_2058.webp", // Vert shape example
+      exampleImg: "/immagini/9-16.webp", 
       aspect: "9/16"
     },
     {
       ratio: "1:1",
-      name: "Quadrato Perfetto",
+      name: t.card2.title,
       icon: <Square size={24} color="#00ffff" />,
-      desc: "Il formato classico per Post Instagram, Caroselli e Cataloghi E-commerce.",
-      images: "4 Immagini generate",
+      desc: t.card2.desc,
+      images: t.imagesGen,
       borderColor: "#00ffff",
       layoutClass: "ratio-1-1",
-      exampleImg: "/immagini/IMG_2060.webp", // Square-ish example
+      exampleImg: "/immagini/1-1.webp", 
       aspect: "1/1"
     },
     {
       ratio: "4:5",
-      name: "Ritratto Premium",
+      name: t.card3.title,
       icon: <Layers size={24} color="#ff0ab3" />,
-      desc: "Il formato che occupa più spazio nel feed dei Social. Perfetto per l'alta moda.",
-      images: "4 Immagini generate",
+      desc: t.card3.desc,
+      images: t.imagesGen,
       borderColor: "#ff0ab3",
       layoutClass: "ratio-4-5",
-      exampleImg: "/immagini/IMG_2052.webp", 
+      exampleImg: "/immagini/4-5.webp", 
       aspect: "4/5"
     },
     {
       ratio: "16:9",
-      name: "Desktop & Landscape",
+      name: t.card4.title,
       icon: <Monitor size={24} color="#bb86fc" />,
-      desc: "Orientamento orizzontale per YouTube, Copertine e Banner per Siti Web.",
-      images: "4 Immagini generate",
+      desc: t.card4.desc,
+      images: t.imagesGen,
       borderColor: "#bb86fc",
       layoutClass: "ratio-16-9",
-      exampleImg: "/immagini/IMG_2067.webp", // Wide-ish example
+      exampleImg: "/immagini/16-9.webp", 
       aspect: "16/9"
     }
   ];
@@ -60,21 +64,17 @@ export default function DimensionsGuide() {
       <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 10 }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '100px', marginBottom: '1.5rem', border: '1px solid rgba(255,255,255,0.1)' }}>
             <Sparkles size={16} color="#00ffff" />
-            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#e0e0e0', letterSpacing: '0.5px', textTransform: 'uppercase' }}>Flessibilità Totale</span>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#e0e0e0', letterSpacing: '0.5px', textTransform: 'uppercase' }}>{t.badge}</span>
         </div>
         
         <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '1.5rem', color: '#fff', lineHeight: 1.1 }}>
-          Scegli il Formato. <br/><span style={{ color: '#00ffff' }}>Noi Creiamo la Magia.</span>
+          {t.title1}<br/><span style={{ color: '#00ffff' }}>{t.title2}</span>
         </h2>
         <p style={{ fontSize: '1.2rem', color: '#888', maxWidth: '650px', margin: '0 auto 4rem', lineHeight: 1.6 }}>
-          Non sei limitato a un solo stile. Seleziona le dimensioni esatte per la tua destinazione d'uso. Generiamo automaticamente 4 variazioni ad altissima risoluzione per offrirti la massima scelta.
+          {t.subtitle}
         </p>
 
-        <div className="dimensions-grid" style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-          gap: '2rem' 
-        }}>
+        <div className="dimensions-grid">
           {dimensions.map((dim, i) => (
             <div key={i} className="dimension-card" style={{
               background: '#111111',
@@ -180,6 +180,18 @@ export default function DimensionsGuide() {
           ))}
         </div>
       </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .dimensions-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+        @media (max-width: 768px) {
+          .dimensions-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}} />
     </section>
   );
 }
