@@ -61,7 +61,7 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
             display: 'flex', 
             flexDirection: 'column', 
             gap: '3rem',
-            background: '#e8e8e8',
+            background: '#d8d8d8',
             borderRadius: '32px',
             padding: '2rem',
             border: '1px solid rgba(0,0,0,0.08)'
