@@ -28,7 +28,7 @@ export default async function ClientDetail({ params }: { params: { id: string } 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#fff', paddingBottom: '4rem' }}>
       <div style={{ marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <Link href="/admin/clients" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '10px', color: '#D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Link href="/admin/clients" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: '10px', color: '#00d2ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ArrowLeft size={20} />
         </Link>
         <div>
@@ -39,7 +39,7 @@ export default async function ClientDetail({ params }: { params: { id: string } 
 
       {jobs.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '5rem 2rem', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
-          <ImageIcon size={48} style={{ color: 'rgba(212,175,55,0.3)', margin: '0 auto 1rem auto' }} />
+          <ImageIcon size={48} style={{ color: 'rgba(0,210,255,0.3)', margin: '0 auto 1rem auto' }} />
           <h2 style={{ fontSize: '1.2rem', margin: '0 0 0.5rem 0', color: 'white' }}>Nessuna Generazione</h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>Il cliente non ha lavori recenti (o sono già stati puliti dal cron di 24h).</p>
         </div>
@@ -54,8 +54,8 @@ export default async function ClientDetail({ params }: { params: { id: string } 
                 </span>
                 <span style={{ 
                   fontSize: '0.7rem', padding: '0.2rem 0.6rem', borderRadius: '12px', fontWeight: 600,
-                  background: job.status === 'completato' ? 'rgba(16, 185, 129, 0.1)' : job.status === 'errore' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212,175,55,0.1)',
-                  color: job.status === 'completato' ? '#10b981' : job.status === 'errore' ? '#ef4444' : '#D4AF37'
+                  background: job.status === 'completato' ? 'rgba(16, 185, 129, 0.1)' : job.status === 'errore' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0,210,255,0.1)',
+                  color: job.status === 'completato' ? '#10b981' : job.status === 'errore' ? '#ef4444' : '#00d2ff'
                 }}>
                   {job.status.toUpperCase()}
                 </span>
@@ -81,7 +81,7 @@ export default async function ClientDetail({ params }: { params: { id: string } 
                   <Clock size={14} />
                   {new Date(job.createdAt).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#D4AF37', fontSize: '0.8rem', fontWeight: 600 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#00d2ff', fontSize: '0.8rem', fontWeight: 600 }}>
                   <Euro size={14} />
                   {job.total_cost_eur.toFixed(4)}
                 </div>

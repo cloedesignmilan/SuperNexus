@@ -99,10 +99,10 @@ export default async function AdminDashboard() {
           <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>SuperNexus AI real-time performance & metrics.</p>
         </div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
+          <div style={{ background: 'rgba(0,210,255,0.1)', border: '1px solid rgba(0,210,255,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
             <ModelToggle initialModel={activeModel} />
           </div>
-          <div style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
+          <div style={{ background: 'rgba(0,210,255,0.1)', border: '1px solid rgba(0,210,255,0.2)', padding: '0.75rem 1rem', borderRadius: '12px' }}>
             <AiSceneToggle initialEnabled={sceneVariance} />
           </div>
         </div>
@@ -115,17 +115,17 @@ export default async function AdminDashboard() {
         <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Users</h3>
-            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><Users size={20} /></div>
+            <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><Users size={20} /></div>
           </div>
           <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{usersCount}</p>
-          <p style={{ fontSize: '0.85rem', color: '#D4AF37', margin: '0.5rem 0 0 0', fontWeight: 500 }}>{premiumUsersCount} Premium Subscriptions</p>
+          <p style={{ fontSize: '0.85rem', color: '#00d2ff', margin: '0.5rem 0 0 0', fontWeight: 500 }}>{premiumUsersCount} Premium Subscriptions</p>
         </div>
 
         {/* Images Card */}
         <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Images Generated</h3>
-            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><ImageIcon size={20} /></div>
+            <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><ImageIcon size={20} /></div>
           </div>
           <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{totalImagesCount}</p>
           <p style={{ fontSize: '0.85rem', color: '#10b981', margin: '0.5rem 0 0 0', fontWeight: 500 }}>+{imagesTodayCount} generated today</p>
@@ -135,7 +135,7 @@ export default async function AdminDashboard() {
         <div style={{ background: '#1c1c1e', padding: '1.5rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 30px rgba(0,0,0,0.2)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
             <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>API Spending</h3>
-            <div style={{ background: 'rgba(212, 175, 55, 0.1)', padding: '8px', borderRadius: '10px', color: '#D4AF37' }}><Euro size={20} /></div>
+            <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><Euro size={20} /></div>
           </div>
           <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>€{costTotal.toFixed(2)}</p>
           <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', margin: '0.5rem 0 0 0' }}>€{costToday.toFixed(2)} spent today</p>
@@ -148,7 +148,7 @@ export default async function AdminDashboard() {
         <div style={{ background: '#1c1c1e', padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 40px rgba(0,0,0,0.3)', overflow: 'hidden' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Activity size={20} color="#D4AF37" /> 7-Day Activity
+              <Activity size={20} color="#00d2ff" /> 7-Day Activity
             </h2>
           </div>
           <div style={{ height: '350px', width: '100%' }}>
@@ -159,7 +159,7 @@ export default async function AdminDashboard() {
         {/* LIVE FEED WIDGET */}
         <div style={{ background: '#1c1c1e', padding: '2rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 40px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column' }}>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 700, margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Zap size={20} color="#D4AF37" /> Live Feed
+            <Zap size={20} color="#00d2ff" /> Live Feed
           </h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', overflowY: 'auto', flex: 1, paddingRight: '0.5rem' }}>
@@ -172,7 +172,7 @@ export default async function AdminDashboard() {
                     <img src={job.images[0].image_url} alt="Job output" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
                 ) : (
-                  <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: 'rgba(0,210,255,0.1)', color: '#00d2ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <ImageIcon size={20} />
                   </div>
                 )}
@@ -187,8 +187,8 @@ export default async function AdminDashboard() {
                 </div>
                 
                 <div style={{ fontSize: '0.7rem', padding: '0.3rem 0.6rem', borderRadius: '20px', fontWeight: 600, 
-                    background: job.status === 'completed' ? 'rgba(16, 185, 129, 0.1)' : job.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(212, 175, 55, 0.1)',
-                    color: job.status === 'completed' ? '#10b981' : job.status === 'error' ? '#ef4444' : '#D4AF37'
+                    background: job.status === 'completed' ? 'rgba(16, 185, 129, 0.1)' : job.status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(0, 210, 255, 0.1)',
+                    color: job.status === 'completed' ? '#10b981' : job.status === 'error' ? '#ef4444' : '#00d2ff'
                 }}>
                   {job.status.toUpperCase()}
                 </div>

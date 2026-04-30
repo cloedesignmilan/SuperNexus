@@ -96,7 +96,7 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
                 <textarea name="internal_notes" placeholder="Es. Sfondo bianco puro #FFFFFF. Nessuna ombra netta." className="input-glass" style={{ width: '100%', minHeight: '60px', resize: 'vertical' }}></textarea>
               </div>
 
-              <button type="submit" style={{ marginTop: '0.5rem', background: '#D4AF37', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
+              <button type="submit" style={{ marginTop: '0.5rem', background: '#00d2ff', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
                 Inizializza Stile
               </button>
             </form>
@@ -149,7 +149,7 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
                   </div>
                   
                   <h3 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 0.5rem 0', color: 'white' }}>{sub.name}</h3>
-                  <div style={{ fontSize: '0.75rem', color: '#D4AF37', fontWeight: 700, marginBottom: '1rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#00d2ff', fontWeight: 700, marginBottom: '1rem', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                      {sub.style_type && <span style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>Style: {sub.style_type}</span>}
                      {sub.output_goal && <span style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px' }}>Goal: {sub.output_goal}</span>}
                   </div>
@@ -157,10 +157,10 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
                   {/* Azioni Rapide a Scomparsa */}
                   <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem' }}>
                     <details style={{ flex: 1, position: 'relative' }}>
-                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontWeight: 600 }}>
+                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(0,210,255,0.1)', color: '#00d2ff', border: '1px solid rgba(0,210,255,0.2)', fontWeight: 600 }}>
                         ✏️ Edit Rapido
                       </summary>
-                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '280px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(212,175,55,0.2)' }}>
+                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '280px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(0,210,255,0.2)' }}>
                         <form action={updateSubcategory.bind(null, sub.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           <select name="business_mode_id" required className="input-glass" defaultValue={sub.business_mode_id}>
                              {modes.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
@@ -169,7 +169,7 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
                           <input type="text" name="preview_image" defaultValue={sub.preview_image || ''} placeholder="URL Immagine Preview" className="input-glass" />
                           <input type="text" name="style_type" defaultValue={sub.style_type || ''} placeholder="Style Type" className="input-glass" />
                           <textarea name="internal_notes" defaultValue={sub.internal_notes || ''} placeholder="Note Interne / Direttive AI" className="input-glass" style={{ minHeight: '50px', resize: 'vertical' }}></textarea>
-                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
+                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#00d2ff', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
                         </form>
                       </div>
                     </details>

@@ -55,7 +55,7 @@ export default async function CategoriesPage() {
                   className="input-glass"
                 />
               </div>
-              <button type="submit" style={{ marginTop: '0.5rem', background: '#D4AF37', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
+              <button type="submit" style={{ marginTop: '0.5rem', background: '#00d2ff', color: '#1c1c1e', padding: '0.75rem', borderRadius: '12px', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
                 Crea Macrocategoria
               </button>
             </form>
@@ -94,7 +94,7 @@ export default async function CategoriesPage() {
                 {/* Content */}
                 <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                   <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 0.25rem 0', color: 'white' }}>{cat.name}</h3>
-                  <div style={{ fontSize: '0.75rem', color: '#D4AF37', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#00d2ff', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem' }}>
                     {cat._count.business_modes} Categorie
                   </div>
                   
@@ -107,15 +107,15 @@ export default async function CategoriesPage() {
                   <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}>
                     {/* Pulsante Modifica a tendina */}
                     <details style={{ flex: 1, position: 'relative' }}>
-                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(212,175,55,0.1)', color: '#D4AF37', border: '1px solid rgba(212,175,55,0.2)', fontWeight: 600 }}>
+                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(0,210,255,0.1)', color: '#00d2ff', border: '1px solid rgba(0,210,255,0.2)', fontWeight: 600 }}>
                         ✏️ Edit
                       </summary>
-                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(212,175,55,0.2)' }}>
+                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(0,210,255,0.2)' }}>
                         <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
                           <input type="text" name="cover_image" defaultValue={cat.cover_image || ''} placeholder="URL Immagine" className="input-glass" />
                           <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={3}></textarea>
-                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#D4AF37', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
+                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#00d2ff', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
                         </form>
                       </div>
                     </details>
