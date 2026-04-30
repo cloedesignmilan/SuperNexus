@@ -14,6 +14,8 @@ const TargetAudience = dynamic(() => import('@/components/TargetAudience'));
 const GuestTryOut = dynamic(() => import('@/components/GuestTryOut'));
 const GalleryMockup = dynamic(() => import('@/components/GalleryMockup'));
 const Testimonials = dynamic(() => import('@/components/Testimonials'));
+const DimensionsGuide = dynamic(() => import('@/components/DimensionsGuide'));
+const PlatformShowcase = dynamic(() => import('@/components/PlatformShowcase'));
 import ChatBot from '@/components/ChatBot';
 import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
@@ -415,10 +417,16 @@ export default async function LandingPage() {
         <GuestTryOut lang={lang} />
       </section>
 
+      {/* DIMENSIONI E FORMATI */}
+      <DimensionsGuide />
+
+      {/* PIATTAFORME */}
+      <PlatformShowcase />
+
       {/* BENTO GRID FEATURES (Shortened) */}
       <section id="features" className="bento-section" style={{ marginTop: '8rem' }}>
         <h2 className="section-title">{t.features.title1}<br/>{t.features.title2}</h2>
-        <div className="bento-grid" style={{ marginTop: '4rem' }}>
+        <div className="bento-grid bento-grid-carousel" style={{ marginTop: '4rem' }}>
           
           {/* BENTO 1 */}
           <div className="bento-card bento-half">
