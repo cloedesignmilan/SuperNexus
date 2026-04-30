@@ -286,9 +286,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       const response = await fetch(url);
       const blob = await response.blob();
       const file = new File([blob], filename, { type: 'image/jpeg' });
-      
+      // Detect if user is on a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
       // Web Share API per Mobile (Apre il menu nativo di iOS/Android con l'opzione "Salva Immagine")
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      if (isMobile && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
           title: 'SuperNexus AI',
