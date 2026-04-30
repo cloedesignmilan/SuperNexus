@@ -61,10 +61,10 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
             display: 'flex', 
             flexDirection: 'column', 
             gap: '3rem',
-            background: '#f9f9f9',
+            background: '#e8e8e8',
             borderRadius: '32px',
             padding: '2rem',
-            border: '1px solid rgba(0,0,0,0.05)'
+            border: '1px solid rgba(0,0,0,0.08)'
         }}>
             
             {/* Platform Selector Tabs */}
