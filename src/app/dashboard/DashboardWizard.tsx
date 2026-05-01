@@ -75,16 +75,15 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   // Fetch dynamic gender covers for step 2.5
   useEffect(() => {
-    if (step === 2.5) {
+    if (step === 2 || step === 2.5) {
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const mode = selections['IMAGE_TYPE']?.label || '';
-      const presentation = selections['MODEL_OPTION']?.label || '';
       
-      if (detectedCat && mode && presentation) {
+      if (detectedCat && mode) {
         fetch('/api/web/get-gender-covers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ categorySlug: detectedCat, modeSlug: mode, presentationSlug: presentation })
+          body: JSON.stringify({ categorySlug: detectedCat, modeSlug: mode })
         })
         .then(res => res.json())
         .then(data => {

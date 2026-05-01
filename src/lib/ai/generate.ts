@@ -338,8 +338,8 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
             
         } else if (configShots && i < configShots.length) {
             const shotInfo = configShots[i];
-            currentShotName = shotInfo.shotName || shotInfo.shot_name;
-            currentShotNumber = shotInfo.shotNumber || shotInfo.shot_number;
+            currentShotName = (shotInfo as any).shotName || shotInfo.shot_name;
+            currentShotNumber = (shotInfo as any).shotNumber || shotInfo.shot_number;
             
             let ecommerceBlockPositive = "";
             let ecommerceBlockNegative = "";
