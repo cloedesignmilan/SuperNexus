@@ -49,6 +49,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   // Dynamic Progress State
   const [generationProgress, setGenerationProgress] = useState(0)
 
+  // POSE SELECTION STATE
+  const [availableShots, setAvailableShots] = useState<any[]>([]);
+  const [selectedShotNumber, setSelectedShotNumber] = useState<number | null>(null);
+  const [isPoseLoading, setIsPoseLoading] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Dynamic Progress Effect
@@ -737,8 +742,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      const sub = activeSubcategories.find(s => s.name === snip.label && s.business_mode.name === mode && s.business_mode.category.slug === detectedCat && s.preview_image);
                      if (sub) imageUrl = sub.preview_image;
                   }
-
-                  const isPolaroid = type === 'PRODUCT_TYPE' || type === 'IMAGE_TYPE' || type === 'CLIENT_TYPE' || type === 'MODEL_OPTION';
+                  const isPolaroid = false; // The user requested to remove images from all early steps and only use icons.
                   const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
 
                   return (
