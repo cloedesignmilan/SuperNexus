@@ -178,18 +178,20 @@ export async function POST(req: NextRequest) {
               try {
                 let normMode = taxonomyMode.toLowerCase().trim();
                 let normPres = taxonomySubcat.toLowerCase().trim();
+                let cg = (clientGender || '').toUpperCase();
 
                 if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';
                 else if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
                 else normMode = normMode.replace(/\s+/g, '-');
                 
-                if (normPres.includes('candid') && normPres.includes('woman')) normPres = 'candid-woman';
-                else if (normPres.includes('candid') && normPres.includes('man')) normPres = 'candid-man';
+                if (normPres.includes('candid') && cg === 'WOMAN') normPres = 'candid-woman';
+                else if (normPres.includes('candid') && cg === 'MAN') normPres = 'candid-man';
+                else if (normPres === 'candid') normPres = cg === 'MAN' ? 'candid-man' : 'candid-woman';
+                else if (normPres === 'model photo') normPres = cg === 'MAN' ? 'model-photo-man' : 'model-photo-woman';
                 else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
                 else if (normPres.includes('still life')) normPres = 'still-life-pack';
                 else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
                 else if (normPres === 'no model') normPres = 'no-model';
-                else if (normPres === 'model photo') normPres = 'model-photo';
                 else normPres = normPres.replace(/\s+/g, '-');
 
                 const shotConfig = await prisma.promptConfigShot.findFirst({
