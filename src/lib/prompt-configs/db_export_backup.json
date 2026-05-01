@@ -1946,15 +1946,15 @@
     "aspectRatio": null,
     "shotNumber": 2,
     "shotName": "Back View",
-    "positivePrompt": "T-shirt back view, rotated 180 degrees, show only back side. No front visible. CRITICAL: Background must be a solid, completely blank, consistent light grey-white neutral studio backdrop. Absolute color consistency across all images is required.",
+    "positivePrompt": "Ghost mannequin t-shirt back view, perfectly rotated 180 degrees, showing ONLY the back side. If a back graphic is provided in the references, it MUST be perfectly cloned and clearly visible. If no back graphic is provided, the back MUST remain completely blank solid color. No front design visible. CRITICAL: Background must be a solid, completely blank, consistent light grey-white neutral studio backdrop. Absolute color consistency across all images is required.",
     "negativePrompt": "front print, neck hole front, people, models, mannequin, internal collar label, neck tag, printed neck label, branding inside collar, visible tag, messy background, colorful background",
-    "hardRules": "180 DEGREE ROTATION, NO PRINT ON BACK EXACT SAME NEUTRAL LIGHT GREY-WHITE STUDIO BACKGROUND FOR ALL SHOTS. NO INTERNAL COLLAR LABELS OR NECK TAGS ALLOWED.",
+    "hardRules": "PERFECT 180-DEGREE BACK VIEW SHOT. FRONT GRAPHIC MUST NOT BE VISIBLE. IF BACK IMAGE IS PROVIDED, SHOW BACK GRAPHIC. IF NOT, KEEP BACK BLANK SOLID COLOR. EXACT SAME NEUTRAL LIGHT GREY-WHITE STUDIO BACKGROUND FOR ALL SHOTS. NO INTERNAL COLLAR LABELS OR NECK TAGS ALLOWED.",
     "outputGoal": "Back View Ecommerce",
     "imageUrl": "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-CLEAN%20CATALOG-NO%20MODEL-2_1777652261792.jpg",
     "priority": 0,
     "isActive": true,
     "createdAt": "2026-04-26T07:01:42.003Z",
-    "updatedAt": "2026-05-01T16:35:20.326Z"
+    "updatedAt": "2026-05-01T16:37:24.283Z"
   },
   {
     "id": "720e74a5-5e63-4149-8b89-f7cf01a91c9b",
