@@ -1405,14 +1405,54 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                  ].map(gender => {
                     const isSelected = selections['CLIENT_TYPE']?.id === gender.id;
                     const IconComp = (Icons as any)[gender.icon];
+                    
+                    const searchToken = gender.label.toLowerCase();
+                    const sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.preview_image);
+                    const imageUrl = sub ? sub.preview_image : null;
+
                     return (
                       <button 
                         key={gender.id}
-                        className={`glass-card ${isSelected ? 'selected' : ''}`}
                         onClick={() => handleSnippetSelect('CLIENT_TYPE', { id: gender.id, label: gender.label, snippet_type: 'CLIENT_TYPE', prompt_fragment: gender.prompt, negative_fragment: gender.negative, intensity_level: 'strong' }, 2.5)}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            background: 'transparent',
+                            border: 'none',
+                            padding: 0,
+                            cursor: 'pointer',
+                            outline: 'none',
+                            opacity: isSelected ? 1 : 0.6,
+                            transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                            transition: 'all 0.2s ease-in-out',
+                            position: 'relative'
+                        }}
                       >
-                        <IconComp size={38} className="card-icon" />
-                        <div className="card-title">{gender.display}</div>
+                          <div 
+                              className={`glass-card ${isSelected ? 'selected' : ''}`}
+                              style={{ 
+                                  width: '100%', 
+                                  aspectRatio: '1 / 1', 
+                                  padding: imageUrl ? '0' : '1.5rem 1rem', 
+                                  overflow: 'hidden', 
+                                  borderRadius: '12px',
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  position: 'relative'
+                              }}
+                          >
+                              {imageUrl ? (
+                                  <img src={imageUrl} alt={gender.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              ) : (
+                                  <IconComp size={38} className="card-icon" />
+                              )}
+                          </div>
+                          <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', fontWeight: 600, color: isSelected ? '#00d2ff' : '#fff', textAlign: 'center', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {gender.display}
+                          </div>
                       </button>
                     )
                  })}
