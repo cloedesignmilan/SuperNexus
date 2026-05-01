@@ -184,15 +184,57 @@ export async function POST(req: NextRequest) {
                 else if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
                 else normMode = normMode.replace(/\s+/g, '-');
                 
-                if (normPres.includes('candid') && cg === 'WOMAN') normPres = 'candid-woman';
-                else if (normPres.includes('candid') && cg === 'MAN') normPres = 'candid-man';
-                else if (normPres === 'candid') normPres = cg === 'MAN' ? 'candid-man' : 'candid-woman';
-                else if (normPres === 'model photo') normPres = cg === 'MAN' ? 'model-photo-man' : 'model-photo-woman';
-                else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
-                else if (normPres.includes('still life')) normPres = 'still-life-pack';
-                else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
-                else if (normPres === 'no model') normPres = 'no-model';
-                else normPres = normPres.replace(/\s+/g, '-');
+                if (normPres === 'candid' && cg) {
+                  normPres = `candid-${cg.toLowerCase()}`;
+                } else if (normPres === 'ugc in home' && cg) {
+                  normMode = 'ugc-home';
+                  normPres = `candid-${cg.toLowerCase()}`;
+                } else if (normPres === 'ugc in store' && cg) {
+                  normMode = 'ugc-store';
+                  normPres = `candid-${cg.toLowerCase()}`;
+                } else if (normPres === 'model photo' && cg) {
+                  normPres = `model-photo-${cg.toLowerCase()}`;
+                } else if (normPres.includes('ugc in home') && cg === 'WOMAN') {
+                  normMode = 'ugc-home';
+                  normPres = 'candid-woman';
+                } else if (normPres.includes('ugc in store') && cg === 'WOMAN') {
+                  normMode = 'ugc-store';
+                  normPres = 'candid-woman';
+                } else if (normPres.includes('ugc in home') && cg === 'MAN') {
+                  normMode = 'ugc-home';
+                  normPres = 'candid-man';
+                } else if (normPres.includes('ugc in store') && cg === 'MAN') {
+                  normMode = 'ugc-store';
+                  normPres = 'candid-man';
+                } else if (normPres === 'ugc in home') {
+                  normMode = 'ugc-home';
+                  normPres = 'candid-woman';
+                } else if (normPres === 'ugc in store') {
+                  normMode = 'ugc-store';
+                  normPres = 'candid-woman';
+                } else if (normPres.includes('candid') && cg === 'WOMAN') {
+                  normPres = 'candid-woman';
+                } else if (normPres.includes('candid') && cg === 'MAN') {
+                  normPres = 'candid-man';
+                } else if (normPres === 'candid') {
+                  normPres = cg === 'MAN' ? 'candid-man' : 'candid-woman';
+                } else if (normPres === 'model photo') {
+                  normPres = cg === 'MAN' ? 'model-photo-man' : 'model-photo-woman';
+                } else if (normPres === 'woman') {
+                  normPres = 'candid-woman';
+                } else if (normPres === 'man') {
+                  normPres = 'candid-man';
+                } else if (normPres.includes('curvy') || normPres.includes('plus-size')) {
+                  normPres = 'curvy';
+                } else if (normPres.includes('still life')) {
+                  normPres = 'still-life-pack';
+                } else if (normPres.includes('ugc creator pack')) {
+                  normPres = 'ugc-creator-pack';
+                } else if (normPres === 'no model') {
+                  normPres = 'no-model';
+                } else {
+                  normPres = normPres.replace(/\s+/g, '-');
+                }
 
                 const shotConfig = await prisma.promptConfigShot.findFirst({
                   where: {
