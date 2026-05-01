@@ -1358,24 +1358,26 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     const isSelected = selections['SPECIFIC_SHOT']?.shot_number === shot.shot_number;
                     return (
                       <div key={shot.shot_number} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                        <button 
-                          className={`glass-card ${isSelected ? 'selected' : ''}`}
-                          style={{ width: '100%', aspectRatio: '1/1', padding: shot.image_url ? '0.25rem' : '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
-                          onClick={() => {
-                              setSelections({ ...selections, SPECIFIC_SHOT: shot });
-                              setTimeout(() => setStep(4), 350);
-                          }}
-                        >
-                          {shot.image_url ? (
-                            <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
-                              <img src={shot.image_url} alt={shot.shot_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            </div>
-                          ) : (
-                            <Icons.Camera size={38} className="card-icon" />
-                          )}
-                        </button>
-                        <div style={{ textAlign: 'center' }}>
-                          <div className="card-title" style={{ fontSize: '0.85rem', margin: '0' }}>{shot.shot_name}</div>
+                        <div style={{ width: '100%', aspectRatio: '1/1' }}>
+                          <button 
+                            className={`glass-card ${isSelected ? 'selected' : ''}`}
+                            style={{ boxSizing: 'border-box', margin: 0, width: '100%', height: '100%', padding: shot.image_url ? '0.25rem' : '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+                            onClick={() => {
+                                setSelections({ ...selections, SPECIFIC_SHOT: shot });
+                                setTimeout(() => setStep(4), 350);
+                            }}
+                          >
+                            {shot.image_url ? (
+                              <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+                                <img src={shot.image_url} alt={shot.shot_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              </div>
+                            ) : (
+                              <Icons.Camera size={38} className="card-icon" />
+                            )}
+                          </button>
+                        </div>
+                        <div style={{ textAlign: 'center', width: '100%' }}>
+                          <div className="card-title" style={{ fontSize: '0.85rem', margin: '0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{shot.shot_name}</div>
                           <div className="snippet-desc" style={{ fontSize: '0.75rem', opacity: 0.5, margin: '0' }}>Shot {shot.shot_number}</div>
                         </div>
                       </div>
@@ -1384,18 +1386,21 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                  
                  {/* Fallback Option */}
                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                   <button 
-                      className={`glass-card ${!selections['SPECIFIC_SHOT'] ? 'selected' : ''}`}
-                      style={{ width: '100%', aspectRatio: '1/1', padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
-                      onClick={() => {
-                          setSelections({ ...selections, SPECIFIC_SHOT: null });
-                          setTimeout(() => setStep(4), 350);
-                      }}
-                    >
-                      <Icons.Wand2 size={38} className="card-icon" />
-                    </button>
-                    <div style={{ textAlign: 'center' }}>
-                      <div className="card-title" style={{ fontSize: '0.85rem', margin: '0' }}>Any / Random</div>
+                   <div style={{ width: '100%', aspectRatio: '1/1' }}>
+                     <button 
+                        className={`glass-card ${!selections['SPECIFIC_SHOT'] ? 'selected' : ''}`}
+                        style={{ boxSizing: 'border-box', margin: 0, width: '100%', height: '100%', padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+                        onClick={() => {
+                            setSelections({ ...selections, SPECIFIC_SHOT: null });
+                            setTimeout(() => setStep(4), 350);
+                        }}
+                      >
+                        <Icons.Wand2 size={38} className="card-icon" />
+                      </button>
+                    </div>
+                    <div style={{ textAlign: 'center', width: '100%' }}>
+                      <div className="card-title" style={{ fontSize: '0.85rem', margin: '0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>Any / Random</div>
+                      <div className="snippet-desc" style={{ fontSize: '0.75rem', opacity: 0, margin: '0' }}>placeholder</div>
                     </div>
                  </div>
               </div>
