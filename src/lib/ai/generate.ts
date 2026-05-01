@@ -374,7 +374,11 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
             
             const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
-            const finalNegative = shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
+            let finalNegative = shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
+            
+            if (isTshirt) {
+                finalNegative += ", wrinkles, heavy creases, messy fabric, crumpled, unironed, messy folds, baggy wrinkles";
+            }
 
             let swimwearNegative = "";
             let productLockSystem = "";
@@ -383,6 +387,9 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
                 productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. The AI must NOT reinterpret, redesign, or approximate the product. It must replicate: exact structure (shape, cuts, stitching, elasticity), exact top construction, exact strap positions and thickness, exact pattern placement and scale, exact fabric behavior, exact color tones. STRICT RULES: Do NOT simplify the design. Do NOT smooth or clean details. Do NOT change construction. Disable creative reinterpretation for the product. Apply creativity ONLY to: pose, background, camera. The straps MUST match exactly, the pattern MUST remain identical, all seams and proportions must match the original image. SWIMWEAR STRAP RULE: ABSOLUTELY NO STRAPS, LACES, OR STRINGS ON THE FRONT OF THE MODEL'S STOMACH OR WAIST. If the reference image shows loose strings or a bow hanging below the bikini top, DO NOT place the bow on the model's front stomach or underbust. The lower straps go directly backwards under the armpits to tie at the back. DO NOT draw strings wrapping around the front stomach, waist, or criss-crossing the torso. THE FRONT STOMACH AND WAIST MUST BE COMPLETELY BARE AND FREE OF ANY STRINGS OR LACES. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
             } else {
                 productLockSystem = `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, patterns, and construction. Apply creativity ONLY to: pose, background, camera. PRIORITY: Product accuracy > model > scene > aesthetics.]`;
+                if (isTshirt) {
+                    productLockSystem += `\n[T-SHIRT FABRIC RULE: The t-shirt MUST look perfectly ironed, smooth, and high-quality. ABSOLUTELY NO heavy wrinkles, creases, or crumpled fabric. Ensure a clean, premium, and flawless drape on the model's body.]`;
+                }
             }
 
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
