@@ -34,6 +34,7 @@ export interface SelectionParams {
   scene?: string;
   quantity?: number;
   specificShotNumber?: number;
+  gender?: string;
 }
 
 export function loadPromptConfig(category: string): PromptConfigRow[] | null {
@@ -47,7 +48,8 @@ export async function getPromptsForSelection({
   presentationSlug,
   scene,
   quantity,
-  specificShotNumber
+  specificShotNumber,
+  gender
 }: SelectionParams): Promise<PromptShot[] | null> {
   const normCat = categorySlug.toLowerCase().trim();
   let normMode = modeSlug.toLowerCase().trim();
