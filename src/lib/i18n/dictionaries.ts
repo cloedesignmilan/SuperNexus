@@ -133,7 +133,7 @@ export const dictionaries = {
       title2: "for fashion entrepreneurs.",
       subtitle: "Whether you run a local boutique or a global fashion empire, SuperNexus AI gives you the power of a high-end photography studio right on your smartphone.",
       boutiques: {
-        title: "For Boutiques",
+        title: "For Clothing stores",
         desc: "Turn in-store mirror selfies into Instagram-ready campaigns without hiring a photographer.",
         tip: "Sell more on Instagram"
       },
@@ -345,7 +345,7 @@ export const dictionaries = {
       title2: "per gli imprenditori della moda.",
       subtitle: "Che tu gestisca una boutique locale o un impero globale della moda, SuperNexus AI ti dà la potenza di uno studio fotografico di fascia alta direttamente sul tuo smartphone.",
       boutiques: {
-        title: "Per le Boutique",
+        title: "Per i Negozi di Abbigliamento",
         desc: "Trasforma i selfie allo specchio in negozio in campagne pronte per Instagram senza assumere fotografi.",
         tip: "Vendi di più su Instagram"
       },
