@@ -127,6 +127,49 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
   // Il prompt viene ora calcolato in modo sincrono dentro handleGenerate
 
+  const handleUpdateCover = async (e: React.MouseEvent, type: string, snip: Snippet | any) => {
+    e.stopPropagation();
+    const newUrl = window.prompt(`Paste new image URL for ${snip.label || snip.display}:`);
+    if (!newUrl) return;
+
+    try {
+        const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+        const modeName = selections['IMAGE_TYPE']?.label || '';
+        const body = {
+            type,
+            categorySlug: detectedCat,
+            modeName: type === 'IMAGE_TYPE' ? snip.label : modeName,
+            subName: snip.label || snip.display,
+            imageUrl: newUrl,
+            clientGender: snip.label // for CLIENT_TYPE
+        };
+
+        const res = await fetch('/api/admin/update-button-cover', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+
+        if (res.ok) {
+            // Optimistic update
+            if (type === 'CLIENT_TYPE') {
+                setGenderCovers(prev => ({
+                    ...prev,
+                    [snip.label.toLowerCase() === 'man' ? 'manImage' : 'womanImage']: newUrl
+                }));
+            } else {
+                // For other types, reloading the page or forcing a re-fetch is best, but we can just reload for simplicity
+                window.location.reload();
+            }
+        } else {
+            alert('Failed to update cover');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Error updating cover');
+    }
+  };
+
   const handleBackFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selected = e.target.files[0]
@@ -736,6 +779,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                                     position: 'relative'
                                 }}
                             >
+                                {isAdmin && (
+                                   <div 
+                                      onClick={(e) => handleUpdateCover(e, type, snip)}
+                                      style={{ position: 'absolute', top: 8, left: 8, zIndex: 20, background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: '6px', cursor: 'pointer' }}
+                                   >
+                                      <Icons.Edit2 size={14} color="#fff" />
+                                   </div>
+                                )}
                                 {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} style={{ zIndex: 10, position: 'absolute', top: 10, right: 10 }} />}
                                 {imageUrl ? (
                                     <img src={imageUrl} alt={snip.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -1492,6 +1543,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                                   position: 'relative'
                               }}
                           >
+                              {isAdmin && (
+                                 <div 
+                                    onClick={(e) => handleUpdateCover(e, 'CLIENT_TYPE', gender)}
+                                    style={{ position: 'absolute', top: 8, left: 8, zIndex: 20, background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: '6px', cursor: 'pointer' }}
+                                 >
+                                    <Icons.Edit2 size={14} color="#fff" />
+                                 </div>
+                              )}
                               {imageUrl ? (
                                   <img src={imageUrl} alt={gender.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : (
