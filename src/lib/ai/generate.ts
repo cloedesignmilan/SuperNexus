@@ -291,7 +291,8 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
         modeSlug,
         presentationSlug,
         quantity: qty,
-        specificShotNumber
+        specificShotNumber,
+        gender: clientGender
     });
 
     for (let i = 0; i < qty; i++) {
