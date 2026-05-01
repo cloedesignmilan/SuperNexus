@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
             if (metadata && metadata.shotName && taxonomyCat && taxonomyMode && taxonomySubcat) {
               try {
                 let normMode = taxonomyMode.toLowerCase().trim();
-                let normPres = taxonomySubcat.toLowerCase().trim();
+                let normPres = taxonomySubcat.toLowerCase().trim().replace(/-/g, ' ');
                 let cg = (clientGender || '').toUpperCase();
 
                 if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';

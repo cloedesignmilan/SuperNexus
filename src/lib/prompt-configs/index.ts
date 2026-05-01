@@ -53,7 +53,7 @@ export async function getPromptsForSelection({
 }: SelectionParams): Promise<PromptShot[] | null> {
   const normCat = categorySlug.toLowerCase().trim();
   let normMode = modeSlug.toLowerCase().trim();
-  let normPres = presentationSlug.toLowerCase().trim();
+  let normPres = presentationSlug.toLowerCase().trim().replace(/-/g, ' ');
 
   // Mappa i nomi lunghi del frontend negli slug brevi del JSON/DB
   if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';
