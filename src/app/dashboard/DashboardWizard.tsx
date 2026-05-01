@@ -1454,17 +1454,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     const IconComp = (Icons as any)[gender.icon];
                     
                     const searchToken = gender.label.toLowerCase();
-                    const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
-                    const mode = selections['IMAGE_TYPE']?.label;
-                    let sub = null;
-                    if (mode) {
-                        sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
-                    }
-                    if (!sub) {
-                        sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
-                    }
-                    // Fetch directly from DB fallback for old names (to get original images)
-                    const imageUrl = sub ? sub.preview_image : null;
+                    let imageUrl = null;
+                    if (searchToken === 'man') imageUrl = genderCovers.manImage;
+                    if (searchToken === 'woman') imageUrl = genderCovers.womanImage;
 
                     return (
                       <button 
