@@ -55,20 +55,23 @@ export async function getPromptsForSelection({
 
   // Mappa i nomi lunghi del frontend negli slug brevi del JSON/DB
   if (normMode.includes('ads') || normMode.includes('scroll-stopper')) normMode = 'ads';
-  if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
+  else if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
+  else normMode = normMode.replace(/\s+/g, '-');
   
   if (normPres.includes('candid') && normPres.includes('woman')) {
     normPres = 'candid-woman';
   } else if (normPres.includes('candid') && normPres.includes('man')) {
     normPres = 'candid-man';
   }
-  if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
-  if (normPres.includes('still life')) normPres = 'still-life-pack';
-  if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
-  if (normPres === 'no model') normPres = 'no-model';
-  if (normPres === 'model photo') normPres = 'model-photo';
+  else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
+  else if (normPres.includes('still life')) normPres = 'still-life-pack';
+  else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
+  else if (normPres === 'no model') normPres = 'no-model';
+  else if (normPres === 'model photo') normPres = 'model-photo';
+  else normPres = normPres.replace(/\s+/g, '-');
 
   try {
+      console.log("Querying DB with:", { cat: normCat, mod: normMode, pres: normPres });
       // Priority 1: Fetch from Database
       const dbShots = await prisma.promptConfigShot.findMany({
           where: {
@@ -88,6 +91,7 @@ export async function getPromptsForSelection({
       });
 
       if (dbShots.length > 0) {
+          console.log("DB SHOTS FROM GET_PROMPTS:", dbShots.map(s => ({ name: s.shotName, url: s.imageUrl })));
           let shots = dbShots.map(db => ({
               shot_number: db.shotNumber,
               shot_name: db.shotName,
