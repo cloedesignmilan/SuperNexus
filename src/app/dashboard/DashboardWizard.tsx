@@ -243,7 +243,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('man') && !modelSnip.label.toLowerCase().includes('woman') && !modelSnip.label.toLowerCase().includes('girl') && !modelSnip.label.toLowerCase().includes('boy') && !modelSnip.label.toLowerCase().includes('ugc creator pack')) {
+              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('ugc creator pack') && !modelSnip.label.toLowerCase().includes('model photo')) {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -260,7 +260,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('man') && !snip.label.toLowerCase().includes('woman') && !snip.label.toLowerCase().includes('girl') && !snip.label.toLowerCase().includes('boy') && !snip.label.toLowerCase().includes('ugc creator pack')) {
+         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('ugc creator pack') && !snip.label.toLowerCase().includes('model photo')) {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
@@ -445,11 +445,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     if (step === 3.5) return setStep(3);
     if (step === 3) {
       const needsGender = analysisData?.needsGenderClarification && !selections['CLIENT_TYPE'] && 
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('woman')) && 
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('man')) &&
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('girl')) &&
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('boy')) &&
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('ugc creator pack'));
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('ugc creator pack')) &&
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('model photo'));
       if (needsGender) return setStep(2.5);
       
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
@@ -1396,7 +1393,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                                  body: JSON.stringify({
                                      categorySlug: detectedCat,
                                      modeSlug: selections['IMAGE_TYPE']?.label || '',
-                                     presentationSlug: selections['MODEL_OPTION']?.label || ''
+                                     presentationSlug: selections['MODEL_OPTION']?.label || '',
+                                     clientGender: selections['CLIENT_TYPE']?.label || ''
                                  })
                              });
                              if (res.ok) {
@@ -1439,11 +1437,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     const mode = selections['IMAGE_TYPE']?.label;
                     let sub = null;
                     if (mode) {
-                        sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
+                        sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
                     }
                     if (!sub) {
-                        sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
+                        sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
                     }
+                    // Fetch directly from DB fallback for old names (to get original images)
                     const imageUrl = sub ? sub.preview_image : null;
 
                     return (

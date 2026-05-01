@@ -4,7 +4,7 @@ import { getPromptsForSelection } from '@/lib/prompt-configs/index';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { categorySlug, modeSlug, presentationSlug } = body;
+    const { categorySlug, modeSlug, presentationSlug, clientGender } = body;
 
     if (!categorySlug || !modeSlug || !presentationSlug) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });
@@ -15,6 +15,7 @@ export async function POST(req: Request) {
       categorySlug,
       modeSlug,
       presentationSlug,
+      gender: clientGender,
       quantity: 5 
     });
 
