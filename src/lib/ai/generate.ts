@@ -398,6 +398,11 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
 
             const clientNegativePrompt = subcat.negative_prompt ? `${subcat.negative_prompt}, ` : '';
 
+            let backgroundOverride = "";
+            if (!currentRefInline) {
+                backgroundOverride = "\n[CRITICAL BACKGROUND OVERRIDE]: DO NOT COPY OR REPLICATE THE BACKGROUND FROM THE GARMENT REFERENCE IMAGE. YOU MUST COMPLETELY REPLACE THE ENVIRONMENT WITH A NEW SCENE THAT MATCHES THE POSITIVE INSTRUCTIONS EXACTLY. IGNORE THE ORIGINAL ROOM/BEDROOM COMPLETELY.";
+            }
+
             variantPrompt = `--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${finalPositive}
@@ -405,7 +410,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
 CRITICAL NEGATIVE PROMPT: ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
-` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective;
+` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective + backgroundOverride;
 
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });

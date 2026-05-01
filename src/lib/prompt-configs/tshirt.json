@@ -98,40 +98,40 @@
       {
         "shotNumber": 1,
         "shotName": "Fitting Room Mirror Selfie",
-        "positivePrompt": "Imperfect candid mirror selfie taken by a woman inside a premium clothing store fitting room. She is holding her iPhone, looking in the mirror. Warm flattering fitting room lighting, curtains and a bench in the background. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "bedroom, home, outdoor, studio lighting, professional camera, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Imperfect candid mirror selfie taken by a woman inside a premium clothing store fitting room. She is holding her iPhone, looking in the mirror. Warm flattering fitting room lighting, curtains and a bench in the background. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "bedroom, home, outdoor, studio lighting, professional camera, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE A MIRROR SELFIE IN A FITTING ROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Fitting Room Mirror Selfie"
       },
       {
         "shotNumber": 2,
         "shotName": "Boutique Bench",
-        "positivePrompt": "Candid photo of a beautiful woman sitting casually on a velvet bench inside a premium boutique. Racks of clothing softly blurred in the background. She is wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling naturally. Stylish shopping aesthetic. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "home, outdoor, studio, rigid pose, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Candid photo of a beautiful woman sitting casually on a velvet bench inside a premium boutique. Racks of clothing softly blurred in the background. She is wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling naturally. Stylish shopping aesthetic. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "home, outdoor, studio, rigid pose, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE SITTING IN A CLOTHING STORE. STORE RACKS IN BACKGROUND. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Boutique Bench"
       },
       {
         "shotNumber": 3,
         "shotName": "Pointing in Store",
-        "positivePrompt": "Candid photo of a young woman standing among clothing racks in a modern boutique. She is playfully pointing two index fingers at the center of her perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling at the camera. Bright store lighting, shopping lifestyle. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "home, studio background, holding objects, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Candid photo of a young woman standing among clothing racks in a modern boutique. She is playfully pointing two index fingers at the center of her perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling at the camera. Bright store lighting, shopping lifestyle. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "home, studio background, holding objects, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE POINTING AT HER OWN T-SHIRT. STORE ENVIRONMENT WITH CLOTHING RACKS. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Pointing in Store"
       },
       {
         "shotNumber": 4,
         "shotName": "Half-Body Store Selfie",
-        "positivePrompt": "Close-up front-facing iPhone selfie of a woman inside a clothing store. She is holding the phone with one hand out of frame. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Clothing racks softly blurred behind her. Realistic skin texture, genuine smile. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "mirror, full body, home, studio, professional camera, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Close-up front-facing iPhone selfie of a woman inside a clothing store. She is holding the phone with one hand out of frame. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Clothing racks softly blurred behind her. Realistic skin texture, genuine smile. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "mirror, full body, home, studio, professional camera, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "FRONT-FACING IPHONE SELFIE (NO MIRROR). HALF-BODY SHOT IN A STORE. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Half-Body Store Selfie"
       },
       {
         "shotNumber": 5,
         "shotName": "Fitting Room Close-up",
-        "positivePrompt": "A candid close-up shot focused on the chest and torso of a woman wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. The face is mostly cropped out. Warm fitting room lighting creating depth. Highlighting the fabric texture and fit in a retail environment. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "full body, wide angle, home, natural daylight, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "A candid close-up shot focused on the chest and torso of a woman wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. The face is mostly cropped out. Warm fitting room lighting creating depth. Highlighting the fabric texture and fit in a retail environment. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "full body, wide angle, home, natural daylight, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "CLOSE-UP ON THE T-SHIRT. NO FULL FACE. FITTING ROOM ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Fitting Room Close-up"
       }
@@ -144,40 +144,40 @@
       {
         "shotNumber": 1,
         "shotName": "Fitting Room Selfie",
-        "positivePrompt": "Imperfect candid mirror selfie taken by a man in a modern minimal fitting room of a streetwear store. He is standing, holding his iPhone, looking in the mirror. Warm retail lighting. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits perfectly. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "bedroom, home, professional photoshoot, studio lighting, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Imperfect candid mirror selfie taken by a man in a modern minimal fitting room of a streetwear store. He is standing, holding his iPhone, looking in the mirror. Warm retail lighting. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits perfectly. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "bedroom, home, professional photoshoot, studio lighting, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE A MIRROR SELFIE IN A FITTING ROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Fitting Room Selfie"
       },
       {
         "shotNumber": 2,
         "shotName": "Store Relaxed",
-        "positivePrompt": "Candid photo of a man sitting casually on a modern bench inside a premium clothing store, leaning slightly back. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Stylish interior with clothing displays in the background. Relaxed shopping vibe. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "home, outdoor, studio, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Candid photo of a man sitting casually on a modern bench inside a premium clothing store, leaning slightly back. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Stylish interior with clothing displays in the background. Relaxed shopping vibe. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "home, outdoor, studio, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE SITTING IN A CLOTHING STORE. RETAIL ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Store Relaxed"
       },
       {
         "shotNumber": 3,
         "shotName": "Holding T-Shirt at Rack",
-        "positivePrompt": "Candid photo of a smiling man standing in a modern boutique, holding up a perfectly ironed {product}, brand new, no wrinkles, flawless fabric with both hands in front of his chest. He is standing next to a clothing rack. Casual retail aesthetic, bright store interior. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "wearing the t-shirt, home, studio, professional lighting, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Candid photo of a smiling man standing in a modern boutique, holding up a perfectly ironed {product}, brand new, no wrinkles, flawless fabric with both hands in front of his chest. He is standing next to a clothing rack. Casual retail aesthetic, bright store interior. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "wearing the t-shirt, home, studio, professional lighting, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE HOLDING THE T-SHIRT WITH HANDS (NOT WEARING IT IN THIS SHOT). CLOTHING STORE ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Holding T-Shirt at Rack"
       },
       {
         "shotNumber": 4,
         "shotName": "Sunglasses Store Vibe",
-        "positivePrompt": "Candid photo of a stylish man standing relaxed in a premium clothing store. He is wearing cool sunglasses and a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Looking away from the camera. Modern retail interior lighting, blurred clothing racks behind him. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "home, sitting, studio, artificial setup, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "Candid photo of a stylish man standing relaxed in a premium clothing store. He is wearing cool sunglasses and a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Looking away from the camera. Modern retail interior lighting, blurred clothing racks behind him. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "home, sitting, studio, artificial setup, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST WEAR SUNGLASSES. STANDING IN A STORE. CLOTHING DISPLAYS IN BACKGROUND. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Sunglasses Store Vibe"
       },
       {
         "shotNumber": 5,
         "shotName": "Hanging on Store Display",
-        "positivePrompt": "A high-quality aesthetic shot of a perfectly ironed {product}, brand new, no wrinkles, flawless fabric perfectly hung on a premium metal display rack inside a modern boutique. Warm, sophisticated store lighting. Soft blurred background of the shop interior. (retail clothing store environment:1.5), (store background:1.5)",
-        "negativePrompt": "human model, home, door, flat lay, studio background, wrinkled, creased fabric, messy clothes, dirty, (bedroom:1.5), (bed:1.5), (home interior:1.5), domestic, collar label, text on collar, printed collar, neck tag visible",
+        "positivePrompt": "A high-quality aesthetic shot of a perfectly ironed {product}, brand new, no wrinkles, flawless fabric perfectly hung on a premium metal display rack inside a modern boutique. Warm, sophisticated store lighting. Soft blurred background of the shop interior. CRITICAL: The background must be explicitly inside a retail clothing store or fitting room. NO BEDROOMS.",
+        "negativePrompt": "human model, home, door, flat lay, studio background, wrinkled, creased fabric, messy clothes, dirty, bed, bedroom, home interior, domestic house, couch, nightstand, domestic environment, messy bedroom, domestic, collar label, text on collar, printed collar, neck tag visible",
         "hardRules": "MUST BE HANGING ON A DISPLAY RACK IN A STORE. NO HUMAN MODEL IN THIS SHOT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO BEDROOM OR HOME BACKGROUND.",
         "outputGoal": "Hanging on Store Display"
       }
