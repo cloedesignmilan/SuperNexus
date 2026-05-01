@@ -633,12 +633,27 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   
                   if (type === 'PRODUCT_TYPE') {
                      const catSlug = getMappedCategorySlug(snip.label);
-                     const bm = activeBusinessModes.find(b => b.category.slug === catSlug && b.category.cover_image);
-                     if (bm) imageUrl = bm.category.cover_image;
+                     // First try Category's own cover_image
+                     const cat = activeBusinessModes.find(b => b.category.slug === catSlug)?.category;
+                     if (cat?.cover_image) {
+                         imageUrl = cat.cover_image;
+                     } else {
+                         // Fallback to the first child Subcategory's preview_image
+                         const sub = activeSubcategories.find(s => s.business_mode.category.slug === catSlug && s.preview_image);
+                         if (sub) imageUrl = sub.preview_image;
+                     }
                   } else if (type === 'IMAGE_TYPE') {
                      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
-                     const bm = activeBusinessModes.find(b => b.category.slug === detectedCat && b.name === snip.label && b.cover_image);
-                     if (bm) imageUrl = bm.cover_image;
+                     const bm = activeBusinessModes.find(b => b.category.slug === detectedCat && b.name === snip.label);
+                     if (bm) {
+                         if (bm.cover_image) {
+                             imageUrl = bm.cover_image;
+                         } else {
+                             // Fallback to the first child Subcategory's preview_image
+                             const sub = activeSubcategories.find(s => s.business_mode_id === bm.id && s.preview_image);
+                             if (sub) imageUrl = sub.preview_image;
+                         }
+                     }
                   } else if (type === 'CLIENT_TYPE') {
                      const searchToken = snip.label.toLowerCase();
                      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
