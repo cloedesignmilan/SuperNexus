@@ -45,6 +45,7 @@ export async function POST(request: Request) {
         negativePrompt: body.negativePrompt,
         hardRules: body.hardRules,
         outputGoal: body.outputGoal,
+        imageUrl: body.imageUrl,
         priority: Number(body.priority || 0),
         isActive: body.isActive ?? true
       }
@@ -75,6 +76,7 @@ export async function PUT(request: Request) {
         negativePrompt: body.negativePrompt,
         hardRules: body.hardRules,
         outputGoal: body.outputGoal,
+        imageUrl: body.imageUrl,
         priority: Number(body.priority || 0),
         isActive: body.isActive
       }

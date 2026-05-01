@@ -247,6 +247,7 @@ model PromptConfigShot {
   negativePrompt  String   @db.Text
   hardRules       String   @db.Text
   outputGoal      String?  @db.Text
+  imageUrl        String?  @db.Text
   priority        Int      @default(0)
   isActive        Boolean  @default(true)
   createdAt       DateTime @default(now())

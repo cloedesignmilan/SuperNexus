@@ -18,6 +18,7 @@ interface PromptConfigShot {
   outputGoal: string | null;
   priority: number;
   isActive: boolean;
+  imageUrl?: string | null;
 }
 
 export default function PromptConfigsAdmin() {
@@ -72,7 +73,8 @@ export default function PromptConfigsAdmin() {
       negativePrompt: '',
       hardRules: '',
       priority: 0,
-      isActive: true
+      isActive: true,
+      imageUrl: ''
     };
     
     setSaving(true);
@@ -452,6 +454,15 @@ export default function PromptConfigsAdmin() {
                       }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }}>
                         {scenes.map(s => <option key={s} value={s}>{s}</option>)}
                       </select>
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>thumbnail_url (optional)</label>
+                      <input type="text" value={shot.imageUrl || ''} placeholder="https://..." onChange={(e) => {
+                        const newConfigs = [...configs];
+                        const s = newConfigs.find(c => c.id === shot.id);
+                        if (s) s.imageUrl = e.target.value;
+                        setConfigs(newConfigs);
+                      }} style={{ width: '100%', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', fontSize: '0.9rem', padding: '0.4rem 0.8rem', color: 'white', outline: 'none' }} />
                     </div>
                   </div>
 

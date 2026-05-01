@@ -26,7 +26,8 @@ export async function POST(req: Request) {
     const uniqueShots = Array.from(new Map(shots.map(s => {
        const sNum = (s as any).shotNumber || s.shot_number;
        const sName = (s as any).shotName || s.shot_name;
-       return [sNum, { shot_number: sNum, shot_name: sName }];
+       const sImageUrl = (s as any).imageUrl || null;
+       return [sNum, { shot_number: sNum, shot_name: sName, image_url: sImageUrl }];
     })).values());
     
     return NextResponse.json({ shots: uniqueShots });
