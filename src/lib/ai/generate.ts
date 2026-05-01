@@ -30,6 +30,7 @@ export interface GenerateImagesOptions {
     aspectRatio?: string;
     printLocation?: string;
     imageBackUrl?: string;
+    productColors?: string[];
 }
 
 export async function generateImagesWithAI({
@@ -48,7 +49,8 @@ export async function generateImagesWithAI({
     detectedProductType,
     aspectRatio,
     printLocation,
-    imageBackUrl
+    imageBackUrl,
+    productColors
 }: GenerateImagesOptions) {
     const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY });
     
@@ -403,6 +405,10 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             let backgroundOverride = "";
             if (!currentRefInline) {
                 backgroundOverride = "\n[CRITICAL BACKGROUND OVERRIDE]: DO NOT COPY OR REPLICATE THE BACKGROUND FROM THE GARMENT REFERENCE IMAGE. YOU MUST COMPLETELY REPLACE THE ENVIRONMENT WITH A NEW SCENE THAT MATCHES THE POSITIVE INSTRUCTIONS EXACTLY. IGNORE THE ORIGINAL ROOM/BEDROOM COMPLETELY.";
+            }
+
+            if (taxonomyMode?.toLowerCase().includes('ads') && productColors && productColors.length > 0) {
+                backgroundOverride += `\n[DYNAMIC TONE-ON-TONE OVERRIDE]: The background MUST be a seamless tone-on-tone gradient perfectly matching the primary color of the product, which is explicitly identified as ${productColors[0]}. Create a monochromatic, high-end studio gradient behind the model/product using variations of ${productColors[0]}.`;
             }
 
             variantPrompt = `--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---

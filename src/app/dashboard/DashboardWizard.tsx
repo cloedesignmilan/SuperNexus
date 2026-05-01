@@ -488,6 +488,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
         clientGender: clientGender || (selections['MODEL_OPTION']?.label?.toLowerCase().includes('woman') ? 'WOMAN' : selections['MODEL_OPTION']?.label?.toLowerCase().includes('man') ? 'MAN' : undefined),
         detectedProductType: analysisData?.detectedProductType,
+        productColors: analysisData?.detectedAttributes?.colors || [],
         printLocation: printLocation,
         imageBackUrl: uploadedBackUrl
       }

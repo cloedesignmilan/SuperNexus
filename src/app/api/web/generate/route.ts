@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl } = body
+    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl, productColors } = body
 
     if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
@@ -109,7 +109,8 @@ export async function POST(req: NextRequest) {
       detectedProductType,
       aspectRatio,
       printLocation,
-      imageBackUrl
+      imageBackUrl,
+      productColors
     })
 
     if (aiResult.generatedBase64s.length === 0) {
