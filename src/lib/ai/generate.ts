@@ -8,7 +8,7 @@ const GLOBAL_INVIOLABLE_RULES = `\n\n[GLOBAL INVIOLABLE RULES]
 - Preserve the product identity perfectly. Do not invent details.
 - Do not add unwanted objects. Do not add text unless explicitly requested.
 - No watermark. No logo changes.
-- No distorted anatomy if a model is present.
+- CRITICAL ANATOMY LOCK: The human model MUST have perfectly normal anatomy. ABSOLUTELY NO extra arms, no extra limbs, no missing limbs, no extra fingers, no deformed hands, and no distorted body proportions. Check the limb count before finalizing the image!
 - CRITICAL: If the reference image has store tags, cardboard labels, price tags, or hangtags attached, REMOVE THEM COMPLETELY. The garment must be cleanly worn without store tags.
 - CRITICAL NO HALLUCINATIONS: DO NOT add, generate, or hallucinate ANY internal wash tags, care labels, size labels, or extra fabric tags anywhere on the product. The garment must be completely free of any internal labels.
 - CRITICAL: If the product is an open jacket, blazer, or coat, YOU MUST generate an elegant shirt (e.g., dress shirt or t-shirt) underneath it. Do not leave the chest hollow or map the lining to the skin.`;

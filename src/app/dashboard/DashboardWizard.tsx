@@ -446,7 +446,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
        syncNPrompt = "redesigned product, simplified product, smooth details, changed textures, modified branding, environment, props, people, lifestyle, reflection, dramatic shadows, " + syncNPrompt;
     }
 
-    const syncGlobalNegative = "internal labels, wash tags, care labels, size labels, tags, labels, logos, apple logo, brand marks, watermarks, text, typography, fonts, graphics, words, signatures, symbols, patches, icons, " + syncNPrompt;
+    const syncGlobalNegative = "extra arms, extra limbs, multiple arms, mutated anatomy, deformed body, bad anatomy, extra fingers, missing limbs, disfigured, distorted proportions, internal labels, wash tags, care labels, size labels, tags, labels, logos, apple logo, brand marks, watermarks, text, typography, fonts, graphics, words, signatures, symbols, patches, icons, " + syncNPrompt;
 
     const finalComputedPrompt = syncFPrompt.replace(/, $/, '');
     const finalComputedNegative = syncGlobalNegative.replace(/, $/, '');
