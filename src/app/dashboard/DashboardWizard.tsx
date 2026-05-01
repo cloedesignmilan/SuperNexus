@@ -43,6 +43,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [printLocation, setPrintLocation] = useState<string>('front')
   const [showPrintConfirm, setShowPrintConfirm] = useState<boolean>(false)
 
+  // Dynamic Gender Covers State
+  const [genderCovers, setGenderCovers] = useState<{manImage: string|null, womanImage: string|null}>({ manImage: null, womanImage: null })
+
   // Dynamic Progress State
   const [generationProgress, setGenerationProgress] = useState(0)
 
@@ -69,6 +72,33 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     }
     return () => clearInterval(interval);
   }, [isGenerating, selections]);
+
+  // Fetch dynamic gender covers for step 2.5
+  useEffect(() => {
+    if (step === 2.5) {
+      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+      const mode = selections['IMAGE_TYPE']?.label || '';
+      const presentation = selections['MODEL_OPTION']?.label || '';
+      
+      if (detectedCat && mode && presentation) {
+        fetch('/api/web/get-gender-covers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ categorySlug: detectedCat, modeSlug: mode, presentationSlug: presentation })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            setGenderCovers({
+              manImage: data.manImage,
+              womanImage: data.womanImage
+            });
+          }
+        })
+        .catch(console.error);
+      }
+    }
+  }, [step, analysisData, selections]);
 
   // Default selections per Format e Quantity
   useEffect(() => {
@@ -657,16 +687,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      }
                   } else if (type === 'CLIENT_TYPE') {
                      const searchToken = snip.label.toLowerCase();
-                     const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
-                     const mode = selections['IMAGE_TYPE']?.label;
-                     let sub = null;
-                     if (mode) {
-                         sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
-                     }
-                     if (!sub) {
-                         sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
-                     }
-                     if (sub) imageUrl = sub.preview_image;
+                     if (searchToken === 'man') imageUrl = genderCovers.manImage;
+                     if (searchToken === 'woman') imageUrl = genderCovers.womanImage;
                   } else if (type === 'MODEL_OPTION') {
                      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
                      const mode = selections['IMAGE_TYPE']?.label;
