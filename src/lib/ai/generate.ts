@@ -327,7 +327,7 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
                 aiParts.push(...base64OutfitParts);
             }
             
@@ -421,7 +421,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
                 aiParts.push(...base64OutfitParts);
             }
 
@@ -495,7 +495,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
                 aiParts.push(...base64OutfitParts);
             } else {
-                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item):" });
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
                 aiParts.push(...base64OutfitParts);
             }
 
