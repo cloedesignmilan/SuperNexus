@@ -243,7 +243,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK') {
+              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('man') && !modelSnip.label.toLowerCase().includes('woman') && !modelSnip.label.toLowerCase().includes('girl') && !modelSnip.label.toLowerCase().includes('boy')) {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -260,7 +260,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK') {
+         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('man') && !snip.label.toLowerCase().includes('woman') && !snip.label.toLowerCase().includes('girl') && !snip.label.toLowerCase().includes('boy')) {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
@@ -410,7 +410,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         taxonomyMode: taxonomyModeMapped,
         taxonomySubcat: selections['MODEL_OPTION']?.label || null,
         specificShotNumber: selections['SPECIFIC_SHOT']?.shot_number || undefined,
-        clientGender,
+        clientGender: clientGender || (selections['MODEL_OPTION']?.label?.toLowerCase().includes('woman') ? 'WOMAN' : selections['MODEL_OPTION']?.label?.toLowerCase().includes('man') ? 'MAN' : undefined),
         detectedProductType: analysisData?.detectedProductType,
         printLocation: printLocation,
         imageBackUrl: uploadedBackUrl
@@ -444,7 +444,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     }
     if (step === 3.5) return setStep(3);
     if (step === 3) {
-      const needsGender = analysisData?.needsGenderClarification && !!selections['CLIENT_TYPE'];
+      const needsGender = analysisData?.needsGenderClarification && !selections['CLIENT_TYPE'] && 
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('woman')) && 
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('man')) &&
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('girl')) &&
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('boy'));
       if (needsGender) return setStep(2.5);
       
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
