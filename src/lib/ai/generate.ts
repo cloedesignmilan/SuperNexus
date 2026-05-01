@@ -409,7 +409,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-CRITICAL NEGATIVE PROMPT: ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
+[STRICT NEGATIVE CONSTRAINTS - DO NOT GENERATE THESE ELEMENTS UNDER ANY CIRCUMSTANCE]: ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
 ` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective + backgroundOverride;
 
             if (base64BackPart) {
