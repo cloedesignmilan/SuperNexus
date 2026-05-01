@@ -398,7 +398,7 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
 
             const clientNegativePrompt = subcat.negative_prompt ? `${subcat.negative_prompt}, ` : '';
 
-            variantPrompt = userPrompt + `\n\n--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
+            variantPrompt = `--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${finalPositive}
 [HARD RULES]: ${shotInfo.hard_rules}
