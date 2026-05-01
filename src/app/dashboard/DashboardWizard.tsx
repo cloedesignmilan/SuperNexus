@@ -50,7 +50,6 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   const [generationProgress, setGenerationProgress] = useState(0)
 
   // POSE SELECTION STATE
-  const [availableShots, setAvailableShots] = useState<any[]>([]);
   const [selectedShotNumber, setSelectedShotNumber] = useState<number | null>(null);
   const [isPoseLoading, setIsPoseLoading] = useState(false);
 
