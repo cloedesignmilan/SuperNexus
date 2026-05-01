@@ -22,6 +22,15 @@ export async function GET(request: Request) {
         const now = new Date().getTime();
         const cutoffDate = new Date(now - TWENTY_FOUR_HOURS_MS);
         
+        // Recupera le immagini usate come thumbnail per i PromptConfigShot
+        const promptConfigs = await prisma.promptConfigShot.findMany({
+            where: {
+                NOT: [{ imageUrl: null }, { imageUrl: '' }]
+            },
+            select: { imageUrl: true }
+        });
+        const protectedUrls = promptConfigs.map(c => c.imageUrl).filter(Boolean) as string[];
+
         let totalDeleted = 0;
         let totalScanned = 0;
 
@@ -63,6 +72,13 @@ export async function GET(request: Request) {
 
                  const fileDate = new Date(file.created_at).getTime();
                  if (fileDate < cutoffDate.getTime()) {
+                     // Check se il file è protetto da un thumbnail
+                     const isProtected = protectedUrls.some(url => url.includes(file.name));
+                     if (isProtected) {
+                         console.log(`[STORAGE-CLEANUP] Salvato dalla pulizia (è un thumbnail dei pulsanti): ${file.name}`);
+                         continue;
+                     }
+                     
                      filesToDelete.push(file.name);
                  }
             }

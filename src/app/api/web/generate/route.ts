@@ -172,6 +172,30 @@ export async function POST(req: NextRequest) {
                 subcat.preview_image = publicUrl;
               }
             }
+
+            // Auto-cover per i pulsanti Shot (Thumbnail Wizard)
+            if (metadata && metadata.shotName && taxonomyCat && taxonomyMode && taxonomySubcat) {
+              try {
+                const shotConfig = await prisma.promptConfigShot.findFirst({
+                  where: {
+                    category: taxonomyCat.toLowerCase(),
+                    mode: taxonomyMode,
+                    presentation: taxonomySubcat,
+                    shotName: metadata.shotName,
+                    OR: [{ imageUrl: null }, { imageUrl: '' }]
+                  }
+                });
+                if (shotConfig) {
+                  await prisma.promptConfigShot.update({
+                    where: { id: shotConfig.id },
+                    data: { imageUrl: publicUrl }
+                  });
+                  console.log(`[AUTO-COVER] Salvato thumbnail per lo shot: ${metadata.shotName}`);
+                }
+              } catch (err) {
+                console.error("Errore salvataggio thumbnail PromptConfigShot:", err);
+              }
+            }
         }
     }
 
