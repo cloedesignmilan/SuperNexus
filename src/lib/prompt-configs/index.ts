@@ -58,9 +58,9 @@ export async function getPromptsForSelection({
   else if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
   else normMode = normMode.replace(/\s+/g, '-');
   
-  if (normPres.includes('candid') && normPres.includes('woman')) {
+  if ((normPres.includes('candid') && normPres.includes('woman')) || normPres === 'woman') {
     normPres = 'candid-woman';
-  } else if (normPres.includes('candid') && normPres.includes('man')) {
+  } else if ((normPres.includes('candid') && normPres.includes('man')) || normPres === 'man') {
     normPres = 'candid-man';
   }
   else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
