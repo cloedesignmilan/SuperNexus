@@ -6,41 +6,41 @@
       {
         "shotNumber": 1,
         "shotName": "Bedroom Mirror Selfie",
-        "positivePrompt": "Imperfect candid mirror selfie taken by a woman in her bright aesthetic bedroom. She is holding her iPhone slightly blocking her face, looking in the mirror. Messy unmade bed with white sheets in the background. Natural morning window light. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits casually and comfortably. Relaxed everyday home vibe.",
-        "negativePrompt": "professional photoshoot, studio lighting, posed model, perfect framing, artificial setup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE A MIRROR SELFIE IN A BEDROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Aesthetic candid mirror selfie taken by a woman in her bright aesthetic bedroom. She is holding her iPhone slightly blocking her face, looking in the mirror. Perfectly made, elegant bed with crisp white sheets in the background. Natural morning window light. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits casually and comfortably. Relaxed everyday home vibe. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "professional photoshoot, studio lighting, posed model, perfect framing, artificial setup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE A MIRROR SELFIE IN A BEDROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Bedroom Mirror Selfie"
       },
       {
         "shotNumber": 2,
         "shotName": "Living Room Casual",
-        "positivePrompt": "Candid photo of a beautiful woman sitting comfortably on a modern beige sofa in her bright living room. Natural sunlight streaming through a large window, creating soft shadows. She is wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Relaxed, happy expression, looking away from the camera. Real life aesthetic.",
-        "negativePrompt": "studio, fashion editorial, rigid pose, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE SITTING IN A LIVING ROOM. NATURAL DAYLIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Candid photo of a beautiful woman sitting comfortably on a modern beige sofa in her bright living room. Natural sunlight streaming through a large window, creating soft shadows. She is wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Relaxed, happy expression, looking away from the camera. Real life aesthetic. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "studio, fashion editorial, rigid pose, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE SITTING IN A LIVING ROOM. NATURAL DAYLIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Living Room Casual"
       },
       {
         "shotNumber": 3,
         "shotName": "Pointing at T-Shirt",
-        "positivePrompt": "Candid photo of a young woman standing in a bright home living room with indoor plants. She is playfully pointing two index fingers at the center of her perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling naturally at the camera. Soft natural light, casual domestic atmosphere.",
-        "negativePrompt": "studio background, rigid pose, professional lighting, holding objects, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE POINTING AT HER OWN T-SHIRT WITH BOTH HANDS. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Candid photo of a young woman standing in a bright home living room with indoor plants. She is playfully pointing two index fingers at the center of her perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Smiling naturally at the camera. Soft natural light, casual domestic atmosphere. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "studio background, rigid pose, professional lighting, holding objects, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE POINTING AT HER OWN T-SHIRT WITH BOTH HANDS. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Pointing at T-Shirt"
       },
       {
         "shotNumber": 4,
         "shotName": "Half-Body Selfie",
-        "positivePrompt": "Close-up front-facing iPhone selfie of a woman in her bedroom. She is holding the phone with one hand out of frame. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Natural makeup, messy bun, bright daylight. Realistic skin texture, imperfect framing, genuine smile.",
-        "negativePrompt": "mirror, full body, studio, professional camera, heavy makeup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "FRONT-FACING IPHONE SELFIE (NO MIRROR). HALF-BODY SHOT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Close-up front-facing iPhone selfie of a woman in her bedroom. She is holding the phone with one hand out of frame. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Natural makeup, elegant casual hair, bright daylight. Realistic skin texture, imperfect framing, genuine smile. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "mirror, full body, studio, professional camera, heavy makeup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "FRONT-FACING IPHONE SELFIE (NO MIRROR). HALF-BODY SHOT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Half-Body Selfie"
       },
       {
         "shotNumber": 5,
         "shotName": "Close-up Fit",
-        "positivePrompt": "A candid close-up shot focused on the chest and torso of a woman wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. The face is mostly cropped out. Soft natural light from a nearby window. Highlighting the fabric texture and relaxed fit of the t-shirt in a real-life home environment.",
-        "negativePrompt": "full body, wide angle, studio background, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "CLOSE-UP ON THE T-SHIRT. NO FULL FACE. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "A candid close-up shot focused on the chest and torso of a woman wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. The face is mostly cropped out. Soft natural light from a nearby window. Highlighting the fabric texture and relaxed fit of the t-shirt in a real-life home environment. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "full body, wide angle, studio background, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "CLOSE-UP ON THE T-SHIRT. NO FULL FACE. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Close-up Fit"
       }
     ]
@@ -52,41 +52,41 @@
       {
         "shotNumber": 1,
         "shotName": "Mirror Selfie Man",
-        "positivePrompt": "Imperfect candid mirror selfie taken by a man in a modern minimal bedroom. He is standing, holding his iPhone, looking in the mirror. Neutral color palette in the room, wooden floor. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits perfectly. Relaxed casual home style.",
-        "negativePrompt": "professional photoshoot, studio lighting, posed model, perfect framing, artificial setup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE A MIRROR SELFIE IN A BEDROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Aesthetic candid mirror selfie taken by a man in a modern minimal bedroom. He is standing, holding his iPhone, looking in the mirror. Neutral color palette in the room, wooden floor. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric that fits perfectly. Relaxed casual home style. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "professional photoshoot, studio lighting, posed model, perfect framing, artificial setup, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE A MIRROR SELFIE IN A BEDROOM. REALISTIC IPHONE CAMERA QUALITY. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Mirror Selfie Man"
       },
       {
         "shotNumber": 2,
         "shotName": "Sitting on Floor",
-        "positivePrompt": "Candid photo of a man sitting casually on the wooden floor of a modern living room, leaning slightly back on his hands. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric and casual sweatpants. Natural daylight, relaxed Sunday morning vibe.",
-        "negativePrompt": "studio, standing, fashion editorial, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE SITTING ON THE FLOOR. HOME ENVIRONMENT. NATURAL LIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Candid photo of a man sitting casually on the wooden floor of a modern living room, leaning slightly back on his hands. Wearing a perfectly ironed {product}, brand new, no wrinkles, flawless fabric and casual sweatpants. Natural daylight, relaxed Sunday morning vibe. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "studio, standing, fashion editorial, artificial lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE SITTING ON THE FLOOR. HOME ENVIRONMENT. NATURAL LIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Sitting on Floor"
       },
       {
         "shotNumber": 3,
         "shotName": "Holding T-Shirt",
-        "positivePrompt": "Candid photo of a smiling man standing in a bright home interior, holding up a perfectly ironed {product}, brand new, no wrinkles, flawless fabric with both hands in front of his chest as if showing it to the camera. Casual everyday aesthetic, bright room with white walls and subtle decor.",
-        "negativePrompt": "wearing the t-shirt, studio, professional lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE HOLDING THE T-SHIRT WITH HANDS (NOT WEARING IT IN THIS SHOT). HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Candid photo of a smiling man standing in a bright home interior, holding up a perfectly ironed {product}, brand new, no wrinkles, flawless fabric with both hands in front of his chest as if showing it to the camera. Casual everyday aesthetic, bright room with white walls and subtle decor. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "wearing the t-shirt, studio, professional lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE HOLDING THE T-SHIRT WITH HANDS (NOT WEARING IT IN THIS SHOT). HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Holding T-Shirt"
       },
       {
         "shotNumber": 4,
         "shotName": "Sunglasses Vibe",
-        "positivePrompt": "Candid photo of a stylish man relaxing on a modern sofa in his living room. He is wearing cool sunglasses and a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Slight smile, looking away from the camera. Sun rays coming through the window. Casual streetwear home aesthetic.",
-        "negativePrompt": "studio, standing, artificial lighting, formal wear, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST WEAR SUNGLASSES. SITTING ON A SOFA. NATURAL LIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "Candid photo of a stylish man relaxing on a modern sofa in his living room. He is wearing cool sunglasses and a perfectly ironed {product}, brand new, no wrinkles, flawless fabric. Slight smile, looking away from the camera. Sun rays coming through the window. Casual streetwear home aesthetic. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "studio, standing, artificial lighting, formal wear, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST WEAR SUNGLASSES. SITTING ON A SOFA. NATURAL LIGHT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Sunglasses Vibe"
       },
       {
         "shotNumber": 5,
         "shotName": "Hanging on Door",
-        "positivePrompt": "A candid aesthetic shot of a perfectly ironed {product}, brand new, no wrinkles, flawless fabric perfectly hung on a wooden hanger against a clean white bedroom door. Natural daylight creating soft shadows. Minimalist home environment, real-life creator aesthetic.",
-        "negativePrompt": "human model, studio background, flat lay, professional lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible",
-        "hardRules": "MUST BE HANGING ON A DOOR. NO HUMAN MODEL IN THIS SHOT. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW.",
+        "positivePrompt": "A candid aesthetic shot of a perfectly ironed {product}, brand new, no wrinkles, flawless fabric perfectly hung on a wooden hanger against a clean white bedroom door. Natural daylight creating soft shadows. Minimalist home environment, real-life creator aesthetic. The background must be a beautiful, highly aesthetic, clean and tidy home environment with no clutter.",
+        "negativePrompt": "human model, studio background, flat lay, professional lighting, wrinkled, creased fabric, messy clothes, dirty, collar label, text on collar, printed collar, neck tag visible, messy bed, unmade bed, cluttered room, messy room, dirty room, disorganized, chaotic background, trash, ugly interior",
+        "hardRules": "MUST BE HANGING ON A DOOR. NO HUMAN MODEL IN THIS SHOT. HOME ENVIRONMENT. T-SHIRT MUST BE PERFECTLY IRONED AND BRAND NEW. ABSOLUTELY NO MESSY BEDS OR CLUTTER. THE ROOM MUST BE BEAUTIFUL, CLEAN AND TIDY.",
         "outputGoal": "Hanging on Door"
       }
     ]
