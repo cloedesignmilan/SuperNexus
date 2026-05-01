@@ -1590,11 +1590,69 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                             }}
                           >
                             {shot.image_url ? (
-                              <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+                              <div style={{ width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+                                {isAdmin && (
+                                   <div 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newUrl = window.prompt(`Paste new image URL for shot ${shot.shot_number}:`);
+                                        if (newUrl) {
+                                            fetch('/api/admin/update-button-cover', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    type: 'SPECIFIC_SHOT',
+                                                    categorySlug: getMappedCategorySlug(analysisData?.detectedProductType),
+                                                    modeName: selections['IMAGE_TYPE']?.label || '',
+                                                    subName: selections['MODEL_OPTION']?.label || '',
+                                                    imageUrl: newUrl,
+                                                    clientGender: selections['CLIENT_TYPE']?.label || '',
+                                                    specificShotNumber: shot.shot_number
+                                                })
+                                            }).then(res => {
+                                                if(res.ok) window.location.reload();
+                                            });
+                                        }
+                                      }}
+                                      style={{ position: 'absolute', top: 8, left: 8, zIndex: 20, background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: '6px', cursor: 'pointer' }}
+                                   >
+                                      <Icons.Edit2 size={14} color="#fff" />
+                                   </div>
+                                )}
                                 <img src={shot.image_url} alt={shot.shot_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               </div>
                             ) : (
-                              <Icons.Camera size={38} className="card-icon" />
+                              <div style={{ width: '100%', height: '100%', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                {isAdmin && (
+                                   <div 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newUrl = window.prompt(`Paste new image URL for shot ${shot.shot_number}:`);
+                                        if (newUrl) {
+                                            fetch('/api/admin/update-button-cover', {
+                                                method: 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({
+                                                    type: 'SPECIFIC_SHOT',
+                                                    categorySlug: getMappedCategorySlug(analysisData?.detectedProductType),
+                                                    modeName: selections['IMAGE_TYPE']?.label || '',
+                                                    subName: selections['MODEL_OPTION']?.label || '',
+                                                    imageUrl: newUrl,
+                                                    clientGender: selections['CLIENT_TYPE']?.label || '',
+                                                    specificShotNumber: shot.shot_number
+                                                })
+                                            }).then(res => {
+                                                if(res.ok) window.location.reload();
+                                            });
+                                        }
+                                      }}
+                                      style={{ position: 'absolute', top: 8, left: 8, zIndex: 20, background: 'rgba(0,0,0,0.6)', borderRadius: '50%', padding: '6px', cursor: 'pointer' }}
+                                   >
+                                      <Icons.Edit2 size={14} color="#fff" />
+                                   </div>
+                                )}
+                                <Icons.Camera size={38} className="card-icon" />
+                              </div>
                             )}
                           </button>
                         </div>
