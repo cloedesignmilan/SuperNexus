@@ -437,16 +437,35 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   }
 
   const handleBack = () => {
+    if (step === 4) {
+       const qtyStr = selections['QUANTITY']?.label?.toString();
+       if (qtyStr === '1' || qtyStr === '1 Image' || qtyStr === '1 Foto') return setStep(3.5);
+       return setStep(3);
+    }
+    if (step === 3.5) return setStep(3);
     if (step === 3) {
-      // Check if we skipped step 2
+      const needsGender = analysisData?.needsGenderClarification && !!selections['CLIENT_TYPE'];
+      if (needsGender) return setStep(2.5);
+      
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const activeSubNames = activeSubcategories
            .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
            .map(sub => sub.name);
-      if (activeSubNames.length === 1) return setStep(1); // Go back to IMAGE_TYPE
+      if (activeSubNames.length === 1) return setStep(1); 
       return setStep(2);
     }
-    setStep(Math.max(0, step === 2.5 ? 2 : step === 0.75 ? 0 : step - 1));
+    if (step === 2.5) {
+      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+      const activeSubNames = activeSubcategories
+           .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === selections['IMAGE_TYPE']?.label)
+           .map(sub => sub.name);
+      if (activeSubNames.length === 1) return setStep(1); 
+      return setStep(2);
+    }
+    if (step === 2) return setStep(1);
+    if (step === 1) return setStep(0.75); 
+    if (step === 0.75) return setStep(0);
+    setStep(0);
   };
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
@@ -841,6 +860,26 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         .desktop-overlay-badge { display: none; }
         .desktop-change-btn { display: none; }
         .mobile-header-content { display: none; }
+
+        .desktop-back-button {
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.1);
+          color: #fff;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 1rem;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 0.9rem;
+          margin-bottom: 1.5rem;
+          transition: all 0.2s ease;
+        }
+        .desktop-back-button:hover {
+          background: rgba(255,255,255,0.05);
+          border-color: rgba(255,255,255,0.2);
+        }
 
         .btn-giant {
           background: #fff;
