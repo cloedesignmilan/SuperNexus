@@ -132,8 +132,9 @@ REGOLE ASSOLUTE E INVIOLABILI PER PRESERVARE L'ABITO:
 5. FOCUS SUL CAPO ORIGINALE (NO EXTRA LAYERS): Se l'immagine in input ritrae un abito da donna, una t-shirt, top o altro indumento, E' ASSOLUTAMENTE VIETATO aggiungere o coprirlo parzialmente con cappotti, giacche, felpe, maglie o scialli non presenti nella foto originale. L'indumento inserito dal cliente deve essere esaltato e mostrato per intero senza coperture spurie.
 6. VARIETA' (Batch): Genera pose naturali e diverse tra loro ispirate al dataset fotografico dello Stile.
 7. NO ATTREZZATURA: È ASSOLUTAMENTE VIETATO includere luci da set, softbox, cavalletti, macchine fotografiche o ring light nell'immagine. L'ambiente deve essere puro e senza backstage visibile.
-${userClarification === 'UGC_MAN' ? `8. CLARIFICATION FROM THE USER: The user has explicitly requested a MALE model for this shot. YOU MUST STRICTLY USE A HANDSOME 20-25 YEAR OLD BOY. ABSOLUTELY NO FEMALE MODELS. You MUST adapt the fit of the t-shirt to a male body.` : (userClarification !== 'X' ? `8. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : '')}
-${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
+8. FRONT PRINT EXCLUSIVITY: Se non hai ricevuto un'immagine specifica per il retro (BACK) e questo capo ha una stampa sul fronte, IL RETRO DEVE ESSERE COMPLETAMENTE BIANCO/VUOTO (tinta unita). È ASSOLUTAMENTE VIETATO copiare o far comparire la stampa frontale sul retro della maglietta nelle foto scattate da dietro.
+${userClarification === 'UGC_MAN' ? `9. CLARIFICATION FROM THE USER: The user has explicitly requested a MALE model for this shot. YOU MUST STRICTLY USE A HANDSOME 20-25 YEAR OLD BOY. ABSOLUTELY NO FEMALE MODELS. You MUST adapt the fit of the t-shirt to a male body.` : (userClarification !== 'X' ? `9. CLARIFICATION FROM THE USER: The user was asked a question about the garment and explicitly responded with: "${userClarification}". YOU MUST STRICTLY RESPECT THIS INFORMATION AND BUILD THE IMAGE ACCORDINGLY.` : '')}
+${isOutfit ? `10. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE reference images for this job. YOU MUST COMBINE THEM! Do not generate them separately. Dress the model or arrange the scene with ALL the provided items simultaneously, creating a perfectly coordinated outfit.` : ''}`;
 
     const poseModifiers = [
         // Image 1: Attention (scroll stopping) / Hero Shot
@@ -355,7 +356,8 @@ ${isOutfit ? `9. CRITICAL OUTFIT COORDINATION: The user has provided MULTIPLE re
                 genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
             }
 
-            const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT");
+            const isBackShotPrompt = shotInfo.positive_prompt?.toLowerCase().includes("from behind") || shotInfo.positive_prompt?.toLowerCase().includes("back view") || shotInfo.positive_prompt?.toLowerCase().includes("walking away");
+            const isBackShotNoPrint = shotInfo.hard_rules?.includes("NO PRINT") || shotInfo.positive_prompt?.includes("NO PRINT") || (isBackShotPrompt && !imageBackUrl && printLocation !== 'back');
             
             let backShotOverride = "";
             if (base64BackPart) {
