@@ -5,6 +5,7 @@ export interface PromptShot {
   negative_prompt: string;
   hard_rules: string;
   output_goal: string;
+  image_url?: string | null;
 }
 
 export interface PromptConfigRow {

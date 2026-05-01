@@ -94,7 +94,8 @@ export async function getPromptsForSelection({
               positive_prompt: db.positivePrompt,
               negative_prompt: db.negativePrompt,
               hard_rules: db.hardRules,
-              output_goal: db.outputGoal || ""
+              output_goal: db.outputGoal || "",
+              image_url: db.imageUrl
           }));
           
           if (specificShotNumber) {
