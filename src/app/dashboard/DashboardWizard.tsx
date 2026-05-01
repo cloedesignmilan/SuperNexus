@@ -1117,13 +1117,13 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       {/* RIGHT PANEL: Scrollable Steps */}
       <div className="studio-right">
         
-        {step > 0 && step < 9 && !isGenerating && (
-            <button className="back-button desktop-back-button" onClick={handleBack}>
-              <ChevronLeft size={20} /> <span>Back</span>
-            </button>
-        )}
-
         <div className="scroll-container">
+
+          {step > 0 && step < 9 && !isGenerating && (
+              <button className="back-button desktop-back-button" onClick={handleBack}>
+                <ChevronLeft size={20} /> <span>Back</span>
+              </button>
+          )}
 
           {/* Error Banner */}
           {error && (
