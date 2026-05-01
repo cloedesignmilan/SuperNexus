@@ -629,22 +629,95 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      });
                   }
 
+                  let imageUrl: string | null = null;
+                  
+                  if (type === 'PRODUCT_TYPE') {
+                     const catSlug = getMappedCategorySlug(snip.label);
+                     const bm = activeBusinessModes.find(b => b.category.slug === catSlug && b.category.cover_image);
+                     if (bm) imageUrl = bm.category.cover_image;
+                  } else if (type === 'IMAGE_TYPE') {
+                     const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                     const bm = activeBusinessModes.find(b => b.category.slug === detectedCat && b.name === snip.label && b.cover_image);
+                     if (bm) imageUrl = bm.cover_image;
+                  } else if (type === 'CLIENT_TYPE') {
+                     const searchToken = snip.label.toLowerCase();
+                     const sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.preview_image);
+                     if (sub) imageUrl = sub.preview_image;
+                  } else if (type === 'MODEL_OPTION') {
+                     const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                     const mode = selections['IMAGE_TYPE']?.label;
+                     const sub = activeSubcategories.find(s => s.name === snip.label && s.business_mode.name === mode && s.business_mode.category.slug === detectedCat && s.preview_image);
+                     if (sub) imageUrl = sub.preview_image;
+                  }
+
+                  const isPolaroid = type === 'PRODUCT_TYPE' || type === 'IMAGE_TYPE' || type === 'CLIENT_TYPE' || type === 'MODEL_OPTION';
                   const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
 
                   return (
                     <button 
                       key={snip.id} 
                       onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
-                      className={`glass-card ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
+                      className={isPolaroid ? "" : `glass-card ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
+                      style={isPolaroid ? {
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          background: 'transparent',
+                          border: 'none',
+                          padding: 0,
+                          cursor: 'pointer',
+                          outline: 'none',
+                          opacity: isSelected ? 1 : 0.6,
+                          transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                          transition: 'all 0.2s ease-in-out',
+                          position: 'relative'
+                      } : {}}
                     >
-                      {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
-                      <IconComp size={38} className="card-icon" />
-                      <div className="card-title">{snip.label}</div>
-                      
-                      {isWarning && (
-                         <div className="conflict-warning">
-                           <Info size={14} /> Might conflict
-                         </div>
+                      {isPolaroid ? (
+                          <>
+                            <div 
+                                className={`glass-card ${isSelected ? 'selected' : ''}`}
+                                style={{ 
+                                    width: '100%', 
+                                    aspectRatio: '1 / 1', 
+                                    padding: imageUrl ? '0' : '1.5rem 1rem', 
+                                    overflow: 'hidden', 
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    position: 'relative'
+                                }}
+                            >
+                                {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} style={{ zIndex: 10, position: 'absolute', top: 10, right: 10 }} />}
+                                {imageUrl ? (
+                                    <img src={imageUrl} alt={snip.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                    <IconComp size={38} className="card-icon" />
+                                )}
+                            </div>
+                            <div style={{ marginTop: '0.75rem', fontSize: '0.85rem', fontWeight: 600, color: isSelected ? '#00d2ff' : '#fff', textAlign: 'center', width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {snip.label}
+                            </div>
+                            {isWarning && (
+                               <div className="conflict-warning" style={{ zIndex: 10, position: 'absolute', bottom: -25 }}>
+                                 <Info size={14} /> Might conflict
+                               </div>
+                            )}
+                          </>
+                      ) : (
+                          <>
+                            {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
+                            <IconComp size={38} className="card-icon" />
+                            <div className="card-title">{snip.label}</div>
+                            
+                            {isWarning && (
+                               <div className="conflict-warning">
+                                 <Info size={14} /> Might conflict
+                               </div>
+                            )}
+                          </>
                       )}
                     </button>
                   )
