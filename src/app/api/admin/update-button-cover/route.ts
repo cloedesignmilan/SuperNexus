@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    console.log('[UPDATE-BUTTON-COVER] Incoming payload:', body);
     const { type, categorySlug, modeName, subName, imageUrl, clientGender } = body;
 
     if (!categorySlug || !imageUrl) {
@@ -51,7 +52,13 @@ export async function POST(req: Request) {
         else normMode = normMode.replace(/\s+/g, '-');
 
         let normPres = subName.toLowerCase().trim();
-        if (normPres.includes('candid') && clientGender === 'WOMAN') normPres = 'candid-woman';
+        if (normPres.includes('ugc in home') && clientGender === 'WOMAN') { normMode = 'ugc-home'; normPres = 'candid-woman'; }
+        else if (normPres.includes('ugc in store') && clientGender === 'WOMAN') { normMode = 'ugc-store'; normPres = 'candid-woman'; }
+        else if (normPres.includes('ugc in home') && clientGender === 'MAN') { normMode = 'ugc-home'; normPres = 'candid-man'; }
+        else if (normPres.includes('ugc in store') && clientGender === 'MAN') { normMode = 'ugc-store'; normPres = 'candid-man'; }
+        else if (normPres === 'ugc in home') { normMode = 'ugc-home'; normPres = 'candid-woman'; }
+        else if (normPres === 'ugc in store') { normMode = 'ugc-store'; normPres = 'candid-woman'; }
+        else if (normPres.includes('candid') && clientGender === 'WOMAN') normPres = 'candid-woman';
         else if (normPres.includes('candid') && clientGender === 'MAN') normPres = 'candid-man';
         else if (normPres === 'candid') normPres = clientGender === 'MAN' ? 'candid-man' : 'candid-woman';
         else if (normPres === 'model photo') normPres = clientGender === 'MAN' ? 'model-photo-man' : 'model-photo-woman';

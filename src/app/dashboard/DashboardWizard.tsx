@@ -83,7 +83,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
         fetch('/api/web/get-gender-covers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ categorySlug: detectedCat, modeSlug: mode })
+          body: JSON.stringify({ categorySlug: detectedCat, modeSlug: mode, presentationSlug: selections['MODEL_OPTION']?.label })
         })
         .then(res => res.json())
         .then(data => {
@@ -138,7 +138,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
             type,
             categorySlug: detectedCat,
             modeName: type === 'IMAGE_TYPE' ? snip.label : modeName,
-            subName: snip.label || snip.display,
+            subName: type === 'CLIENT_TYPE' && selections['MODEL_OPTION'] ? selections['MODEL_OPTION'].label : (snip.label || snip.display),
             imageUrl: newUrl,
             clientGender: snip.label // for CLIENT_TYPE
         };
