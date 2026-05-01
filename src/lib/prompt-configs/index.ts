@@ -62,30 +62,30 @@ export async function getPromptsForSelection({
   
   if (normPres === 'candid' && gender) {
     normPres = `candid-${gender.toLowerCase()}`;
-  } else if (normPres === 'ugc-in-home' && gender) {
+  } else if (normPres === 'ugc in home' && gender) {
     normMode = 'ugc-home';
     normPres = `candid-${gender.toLowerCase()}`;
-  } else if (normPres === 'ugc-in-store' && gender) {
+  } else if (normPres === 'ugc in store' && gender) {
     normMode = 'ugc-store';
     normPres = `candid-${gender.toLowerCase()}`;
-  } else if (normPres === 'model-photo' && gender) {
+  } else if (normPres === 'model photo' && gender) {
     normPres = `model-photo-${gender.toLowerCase()}`;
-  } else if (normPres.includes('ugc-in-home') && normPres.includes('woman')) {
+  } else if (normPres.includes('ugc in home') && normPres.includes('woman')) {
     normMode = 'ugc-home';
     normPres = 'candid-woman';
-  } else if (normPres.includes('ugc-in-store') && normPres.includes('woman')) {
+  } else if (normPres.includes('ugc in store') && normPres.includes('woman')) {
     normMode = 'ugc-store';
     normPres = 'candid-woman';
-  } else if (normPres.includes('ugc-in-home') && normPres.includes('man')) {
+  } else if (normPres.includes('ugc in home') && normPres.includes('man')) {
     normMode = 'ugc-home';
     normPres = 'candid-man';
-  } else if (normPres.includes('ugc-in-store') && normPres.includes('man')) {
+  } else if (normPres.includes('ugc in store') && normPres.includes('man')) {
     normMode = 'ugc-store';
     normPres = 'candid-man';
-  } else if (normPres === 'ugc-in-home') {
+  } else if (normPres === 'ugc in home') {
     normMode = 'ugc-home';
     normPres = 'candid-woman'; // Fallback
-  } else if (normPres === 'ugc-in-store') {
+  } else if (normPres === 'ugc in store') {
     normMode = 'ugc-store';
     normPres = 'candid-woman'; // Fallback
   } else if (normPres === 'woman') {
