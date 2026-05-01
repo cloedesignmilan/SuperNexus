@@ -1460,23 +1460,6 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   const url = typeof resItem === 'string' ? resItem : resItem.url;
                   const shotNum = resItem.shotNumber ? `Shot ${resItem.shotNumber}` : `Image ${i+1}`;
                   let shotName = resItem.shotName || shotNum;
-                  
-                  // Map English shot names to the requested Italian view names
-                  const viewTranslations: Record<string, string> = {
-                    "Front Full Body": "Figura intera frontale",
-                    "Close-up Torso": "Mezzo busto frontale",
-                    "Back View": "Retro",
-                    "Detail": "Dettaglio",
-                    "Close-up": "Dettaglio",
-                    "Dynamic Pose": "Posa dinamica",
-                    "Seated Pose": "Posa seduta"
-                  };
-                  
-                  Object.keys(viewTranslations).forEach(key => {
-                    if (shotName.includes(key)) {
-                      shotName = shotName.replace(key, viewTranslations[key]);
-                    }
-                  });
 
                   // Estrai il nome del file originale senza estensione
                   const originalName = file?.name ? file.name.replace(/\.[^/.]+$/, "") : "Prodotto_SuperNexus";
