@@ -42,3 +42,7 @@ next-env.d.ts
 
 /src/generated/prisma
 public/age-system/venv-rembg/
+venv-rembg/
+*.tar.gz
+scripts/
+backups/
