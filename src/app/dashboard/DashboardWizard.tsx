@@ -641,7 +641,15 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                      if (bm) imageUrl = bm.cover_image;
                   } else if (type === 'CLIENT_TYPE') {
                      const searchToken = snip.label.toLowerCase();
-                     const sub = activeSubcategories.find(s => s.name.toLowerCase().includes(searchToken) && s.preview_image);
+                     const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                     const mode = selections['IMAGE_TYPE']?.label;
+                     let sub = null;
+                     if (mode) {
+                         sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
+                     }
+                     if (!sub) {
+                         sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
+                     }
                      if (sub) imageUrl = sub.preview_image;
                   } else if (type === 'MODEL_OPTION') {
                      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
@@ -1407,7 +1415,15 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     const IconComp = (Icons as any)[gender.icon];
                     
                     const searchToken = gender.label.toLowerCase();
-                    const sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.preview_image);
+                    const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+                    const mode = selections['IMAGE_TYPE']?.label;
+                    let sub = null;
+                    if (mode) {
+                        sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.business_mode.name === mode && s.preview_image);
+                    }
+                    if (!sub) {
+                        sub = activeSubcategories.find(s => s.name.toLowerCase().split(' ').includes(searchToken) && s.business_mode.category.slug === detectedCat && s.preview_image);
+                    }
                     const imageUrl = sub ? sub.preview_image : null;
 
                     return (
