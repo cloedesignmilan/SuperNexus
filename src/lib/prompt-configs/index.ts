@@ -91,7 +91,7 @@ export async function getPromptsForSelection({
       });
 
       if (dbShots.length > 0) {
-          console.log("DB SHOTS FROM GET_PROMPTS:", dbShots.map(s => ({ name: s.shotName, url: s.imageUrl })));
+          console.log("DB SHOTS FROM GET_PROMPTS:", dbShots.map(s => ({ name: s.shotName, url: (s as any).imageUrl })));
           let shots = dbShots.map(db => ({
               shot_number: db.shotNumber,
               shot_name: db.shotName,
@@ -99,7 +99,7 @@ export async function getPromptsForSelection({
               negative_prompt: db.negativePrompt,
               hard_rules: db.hardRules,
               output_goal: db.outputGoal || "",
-              image_url: db.imageUrl
+              image_url: (db as any).imageUrl
           }));
           
           if (specificShotNumber) {
