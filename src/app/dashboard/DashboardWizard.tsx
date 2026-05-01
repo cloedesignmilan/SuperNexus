@@ -1360,21 +1360,21 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                       <button 
                         key={shot.shot_number}
                         className={`glass-card ${isSelected ? 'selected' : ''}`}
-                        style={shot.image_url ? { padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' } : undefined}
+                        style={{ aspectRatio: '1/1', padding: shot.image_url ? '0.5rem' : '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: shot.image_url ? '0.25rem' : '0.5rem', justifyContent: 'center' }}
                         onClick={() => {
                             setSelections({ ...selections, SPECIFIC_SHOT: shot });
                             setTimeout(() => setStep(4), 350);
                         }}
                       >
                         {shot.image_url ? (
-                          <div style={{ width: '100%', height: '130px', borderRadius: '12px', overflow: 'hidden', marginBottom: '0.5rem' }}>
+                          <div style={{ width: '100%', flex: 1, minHeight: 0, borderRadius: '8px', overflow: 'hidden', marginBottom: '0.25rem' }}>
                             <img src={shot.image_url} alt={shot.shot_name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           </div>
                         ) : (
-                          <Icons.Camera size={38} className="card-icon" />
+                          <Icons.Camera size={38} className="card-icon" style={{ marginBottom: '0.5rem' }} />
                         )}
-                        <div className="card-title" style={shot.image_url ? { fontSize: '0.85rem', marginTop: 0 } : undefined}>{shot.shot_name}</div>
-                        <div className="snippet-desc" style={{ fontSize: '0.75rem', opacity: 0.7, marginTop: shot.image_url ? '0' : '0.5rem', color: 'rgba(255,255,255,0.5)' }}>Shot {shot.shot_number}</div>
+                        <div className="card-title" style={shot.image_url ? { fontSize: '0.8rem', marginTop: 0 } : undefined}>{shot.shot_name}</div>
+                        <div className="snippet-desc" style={{ fontSize: '0.7rem', opacity: 0.7, marginTop: 0, color: 'rgba(255,255,255,0.5)' }}>Shot {shot.shot_number}</div>
                       </button>
                     )
                  })}
@@ -1382,12 +1382,13 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                  {/* Fallback Option */}
                  <button 
                     className={`glass-card ${!selections['SPECIFIC_SHOT'] ? 'selected' : ''}`}
+                    style={{ aspectRatio: '1/1', padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', justifyContent: 'center' }}
                     onClick={() => {
                         setSelections({ ...selections, SPECIFIC_SHOT: null });
                         setTimeout(() => setStep(4), 350);
                     }}
                   >
-                    <Icons.Wand2 size={38} className="card-icon" />
+                    <Icons.Wand2 size={38} className="card-icon" style={{ marginBottom: '0.5rem' }} />
                     <div className="card-title">Any / Random</div>
                   </button>
               </div>
