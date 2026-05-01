@@ -408,7 +408,8 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             }
 
             if (taxonomyMode?.toLowerCase().includes('ads') && productColors && productColors.length > 0) {
-                backgroundOverride += `\n[DYNAMIC TONE-ON-TONE OVERRIDE]: The background MUST be a seamless tone-on-tone gradient perfectly matching the primary color of the product, which is explicitly identified as ${productColors[0]}. Create a monochromatic, high-end studio gradient behind the model/product using variations of ${productColors[0]}.`;
+                const color = productColors[0];
+                backgroundOverride += `\n[DYNAMIC TONE-ON-TONE OVERRIDE]: The background MUST be a pure, seamless studio cyclorama backdrop painted EXACTLY in ${color} to perfectly match the garment. Create a premium, high-end monochromatic studio setting (solid ${color} background with a soft, elegant lighting gradient). ABSOLUTELY NO OUTDOOR SCENES. NO CLUTTER. Just a perfectly clean, luxurious ${color} tone-on-tone environment like a Vogue editorial.`;
             }
 
             variantPrompt = `--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
