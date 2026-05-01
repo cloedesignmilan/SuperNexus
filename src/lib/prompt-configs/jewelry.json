@@ -577,6 +577,102 @@
             "outputGoal": "Chain construction detail"
           }
         ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Worn Portrait View",
+            "positivePrompt": "Professional studio fashion portrait of a female model wearing the jewelry. Elegant pose. Jewelry is the clear focal point, sparkling. Clean solid background.",
+            "negativePrompt": "messy background, outdoors, jewelry hidden",
+            "hardRules": "JEWELRY CLEARLY VISIBLE WORN ON BODY. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Fit"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Profile/Side Angle Worn",
+            "positivePrompt": "Female model wearing the jewelry, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SIDE PROFILE FIT.",
+            "outputGoal": "Profile fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Worn Detail",
+            "positivePrompt": "Tight close-up of the jewelry worn on the model (e.g. neck, ear, finger, wrist). High fashion catalog lighting. Shallow depth of field blurring the model slightly to focus on the piece.",
+            "negativePrompt": "full body, model full face, busy background",
+            "hardRules": "TIGHT CROP ON WORN JEWELRY. MACRO FOCUS.",
+            "outputGoal": "Worn detail"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Hand adjusting jewelry",
+            "positivePrompt": "Model's hand elegantly adjusting the jewelry she is wearing. High end fashion lighting. Focus on the interaction.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "HAND ADJUSTING PIECE. ELEGANT.",
+            "outputGoal": "Interaction fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Editorial Gaze",
+            "positivePrompt": "Model looking intensely at the camera wearing the jewelry. High fashion studio editorial setup. Dramatic lighting emphasizing the shine.",
+            "negativePrompt": "smiling casually, flat lighting, outdoor",
+            "hardRules": "EDITORIAL GAZE. STUDIO SETTING.",
+            "outputGoal": "Emotional editorial"
+          }
+        ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Worn Portrait View",
+            "positivePrompt": "Professional studio fashion portrait of a female model wearing the jewelry. Elegant pose. Jewelry is the clear focal point, sparkling. Clean solid background.",
+            "negativePrompt": "messy background, outdoors, jewelry hidden",
+            "hardRules": "JEWELRY CLEARLY VISIBLE WORN ON BODY. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Fit"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Profile/Side Angle Worn",
+            "positivePrompt": "Female model wearing the jewelry, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SIDE PROFILE FIT.",
+            "outputGoal": "Profile fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Worn Detail",
+            "positivePrompt": "Tight close-up of the jewelry worn on the model (e.g. neck, ear, finger, wrist). High fashion catalog lighting. Shallow depth of field blurring the model slightly to focus on the piece.",
+            "negativePrompt": "full body, model full face, busy background",
+            "hardRules": "TIGHT CROP ON WORN JEWELRY. MACRO FOCUS.",
+            "outputGoal": "Worn detail"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Hand adjusting jewelry",
+            "positivePrompt": "Model's hand elegantly adjusting the jewelry she is wearing. High end fashion lighting. Focus on the interaction.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "HAND ADJUSTING PIECE. ELEGANT.",
+            "outputGoal": "Interaction fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Editorial Gaze",
+            "positivePrompt": "Model looking intensely at the camera wearing the jewelry. High fashion studio editorial setup. Dramatic lighting emphasizing the shine.",
+            "negativePrompt": "smiling casually, flat lighting, outdoor",
+            "hardRules": "EDITORIAL GAZE. STUDIO SETTING.",
+            "outputGoal": "Emotional editorial"
+          }
+        ]
       }
     ]
   }

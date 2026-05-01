@@ -601,6 +601,102 @@
             "outputGoal": "Fabric weight texture"
           }
         ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a {gender} wearing the {product}. Full body shot showing the {product} hemline and shoes. Confident elegant pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "close up, messy background, outdoors, casual selfie, chopped head or feet",
+            "hardRules": "FULL BODY VISIBLE. FRONT VIEW. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic 3/4 Twist",
+            "positivePrompt": "{gender} wearing the {product}, dynamic 3/4 side angle. Elegant twist showing how the skirt or fabric flows. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, flat lighting",
+            "hardRules": "3/4 ANGLE. SHOW FABRIC MOVEMENT/FLOW.",
+            "outputGoal": "Side fit and flow"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View Elegance",
+            "positivePrompt": "{gender} facing away from the camera, showing the back design of the {product}. Clean studio background. Hair styled to not hide the upper back of the {product}.",
+            "negativePrompt": "front view, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. PERFECT SYMMETRY ON BACK DETAILS.",
+            "outputGoal": "Model back fit"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Mid Shot Portrait",
+            "positivePrompt": "Medium shot (waist up) of the {gender} wearing the {product}. Focus on the neckline and bodice fit. High end fashion catalog lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "WAIST-UP CROPPING. FOCUS ON NECKLINE/BODICE.",
+            "outputGoal": "Bodice fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Movement/Walking Studio",
+            "positivePrompt": "{gender} walking or moving gracefully in the studio wearing the {product}, capturing the flow and movement of the hem. Elegant motion blur. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "Fabric motion presentation"
+          }
+        ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a {gender} wearing the {product}. Full body shot showing the {product} hemline and shoes. Confident elegant pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "close up, messy background, outdoors, casual selfie, chopped head or feet",
+            "hardRules": "FULL BODY VISIBLE. FRONT VIEW. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic 3/4 Twist",
+            "positivePrompt": "{gender} wearing the {product}, dynamic 3/4 side angle. Elegant twist showing how the skirt or fabric flows. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, flat lighting",
+            "hardRules": "3/4 ANGLE. SHOW FABRIC MOVEMENT/FLOW.",
+            "outputGoal": "Side fit and flow"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View Elegance",
+            "positivePrompt": "{gender} facing away from the camera, showing the back design of the {product}. Clean studio background. Hair styled to not hide the upper back of the {product}.",
+            "negativePrompt": "front view, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. PERFECT SYMMETRY ON BACK DETAILS.",
+            "outputGoal": "Model back fit"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Mid Shot Portrait",
+            "positivePrompt": "Medium shot (waist up) of the {gender} wearing the {product}. Focus on the neckline and bodice fit. High end fashion catalog lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "WAIST-UP CROPPING. FOCUS ON NECKLINE/BODICE.",
+            "outputGoal": "Bodice fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Movement/Walking Studio",
+            "positivePrompt": "{gender} walking or moving gracefully in the studio wearing the {product}, capturing the flow and movement of the hem. Elegant motion blur. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "Fabric motion presentation"
+          }
+        ]
       }
     ]
   }

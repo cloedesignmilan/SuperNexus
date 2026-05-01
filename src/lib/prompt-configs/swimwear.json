@@ -532,6 +532,124 @@
             "isActive": true
           }
         ]
+      },
+      {
+        "category": "swimwear",
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Full Body",
+            "positivePrompt": "full body shot of a {gender} wearing {product}, clean light grey studio background, direct hard flash photography, high fashion catalog style, glowing tanned skin, sharp focus, vibrant and clear, Vogue aesthetic",
+            "negativePrompt": "outdoor, beach, messy background, softbox, dull colors, bad anatomy",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 1,
+            "isActive": true
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic Pose",
+            "positivePrompt": "medium shot of a {gender} wearing {product}, posing dynamically with hands on hips or playing with hair, crisp white studio background, punchy catalog lighting, glossy skin texture, high fashion",
+            "negativePrompt": "outdoor, messy background, bad proportions, distorted limbs",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 2,
+            "isActive": true
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View",
+            "positivePrompt": "back view of a {gender} wearing {product}, looking over the shoulder, light beige studio background, strong rim lighting, highly detailed swimwear back straps, premium e-commerce",
+            "negativePrompt": "outdoor, messy background, bad anatomy",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 3,
+            "isActive": true
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Close-up Torso",
+            "positivePrompt": "close up torso shot of a {gender} wearing {product}, clean white studio background, hard directional light, maintaining exact original print and colors perfectly, fashion editorial crop, no face visible",
+            "negativePrompt": "outdoor, full body, messy background",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 4,
+            "isActive": true
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Seated Pose",
+            "positivePrompt": "full body shot of a {gender} wearing {product}, seated elegantly on a white geometric studio block, clean studio lighting, high fashion summer catalog, flawless presentation",
+            "negativePrompt": "outdoor, beach, messy background, bad proportions",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 5,
+            "isActive": true
+          }
+        ]
+      },
+      {
+        "category": "swimwear",
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Full Body",
+            "positivePrompt": "full body shot of a {gender} wearing {product}, clean light grey studio background, direct hard flash photography, high fashion catalog style, glowing tanned skin, sharp focus, vibrant and clear, Vogue aesthetic",
+            "negativePrompt": "outdoor, beach, messy background, softbox, dull colors, bad anatomy",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 1,
+            "isActive": true
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic Pose",
+            "positivePrompt": "medium shot of a {gender} wearing {product}, posing dynamically with hands on hips or playing with hair, crisp white studio background, punchy catalog lighting, glossy skin texture, high fashion",
+            "negativePrompt": "outdoor, messy background, bad proportions, distorted limbs",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 2,
+            "isActive": true
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View",
+            "positivePrompt": "back view of a {gender} wearing {product}, looking over the shoulder, light beige studio background, strong rim lighting, highly detailed swimwear back straps, premium e-commerce",
+            "negativePrompt": "outdoor, messy background, bad anatomy",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 3,
+            "isActive": true
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Close-up Torso",
+            "positivePrompt": "close up torso shot of a {gender} wearing {product}, clean white studio background, hard directional light, maintaining exact original print and colors perfectly, fashion editorial crop, no face visible",
+            "negativePrompt": "outdoor, full body, messy background",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 4,
+            "isActive": true
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Seated Pose",
+            "positivePrompt": "full body shot of a {gender} wearing {product}, seated elegantly on a white geometric studio block, clean studio lighting, high fashion summer catalog, flawless presentation",
+            "negativePrompt": "outdoor, beach, messy background, bad proportions",
+            "hardRules": "no weird anatomy, no extra limbs, high quality, masterpiece",
+            "outputGoal": "sell_online",
+            "priority": 5,
+            "isActive": true
+          }
+        ]
       }
     ]
   }

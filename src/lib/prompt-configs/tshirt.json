@@ -638,6 +638,104 @@
             "outputGoal": "Fabric weight texture"
           }
         ]
+      },
+      {
+        "category": "t-shirt",
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Studio Portrait",
+            "positivePrompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
+            "hardRules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
+            "outputGoal": "Main Model Ecommerce Shot"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic 3/4 Angle",
+            "positivePrompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, casual snap",
+            "hardRules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
+            "outputGoal": "Side fit demonstration"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View",
+            "positivePrompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
+            "negativePrompt": "front print, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
+            "outputGoal": "Model back fit"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Full Body Look",
+            "positivePrompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
+            "negativePrompt": "close up, cropped head, cropped feet, complex outfit, busy background",
+            "hardRules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
+            "outputGoal": "Complete outfit styling"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Lifestyle Studio Crop",
+            "positivePrompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
+            "negativePrompt": "full body, face focus, blurry t-shirt, outdoor",
+            "hardRules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
+            "outputGoal": "Texture and detail on body"
+          }
+        ]
+      },
+      {
+        "category": "t-shirt",
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Studio Portrait",
+            "positivePrompt": "Professional studio fashion portrait of a model wearing the t-shirt. Medium shot from waist up. Model looking at camera, confident neutral pose. Clean solid background. High fashion lighting.",
+            "negativePrompt": "full body, messy background, outdoors, casual selfie, awkward pose, distorted face",
+            "hardRules": "FRONT VIEW ONLY. MODEL MUST NOT COVER THE SHIRT DESIGN WITH HANDS.",
+            "outputGoal": "Main Model Ecommerce Shot"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Dynamic 3/4 Angle",
+            "positivePrompt": "Model wearing the t-shirt, dynamic 3/4 side angle. Torso twist, looking off-camera. Editorial pose, showing how the fabric drapes. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin, casual snap",
+            "hardRules": "3/4 ANGLE ROTATION. EDITORIAL POSE.",
+            "outputGoal": "Side fit demonstration"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Back View",
+            "positivePrompt": "Model facing away from the camera, showing the back of the t-shirt. Clean studio background. Hair away from the upper back.",
+            "negativePrompt": "front print, model face, turning around, messy background",
+            "hardRules": "MODEL BACK VIEW. NO PRINT ON BACK. PERFECT SYMMETRY.",
+            "outputGoal": "Model back fit"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Full Body Look",
+            "positivePrompt": "Full body shot of model wearing the t-shirt styled with neutral pants. Standing straight, editorial look. Clean studio floor visible. High end fashion catalog.",
+            "negativePrompt": "close up, cropped head, cropped feet, complex outfit, busy background",
+            "hardRules": "FULL BODY SHOT. T-SHIRT MUST BE THE FOCAL POINT.",
+            "outputGoal": "Complete outfit styling"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Lifestyle Studio Crop",
+            "positivePrompt": "Close-up crop on the torso of the model wearing the t-shirt. Model casually fixing hair or adjusting collar. Intimate studio lighting. Focus on fabric texture.",
+            "negativePrompt": "full body, face focus, blurry t-shirt, outdoor",
+            "hardRules": "TORSO CLOSE-UP. HANDS IN FRAME BUT NOT BLOCKING MAIN GRAPHIC.",
+            "outputGoal": "Texture and detail on body"
+          }
+        ]
       }
     ]
   }

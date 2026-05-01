@@ -243,7 +243,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
               newSelections['MODEL_OPTION'] = modelSnip;
               setSelections(newSelections);
               
-              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('ugc creator pack') && !modelSnip.label.toLowerCase().includes('model photo')) {
+              if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('ugc creator pack')) {
                  setTimeout(() => setStep(2.5), 350);
               } else {
                  setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
@@ -260,7 +260,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
       setSelections(newSelections);
       
       if (type === 'MODEL_OPTION') {
-         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('ugc creator pack') && !snip.label.toLowerCase().includes('model photo')) {
+         if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('ugc creator pack')) {
             setTimeout(() => setStep(2.5), 350);
             return;
          }
@@ -445,8 +445,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     if (step === 3.5) return setStep(3);
     if (step === 3) {
       const needsGender = analysisData?.needsGenderClarification && !selections['CLIENT_TYPE'] && 
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('ugc creator pack')) &&
-      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('model photo'));
+      !(selections['MODEL_OPTION']?.label?.toLowerCase().includes('ugc creator pack'));
       if (needsGender) return setStep(2.5);
       
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);

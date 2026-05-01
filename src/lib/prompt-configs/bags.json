@@ -577,6 +577,102 @@
             "outputGoal": "Base construction detail"
           }
         ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Carry Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a female model holding the handbag. Full body shot. Confident elegant pose. Bag is the clear focal point. Clean solid background.",
+            "negativePrompt": "close up, messy background, outdoors, bag hidden",
+            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Shoulder Carry Profile",
+            "positivePrompt": "Female model wearing the handbag on her shoulder, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
+            "outputGoal": "Shoulder fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Hand Hold",
+            "positivePrompt": "Close-up of the model's hands holding the handbag elegantly by the top handle. High fashion catalog lighting. Only torso and bag visible.",
+            "negativePrompt": "full body, model face, busy background",
+            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
+            "outputGoal": "Handle usage"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Crossbody Mid Shot",
+            "positivePrompt": "Medium shot of the female model wearing the handbag as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
+            "outputGoal": "Crossbody fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Dynamic Swing",
+            "positivePrompt": "Model walking gracefully in the studio, swinging the handbag slightly. Capturing the motion and weight of the bag. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "Bag in motion"
+          }
+        ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Carry Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a female model holding the handbag. Full body shot. Confident elegant pose. Bag is the clear focal point. Clean solid background.",
+            "negativePrompt": "close up, messy background, outdoors, bag hidden",
+            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Shoulder Carry Profile",
+            "positivePrompt": "Female model wearing the handbag on her shoulder, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
+            "outputGoal": "Shoulder fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Hand Hold",
+            "positivePrompt": "Close-up of the model's hands holding the handbag elegantly by the top handle. High fashion catalog lighting. Only torso and bag visible.",
+            "negativePrompt": "full body, model face, busy background",
+            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
+            "outputGoal": "Handle usage"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Crossbody Mid Shot",
+            "positivePrompt": "Medium shot of the female model wearing the handbag as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
+            "outputGoal": "Crossbody fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Dynamic Swing",
+            "positivePrompt": "Model walking gracefully in the studio, swinging the handbag slightly. Capturing the motion and weight of the bag. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "Bag in motion"
+          }
+        ]
       }
     ]
   }

@@ -577,6 +577,102 @@
             "outputGoal": "Base construction detail"
           }
         ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-man",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Carry Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
+            "negativePrompt": "close up, messy background, outdoors, {product} hidden",
+            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Shoulder Carry Profile",
+            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
+            "outputGoal": "Shoulder fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Hand Hold",
+            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
+            "negativePrompt": "full body, model face, busy background",
+            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
+            "outputGoal": "Handle usage"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Crossbody Mid Shot",
+            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
+            "outputGoal": "Crossbody fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Dynamic Swing",
+            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "{product} in motion"
+          }
+        ]
+      },
+      {
+        "mode": "model-studio",
+        "presentation": "model-photo-woman",
+        "scene": "all",
+        "quantity": 5,
+        "shots": [
+          {
+            "shotNumber": 1,
+            "shotName": "Front Carry Full Body",
+            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
+            "negativePrompt": "close up, messy background, outdoors, {product} hidden",
+            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
+            "outputGoal": "Main Model Full Body"
+          },
+          {
+            "shotNumber": 2,
+            "shotName": "Shoulder Carry Profile",
+            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
+            "negativePrompt": "straight on, stiff pose, mannequin",
+            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
+            "outputGoal": "Shoulder fit"
+          },
+          {
+            "shotNumber": 3,
+            "shotName": "Close-up Hand Hold",
+            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
+            "negativePrompt": "full body, model face, busy background",
+            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
+            "outputGoal": "Handle usage"
+          },
+          {
+            "shotNumber": 4,
+            "shotName": "Crossbody Mid Shot",
+            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
+            "negativePrompt": "full body, busy background, wide angle",
+            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
+            "outputGoal": "Crossbody fit demonstration"
+          },
+          {
+            "shotNumber": 5,
+            "shotName": "Dynamic Swing",
+            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
+            "negativePrompt": "standing perfectly still, stiff, outdoor",
+            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
+            "outputGoal": "{product} in motion"
+          }
+        ]
       }
     ]
   }

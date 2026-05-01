@@ -62,6 +62,8 @@ export async function getPromptsForSelection({
   
   if (normPres === 'candid' && gender) {
     normPres = `candid-${gender.toLowerCase()}`;
+  } else if (normPres === 'model-photo' && gender) {
+    normPres = `model-photo-${gender.toLowerCase()}`;
   } else if ((normPres.includes('candid') && normPres.includes('woman')) || normPres === 'woman') {
     normPres = 'candid-woman';
   } else if ((normPres.includes('candid') && normPres.includes('man')) || normPres === 'man') {
