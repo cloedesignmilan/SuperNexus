@@ -407,7 +407,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 backgroundOverride = "\n[CRITICAL BACKGROUND OVERRIDE]: DO NOT COPY OR REPLICATE THE BACKGROUND FROM THE GARMENT REFERENCE IMAGE. YOU MUST COMPLETELY REPLACE THE ENVIRONMENT WITH A NEW SCENE THAT MATCHES THE POSITIVE INSTRUCTIONS EXACTLY. IGNORE THE ORIGINAL ROOM/BEDROOM COMPLETELY.";
             }
 
-            if (taxonomyMode?.toLowerCase().includes('ads') && productColors && productColors.length > 0) {
+            if (!isNoModel && taxonomyMode?.toLowerCase().includes('ads') && productColors && productColors.length > 0) {
                 const color = productColors[0];
                 backgroundOverride += `\n[DYNAMIC TONE-ON-TONE OVERRIDE]: The background MUST be a pure, seamless studio cyclorama backdrop painted EXACTLY in ${color} to perfectly match the garment. Create a premium, high-end monochromatic studio setting (solid ${color} background with a soft, elegant lighting gradient). ABSOLUTELY NO OUTDOOR SCENES. NO CLUTTER. Just a perfectly clean, luxurious ${color} tone-on-tone environment like a Vogue editorial.`;
             }
