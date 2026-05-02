@@ -202,43 +202,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Event Guest Candid",
-            "positivePrompt": "Real everyday {gender} wearing the {product} arriving at an event. Candid photography, natural, unposed. Authentic feel, slight motion. Outdoor sunlight.",
-            "negativePrompt": "professional model, studio, posed, airbrushed, perfect lighting",
-            "hardRules": "MUST LOOK LIKE A Real {gender}, NOT A FASHION MODEL.",
-            "outputGoal": "Authentic event lifestyle"
+            "shotName": "Reception Arrival",
+            "positivePrompt": "Candid lifestyle photography of a real elegant {gender} wearing {product} arriving at a wedding reception or upscale outdoor event. Authentic elegance, spontaneous moment, unposed. Natural daylight, credible human feeling, looking away naturally.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, perfectly posed, artificial",
+            "hardRules": "RECEPTION ARRIVAL. AUTHENTIC LIFESTYLE. COMPLETELY UNPOSED.",
+            "outputGoal": "Event arrival authentic"
           },
           {
             "shotNumber": 2,
-            "shotName": "Dinner Date",
-            "positivePrompt": "Real everyday {gender} wearing the {product} sitting at a nice restaurant table. Medium shot. Natural ambient lighting, candid smile.",
-            "negativePrompt": "high fashion, studio, looking intensely at camera",
-            "hardRules": "RESTAURANT CONTEXT. REALISTIC FEMALE.",
-            "outputGoal": "Everyday context"
+            "shotName": "Gala Conversation",
+            "positivePrompt": "Candid lifestyle snapshot of a real {gender} wearing {product} laughing and chatting naturally at an elegant evening party or gala. Authentic social event, unposed candid photography. Soft ambient event lighting, credible non-advertising feel.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, stiff pose, artificial flash",
+            "hardRules": "SOCIAL EVENT. CANDID CHAT OR LAUGH. REALISTIC AMBIENT LIGHT.",
+            "outputGoal": "Party spontaneous"
           },
           {
             "shotNumber": 3,
-            "shotName": "Walking Away",
-            "positivePrompt": "Real {gender} walking away from camera wearing the {product} at a garden party. Casual outdoor setting, back view.",
-            "negativePrompt": "studio, posed, fashion model",
-            "hardRules": "BACK VIEW. REALISTIC MOVEMENT.",
-            "outputGoal": "Back view authentic"
+            "shotName": "Garden Party Stroll",
+            "positivePrompt": "Candid lifestyle photography of a real {gender} wearing {product} walking gracefully across a lawn at a chic garden party or outdoor reception. Authentic elegance, completely unposed. Natural golden hour lighting, believable human movement.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, posed, stiff",
+            "hardRules": "OUTDOOR GARDEN PARTY. NATURAL MOVEMENT. AVOID STUDIO EFFECTS.",
+            "outputGoal": "Garden reception authentic"
           },
           {
             "shotNumber": 4,
-            "shotName": "Friends hanging out",
-            "positivePrompt": "Real {gender} wearing the {product} laughing, candid shot chatting with someone off-camera. Upper body. Natural skin texture.",
-            "negativePrompt": "studio, perfect skin, fashion editorial",
-            "hardRules": "CANDID EMOTION. NATURAL LIGHTING.",
-            "outputGoal": "Candid emotion"
+            "shotName": "Venue Mirror Candid",
+            "positivePrompt": "Candid lifestyle photography of a real {gender} wearing {product} casually looking into a mirror in the beautiful restroom or foyer of a luxury event venue. Authentic elegance, spontaneous moment. Natural indoor lighting, no studio setup.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, perfectly posed, artificial, flash",
+            "hardRules": "LOOKING IN MIRROR. EVENT VENUE. AUTHENTIC.",
+            "outputGoal": "Event mirror snapshot"
           },
           {
             "shotNumber": 5,
-            "shotName": "Imperfect framing",
-            "positivePrompt": "{gender} wearing the {product} in a realistic beautiful setting, framing feels like a friend took a photo of her with a phone. Slightly imperfect framing.",
-            "negativePrompt": "professional framing, studio light, DSLR",
-            "hardRules": "IMPERFECT CANDID FEEL.",
-            "outputGoal": "Relatable content"
+            "shotName": "Holding Drink Relaxed",
+            "positivePrompt": "Candid lifestyle portrait of a real {gender} wearing {product} standing relaxed at a reception holding a glass of champagne or elegant drink. Looking away naturally, observing the party. Spontaneous authentic elegance, unposed snapshot. Soft event lighting, credible human feeling.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, posed, stiff, forced smile",
+            "hardRules": "RECEPTION DRINK. SPONTANEOUS OBSERVATION. CREDIBLE FEEL.",
+            "outputGoal": "Reception relaxed candid"
           }
         ]
       },
@@ -250,43 +250,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Candid Walking Man",
-            "positivePrompt": "Real everyday {gender} wearing the {product} walking down a city street. Fashion forward. Candid photography, authentic, unposed, natural sunlight.",
-            "negativePrompt": "professional model, studio, highly edited, airbrushed",
-            "hardRules": "MUST LOOK LIKE A Real {gender}, NOT A FASHION MODEL.",
-            "outputGoal": "Authentic man lifestyle"
+            "shotName": "Fixing Jacket",
+            "positivePrompt": "Candid lifestyle photography of a real everyday {gender} wearing {product}. He is casually fixing his jacket in a curated but realistic cafe or home environment. Authentic elegance, spontaneous moment, unposed. Natural soft window lighting, true human feeling.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, posed, artificial",
+            "hardRules": "AUTHENTIC LIFESTYLE. FIXING JACKET. AVOID STUDIO EFFECTS.",
+            "outputGoal": "Everyday elegance"
           },
           {
             "shotNumber": 2,
-            "shotName": "Casual Stance",
-            "positivePrompt": "Real everyday {gender} wearing the {product} standing casually outdoors. Medium shot. Natural urban background.",
-            "negativePrompt": "high fashion, posed, studio",
-            "hardRules": "CASUAL STANCE. REALISTIC MALE.",
-            "outputGoal": "Everyday stance"
+            "shotName": "Walking City",
+            "positivePrompt": "Candid lifestyle photography of a real {gender} wearing {product} walking naturally down a beautiful city street. Authentic elegance, completely unposed. Natural daylight, street photography style, credible human movement.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, posed, artificial, stiff",
+            "hardRules": "WALKING OUTDOORS. COMPLETELY UNPOSED. CREDIBLE.",
+            "outputGoal": "City authentic"
           },
           {
             "shotNumber": 3,
-            "shotName": "Back candid man",
-            "positivePrompt": "Real {gender} wearing the {product} walking away from camera in a city environment. Back view.",
-            "negativePrompt": "studio, posed, fashion model",
-            "hardRules": "BACK VIEW. REALISTIC MALE.",
-            "outputGoal": "Back view man"
+            "shotName": "Looking at Phone",
+            "positivePrompt": "Candid lifestyle snapshot of an elegant {gender} wearing {product} sitting at a cafe or outdoor table, casually looking at his smartphone. Authentic everyday life, unposed. Natural ambient lighting, credible non-advertising feel.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, posed",
+            "hardRules": "LOOKING AT PHONE. EVERYDAY CONTEXT. REALISTIC.",
+            "outputGoal": "Spontaneous tech"
           },
           {
             "shotNumber": 4,
-            "shotName": "Looking away",
-            "positivePrompt": "Real {gender} wearing the {product} looking off-camera casually. Upper body shot, natural outdoor lighting.",
-            "negativePrompt": "looking at camera, studio, dramatic lighting",
-            "hardRules": "CANDID PROFILE. NATURAL LIGHTING.",
-            "outputGoal": "Candid profile"
+            "shotName": "Looking in Mirror",
+            "positivePrompt": "Candid lifestyle photography of a real {gender} wearing {product} casually looking into a mirror in a curated modern home or hotel room. Authentic elegance, spontaneous moment. Natural indoor lighting, no studio setup.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, perfectly posed, artificial, flash",
+            "hardRules": "LOOKING IN MIRROR. INDOOR CURATED ENVIRONMENT. AUTHENTIC.",
+            "outputGoal": "Mirror candid"
           },
           {
             "shotNumber": 5,
-            "shotName": "Relaxed sitting",
-            "positivePrompt": "Real {gender} wearing the {product} sitting on a bench outdoors. Relaxed realistic posture.",
-            "negativePrompt": "stiff posture, studio, fashion editorial",
-            "hardRules": "SEATED OUTDOORS. AUTHENTIC FEEL.",
-            "outputGoal": "Seated lifestyle"
+            "shotName": "Lounge Relaxed",
+            "positivePrompt": "Candid lifestyle portrait of a real {gender} wearing {product} sitting in a realistic upscale lounge or coffee shop, looking away naturally. Spontaneous authentic elegance, unposed snapshot. Soft natural lighting, credible human feeling.",
+            "negativePrompt": "studio lighting, fashion shoot, advertising, looking at camera, posed, stiff",
+            "hardRules": "SEATED IN LOUNGE/CAFE. SPONTANEOUS. AVOID STUDIO EFFECTS.",
+            "outputGoal": "Lounge authentic"
           }
         ]
       },

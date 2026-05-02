@@ -143,6 +143,17 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.visual-card-hover {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.visual-card-hover:hover {
+  transform: scale(1.03) !important;
+  filter: brightness(1.1) saturate(1.1);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+  z-index: 10;
+}
+
 .stats-card h3 {
   font-size: 0.9rem;
   color: #a0a0a0;

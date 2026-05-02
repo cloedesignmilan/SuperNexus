@@ -1,0 +1,85 @@
+# Architettura Tassonomia SuperNexus Completa (Maggio 2026)
+
+Questo diagramma illustra l'intero ecosistema della piattaforma SuperNexus, tracciando il percorso di ogni singola categoria di prodotto, dall'upload dell'utente fino alla risoluzione dei JSON.
+
+## Diagramma di Flusso (Mermaid)
+
+graph TD
+    %% COLORAZIONI E STILI
+    classDef aiDetection fill:#6c5ce7,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef catDress fill:#0984e3,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef catStreet fill:#e17055,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef catSwim fill:#00cec9,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef catShoes fill:#fdcb6e,stroke:#fff,stroke-width:2px,color:#2d3436;
+    classDef catBags fill:#a29bfe,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef catJewel fill:#fab1a0,stroke:#fff,stroke-width:2px,color:#2d3436;
+    
+    classDef mode fill:#00b894,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef subcat fill:#dfe6e9,stroke:#2d3436,stroke-width:2px,color:#2d3436;
+    classDef gender fill:#e84393,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef engine fill:#d63031,stroke:#fff,stroke-width:2px,color:#fff;
+
+    %% 1. UPLOAD E AI DETECTION
+    A["Upload Foto"] --> B("Vision AI Analizza Prodotto"):::aiDetection
+
+    B --> C{"getMappedCategorySlug"}
+
+    %% 2. CATEGORY MAPPING (TUTTE LE CATEGORIE)
+    C -->|"men_clothing, women_clothing,\ndress, jacket, suit..."| DRESS["DRESS / ELEGANT"]:::catDress
+    C -->|"tshirt, hoodie, sweater..."| STREET["T-SHIRT / STREETWEAR"]:::catStreet
+    C -->|"swimwear, bikini..."| SWIM["SWIMWEAR / BEACH"]:::catSwim
+    C -->|"shoe, sneaker, boot..."| SHOES["SHOES / FOOTWEAR"]:::catShoes
+    C -->|"bag, backpack, purse..."| BAGS["BAGS / ACCESSORIES"]:::catBags
+    C -->|"jewel, ring, necklace..."| JEWEL["JEWELRY / WATCHES"]:::catJewel
+
+    %% 3. BUSINESS MODES
+    %% Dress Modes
+    DRESS --> D_MODE{"Business Modes"}
+    D_MODE -->|1| D_LIFE["Lifestyle"]:::mode
+    D_MODE -->|2| D_STUDIO["Model Studio"]:::mode
+    D_MODE -->|3| D_CLEAN["Clean Catalog"]:::mode
+    D_MODE -->|4| D_UGC["UGC / Social"]:::mode
+    D_MODE -->|5| D_ADS["Ads / Advertising"]:::mode
+
+    %% Streetwear Modes (Semplificati per spazio)
+    STREET --> S_MODE{"Business Modes"}
+    S_MODE --> S_LIFE["Lifestyle / Urban"]:::mode
+    S_MODE --> S_UGC["UGC Creator"]:::mode
+
+    %% Accessories Modes (Bags/Shoes/Jewel condividono logiche simili)
+    BAGS & SHOES & JEWEL --> A_MODE{"Business Modes"}
+    A_MODE --> A_CLEAN["Clean Catalog (No Model)"]:::mode
+    A_MODE --> A_LIFE["Lifestyle / Editorial"]:::mode
+
+    %% 4. PRESENTATION / MODEL OPTIONS
+    D_LIFE & S_LIFE --> PRES_LIFE{"Model Options"}
+    PRES_LIFE --> OP_CANDID["Candid"]:::subcat
+    PRES_LIFE --> OP_EDITORIAL["Editorial"]:::subcat
+
+    D_STUDIO --> PRES_STUDIO{"Model Options"}
+    PRES_STUDIO --> OP_PHOTO["Model Photo"]:::subcat
+    PRES_STUDIO --> OP_CURVY["Curvy / Plus Size"]:::subcat
+
+    %% 5. GENDER RESOLUTION E JSON MAPPING
+    OP_CANDID --> GENDER_POPUP{"Gender Popup"}
+    GENDER_POPUP -->|"MAN"| JSON_CM["JSON: candid-man\n(Vita quotidiana, Città, Relax)"]:::gender
+    GENDER_POPUP -->|"WOMAN"| JSON_CW["JSON: candid-woman\n(Eventi, Gala, Ricevimenti)"]:::gender
+
+    OP_PHOTO --> GENDER_POPUP2{"Gender Popup"}
+    GENDER_POPUP2 -->|"MAN"| JSON_PM["JSON: model-photo-man\n(Studio Maschile)"]:::gender
+    GENDER_POPUP2 -->|"WOMAN"| JSON_PW["JSON: model-photo-woman\n(Studio Femminile)"]:::gender
+
+    OP_CURVY --> JSON_CURVY["JSON: curvy\n(Curvy Woman)"]:::gender
+
+    %% CONNESSIONE AI MOTORI FINALI
+    JSON_CM & JSON_CW & JSON_PM & JSON_PW & JSON_CURVY --> ENGINE(("Motore Generativo AI\n(Supabase + Prisma)")):::engine
+    
+    A_CLEAN & D_CLEAN --> NO_MODEL["JSON: no-model\n(Ghost Mannequin, Macro, Flat)"]:::gender
+    NO_MODEL --> ENGINE
+
+## Struttura Modulare
+Questo diagramma mostra come l'applicazione sia in grado di scalare all'infinito:
+- Le **6 Categorie Principali** sono il punto di ingresso.
+- I **Business Mode** (Lifestyle, Studio, UGC, ecc.) filtrano l'intento commerciale.
+- Le **Model Options** permettono la selezione visiva all'utente.
+- Il **Gender Popup** è il selettore finale (invisibile nel DB) che risolve il JSON esatto da applicare, garantendo prompt personalizzati per uomini e donne senza ingombrare l'interfaccia o il Database.

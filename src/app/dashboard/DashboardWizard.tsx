@@ -271,7 +271,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     if (!aiType) return 't-shirt';
     const type = aiType.toLowerCase();
     if (type.includes('tshirt') || type.includes('hoodie') || type.includes('top') || type.includes('sweat') || type.includes('shirt')) return 't-shirt';
-    if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown') || type.includes('suit') || type.includes('blazer') || type.includes('tuxedo') || type.includes('formal') || type.includes('jacket')) return 'dress';
+    if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown') || type.includes('suit') || type.includes('blazer') || type.includes('tuxedo') || type.includes('formal') || type.includes('jacket') || type.includes('men')) return 'dress';
     if (type.includes('bag')) return 'bags';
     if (type.includes('jewel') || type.includes('accessories')) return 'jewelry';
     if (type.includes('shoe') || type.includes('sneaker') || type.includes('boot')) return 'shoes';
@@ -547,6 +547,55 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
   };
 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
+    const GLOBAL_FALLBACKS: Record<string, string> = {
+      // PRODUCT TYPES
+      'Men Clothing': 'https://images.unsplash.com/photo-1594938298598-7188b1395b09?w=600&q=80&fit=crop',
+      'Women Clothing': 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80&fit=crop',
+      'Dress / Elegant': 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80&fit=crop',
+      'T-Shirt / Streetwear': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fit=crop',
+      'T-Shirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fit=crop',
+      'Swimwear': 'https://images.unsplash.com/photo-1564859228273-274232fdb516?w=600&q=80&fit=crop',
+      'Shoes / Sneakers': 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80&fit=crop',
+      'Bags / Accessories': 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80&fit=crop',
+      'Jewelry': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80&fit=crop',
+
+      // BUSINESS MODES
+      'Clean Catalog': 'https://images.unsplash.com/photo-1627384113972-f4c0392fe5aa?w=600&q=80&fit=crop',
+      'Model Studio': 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80&fit=crop',
+      'Lifestyle': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop',
+      'UGC': 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&q=80&fit=crop',
+      'Ads / Scroll Stopper': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&fit=crop',
+      'Detail / Texture': 'https://images.unsplash.com/photo-1606105961732-2615a13381a1?w=600&q=80&fit=crop',
+
+      // PRESENTATIONS
+      'Candid': 'https://images.unsplash.com/photo-1529139574466-a303027c028b?w=600&q=80&fit=crop',
+      'Model Photo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80&fit=crop',
+      'Flat Lay': 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600&q=80&fit=crop',
+      'Ghost Mannequin': 'https://images.unsplash.com/photo-1627384113972-f4c0392fe5aa?w=600&q=80&fit=crop',
+      'No Model': 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80&fit=crop',
+      'Editorial': 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80&fit=crop',
+      'Selfie': 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=600&q=80&fit=crop',
+      'Streetwear Urban': 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80&fit=crop',
+      'Curvy': 'https://images.unsplash.com/photo-1618244972963-cbba9f6cf33f?w=600&q=80&fit=crop',
+      'Macro Texture': 'https://images.unsplash.com/photo-1606105961732-2615a13381a1?w=600&q=80&fit=crop',
+
+      // FORMATS
+      '1:1 Square': 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&q=80&fit=crop',
+      '4:5 Portrait': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80&fit=crop',
+      '9:16 Reel': 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80&fit=crop',
+      
+      // CLIENT TYPES (Gender)
+      'Man': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80&fit=crop',
+      'Woman': 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&q=80&fit=crop',
+      
+      // ENVIRONMENTS
+      'Studio': 'https://images.unsplash.com/photo-1598257006458-087169a1f08d?w=600&q=80&fit=crop',
+      'City Street': 'https://images.unsplash.com/photo-1449844908441-8829872d2607?w=600&q=80&fit=crop',
+      'Cafe / Restaurant': 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80&fit=crop',
+      'Home / Indoor': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&fit=crop',
+      'Beach / Resort': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop'
+    };
+
     if (type === 'IMAGE_TYPE') {
       const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
       const customOptions = activeBusinessModes
@@ -565,6 +614,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
              label: bm.name,
              description: bm.description,
              icon,
+             cover_image: bm.cover_image,
+             fallback_image: activeSubcategories.find(s => s.business_mode_id === bm.id && s.preview_image)?.preview_image,
              prompt_fragment: '',
              negative_fragment: ''
           }
@@ -575,14 +626,40 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
           {customOptions.map(snip => {
             const isSelected = selections[type]?.id === snip.id;
             const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
+            
+            const dbImage = (snip as any).cover_image || (snip as any).fallback_image;
+            const bgImage = dbImage || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+
             return (
               <button 
                 key={snip.id} 
                 onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
-                className={`glass-card ${isSelected ? 'selected' : ''}`} 
+                className={`glass-card visual-card-hover ${isSelected ? 'selected' : ''}`} 
+                style={bgImage ? {
+                   backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 100%), url('${bgImage}')`,
+                   backgroundSize: 'cover',
+                   backgroundPosition: 'center',
+                   color: 'white',
+                   minHeight: '180px',
+                   display: 'flex',
+                   flexDirection: 'column',
+                   justifyContent: 'space-between',
+                   alignItems: 'flex-start',
+                   padding: '1.2rem',
+                   border: isSelected ? '2px solid var(--accent-color)' : '1px solid rgba(255,255,255,0.1)',
+                   overflow: 'hidden'
+                } : {}}
               >
-                <IconComp size={38} className="card-icon" />
-                <div className="card-title">{snip.label}</div>
+                {bgImage ? (
+                  <div style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', padding: '8px', borderRadius: '50%', alignSelf: 'flex-end' }}>
+                    <IconComp size={20} color="#fff" />
+                  </div>
+                ) : (
+                  <IconComp size={38} className="card-icon" />
+                )}
+                <div className="card-title" style={bgImage ? { fontSize: '1.3rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)', textAlign: 'left', fontWeight: 'bold', margin: 0, letterSpacing: '0.5px' } : {}}>
+                  {snip.label}
+                </div>
               </button>
             )
           })}
@@ -595,7 +672,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     // STRICT TAXONOMY ENFORCEMENT
     if (type === 'MODEL_OPTION') {
       const mode = selections['IMAGE_TYPE']?.label;
-      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
+      const detectedCat = getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType);
       
       const activeSubNames = activeSubcategories
         .filter(sub => sub.business_mode.category.slug === detectedCat && sub.business_mode.name === mode)
@@ -749,21 +826,43 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                     <button 
                       key={snip.id} 
                       onClick={() => handleSnippetSelect(type, snip, stepIndex)} 
-                      className={isPolaroid ? "" : `glass-card ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
-                      style={isPolaroid ? {
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          background: 'transparent',
-                          border: 'none',
-                          padding: 0,
-                          cursor: 'pointer',
-                          outline: 'none',
-                          opacity: isSelected ? 1 : 0.6,
-                          transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-                          transition: 'all 0.2s ease-in-out',
-                          position: 'relative'
-                      } : {}}
+                      className={isPolaroid ? "" : `glass-card visual-card-hover ${isSelected ? 'selected' : ''} ${isWarning && !isSelected ? 'warning' : ''}`} 
+                      style={(() => {
+                         if (isPolaroid) return {
+                             display: 'flex',
+                             flexDirection: 'column',
+                             alignItems: 'center',
+                             background: 'transparent',
+                             border: 'none',
+                             padding: 0,
+                             cursor: 'pointer',
+                             outline: 'none',
+                             opacity: isSelected ? 1 : 0.6,
+                             transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+                             transition: 'all 0.2s ease-in-out',
+                             position: 'relative'
+                         };
+                         
+                         const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+
+                         if (bgImage) {
+                            return {
+                               backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.1) 100%), url('${bgImage}')`,
+                               backgroundSize: 'cover',
+                               backgroundPosition: 'center',
+                               color: 'white',
+                               minHeight: '180px',
+                               display: 'flex',
+                               flexDirection: 'column',
+                               justifyContent: 'space-between',
+                               alignItems: 'flex-start',
+                               padding: '1.2rem',
+                               border: isSelected ? '2px solid var(--accent-color)' : '1px solid rgba(255,255,255,0.1)',
+                               overflow: 'hidden'
+                            };
+                         }
+                         return {};
+                      })()}
                     >
                       {isPolaroid ? (
                           <>
@@ -808,12 +907,33 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                           </>
                       ) : (
                           <>
-                            {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
-                            <IconComp size={38} className="card-icon" />
-                            <div className="card-title">{snip.label}</div>
+                            {(() => {
+                               const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+
+                               if (bgImage) {
+                                  return (
+                                     <>
+                                        <div style={{ background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', padding: '8px', borderRadius: '50%', alignSelf: 'flex-end', zIndex: 2 }}>
+                                          <IconComp size={20} color="#fff" />
+                                        </div>
+                                        <div className="card-title" style={{ fontSize: '1.3rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)', textAlign: 'left', fontWeight: 'bold', margin: 0, letterSpacing: '0.5px', zIndex: 2 }}>
+                                          {snip.label}
+                                        </div>
+                                     </>
+                                  );
+                               }
+
+                               return (
+                                  <>
+                                     {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
+                                     <IconComp size={38} className="card-icon" />
+                                     <div className="card-title">{snip.label}</div>
+                                  </>
+                               );
+                            })()}
                             
                             {isWarning && (
-                               <div className="conflict-warning">
+                               <div className="conflict-warning" style={{ zIndex: 2 }}>
                                  <Info size={14} /> Might conflict
                                </div>
                             )}
@@ -985,8 +1105,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
 
         .glass-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-          gap: 12px;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
         }
 
         .glass-card {
