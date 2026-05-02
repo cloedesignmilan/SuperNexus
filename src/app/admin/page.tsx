@@ -17,6 +17,10 @@ export default async function AdminDashboard() {
   const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
   const totalImagesCount = totalImagesAggr._sum.results_count || 0;
 
+  const proTotalAggr = await prisma.generationJob.aggregate({ where: { model_used: { contains: "pro" } }, _sum: { results_count: true } });
+  const proTotalCount = proTotalAggr._sum.results_count || 0;
+  const flashTotalCount = totalImagesCount - proTotalCount;
+
   // 2. Today's & Month's Metrics
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -31,11 +35,25 @@ export default async function AdminDashboard() {
   });
   const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
 
+  const proTodayAggr = await prisma.generationJob.aggregate({ 
+     where: { createdAt: { gte: today }, model_used: { contains: "pro" } },
+     _sum: { results_count: true }
+  });
+  const proTodayCount = proTodayAggr._sum.results_count || 0;
+  const flashTodayCount = imagesTodayCount - proTodayCount;
+
   const imagesMonthAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: startOfMonth } },
      _sum: { results_count: true }
   });
   const imagesMonthCount = imagesMonthAggr._sum.results_count || 0;
+
+  const proMonthAggr = await prisma.generationJob.aggregate({ 
+     where: { createdAt: { gte: startOfMonth }, model_used: { contains: "pro" } },
+     _sum: { results_count: true }
+  });
+  const proMonthCount = proMonthAggr._sum.results_count || 0;
+  const flashMonthCount = imagesMonthCount - proMonthCount;
 
   const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
       where: { createdAt: { gte: today } },
@@ -143,10 +161,18 @@ export default async function AdminDashboard() {
             <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-muted)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Images Generated</h3>
             <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><ImageIcon size={20} /></div>
           </div>
-          <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{totalImagesCount}</p>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-             <p style={{ fontSize: '0.85rem', color: '#10b981', margin: 0, fontWeight: 500 }}>+{imagesTodayCount} today</p>
-             <p style={{ fontSize: '0.85rem', color: '#00d2ff', margin: 0, fontWeight: 500 }}>+{imagesMonthCount} this month</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+             <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{totalImagesCount}</p>
+             <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>({flashTotalCount} Flash | {proTotalCount} Pro)</span>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', marginTop: '0.8rem' }}>
+             <p style={{ fontSize: '0.85rem', color: '#10b981', margin: 0, fontWeight: 500 }}>
+                 +{imagesTodayCount} today <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>({flashTodayCount} Flash | {proTodayCount} Pro)</span>
+             </p>
+             <p style={{ fontSize: '0.85rem', color: '#00d2ff', margin: 0, fontWeight: 500 }}>
+                 +{imagesMonthCount} this month <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>({flashMonthCount} Flash | {proMonthCount} Pro)</span>
+             </p>
           </div>
         </div>
 

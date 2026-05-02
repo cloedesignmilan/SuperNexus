@@ -75,6 +75,8 @@ export async function POST(req: NextRequest) {
         negative_prompt: negativePrompt || "text, watermark, poorly rendered, ugly, deformed, blurry"
     }
 
+    const generationModel = 'gemini-3-pro-image-preview' // PRO Model activated for testing
+
     // Create Pending Job
     const newJob = await prisma.generationJob.create({
       data: {
@@ -86,11 +88,10 @@ export async function POST(req: NextRequest) {
         status: "pending",
         total_cost_eur: 0,
         results_count: 0,
-        prompt_generated: finalPrompt // Salviamo il prompt dinamico nel job per tracciabilità
+        prompt_generated: finalPrompt, // Salviamo il prompt dinamico nel job per tracciabilità
+        model_used: generationModel
       }
     })
-
-    const generationModel = 'gemini-3-pro-image-preview' // PRO Model activated for testing
 
     // GENERATE VIA AI ENGINE
     const aiResult = await generateImagesWithAI({
