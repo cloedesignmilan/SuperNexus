@@ -58,43 +58,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front Carry Full Body",
-            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
-            "negativePrompt": "close up, messy background, outdoors, {product} hidden",
-            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
-            "outputGoal": "Main Model Full Body"
+            "shotName": "Hero Standing Posture",
+            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
+            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
+            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
+            "outputGoal": "Main Model Standing"
           },
           {
             "shotNumber": 2,
-            "shotName": "Shoulder Carry Profile",
-            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
-            "negativePrompt": "straight on, stiff pose, mannequin",
-            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
-            "outputGoal": "Shoulder fit"
+            "shotName": "Close-up Legs and Shoes",
+            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "face, torso, busy background, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe Fit Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Close-up Hand Hold",
-            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
-            "negativePrompt": "full body, model face, busy background",
-            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
-            "outputGoal": "Handle usage"
+            "shotName": "Seated Elegant Posture",
+            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
+            "negativePrompt": "standing, busy background, text, logo, watermark",
+            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
+            "outputGoal": "Seated Fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Crossbody Mid Shot",
-            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
-            "negativePrompt": "full body, busy background, wide angle",
-            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
-            "outputGoal": "Crossbody fit demonstration"
+            "shotName": "Dynamic Step Forward",
+            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "static, boring, text, logo, watermark",
+            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe in Motion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Dynamic Swing",
-            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
-            "negativePrompt": "standing perfectly still, stiff, outdoor",
-            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
-            "outputGoal": "{product} in motion"
+            "shotName": "Crossed Ankles Close-up",
+            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
+            "negativePrompt": "full body, face, text, logo, watermark",
+            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Aesthetic Detail"
           }
         ]
       },
@@ -106,43 +106,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front Carry Curvy",
-            "positivePrompt": "Professional studio fashion portrait of a curvy plus-size female model holding the {product}. Full body shot. Confident, elegant pose. Clean solid background.",
-            "negativePrompt": "thin model, outdoors, messy background",
-            "hardRules": "MUST USE PLUS-SIZE MODEL. FULL BODY.",
-            "outputGoal": "Main curvy fit"
+            "shotName": "Hero Standing Posture",
+            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
+            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
+            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
+            "outputGoal": "Main Model Standing"
           },
           {
             "shotNumber": 2,
-            "shotName": "Shoulder Carry Curvy",
-            "positivePrompt": "Curvy plus-size model wearing the {product} on the shoulder, 3/4 angle. Hands on hips. Clean studio.",
-            "negativePrompt": "thin model, straight on, stiff",
-            "hardRules": "MUST USE PLUS-SIZE MODEL. 3/4 ANGLE.",
-            "outputGoal": "Side profile curvy silhouette"
+            "shotName": "Close-up Legs and Shoes",
+            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "face, torso, busy background, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe Fit Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Crossbody Curvy",
-            "positivePrompt": "Curvy plus-size model wearing the {product} crossbody. Focus on strap length and placement on the body. Clean studio background.",
-            "negativePrompt": "thin model, front view face only",
-            "hardRules": "MUST USE PLUS-SIZE MODEL. CROSSBODY CARRY.",
-            "outputGoal": "Crossbody curvy fit"
+            "shotName": "Seated Elegant Posture",
+            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
+            "negativePrompt": "standing, busy background, text, logo, watermark",
+            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
+            "outputGoal": "Seated Fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Close-up Curvy",
-            "positivePrompt": "Close up of the curvy model's torso and arm holding the {product}. Focus on the {product} size relative to the body.",
-            "negativePrompt": "thin model, full body, wide angle",
-            "hardRules": "MUST USE PLUS-SIZE MODEL. TORSO CROP.",
-            "outputGoal": "{product} proportion"
+            "shotName": "Dynamic Step Forward",
+            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "static, boring, text, logo, watermark",
+            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe in Motion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Seated Elegance",
-            "positivePrompt": "Curvy plus-size model sitting elegantly on a studio stool, holding the {product} on her lap. High fashion editorial pose.",
-            "negativePrompt": "thin model, standing, messy background",
-            "hardRules": "MUST USE PLUS-SIZE MODEL. SEATED STUDIO POSE.",
-            "outputGoal": "Seated curvy drape"
+            "shotName": "Crossed Ankles Close-up",
+            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
+            "negativePrompt": "full body, face, text, logo, watermark",
+            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Aesthetic Detail"
           }
         ]
       },
@@ -586,43 +586,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front Carry Full Body",
-            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
-            "negativePrompt": "close up, messy background, outdoors, {product} hidden",
-            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
-            "outputGoal": "Main Model Full Body"
+            "shotName": "Hero Standing Posture",
+            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
+            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
+            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
+            "outputGoal": "Main Model Standing"
           },
           {
             "shotNumber": 2,
-            "shotName": "Shoulder Carry Profile",
-            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
-            "negativePrompt": "straight on, stiff pose, mannequin",
-            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
-            "outputGoal": "Shoulder fit"
+            "shotName": "Close-up Legs and Shoes",
+            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "face, torso, busy background, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe Fit Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Close-up Hand Hold",
-            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
-            "negativePrompt": "full body, model face, busy background",
-            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
-            "outputGoal": "Handle usage"
+            "shotName": "Seated Elegant Posture",
+            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
+            "negativePrompt": "standing, busy background, text, logo, watermark",
+            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
+            "outputGoal": "Seated Fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Crossbody Mid Shot",
-            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
-            "negativePrompt": "full body, busy background, wide angle",
-            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
-            "outputGoal": "Crossbody fit demonstration"
+            "shotName": "Dynamic Step Forward",
+            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "static, boring, text, logo, watermark",
+            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe in Motion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Dynamic Swing",
-            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
-            "negativePrompt": "standing perfectly still, stiff, outdoor",
-            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
-            "outputGoal": "{product} in motion"
+            "shotName": "Crossed Ankles Close-up",
+            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
+            "negativePrompt": "full body, face, text, logo, watermark",
+            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Aesthetic Detail"
           }
         ]
       },
@@ -634,43 +634,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front Carry Full Body",
-            "positivePrompt": "Professional studio fashion portrait of a female model holding the {product}. Full body shot. Confident elegant pose. {product} is the clear focal point. Clean solid background.",
-            "negativePrompt": "close up, messy background, outdoors, {product} hidden",
-            "hardRules": "FULL BODY VISIBLE. BAG IN FRONT. ELEGANT POSTURE.",
-            "outputGoal": "Main Model Full Body"
+            "shotName": "Hero Standing Posture",
+            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
+            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
+            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
+            "outputGoal": "Main Model Standing"
           },
           {
             "shotNumber": 2,
-            "shotName": "Shoulder Carry Profile",
-            "positivePrompt": "Female model wearing the {product} on her shoulder, side profile angle. Editorial pose. Clean studio background.",
-            "negativePrompt": "straight on, stiff pose, mannequin",
-            "hardRules": "SHOULDER CARRY. SIDE PROFILE.",
-            "outputGoal": "Shoulder fit"
+            "shotName": "Close-up Legs and Shoes",
+            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "face, torso, busy background, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe Fit Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Close-up Hand Hold",
-            "positivePrompt": "Close-up of the model's hands holding the {product} elegantly by the top handle. High fashion catalog lighting. Only torso and {product} visible.",
-            "negativePrompt": "full body, model face, busy background",
-            "hardRules": "HAND HOLDING HANDLE. TORSO CROP.",
-            "outputGoal": "Handle usage"
+            "shotName": "Seated Elegant Posture",
+            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
+            "negativePrompt": "standing, busy background, text, logo, watermark",
+            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
+            "outputGoal": "Seated Fit"
           },
           {
             "shotNumber": 4,
-            "shotName": "Crossbody Mid Shot",
-            "positivePrompt": "Medium shot of the female model wearing the {product} as a crossbody. Focus on how the strap sits across the body. High end fashion lighting.",
-            "negativePrompt": "full body, busy background, wide angle",
-            "hardRules": "CROSSBODY STYLING. WAIST-UP CROPPING.",
-            "outputGoal": "Crossbody fit demonstration"
+            "shotName": "Dynamic Step Forward",
+            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
+            "negativePrompt": "static, boring, text, logo, watermark",
+            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Shoe in Motion"
           },
           {
             "shotNumber": 5,
-            "shotName": "Dynamic Swing",
-            "positivePrompt": "Model walking gracefully in the studio, swinging the {product} slightly. Capturing the motion and weight of the {product}. High fashion studio setup.",
-            "negativePrompt": "standing perfectly still, stiff, outdoor",
-            "hardRules": "ELEGANT MOVEMENT. STUDIO SETTING.",
-            "outputGoal": "{product} in motion"
+            "shotName": "Crossed Ankles Close-up",
+            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
+            "negativePrompt": "full body, face, text, logo, watermark",
+            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
+            "outputGoal": "Aesthetic Detail"
           }
         ]
       }
