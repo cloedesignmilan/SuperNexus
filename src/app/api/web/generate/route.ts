@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         negative_prompt: negativePrompt || "text, watermark, poorly rendered, ugly, deformed, blurry"
     }
 
-    const generationModel = 'gemini-3-pro-image-preview' // PRO Model activated for testing
+    const generationModel = 'gemini-3.1-flash-image-preview' // FLASH Model restored
 
     // Create Pending Job
     const newJob = await prisma.generationJob.create({
