@@ -182,51 +182,5 @@
         "outputGoal": "Hanging on Store Display"
       }
     ]
-  },
-  {
-    "mode": "clean-catalog",
-    "presentation": "no-model",
-    "shots": [
-      {
-        "shotNumber": 1,
-        "shotName": "Ghost Mannequin Front",
-        "positivePrompt": "A clean, high-end e-commerce catalog image. A perfectly ironed, brand new, flawless {product} displayed using a ghost mannequin effect (invisible body). The garment is floating beautifully with perfect structure. Pure white studio background (#FFFFFF). Professional, crisp studio lighting, perfectly showcasing the fabric.",
-        "negativePrompt": "human, model, body parts, mannequin visible, hanger, flat lay, messy, wrinkled, creased fabric, dirty, shadows, cluttered, collar label, text on collar, printed collar, neck tag visible, inner label visible on outside, text printed on collar rim, text on neck, brand label on collar, neck text",
-        "hardRules": "MUST BE A GHOST MANNEQUIN EFFECT ON PURE WHITE BACKGROUND. NO VISIBLE MANNEQUIN. NO HANGER. NO HUMAN. NO TEXT OR LABELS ON THE COLLAR/NECK.",
-        "outputGoal": "Ghost Mannequin Front"
-      },
-      {
-        "shotNumber": 2,
-        "shotName": "Flat Lay Front",
-        "positivePrompt": "A sophisticated top-down flat lay catalog shot. A perfectly ironed, brand new, flawless {product} is neatly laid out flat on a soft, neutral studio surface. Clean edges, perfect symmetry. Bright, even studio lighting. Premium e-commerce aesthetic.",
-        "negativePrompt": "human, model, body parts, mannequin, hanger, hanging, messy, wrinkled, creased fabric, dirty, cluttered, 3D body, collar label, text on collar, printed collar, neck tag visible, inner label visible on outside, text printed on collar rim, text on neck, brand label on collar, neck text",
-        "hardRules": "MUST BE A TOP-DOWN FLAT LAY. PERFECTLY FLAT ON A SURFACE. NO HUMAN MODEL. NO MANNEQUIN. NO HANGER. NO TEXT OR LABELS ON THE COLLAR/NECK.",
-        "outputGoal": "Flat Lay Front"
-      },
-      {
-        "shotNumber": 3,
-        "shotName": "Neatly Folded",
-        "positivePrompt": "A premium catalog shot of a perfectly ironed, brand new, flawless {product} neatly folded and stacked on a minimal studio pedestal. The fabric texture is crisp and flawless. Soft, directional studio lighting casting a subtle shadow. High-end retail display aesthetic.",
-        "negativePrompt": "human, model, body parts, mannequin, hanging, worn, messy, wrinkled, creased fabric, dirty, cluttered background, collar label, text on collar, printed collar, neck tag visible, inner label visible on outside, text printed on collar rim, text on neck, brand label on collar, neck text",
-        "hardRules": "MUST BE NEATLY FOLDED. NO HUMAN MODEL. NO HANGER. NO MANNEQUIN. NO TEXT OR LABELS ON THE COLLAR/NECK.",
-        "outputGoal": "Neatly Folded"
-      },
-      {
-        "shotNumber": 4,
-        "shotName": "Hanging Rack Background",
-        "positivePrompt": "A high-end e-commerce catalog image. A perfectly ironed, brand new, flawless {product} is prominently hanging on a premium metal hanger in the foreground, facing straight to the camera. The background features a softly blurred, aesthetically pleasing clothing rack with multiple garments hanging neatly. Professional, crisp studio lighting, perfectly showcasing the fabric.",
-        "negativePrompt": "human, model, body parts, mannequin, messy, wrinkled, creased fabric, dirty, cluttered, messy background, collar label, text on collar, printed collar, neck tag visible, inner label visible on outside, text printed on collar rim, text on neck, brand label on collar, neck text",
-        "hardRules": "MUST BE A FRONT-FACING HANGING T-SHIRT. MULTIPLE GARMENTS BLURRED IN THE BACKGROUND. NO HUMAN MODEL. NO MANNEQUIN. NO TEXT OR LABELS ON THE COLLAR/NECK.",
-        "outputGoal": "Hanging Rack Background"
-      },
-      {
-        "shotNumber": 5,
-        "shotName": "Fabric Close-Up",
-        "positivePrompt": "An extreme close-up macro catalog shot focusing on the fabric texture and stitching of a perfectly ironed {product}. Pure, clean aesthetic. Soft studio lighting highlighting the premium quality of the material.",
-        "negativePrompt": "full shirt, human, model, mannequin, hanging, wide angle, messy, wrinkled, creased fabric, dirty, collar label, text on collar, printed collar, neck tag visible, inner label visible on outside, text printed on collar rim, text on neck, brand label on collar, neck text",
-        "hardRules": "MUST BE A MACRO CLOSE-UP OF THE FABRIC. NO FULL SHIRT. NO HUMAN MODEL. NO TEXT OR LABELS ON THE COLLAR/NECK.",
-        "outputGoal": "Fabric Close-Up"
-      }
-    ]
   }
 ]
