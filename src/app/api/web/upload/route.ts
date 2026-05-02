@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 
@@ -7,8 +8,12 @@ export async function POST(req: NextRequest) {
     // 1. Verify User Session
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
+    
+    const cookieStore = await cookies()
+    const adminAuthCookie = cookieStore.get('supernexus_admin_auth')
+    const isAdminPasskey = adminAuthCookie && adminAuthCookie.value === 'authenticated'
 
-    if (!user) {
+    if (!user && !isAdminPasskey) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -30,7 +35,8 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
     const timestamp = Date.now()
-    const fileName = `web_${user.id}_${timestamp}.jpg`
+    const userId = user ? user.id : 'admin_sandbox'
+    const fileName = `web_${userId}_${timestamp}.jpg`
 
     const { data, error } = await adminSupabase.storage
       .from('telegram-uploads')

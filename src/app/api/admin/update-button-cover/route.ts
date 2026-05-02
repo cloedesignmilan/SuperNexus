@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 
@@ -6,14 +7,20 @@ export async function POST(req: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
+    
+    const cookieStore = await cookies();
+    const adminAuthCookie = cookieStore.get('supernexus_admin_auth');
+    const isAdminPasskey = adminAuthCookie && adminAuthCookie.value === 'authenticated';
 
-    if (!user || !user.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    if (!isAdminPasskey) {
+      if (!user || !user.email) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
 
-    const dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } });
-    if (!dbUser || dbUser.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      const dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } });
+      if (!dbUser || dbUser.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     const body = await req.json();
