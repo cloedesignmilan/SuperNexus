@@ -117,7 +117,7 @@ export default async function AnalysesPage() {
                                         </div>
 
                                         <form action={deleteCheck.bind(null, check.id)} style={{ marginTop: '1.5rem', alignSelf: 'flex-end' }}>
-                                            <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255, 75, 75, 0.3)', color: '#ff4b4b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', padding: '8px 16px', borderRadius: '8px', transition: 'all 0.2s', fontWeight: 600 }} onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255, 75, 75, 0.1)'; e.currentTarget.style.borderColor = '#ff4b4b'; }} onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255, 75, 75, 0.3)'; }}>
+                                            <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255, 75, 75, 0.3)', color: '#ff4b4b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', padding: '8px 16px', borderRadius: '8px', transition: 'all 0.2s', fontWeight: 600 }}>
                                                 <Trash2 size={16} /> Rimuovi
                                             </button>
                                         </form>
