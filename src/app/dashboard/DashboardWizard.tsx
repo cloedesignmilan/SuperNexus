@@ -2001,15 +2001,33 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                           {isAdmin && selections['MODEL_OPTION']?.id && (
                              <button 
                                onClick={async (e) => {
-                                  e.currentTarget.style.opacity = '0.5';
+                                  const btn = e.currentTarget;
+                                  btn.style.opacity = '0.5';
                                   try {
                                      const { saveReferenceImage } = await import('@/app/admin/actions');
-                                     await saveReferenceImage(selections['MODEL_OPTION'].id, url, taxonomyPath);
+                                     
+                                     const detectedCat = getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType);
+                                     const mode = selections['IMAGE_TYPE']?.label;
+                                     const subName = selections['MODEL_OPTION']?.label;
+                                     const realSubcategory = activeSubcategories.find(sub => 
+                                        sub.name === subName && 
+                                        sub.business_mode.name === mode && 
+                                        sub.business_mode.category.slug === detectedCat
+                                     );
+                                     
+                                     if (!realSubcategory?.id) {
+                                        alert("Errore: Impossibile trovare l'ID della Sottocategoria nel database.");
+                                        btn.style.opacity = '1';
+                                        return;
+                                     }
+
+                                     await saveReferenceImage(realSubcategory.id, url, taxonomyPath);
                                      alert('Immagine salvata nel CRM come Referenza!');
                                   } catch (err) {
                                      alert('Errore salvataggio nel CRM.');
+                                  } finally {
+                                     btn.style.opacity = '1';
                                   }
-                                  e.currentTarget.style.opacity = '1';
                                }}
                                style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#03dac6', cursor: 'pointer', transition: 'all 0.2s' }}
                                title="Salva nel CRM come Referenza"
@@ -2093,8 +2111,24 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                          try {
                             const { saveValidationFeedback } = await import('@/app/admin/actions');
                             const imageUrls = results.map((r: any) => typeof r === 'string' ? r : r.url);
+                            
+                            const detectedCat = getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType);
+                            const mode = selections['IMAGE_TYPE']?.label;
+                            const subName = selections['MODEL_OPTION']?.label;
+                            const realSubcategory = activeSubcategories.find(sub => 
+                               sub.name === subName && 
+                               sub.business_mode.name === mode && 
+                               sub.business_mode.category.slug === detectedCat
+                            );
+                            
+                            if (!realSubcategory?.id) {
+                               alert("Errore: Impossibile trovare l'ID della Sottocategoria nel database.");
+                               btn.innerHTML = originalText;
+                               return;
+                            }
+
                             await saveValidationFeedback(
-                               selections['MODEL_OPTION']?.id || 'unknown',
+                               realSubcategory.id,
                                taxonomyReadableGlobal,
                                imageUrls,
                                note,
