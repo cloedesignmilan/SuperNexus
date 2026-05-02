@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Copyright, Users, Box, Zap, Share2, LogOut, Database } from "lucide-react";
+import { Copyright, Users, Box, Zap, Share2, LogOut, Database, FlaskConical, MessageSquare } from "lucide-react";
 import { adminLogout } from "@/app/login/actions";
 
 export default function AdminSidebar() {
@@ -10,6 +10,8 @@ export default function AdminSidebar() {
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: <Copyright size={18} /> },
+    { href: "/admin/sandbox", label: "Sandbox (Test & Lock)", icon: <FlaskConical size={18} color="#00d2ff" /> },
+    { href: "/admin/analyses", label: "Analisi e Feedback", icon: <MessageSquare size={18} color="#e62ebf" /> },
     { href: "/admin/categories", label: "Macrocategorie", icon: <Box size={18} /> },
     { href: "/admin/business-modes", label: "Categorie", icon: <Box size={18} /> },
     { href: "/admin/subcategories", label: "Sottocategorie & Asset", icon: <Share2 size={18} /> },

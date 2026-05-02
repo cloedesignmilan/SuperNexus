@@ -50,6 +50,7 @@ model Category {
   cover_image String?
   sort_order  Int      @default(0)
   is_active   Boolean  @default(true)
+  is_locked   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -68,6 +69,7 @@ model BusinessMode {
   default_image_count Int      @default(4)
   sort_order          Int      @default(0)
   is_active           Boolean  @default(true)
+  is_locked           Boolean  @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
@@ -91,6 +93,7 @@ model Subcategory {
   internal_notes         String?  @db.Text
   sort_order             Int      @default(0)
   is_active              Boolean  @default(true)
+  is_locked              Boolean  @default(false)
   strict_reference_mode  Boolean  @default(false)
   active_model           String?
   scene_variance_active  Boolean?

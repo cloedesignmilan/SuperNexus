@@ -16,13 +16,26 @@ export default async function DashboardPage() {
   })
 
   // Fetch active taxonomy from CRM to enforce visibility in the app
+  const activeCategories = await prisma.category.findMany({
+    where: { is_active: true }
+  });
+
   const activeBusinessModes = await prisma.businessMode.findMany({
-    where: { is_active: true },
+    where: { 
+      is_active: true,
+      category: { is_active: true }
+    },
     include: { category: true }
   });
 
   const activeSubcategories = await prisma.subcategory.findMany({
-    where: { is_active: true },
+    where: { 
+      is_active: true,
+      business_mode: { 
+        is_active: true,
+        category: { is_active: true }
+      }
+    },
     include: { business_mode: { include: { category: true } } }
   });
 
@@ -45,7 +58,7 @@ export default async function DashboardPage() {
         #dashboard-root { height: 100dvh !important; display: flex; flex-direction: column; overflow: hidden; }
         main { padding: 0 !important; max-width: 100% !important; margin: 0 !important; display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
       `}} />
-      <DashboardWizard snippets={snippets} isAdmin={isAdmin} activeBusinessModes={activeBusinessModes} activeSubcategories={activeSubcategories} />
+      <DashboardWizard snippets={snippets} isAdmin={isAdmin} activeCategories={activeCategories} activeBusinessModes={activeBusinessModes} activeSubcategories={activeSubcategories} />
     </>
   )
 }

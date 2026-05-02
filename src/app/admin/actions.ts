@@ -38,3 +38,54 @@ export async function getAiSceneVariance() {
     });
     return setting?.value === "true";
 }
+
+// --- Sandbox / God Mode Actions ---
+
+export async function toggleVisibility(id: string, type: 'category' | 'business_mode' | 'subcategory', isActive: boolean) {
+    if (type === 'category') {
+        await prisma.category.update({ where: { id }, data: { is_active: isActive } });
+    } else if (type === 'business_mode') {
+        await prisma.businessMode.update({ where: { id }, data: { is_active: isActive } });
+    } else if (type === 'subcategory') {
+        await prisma.subcategory.update({ where: { id }, data: { is_active: isActive } });
+    }
+    revalidatePath('/admin/sandbox');
+    revalidatePath('/dashboard');
+}
+
+export async function toggleLock(id: string, type: 'category' | 'business_mode' | 'subcategory', isLocked: boolean) {
+    if (type === 'category') {
+        await (prisma.category as any).update({ where: { id }, data: { is_locked: isLocked } });
+    } else if (type === 'business_mode') {
+        await (prisma.businessMode as any).update({ where: { id }, data: { is_locked: isLocked } });
+    } else if (type === 'subcategory') {
+        await (prisma.subcategory as any).update({ where: { id }, data: { is_locked: isLocked } });
+    }
+    revalidatePath('/admin/sandbox');
+    revalidatePath('/dashboard');
+}
+
+export async function saveReferenceImage(subcategoryId: string, imageUrl: string, title: string) {
+    await prisma.subcategoryReferenceImage.create({
+        data: {
+            subcategory_id: subcategoryId,
+            image_url: imageUrl,
+            title: title,
+            is_active: true
+        }
+    });
+    revalidatePath('/admin/subcategories/[id]', 'page');
+}
+
+export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string) {
+    await prisma.outputValidationCheck.create({
+        data: {
+            subcategory_id: subcategoryId,
+            reference_image_url: referenceImageUrl, 
+            generated_sample_image: JSON.stringify({ path: taxonomyPath, urls: imageUrls }),
+            review_notes: notes,
+            comparison_status: "pending"
+        }
+    });
+    revalidatePath('/admin/analyses');
+}

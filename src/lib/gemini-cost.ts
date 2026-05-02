@@ -2,9 +2,9 @@ import { prisma } from './prisma';
 
 export const GEMINI_RATES = {
   // Prezzi in Euro per 1 milione di token
-  "gemini-3.1-flash-image-preview": { input: 0.075, output: 0.30, per_image: 0.03 },
+  "gemini-3.1-flash-image-preview": { input: 0.075, output: 0.30, per_image: 0.0653 },
   "gemini-2.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
-  "gemini-3-pro-image-preview": { input: 1.25, output: 5.00, per_image: 0.03 },
+  "gemini-3-pro-image-preview": { input: 1.25, output: 5.00, per_image: 0.0653 },
   "gemini-1.5-pro": { input: 1.25, output: 5.00, per_image: 0 },
   "gemini-1.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
   "gemini-2.0-flash": { input: 0.075, output: 0.30, per_image: 0 },

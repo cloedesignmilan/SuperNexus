@@ -7,7 +7,7 @@ import * as Icons from 'lucide-react'
 type Snippet = any;
 
 
-export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes = [], activeSubcategories = [] }: { snippets: Snippet[], isAdmin?: boolean, activeBusinessModes?: any[], activeSubcategories?: any[] }) {
+export default function DashboardWizard({ snippets, isAdmin, activeCategories = [], activeBusinessModes = [], activeSubcategories = [] }: { snippets: Snippet[], isAdmin?: boolean, activeCategories?: any[], activeBusinessModes?: any[], activeSubcategories?: any[] }) {
   const [step, setStep] = useState<number>(0)
   
   // Upload State
@@ -670,6 +670,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
     let typeSnippets = snippets.filter(s => s.snippet_type === type);
     
     // STRICT TAXONOMY ENFORCEMENT
+    if (type === 'PRODUCT_TYPE') {
+      const activeCatSlugs = activeCategories.map(c => c.slug);
+      typeSnippets = typeSnippets.filter(s => {
+         const slug = getMappedCategorySlug(s.label);
+         return activeCatSlugs.includes(slug);
+      });
+    }
+
     if (type === 'MODEL_OPTION') {
       const mode = selections['IMAGE_TYPE']?.label;
       const detectedCat = getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType);
@@ -1912,7 +1920,56 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   <CheckCircle2 size={32} />
                 </div>
                 <h2 className="step-header" style={{ marginBottom: '0.5rem' }}>Your images are ready!</h2>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem' }}>We've created {results.length} stunning images for your product.</p>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>We've created {results.length} stunning images for your product.</p>
+                
+                <button 
+                   id="btn-download-zip"
+                   onClick={async () => {
+                      try {
+                          const btn = document.getElementById('btn-download-zip');
+                          if (btn) btn.innerHTML = 'Creando Archivio ZIP...';
+                          
+                          const JSZip = (await import('jszip')).default;
+                          const zip = new JSZip();
+                          
+                          const taxonomyPath = `${selections['PRODUCT_TYPE']?.label || ''}_${selections['IMAGE_TYPE']?.label || ''}_${selections['MODEL_OPTION']?.label || ''}`.replace(/\s+/g, '').replace(/[^a-zA-Z0-9_]/g, '_');
+                          const originalName = file?.name ? file.name.replace(/\.[^/.]+$/, "") : "Prodotto_SuperNexus";
+                          const folderName = `${taxonomyPath}_${originalName}`;
+                          const folder = zip.folder(folderName);
+                          if (!folder) return;
+
+                          for (let i = 0; i < results.length; i++) {
+                              const resItem = results[i];
+                              const url = typeof resItem === 'string' ? resItem : resItem.url;
+                              const shotName = resItem.shotName || `Shot_${resItem.shotNumber || i+1}`;
+                              const downloadFilename = `${taxonomyPath}_${shotName}_${originalName}.jpeg`;
+                              
+                              const fetchUrl = url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`;
+                              const res = await fetch(fetchUrl);
+                              const blob = await res.blob();
+                              folder.file(downloadFilename, blob);
+                          }
+
+                          const content = await zip.generateAsync({ type: 'blob' });
+                          const link = document.createElement('a');
+                          link.href = URL.createObjectURL(content);
+                          link.download = `${folderName}.zip`;
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          
+                          if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Scarica Tutte in un File ZIP';
+                      } catch (err) {
+                          console.error(err);
+                          alert('Errore durante la creazione del file ZIP.');
+                          const btn = document.getElementById('btn-download-zip');
+                          if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg> Scarica Tutte in un File ZIP';
+                      }
+                   }}
+                   style={{ padding: '10px 20px', background: 'linear-gradient(90deg, #00d2ff, #03dac6)', color: '#000', border: 'none', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                   <Icons.Download size={18} /> Scarica Tutte in un File ZIP
+                </button>
               </div>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
@@ -1924,22 +1981,54 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                   // Estrai il nome del file originale senza estensione
                   const originalName = file?.name ? file.name.replace(/\.[^/.]+$/, "") : "Prodotto_SuperNexus";
                   
-                  // Genera il filename finale: "[Vista] [Nome Originale].jpeg"
-                  const downloadFilename = `${shotName} ${originalName}.jpeg`;
+                  // Genera il filename finale con il percorso esatto
+                  const taxonomyPath = `${selections['PRODUCT_TYPE']?.label || ''}_${selections['IMAGE_TYPE']?.label || ''}_${selections['MODEL_OPTION']?.label || ''}`.replace(/\s+/g, '').replace(/[^a-zA-Z0-9_]/g, '_');
+                  const taxonomyReadable = `${selections['PRODUCT_TYPE']?.label || ''} > ${selections['IMAGE_TYPE']?.label || ''} > ${selections['MODEL_OPTION']?.label || ''}`;
+                  const downloadFilename = `${taxonomyPath}_${shotName}_${originalName}.jpeg`;
+                  
                   
                   return (
                     <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {isAdmin && (
+                        <div style={{ fontSize: '0.8rem', color: '#03dac6', fontWeight: 600, background: 'rgba(3,218,198,0.1)', padding: '6px 10px', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(3,218,198,0.2)' }}>
+                          {taxonomyReadable}
+                        </div>
+                      )}
+                      
                       <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', background: '#000', position: 'relative' }}>
                         <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Result ${i}`} style={{ width: '100%', height: 'auto', display: 'block' }} />
-                        <button 
-                          onClick={() => handleDownloadImage(url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`, downloadFilename)}
-                          style={{ position: 'absolute', bottom: '1rem', right: '1rem', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
-                          title="Save to Camera Roll / Download"
-                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(0,210,255,0.8)'}
-                          onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
-                        >
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        </button>
+                        <div style={{ position: 'absolute', bottom: '1rem', right: '1rem', display: 'flex', gap: '8px' }}>
+                          {isAdmin && selections['MODEL_OPTION']?.id && (
+                             <button 
+                               onClick={async (e) => {
+                                  e.currentTarget.style.opacity = '0.5';
+                                  try {
+                                     const { saveReferenceImage } = await import('@/app/admin/actions');
+                                     await saveReferenceImage(selections['MODEL_OPTION'].id, url, taxonomyPath);
+                                     alert('Immagine salvata nel CRM come Referenza!');
+                                  } catch (err) {
+                                     alert('Errore salvataggio nel CRM.');
+                                  }
+                                  e.currentTarget.style.opacity = '1';
+                               }}
+                               style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#03dac6', cursor: 'pointer', transition: 'all 0.2s' }}
+                               title="Salva nel CRM come Referenza"
+                               onMouseOver={(e) => e.currentTarget.style.background = 'rgba(3,218,198,0.3)'}
+                               onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+                             >
+                               <Icons.Database size={20} />
+                             </button>
+                          )}
+                          <button 
+                            onClick={() => handleDownloadImage(url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`, downloadFilename)}
+                            style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'all 0.2s' }}
+                            title="Save to Camera Roll / Download"
+                            onMouseOver={(e) => e.currentTarget.style.background = 'rgba(0,210,255,0.8)'}
+                            onMouseOut={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.6)'}
+                          >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                          </button>
+                        </div>
                       </div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.5rem' }}>
                         <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#00d2ff', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -1951,10 +2040,81 @@ export default function DashboardWizard({ snippets, isAdmin, activeBusinessModes
                           </span>
                         )}
                       </div>
+
+                      {isAdmin && (
+                        <div style={{ marginTop: '0.5rem', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '12px' }}>
+                           <textarea 
+                              placeholder="Scrivi qui gli errori per Antigravity (es. pelle di plastica, luci errate, mani deformate...)"
+                              id={`feedback-${i}`}
+                              style={{ width: '100%', minHeight: '70px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.85rem', padding: '10px', borderRadius: '8px', resize: 'vertical' }}
+                           />
+                           <button
+                              onClick={() => {
+                                 const note = (document.getElementById(`feedback-${i}`) as HTMLTextAreaElement).value;
+                                 const textToCopy = `PATH TESTATO:\n[ ${taxonomyReadable} ]\n\nFEEDBACK PER ANTIGRAVITY:\n${note || 'Nessuna nota specifica, ma la immagine ha problemi.'}`;
+                                 navigator.clipboard.writeText(textToCopy);
+                                 alert('Feedback copiato in memoria! Ora incollalo nella chat di Gemini.');
+                              }}
+                              style={{ marginTop: '10px', width: '100%', padding: '10px', background: 'linear-gradient(90deg, #e62ebf, #00d2ff)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '6px' }}
+                           >
+                              <Icons.Copy size={16} /> Copia Appunti per la Chat
+                           </button>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
               </div>
+
+              {isAdmin && (
+                <div style={{ marginBottom: '3rem', padding: '1.5rem', background: 'rgba(0, 210, 255, 0.05)', border: '1px solid rgba(0, 210, 255, 0.2)', borderRadius: '16px' }}>
+                   <h3 style={{ color: '#00d2ff', margin: '0 0 0.5rem 0', fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                     <Icons.MessageSquare size={20} />
+                     Revisione Globale per l'intera Sottocategoria
+                   </h3>
+                   <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginBottom: '1rem', lineHeight: '1.4' }}>
+                     Se vuoi dare una direttiva generale ad Antigravity per <strong>TUTTA</strong> questa sezione (es. <em>"Voglio che per tutti i Candid le case siano sempre super ordinate"</em>), scrivila qui. Verrà applicata permanentemente a questa sottocategoria.
+                   </p>
+                   <textarea 
+                      placeholder="Es: 'Per tutte le immagini UGC Candid voglio le case sempre super ordinate...'"
+                      id="global-feedback"
+                      style={{ width: '100%', minHeight: '80px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '0.9rem', padding: '12px', borderRadius: '8px', resize: 'vertical', outline: 'none' }}
+                   />
+                   <button
+                      onClick={async (e) => {
+                         const taxonomyReadableGlobal = `${selections['PRODUCT_TYPE']?.label || ''} > ${selections['IMAGE_TYPE']?.label || ''} > ${selections['MODEL_OPTION']?.label || ''}`;
+                         const note = (document.getElementById('global-feedback') as HTMLTextAreaElement).value;
+                         const textToCopy = `REVISIONE GLOBALE SOTTOCATEGORIA:\n[ ${taxonomyReadableGlobal} ]\n\nDIRETTIVA PER ANTIGRAVITY:\n${note || 'Nessuna direttiva inserita.'}`;
+                         
+                         const btn = e.currentTarget;
+                         const originalText = btn.innerHTML;
+                         btn.innerHTML = 'Salvataggio in corso...';
+                         
+                         try {
+                            const { saveValidationFeedback } = await import('@/app/admin/actions');
+                            const imageUrls = results.map((r: any) => typeof r === 'string' ? r : r.url);
+                            await saveValidationFeedback(
+                               selections['MODEL_OPTION']?.id || 'unknown',
+                               taxonomyReadableGlobal,
+                               imageUrls,
+                               note,
+                               uploadedUrl || 'N/A'
+                            );
+                            navigator.clipboard.writeText(textToCopy);
+                            alert('Analisi salvata nel CRM e Appunti copiati in memoria!');
+                         } catch (err) {
+                            console.error(err);
+                            alert('Errore durante il salvataggio nel CRM.');
+                         } finally {
+                            btn.innerHTML = originalText;
+                         }
+                      }}
+                      style={{ marginTop: '12px', width: '100%', padding: '12px', background: 'linear-gradient(90deg, #00d2ff, #03dac6)', color: '#000', border: 'none', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+                   >
+                      <Icons.Database size={18} /> Salva Analisi nel CRM (e Copia Testo)
+                   </button>
+                </div>
+              )}
 
               <div className="sticky-bottom-action" style={{ background: 'transparent', backdropFilter: 'none', borderTop: 'none', margin: '0', padding: '0' }}>
                 <button onClick={() => { window.location.href = '/dashboard/gallery'; }} className="btn-magic">

@@ -8,6 +8,7 @@ const GLOBAL_INVIOLABLE_RULES = `\n\n[GLOBAL INVIOLABLE RULES]
 - Preserve the product identity perfectly. Do not invent details.
 - Do not add unwanted objects. Do not add text unless explicitly requested.
 - No watermark. No logo changes.
+- CRITICAL AESTHETIC LOCK: If generating a human model, they MUST be hyper-realistic and stunningly beautiful, resembling a high-end fashion magazine cover model. ABSOLUTELY NO plastic, airbrushed, or fake AI-generated skin. The skin texture, pores, and lighting must be 100% photorealistic and cinematic.
 - CRITICAL ANATOMY LOCK: The human model MUST have perfectly normal anatomy. ABSOLUTELY NO extra arms, no extra limbs, no missing limbs, no extra fingers, no deformed hands, and no distorted body proportions. Check the limb count before finalizing the image!
 - CRITICAL: If the reference image has store tags, cardboard labels, price tags, or hangtags attached, REMOVE THEM COMPLETELY. The garment must be cleanly worn without store tags.
 - CRITICAL NO HALLUCINATIONS: DO NOT add, generate, or hallucinate ANY internal wash tags, care labels, size labels, or extra fabric tags anywhere on the product. The garment must be completely free of any internal labels.
@@ -379,7 +380,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
             
             const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
-            let finalNegative = shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
+            let finalNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
             
             if (isTshirt) {
                 finalNegative += ", wrinkles, heavy creases, messy fabric, crumpled, unironed, messy folds, baggy wrinkles";
@@ -468,7 +469,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 swimwearNegative = "straps on stomach, laces on front stomach, strings around waist, criss-cross torso strings, bikini strings on belly, ";
             }
             
-            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): ${swimwearNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: ${swimwearNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;

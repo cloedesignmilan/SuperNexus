@@ -17,9 +17,13 @@ export default async function AdminDashboard() {
   const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
   const totalImagesCount = totalImagesAggr._sum.results_count || 0;
 
-  // 2. Today's Metrics
+  // 2. Today's & Month's Metrics
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+
+  const startOfMonth = new Date(today);
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
   
   const imagesTodayAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: today } },
@@ -27,8 +31,19 @@ export default async function AdminDashboard() {
   });
   const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
 
+  const imagesMonthAggr = await prisma.generationJob.aggregate({ 
+     where: { createdAt: { gte: startOfMonth } },
+     _sum: { results_count: true }
+  });
+  const imagesMonthCount = imagesMonthAggr._sum.results_count || 0;
+
   const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
       where: { createdAt: { gte: today } },
+      _sum: { cost_eur: true }
+  });
+
+  const costsMonthAggr = await (prisma as any).apiCostLog.aggregate({
+      where: { createdAt: { gte: startOfMonth } },
       _sum: { cost_eur: true }
   });
   
@@ -37,6 +52,7 @@ export default async function AdminDashboard() {
   });
 
   const costToday = costsTodayAggr._sum.cost_eur || 0.000;
+  const costMonth = costsMonthAggr._sum.cost_eur || 0.000;
   const costTotal = costsTotalAggr._sum.cost_eur || 0.000;
 
   // 3. Last 7 Days Activity (for Recharts)
@@ -128,7 +144,10 @@ export default async function AdminDashboard() {
             <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><ImageIcon size={20} /></div>
           </div>
           <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>{totalImagesCount}</p>
-          <p style={{ fontSize: '0.85rem', color: '#10b981', margin: '0.5rem 0 0 0', fontWeight: 500 }}>+{imagesTodayCount} generated today</p>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+             <p style={{ fontSize: '0.85rem', color: '#10b981', margin: 0, fontWeight: 500 }}>+{imagesTodayCount} today</p>
+             <p style={{ fontSize: '0.85rem', color: '#00d2ff', margin: 0, fontWeight: 500 }}>+{imagesMonthCount} this month</p>
+          </div>
         </div>
 
         {/* Cost Card */}
@@ -138,7 +157,10 @@ export default async function AdminDashboard() {
             <div style={{ background: 'rgba(0, 210, 255, 0.1)', padding: '8px', borderRadius: '10px', color: '#00d2ff' }}><Euro size={20} /></div>
           </div>
           <p style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0, color: '#fff' }}>€{costTotal.toFixed(2)}</p>
-          <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', margin: '0.5rem 0 0 0' }}>€{costToday.toFixed(2)} spent today</p>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+             <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', margin: 0 }}>€{costToday.toFixed(2)} today</p>
+             <p style={{ fontSize: '0.85rem', color: '#00d2ff', margin: 0 }}>€{costMonth.toFixed(2)} this month</p>
+          </div>
         </div>
 
       </div>
