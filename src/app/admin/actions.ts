@@ -77,12 +77,12 @@ export async function saveReferenceImage(subcategoryId: string, imageUrl: string
     revalidatePath('/admin/subcategories/[id]', 'page');
 }
 
-export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string) {
+export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string, modelUsed?: string) {
     const record = await prisma.outputValidationCheck.create({
         data: {
             subcategory_id: subcategoryId,
             reference_image_url: referenceImageUrl, 
-            generated_sample_image: JSON.stringify({ path: taxonomyPath, urls: imageUrls }),
+            generated_sample_image: JSON.stringify({ path: taxonomyPath, urls: imageUrls, model: modelUsed || 'gemini-3.1-flash-image-preview' }),
             review_notes: notes,
             comparison_status: "pending"
         }

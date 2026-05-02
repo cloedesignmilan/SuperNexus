@@ -122,9 +122,11 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                         {items.map((check) => {
                             let urls: string[] = [];
+                            let modelUsed = 'FLASH';
                             try {
                                 const parsed = JSON.parse(check.generated_sample_image);
                                 urls = parsed.urls || [];
+                                if (parsed.model === 'gemini-3-pro-image-preview') modelUsed = 'PRO';
                             } catch (e) {
                                 urls = [check.generated_sample_image]; // Legacy single image
                             }
@@ -150,8 +152,13 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                                             <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#00d2ff', fontWeight: 700, letterSpacing: '0.5px' }}>Risultato Test (Generazione)</div>
-                                            <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '20px' }}>
-                                                {new Date(check.createdAt).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                                <div style={{ fontSize: '0.7rem', fontWeight: 800, padding: '4px 8px', borderRadius: '8px', background: modelUsed === 'PRO' ? '#ff5e00' : '#3b82f6', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                                    {modelUsed}
+                                                </div>
+                                                <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '20px' }}>
+                                                    {new Date(check.createdAt).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                                </div>
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px' }}>

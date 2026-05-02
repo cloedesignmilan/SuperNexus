@@ -277,7 +277,7 @@ export async function POST(req: NextRequest) {
         data: { status: 'completed', results_count: outputResults.length, total_cost_eur: jobCost }
     })
 
-    return NextResponse.json({ success: true, results: outputResults, jobId: newJob.id })
+    return NextResponse.json({ success: true, results: outputResults, jobId: newJob.id, modelUsed: generationModel })
 
   } catch (error) {
     console.error("Web Generate Error:", error)

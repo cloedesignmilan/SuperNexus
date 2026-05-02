@@ -528,7 +528,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                     taxonomyReadableGlobal,
                     imageUrls,
                     "", 
-                    uploadedUrl || 'N/A'
+                    uploadedUrl || 'N/A',
+                    data.modelUsed
                  );
                  setOutputValidationId(savedId);
              }
