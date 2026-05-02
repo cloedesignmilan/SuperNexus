@@ -425,7 +425,8 @@ export default async function LandingPage() {
       {/* DIMENSIONI E FORMATI */}
       <DimensionsGuide lang={lang} />
 
-      {/* CREAZIONI SHOWCASE (PREMIUM) */}
+      {/* CREAZIONI SHOWCASE (PREMIUM) - TEMPORANEAMENTE NASCOSTO SU RICHIESTA */}
+      {/* 
       <section style={{ padding: '8rem 5%', background: '#0a0a0a', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)', width: '80%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(204,255,0,0.05), transparent 70%)', pointerEvents: 'none' }}></div>
         <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
@@ -440,6 +441,7 @@ export default async function LandingPage() {
           <PremiumCreazioniShowcase initialTree={creazioniTree} lang={lang} />
         </div>
       </section>
+      */}
 
       {/* PIATTAFORME */}
       <PlatformShowcase lang={lang} />
