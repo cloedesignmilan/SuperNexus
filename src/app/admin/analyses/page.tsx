@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
+import { updateValidationFeedback } from "@/app/admin/actions";
 
 export const dynamic = 'force-dynamic';
 
@@ -112,9 +113,18 @@ export default async function AnalysesPage() {
                                     {/* Feedback Notes */}
                                     <div style={{ width: '380px', flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: '2rem', display: 'flex', flexDirection: 'column' }}>
                                         <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#e62ebf', fontWeight: 700, marginBottom: '10px', letterSpacing: '0.5px' }}>Appunti e Direttiva per Antigravity</div>
-                                        <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.2rem', borderRadius: '12px', fontSize: '0.95rem', color: '#fff', flex: 1, whiteSpace: 'pre-wrap', border: '1px solid rgba(255,255,255,0.05)', lineHeight: '1.5' }}>
-                                            {check.review_notes || <span style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>Nessuna nota specifica inserita. L'immagine potrebbe essere già validata.</span>}
-                                        </div>
+                                        
+                                        <form action={updateValidationFeedback.bind(null, check.id)} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                            <textarea 
+                                                name="notes"
+                                                defaultValue={check.review_notes || ""}
+                                                placeholder="Nessuna nota inserita. Scrivi qui il tuo feedback..."
+                                                style={{ background: 'rgba(255,255,255,0.03)', padding: '1.2rem', borderRadius: '12px', fontSize: '0.95rem', color: '#fff', flex: 1, border: '1px solid rgba(255,255,255,0.05)', lineHeight: '1.5', minHeight: '120px', resize: 'vertical' }}
+                                            />
+                                            <button type="submit" style={{ marginTop: '10px', background: 'linear-gradient(90deg, #00d2ff, #03dac6)', color: '#000', border: 'none', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 700, padding: '10px', cursor: 'pointer' }}>
+                                                Salva Nota
+                                            </button>
+                                        </form>
 
                                         <form action={deleteCheck.bind(null, check.id)} style={{ marginTop: '1.5rem', alignSelf: 'flex-end' }}>
                                             <button type="submit" style={{ background: 'transparent', border: '1px solid rgba(255, 75, 75, 0.3)', color: '#ff4b4b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', padding: '8px 16px', borderRadius: '8px', transition: 'all 0.2s', fontWeight: 600 }}>

@@ -33,6 +33,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const [isGenerating, setIsGenerating] = useState(false)
   const [results, setResults] = useState<any[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [outputValidationId, setOutputValidationId] = useState<string | null>(null)
   
   // AI Analysis State
   const [analysisData, setAnalysisData] = useState<any>(null)
@@ -505,6 +506,36 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       if (data.results) {
         setResults(data.results)
         setStep(6)
+        
+        if (isAdmin) {
+          try {
+             const { saveValidationFeedback } = await import('@/app/admin/actions');
+             const imageUrls = data.results.map((r: any) => typeof r === 'string' ? r : r.url);
+             const detectedCat = getMappedCategorySlug(payload.detectedProductType);
+             const mode = payload.imageType;
+             const subName = payload.modelOption;
+             
+             const realSubcategory = activeSubcategories.find(sub => 
+                sub.name === subName && 
+                sub.business_mode.name === mode && 
+                sub.business_mode.category.slug === detectedCat
+             );
+             
+             if (realSubcategory?.id) {
+                 const taxonomyReadableGlobal = `${payload.productType} > ${mode} > ${subName}`;
+                 const savedId = await saveValidationFeedback(
+                    realSubcategory.id,
+                    taxonomyReadableGlobal,
+                    imageUrls,
+                    "", 
+                    uploadedUrl || 'N/A'
+                 );
+                 setOutputValidationId(savedId);
+             }
+          } catch (e) {
+             console.error("Auto-save feedback failed", e);
+          }
+        }
       }
     } catch (err: any) {
       setError(err.message)
@@ -2127,13 +2158,21 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                                return;
                             }
 
-                            await saveValidationFeedback(
-                               realSubcategory.id,
-                               taxonomyReadableGlobal,
-                               imageUrls,
-                               note,
-                               uploadedUrl || 'N/A'
-                            );
+                            if (outputValidationId) {
+                               const { updateValidationFeedback } = await import('@/app/admin/actions');
+                               const formData = new FormData();
+                               formData.append('notes', note);
+                               await updateValidationFeedback(outputValidationId, formData);
+                            } else {
+                               const { saveValidationFeedback } = await import('@/app/admin/actions');
+                               await saveValidationFeedback(
+                                  realSubcategory.id,
+                                  taxonomyReadableGlobal,
+                                  imageUrls,
+                                  note,
+                                  uploadedUrl || 'N/A'
+                               );
+                            }
                             navigator.clipboard.writeText(textToCopy);
                             alert('Analisi salvata nel CRM e Appunti copiati in memoria!');
                          } catch (err) {

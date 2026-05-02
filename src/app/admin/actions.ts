@@ -78,7 +78,7 @@ export async function saveReferenceImage(subcategoryId: string, imageUrl: string
 }
 
 export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string) {
-    await prisma.outputValidationCheck.create({
+    const record = await prisma.outputValidationCheck.create({
         data: {
             subcategory_id: subcategoryId,
             reference_image_url: referenceImageUrl, 
@@ -86,6 +86,16 @@ export async function saveValidationFeedback(subcategoryId: string, taxonomyPath
             review_notes: notes,
             comparison_status: "pending"
         }
+    });
+    revalidatePath('/admin/analyses');
+    return record.id;
+}
+
+export async function updateValidationFeedback(id: string, formData: FormData) {
+    const notes = formData.get('notes') as string;
+    await prisma.outputValidationCheck.update({
+        where: { id },
+        data: { review_notes: notes }
     });
     revalidatePath('/admin/analyses');
 }
