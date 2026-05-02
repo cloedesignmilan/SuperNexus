@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { CreazioniNode } from '@/lib/getCreazioniData';
-import { Image as ImageIcon, Sparkles, Wand2 } from 'lucide-react';
+import { Image as ImageIcon, Sparkles, Wand2, Eye, Lock, ChevronDown, ChevronRight, Check } from 'lucide-react';
 import { Locale, dictionaries } from '@/lib/i18n/dictionaries';
 
 interface Props {
@@ -13,60 +13,7 @@ interface Props {
 export default function PremiumCreazioniShowcase({ initialTree, lang = 'en' }: Props) {
   const t = dictionaries[lang];
   
-  // Flatten tree to find leaf directories (directories that only contain images, or just all directories with images)
-  const leafDirs = useMemo(() => {
-    const leaves: { name: string; node: CreazioniNode; path: string }[] = [];
-    
-    const traverse = (node: CreazioniNode, currentPath: string[]) => {
-      if (!node.isDirectory) return;
-      
-      const hasImages = node.children?.some(c => !c.isDirectory && !c.name.toLowerCase().includes('negozio'));
-      const hasSubDirs = node.children?.some(c => c.isDirectory);
-      
-      if (hasImages && !hasSubDirs) {
-        // Clean up name logic
-        let cleanName = node.name;
-        const fullPath = [...currentPath, node.name].join(' > ');
-        
-        if (fullPath.includes('Model Studio > Model Photo')) {
-          cleanName = 'Studio Model';
-        } else if (fullPath.includes('Lifestyle > Model Photo')) {
-          cleanName = 'Lifestyle Model';
-        } else if (fullPath.includes('Clean Catalog > NO MODEL')) {
-          cleanName = 'Clean Catalog';
-        } else if (fullPath.includes('UGC > MAN')) {
-          cleanName = 'UGC Man';
-        } else if (fullPath.includes('UGC > WOMAN')) {
-          cleanName = 'UGC Woman';
-        } else {
-          // generic cleanup
-          cleanName = cleanName.includes('>') ? cleanName.split('>').pop()?.trim() || cleanName : cleanName;
-        }
-
-        leaves.push({ name: cleanName, node, path: fullPath });
-      } else {
-        node.children?.forEach(c => traverse(c, [...currentPath, node.name]));
-      }
-    };
-
-    initialTree.forEach(rootNode => traverse(rootNode, []));
-    
-    return leaves;
-  }, [initialTree]);
-
-  const [selectedLeafPath, setSelectedLeafPath] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
-  // Set first leaf as default if available
-  useEffect(() => {
-    if (leafDirs.length > 0 && !selectedLeafPath) {
-      setSelectedLeafPath(leafDirs[0].path);
-    }
-  }, [leafDirs, selectedLeafPath]);
-
-  // Find store covers (any image with 'negozio' anywhere in the tree under the current selection or globally)
-  // To keep it simple and consistent with previous behavior, let's find the store images from the root or currently selected macro category.
-  // Actually, previously it showed store images from `currentNodes`. If we are flattened, we should show store images globally.
+  // Find store covers
   const storeImages = useMemo(() => {
     const images: CreazioniNode[] = [];
     const traverse = (node: CreazioniNode) => {
@@ -81,76 +28,103 @@ export default function PremiumCreazioniShowcase({ initialTree, lang = 'en' }: P
     return images;
   }, [initialTree]);
 
-  const activeLeaf = leafDirs.find(l => l.path === selectedLeafPath);
+  // Parse leaf directories into a structured accordion: Category -> Leaf
+  const accordionData = useMemo(() => {
+    const data: Record<string, { path: string, name: string, node: CreazioniNode }[]> = {};
+    
+    const traverse = (node: CreazioniNode, currentPath: string[]) => {
+      if (!node.isDirectory) return;
+      
+      const hasImages = node.children?.some(c => !c.isDirectory && !c.name.toLowerCase().includes('negozio'));
+      const hasSubDirs = node.children?.some(c => c.isDirectory);
+      
+      if (hasImages && !hasSubDirs) {
+        // Parse name from fullPath. E.g. "T-shirt > Clean Catalog > STILL LIFE PACK"
+        // or just node.name if it's nested like "UGC" -> "MAN".
+        const fullPath = [...currentPath, node.name];
+        
+        let category = 'Variations';
+        let leafName = node.name;
+
+        // Try to infer Category and Leaf from path
+        // Example: ["TSHIRT", "T-shirt > Clean Catalog > STILL LIFE PACK"]
+        // Let's analyze the node's name or its path string.
+        let rawPathString = node.name; 
+        if (node.name.includes('>')) {
+            rawPathString = node.name;
+        } else if (currentPath.length > 0) {
+            // E.g. node.name is "MAN", parent is "T-shirt > UGC"
+            const parentWithArrows = currentPath.find(p => p.includes('>'));
+            if (parentWithArrows) {
+                rawPathString = parentWithArrows + ' > ' + node.name;
+            }
+        }
+
+        if (rawPathString.includes('>')) {
+            const parts = rawPathString.split('>').map(p => p.trim());
+            if (parts.length >= 3) {
+                category = parts[parts.length - 2];
+                leafName = parts[parts.length - 1];
+            } else if (parts.length === 2) {
+                category = parts[0];
+                leafName = parts[1];
+            }
+        }
+
+        if (!data[category]) {
+            data[category] = [];
+        }
+        data[category].push({ path: fullPath.join('/'), name: leafName, node });
+
+      } else {
+        node.children?.forEach(c => traverse(c, [...currentPath, node.name]));
+      }
+    };
+
+    initialTree.forEach(rootNode => traverse(rootNode, []));
+    
+    return data;
+  }, [initialTree]);
+
+  const categories = Object.keys(accordionData);
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    categories.forEach(c => initial[c] = true); // Open all by default
+    return initial;
+  });
+
+  // Select the very first leaf by default
+  const firstLeaf = categories.length > 0 && accordionData[categories[0]].length > 0 ? accordionData[categories[0]][0] : null;
+  const [selectedLeafPath, setSelectedLeafPath] = useState<string | null>(firstLeaf?.path || null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (firstLeaf && !selectedLeafPath) {
+      setSelectedLeafPath(firstLeaf.path);
+    }
+  }, [firstLeaf, selectedLeafPath]);
+
+  // Find active leaf to show images
+  let activeLeaf: { path: string, name: string, node: CreazioniNode } | null = null;
+  let activeCategoryName = '';
+  for (const cat of categories) {
+    const found = accordionData[cat].find(l => l.path === selectedLeafPath);
+    if (found) {
+        activeLeaf = found;
+        activeCategoryName = cat;
+        break;
+    }
+  }
+
   const galleryImages = activeLeaf ? activeLeaf.node.children?.filter(c => !c.isDirectory && !c.name.toLowerCase().includes('negozio')) || [] : [];
+
+  const toggleCategory = (cat: string) => {
+    setOpenCategories(prev => ({ ...prev, [cat]: !prev[cat] }));
+  };
 
   return (
     <div style={{ position: 'relative', zIndex: 10, width: '100%', fontFamily: 'Inter, sans-serif' }}>
       <style dangerouslySetInnerHTML={{__html: `
-        .premium-nav-pill {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          color: #fff;
-          padding: 0.6rem 1.2rem;
-          border-radius: 30px;
-          cursor: pointer;
-          font-weight: 600;
-          font-size: 0.95rem;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .premium-nav-pill:hover {
-          background: rgba(204, 255, 0, 0.1);
-          border-color: #ccff00;
-          color: #ccff00;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(204, 255, 0, 0.2);
-        }
-        .premium-icon-btn {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          background: rgba(255,255,255,0.02);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 50px;
-          padding: 8px 20px 8px 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-        }
-        .premium-icon-btn:hover {
-          background: rgba(0, 255, 255, 0.08);
-          border-color: #00ffff;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15);
-        }
-        .premium-dir-icon-small {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #00ffff 0%, #0088ff 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #000;
-          box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-        }
-        .premium-icon-btn:hover .premium-dir-icon-small {
-          box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-        }
-        .premium-gallery-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .premium-gallery-card:hover .premium-gallery-img {
-          transform: scale(1.08);
-        }
         .hero-store-cover {
           position: relative;
           width: 100%;
@@ -172,9 +146,72 @@ export default function PremiumCreazioniShowcase({ initialTree, lang = 'en' }: P
           background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
           pointer-events: none;
         }
+        .acc-category {
+          background: rgba(255,255,255,0.02);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          cursor: pointer;
+          padding: 1rem 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #fff;
+          font-weight: 600;
+          transition: background 0.2s;
+        }
+        .acc-category:hover {
+          background: rgba(255,255,255,0.05);
+        }
+        .acc-leaf {
+          padding: 1rem 1.5rem 1rem 3rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          color: #aaa;
+          font-weight: 500;
+          font-size: 0.95rem;
+          border-bottom: 1px solid rgba(255,255,255,0.02);
+          transition: all 0.2s;
+          position: relative;
+        }
+        .acc-leaf:hover {
+          background: rgba(255,255,255,0.03);
+          color: #fff;
+        }
+        .acc-leaf.active {
+          background: rgba(0, 255, 255, 0.08);
+          color: #00ffff;
+        }
+        .acc-leaf.active::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 3px;
+          background: #00ffff;
+          box-shadow: 0 0 10px #00ffff;
+        }
+        .premium-gallery-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .premium-gallery-card {
+          border-radius: 16px;
+          overflow: hidden;
+          background: #0a0a0a;
+          border: 1px solid rgba(255,255,255,0.1);
+          cursor: pointer;
+          position: relative;
+          aspect-ratio: 3/4;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .premium-gallery-card:hover .premium-gallery-img {
+          transform: scale(1.08);
+        }
       `}} />
-
-      {/* Nav Breadcrumbs has been replaced by horizontal tabs for leaves */}
 
       {/* Hero Store Covers */}
       {storeImages.length > 0 && (
@@ -199,56 +236,82 @@ export default function PremiumCreazioniShowcase({ initialTree, lang = 'en' }: P
         </div>
       )}
 
-      {/* Tabs / Directory Icons */}
-      {leafDirs.length > 0 && (
-        <div style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', maxWidth: '1000px' }}>
-            {leafDirs.map(leaf => {
-              const isActive = leaf.path === selectedLeafPath;
-              return (
+      {/* Sidebar + Gallery Layout */}
+      <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+        
+        {/* Accordion Sidebar */}
+        <div style={{ 
+          flex: '1 1 300px', 
+          maxWidth: '400px',
+          background: '#111', 
+          borderRadius: '16px', 
+          border: '1px solid rgba(255,255,255,0.1)',
+          overflow: 'hidden',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.5)'
+        }}>
+          <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+             <h3 style={{ margin: 0, color: '#fff', fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#00ffff' }}>●</span> T-shirt
+             </h3>
+          </div>
+          
+          {categories.map(cat => (
+            <div key={cat}>
+              <div className="acc-category" onClick={() => toggleCategory(cat)}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  {openCategories[cat] ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                  {cat}
+                </div>
+                <div style={{ display: 'flex', gap: '8px', color: '#ff0ab3' }}>
+                   <Eye size={16} />
+                   <Lock size={16} />
+                </div>
+              </div>
+              
+              {openCategories[cat] && accordionData[cat].map(leaf => (
                 <div 
                   key={leaf.path} 
-                  className="premium-icon-btn" 
+                  className={`acc-leaf ${selectedLeafPath === leaf.path ? 'active' : ''}`}
                   onClick={() => setSelectedLeafPath(leaf.path)}
-                  style={{ 
-                    borderColor: isActive ? '#00ffff' : 'rgba(255,255,255,0.08)',
-                    background: isActive ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255,255,255,0.02)',
-                    boxShadow: isActive ? '0 5px 15px rgba(0, 255, 255, 0.15)' : 'none'
-                  }}
                 >
-                  <div className="premium-dir-icon-small" style={{
-                    background: isActive ? 'linear-gradient(135deg, #00ffff 0%, #0088ff 100%)' : 'rgba(255,255,255,0.1)',
-                    boxShadow: isActive ? '0 0 10px rgba(0, 255, 255, 0.4)' : 'none',
-                    color: isActive ? '#000' : '#fff'
-                  }}>
-                    <Sparkles size={18} />
-                  </div>
-                  <div style={{ fontWeight: 600, fontSize: '0.95rem', color: isActive ? '#00ffff' : '#eaeaea', letterSpacing: '0.5px' }}>
-                    {leaf.name}
+                  {leaf.name}
+                  <div style={{ display: 'flex', gap: '8px', color: selectedLeafPath === leaf.path ? '#00ffff' : '#ff0ab3', opacity: selectedLeafPath === leaf.path ? 1 : 0.7 }}>
+                   {selectedLeafPath === leaf.path ? <Check size={16} /> : <Eye size={16} />}
+                   <Lock size={16} />
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
-      )}
 
-      {/* Generated Images Grid */}
-      {galleryImages.length > 0 && (
-        <div style={{ minHeight: '400px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', justifyContent: 'center' }}>
-            <ImageIcon size={24} color="#ccff00" />
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', margin: 0, textTransform: 'uppercase', letterSpacing: '2px' }}>{activeLeaf?.name} {t.creazioniShowcase.resultsTitle}</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.5rem' }}>
-            {galleryImages.map(img => (
-              <div key={img.path} className="premium-gallery-card" onClick={() => setSelectedImage(img.path)} style={{ borderRadius: '20px', overflow: 'hidden', background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', position: 'relative', aspectRatio: '3/4', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                <img src={img.path} alt={img.name} className="premium-gallery-img" />
+        {/* Gallery Area */}
+        <div style={{ flex: '2 1 500px', minHeight: '400px' }}>
+          {activeLeaf && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+                <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', margin: 0, letterSpacing: '1px' }}>
+                  <span style={{ color: '#888' }}>{activeCategoryName} /</span> {activeLeaf.name}
+                </h2>
               </div>
-            ))}
-          </div>
+              
+              {galleryImages.length > 0 ? (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                  {galleryImages.map(img => (
+                    <div key={img.path} className="premium-gallery-card" onClick={() => setSelectedImage(img.path)}>
+                      <img src={img.path} alt={img.name} className="premium-gallery-img" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ padding: '3rem', textAlign: 'center', color: '#888', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed rgba(255,255,255,0.1)' }}>
+                   Nessuna immagine trovata in questa cartella.
+                </div>
+              )}
+            </>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Fullscreen Lightbox */}
       {selectedImage && (
