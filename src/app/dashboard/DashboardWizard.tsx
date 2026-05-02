@@ -511,9 +511,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           try {
              const { saveValidationFeedback } = await import('@/app/admin/actions');
              const imageUrls = data.results.map((r: any) => typeof r === 'string' ? r : r.url);
-             const detectedCat = getMappedCategorySlug(payload.detectedProductType);
-             const mode = payload.imageType;
-             const subName = payload.modelOption;
+             const detectedCat = getMappedCategorySlug(selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType);
+             const mode = selections['IMAGE_TYPE']?.label;
+             const subName = selections['MODEL_OPTION']?.label;
              
              const realSubcategory = activeSubcategories.find(sub => 
                 sub.name === subName && 
@@ -522,7 +522,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
              );
              
              if (realSubcategory?.id) {
-                 const taxonomyReadableGlobal = `${payload.productType} > ${mode} > ${subName}`;
+                 const taxonomyReadableGlobal = `${selections['PRODUCT_TYPE']?.label || analysisData?.detectedProductType} > ${mode} > ${subName}`;
                  const savedId = await saveValidationFeedback(
                     realSubcategory.id,
                     taxonomyReadableGlobal,
