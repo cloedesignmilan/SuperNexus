@@ -21,7 +21,8 @@ import { PRICING_CONFIG } from '@/lib/pricingConfig';
 import QuoteCTA from '@/components/QuoteCTA';
 import TrackedLink from '@/components/TrackedLink';
 import { getShowcaseData } from '@/lib/getShowcaseData';
-
+import PremiumCreazioniShowcase from '@/components/PremiumCreazioniShowcase';
+import { getCreazioniTree } from '@/lib/getCreazioniData';
 function getDynamicMetrics() {
   const launchDate = new Date('2026-04-20T00:00:00Z');
   const now = new Date();
@@ -60,6 +61,7 @@ export default async function LandingPage() {
 
   const showcaseData = await getShowcaseData();
   const metrics = getDynamicMetrics();
+  const creazioniTree = getCreazioniTree('Creazioni');
 
   return (
     <div className="landing-container">
@@ -422,6 +424,22 @@ export default async function LandingPage() {
 
       {/* DIMENSIONI E FORMATI */}
       <DimensionsGuide lang={lang} />
+
+      {/* CREAZIONI SHOWCASE (PREMIUM) */}
+      <section style={{ padding: '8rem 5%', background: '#0a0a0a', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)', width: '80%', height: '50%', background: 'radial-gradient(ellipse at top, rgba(204,255,0,0.05), transparent 70%)', pointerEvents: 'none' }}></div>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, letterSpacing: '-1px', color: '#fff', margin: 0, lineHeight: 1.1 }}>
+              {lang === 'it' ? 'Il Tuo ' : 'Your '}<span className="animated-gradient-text" style={{ color: '#00ffff' }}>{lang === 'it' ? 'Studio' : 'Studio'}</span>
+            </h2>
+            <p style={{ color: '#888', fontSize: '1.2rem', marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0' }}>
+              {lang === 'it' ? 'Esplora le configurazioni esatte e gli output reali che puoi ottenere con un solo clic.' : 'Explore exact configurations and real outputs you can achieve with one click.'}
+            </p>
+          </div>
+          <PremiumCreazioniShowcase initialTree={creazioniTree} />
+        </div>
+      </section>
 
       {/* PIATTAFORME */}
       <PlatformShowcase lang={lang} />
