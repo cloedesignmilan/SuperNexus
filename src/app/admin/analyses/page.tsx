@@ -2,10 +2,11 @@ import { prisma } from "@/lib/prisma";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import { updateValidationFeedback } from "@/app/admin/actions";
+import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
-export default async function AnalysesPage() {
+export default async function AnalysesPage({ searchParams }: { searchParams: { filter?: string } }) {
     const checks = await prisma.outputValidationCheck.findMany({
         orderBy: { createdAt: 'desc' },
         include: {
@@ -19,8 +20,15 @@ export default async function AnalysesPage() {
         }
     });
 
+    const activeFilter = searchParams.filter;
+    const availableCategories = Array.from(new Set(checks.map(c => c.subcategory?.business_mode?.category?.name).filter(Boolean))) as string[];
+
+    const displayChecks = activeFilter 
+        ? checks.filter(c => c.subcategory?.business_mode?.category?.name === activeFilter) 
+        : checks;
+
     // Grouping by taxonomy path
-    const grouped = checks.reduce((acc, check) => {
+    const grouped = displayChecks.reduce((acc, check) => {
         let path = "Percorso Sconosciuto";
         try {
             const parsed = JSON.parse(check.generated_sample_image);
@@ -57,10 +65,43 @@ export default async function AnalysesPage() {
                     </button>
                 </form>
             </div>
-            <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '3rem', fontSize: '1.1rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
                 Lo storico visivo di tutte le direttive inviate ad Antigravity dalla Sandbox. Ogni riga rappresenta un test completo.
             </p>
             
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
+                <Link href="/admin/analyses" style={{
+                    padding: '8px 16px', 
+                    borderRadius: '20px', 
+                    fontSize: '0.9rem', 
+                    fontWeight: 600, 
+                    textDecoration: 'none',
+                    background: !activeFilter ? '#00d2ff' : 'rgba(255,255,255,0.05)',
+                    color: !activeFilter ? '#000' : '#fff',
+                    border: '1px solid',
+                    borderColor: !activeFilter ? '#00d2ff' : 'rgba(255,255,255,0.1)',
+                    transition: 'all 0.2s'
+                }}>
+                    Tutto
+                </Link>
+                {availableCategories.map(cat => (
+                    <Link key={cat} href={`/admin/analyses?filter=${encodeURIComponent(cat)}`} style={{
+                        padding: '8px 16px', 
+                        borderRadius: '20px', 
+                        fontSize: '0.9rem', 
+                        fontWeight: 600, 
+                        textDecoration: 'none',
+                        background: activeFilter === cat ? '#00d2ff' : 'rgba(255,255,255,0.05)',
+                        color: activeFilter === cat ? '#000' : '#fff',
+                        border: '1px solid',
+                        borderColor: activeFilter === cat ? '#00d2ff' : 'rgba(255,255,255,0.1)',
+                        transition: 'all 0.2s'
+                    }}>
+                        {cat}
+                    </Link>
+                ))}
+            </div>
+
             {Object.keys(grouped).length === 0 && (
                 <div style={{ padding: '4rem', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
                     <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.1rem' }}>Nessuna analisi salvata. Utilizza la Sandbox per collaudare e salvare feedback.</p>
