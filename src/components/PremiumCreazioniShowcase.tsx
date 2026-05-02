@@ -58,49 +58,38 @@ export default function PremiumCreazioniShowcase({ initialTree }: Props) {
           transform: translateY(-2px);
           box-shadow: 0 8px 25px rgba(204, 255, 0, 0.2);
         }
-        .premium-dir-card {
-          background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 24px;
-          padding: 2rem;
-          cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .premium-icon-btn {
           display: flex;
-          flex-direction: column;
           align-items: center;
-          justify-content: center;
-          gap: 1.5rem;
-          text-align: center;
+          gap: 12px;
+          background: rgba(255,255,255,0.02);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 50px;
+          padding: 8px 20px 8px 8px;
+          cursor: pointer;
+          transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
         }
-        .premium-dir-card::before {
-          content: '';
-          position: absolute;
-          top: -50%; left: -50%; width: 200%; height: 200%;
-          background: radial-gradient(circle, rgba(0,255,255,0.1) 0%, transparent 70%);
-          opacity: 0;
-          transition: opacity 0.4s;
-          pointer-events: none;
-        }
-        .premium-dir-card:hover {
-          transform: translateY(-10px) scale(1.02);
+        .premium-icon-btn:hover {
+          background: rgba(0, 255, 255, 0.08);
           border-color: #00ffff;
-          box-shadow: 0 15px 40px rgba(0, 255, 255, 0.2);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 255, 255, 0.15);
         }
-        .premium-dir-card:hover::before {
-          opacity: 1;
-        }
-        .premium-dir-icon {
-          width: 60px;
-          height: 60px;
+        .premium-dir-icon-small {
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
-          background: rgba(0, 255, 255, 0.1);
+          background: linear-gradient(135deg, #00ffff 0%, #0088ff 100%);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #00ffff;
-          box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.2);
+          color: #000;
+          box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+        }
+        .premium-icon-btn:hover .premium-dir-icon-small {
+          box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
         }
         .premium-gallery-img {
           width: 100%;
@@ -173,20 +162,20 @@ export default function PremiumCreazioniShowcase({ initialTree }: Props) {
         </div>
       )}
 
-      {/* Directory Pills/Cards */}
+      {/* Directory Icons */}
       {directories.length > 0 && (
-        <div style={{ marginBottom: '5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem', justifyContent: 'center' }}>
-            <Layers size={24} color="#00ffff" />
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#fff', margin: 0, textTransform: 'uppercase', letterSpacing: '2px' }}>Esplora Variazioni</h2>
+        <div style={{ marginBottom: '5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginBottom: '2rem' }}>
+            <Layers size={20} color="#00ffff" />
+            <h2 style={{ fontSize: '1.2rem', fontWeight: 600, color: '#aaa', margin: 0, textTransform: 'uppercase', letterSpacing: '1px' }}>Esplora Variazioni</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', maxWidth: '800px' }}>
             {directories.map(dir => (
-              <div key={dir.path} className="premium-dir-card" onClick={() => handleNavigate(dir)}>
-                <div className="premium-dir-icon">
-                  <Sparkles size={28} />
+              <div key={dir.path} className="premium-icon-btn" onClick={() => handleNavigate(dir)}>
+                <div className="premium-dir-icon-small">
+                  <Sparkles size={18} />
                 </div>
-                <div style={{ fontWeight: 800, fontSize: '1.2rem', color: '#fff', letterSpacing: '0.5px' }}>
+                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#eaeaea', letterSpacing: '0.5px' }}>
                   {dir.name.includes('>') ? dir.name.split('>').pop()?.trim() : dir.name}
                 </div>
               </div>
