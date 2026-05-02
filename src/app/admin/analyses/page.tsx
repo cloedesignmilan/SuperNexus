@@ -41,9 +41,22 @@ export default async function AnalysesPage() {
         revalidatePath('/admin/analyses');
     }
 
+    async function deleteAllChecks() {
+        "use server";
+        await prisma.outputValidationCheck.deleteMany({});
+        revalidatePath('/admin/analyses');
+    }
+
     return (
         <div style={{ padding: '2rem', maxWidth: '1600px', margin: '0 auto', color: '#fff' }}>
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', color: '#00d2ff', fontWeight: 800 }}>Pannello Analisi e Feedback</h1>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <h1 style={{ fontSize: '2.5rem', margin: 0, color: '#00d2ff', fontWeight: 800 }}>Pannello Analisi e Feedback</h1>
+                <form action={deleteAllChecks}>
+                    <button type="submit" style={{ background: 'rgba(255, 75, 75, 0.1)', border: '1px solid rgba(255, 75, 75, 0.3)', color: '#ff4b4b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', padding: '10px 20px', borderRadius: '12px', transition: 'all 0.2s', fontWeight: 700 }}>
+                        <Trash2 size={18} /> Svuota Tutto
+                    </button>
+                </form>
+            </div>
             <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '3rem', fontSize: '1.1rem' }}>
                 Lo storico visivo di tutte le direttive inviate ad Antigravity dalla Sandbox. Ogni riga rappresenta un test completo.
             </p>
