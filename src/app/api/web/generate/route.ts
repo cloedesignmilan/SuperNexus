@@ -75,8 +75,11 @@ export async function POST(req: NextRequest) {
         negative_prompt: negativePrompt || "text, watermark, poorly rendered, ugly, deformed, blurry"
     }
 
-    const generationModel = 'gemini-3.1-flash-image-preview' // FLASH Model restored
-
+    // Fetch global setting
+    const globalModelSetting = await (prisma as any).setting.findUnique({ where: { key: 'ACTIVE_GENERATION_MODEL' } });
+    const globalModel = globalModelSetting?.value || 'gemini-3.1-flash-image-preview';
+    
+    const generationModel = subcat?.active_model || globalModel;
     // Create Pending Job
     const newJob = await prisma.generationJob.create({
       data: {
