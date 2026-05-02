@@ -211,6 +211,17 @@ export const dictionaries = {
       exhaustedDesc: "You have reached the maximum limit of 2 free generations on this device. Create an account to unlock unlimited access, higher resolution, and commercial rights.",
       registerBtn: "Register for Full Access",
       resetBtn: "Try another photo"
+    },
+    creazioniShowcase: {
+      title: "Your ",
+      titleHighlight: "Studio",
+      subtitle: "Explore exact configurations and real outputs you can achieve with one click.",
+      scenariosTitle: "Premium Scenarios",
+      clickToEnlarge: "Click to Enlarge",
+      variationsTitle: "Explore Variations",
+      resultsTitle: "AI Results",
+      closeFullscreen: "ESC / CLICK TO CLOSE",
+      allCategories: "All Categories"
     }
   },
   it: {
@@ -423,6 +434,17 @@ export const dictionaries = {
       exhaustedDesc: "Hai raggiunto il limite massimo di 2 generazioni gratuite su questo dispositivo. Crea un account per sbloccare l'accesso illimitato, maggiore risoluzione e diritti commerciali.",
       registerBtn: "Registrati per l'Accesso Completo",
       resetBtn: "Prova un'altra foto"
+    },
+    creazioniShowcase: {
+      title: "Il Tuo ",
+      titleHighlight: "Studio",
+      subtitle: "Esplora le configurazioni esatte e gli output reali che puoi ottenere con un solo clic.",
+      scenariosTitle: "Scenari Premium",
+      clickToEnlarge: "Clicca per ingrandire",
+      variationsTitle: "Esplora Variazioni",
+      resultsTitle: "Risultati AI",
+      closeFullscreen: "ESC / CLICCA PER CHIUDERE",
+      allCategories: "Tutte le Categorie"
     }
   }
 };

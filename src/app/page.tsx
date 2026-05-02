@@ -431,13 +431,13 @@ export default async function LandingPage() {
         <div style={{ maxWidth: '1400px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 900, letterSpacing: '-1px', color: '#fff', margin: 0, lineHeight: 1.1 }}>
-              {lang === 'it' ? 'Il Tuo ' : 'Your '}<span className="animated-gradient-text" style={{ color: '#00ffff' }}>{lang === 'it' ? 'Studio' : 'Studio'}</span>
+              {t.creazioniShowcase.title}<span className="animated-gradient-text" style={{ color: '#00ffff' }}>{t.creazioniShowcase.titleHighlight}</span>
             </h2>
             <p style={{ color: '#888', fontSize: '1.2rem', marginTop: '1rem', maxWidth: '600px', margin: '1rem auto 0' }}>
-              {lang === 'it' ? 'Esplora le configurazioni esatte e gli output reali che puoi ottenere con un solo clic.' : 'Explore exact configurations and real outputs you can achieve with one click.'}
+              {t.creazioniShowcase.subtitle}
             </p>
           </div>
-          <PremiumCreazioniShowcase initialTree={creazioniTree} />
+          <PremiumCreazioniShowcase initialTree={creazioniTree} lang={lang} />
         </div>
       </section>
 
