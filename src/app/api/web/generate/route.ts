@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { prisma } from '@/lib/prisma'
@@ -12,11 +13,21 @@ export async function POST(req: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    if (!user || !user.email) {
+    const cookieStore = await cookies()
+    const adminAuthCookie = cookieStore.get('supernexus_admin_auth')
+    const isAdminPasskey = adminAuthCookie && adminAuthCookie.value === 'authenticated'
+
+    if (!user && !isAdminPasskey) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } })
+    let dbUser = null;
+    if (user && user.email) {
+      dbUser = await prisma.user.findUnique({ where: { email: user.email.toLowerCase() } })
+    } else if (isAdminPasskey) {
+      dbUser = await prisma.user.findFirst({ where: { role: 'admin' } })
+    }
+
     if (!dbUser || !dbUser.subscription_active) {
       return NextResponse.json({ error: 'Account deactivated or not found.' }, { status: 403 })
     }
