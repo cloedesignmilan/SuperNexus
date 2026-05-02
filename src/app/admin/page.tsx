@@ -15,10 +15,10 @@ export default async function AdminDashboard() {
   const jobsCount = await prisma.generationJob.count();
   
   const totalImagesAggr = await prisma.generationJob.aggregate({ _sum: { results_count: true } });
-  const totalImagesCount = totalImagesAggr._sum.results_count || 0;
+  const totalImagesCount = totalImagesAggr._sum?.results_count || 0;
 
   const proTotalAggr = await prisma.generationJob.aggregate({ where: { model_used: { contains: "pro" } }, _sum: { results_count: true } });
-  const proTotalCount = proTotalAggr._sum.results_count || 0;
+  const proTotalCount = proTotalAggr._sum?.results_count || 0;
   const flashTotalCount = totalImagesCount - proTotalCount;
 
   // 2. Today's & Month's Metrics
@@ -33,26 +33,26 @@ export default async function AdminDashboard() {
      where: { createdAt: { gte: today } },
      _sum: { results_count: true }
   });
-  const imagesTodayCount = imagesTodayAggr._sum.results_count || 0;
+  const imagesTodayCount = imagesTodayAggr._sum?.results_count || 0;
 
   const proTodayAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: today }, model_used: { contains: "pro" } },
      _sum: { results_count: true }
   });
-  const proTodayCount = proTodayAggr._sum.results_count || 0;
+  const proTodayCount = proTodayAggr._sum?.results_count || 0;
   const flashTodayCount = imagesTodayCount - proTodayCount;
 
   const imagesMonthAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: startOfMonth } },
      _sum: { results_count: true }
   });
-  const imagesMonthCount = imagesMonthAggr._sum.results_count || 0;
+  const imagesMonthCount = imagesMonthAggr._sum?.results_count || 0;
 
   const proMonthAggr = await prisma.generationJob.aggregate({ 
      where: { createdAt: { gte: startOfMonth }, model_used: { contains: "pro" } },
      _sum: { results_count: true }
   });
-  const proMonthCount = proMonthAggr._sum.results_count || 0;
+  const proMonthCount = proMonthAggr._sum?.results_count || 0;
   const flashMonthCount = imagesMonthCount - proMonthCount;
 
   const costsTodayAggr = await (prisma as any).apiCostLog.aggregate({
