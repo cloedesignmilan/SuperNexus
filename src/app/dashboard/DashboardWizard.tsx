@@ -529,7 +529,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                     imageUrls,
                     "", 
                     uploadedUrl || 'N/A',
-                    data.modelUsed
+                    data.modelUsed,
+                    selections['SPECIFIC_SHOT']?.shot_number || undefined,
+                    clientGender || ''
                  );
                  setOutputValidationId(savedId);
              }
@@ -725,10 +727,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
     if (type === 'FORMAT') {
       typeSnippets = typeSnippets.map(s => {
         let cloned = { ...s };
-        if (cloned.label === '4:5') cloned.description = 'Best for Instagram';
-        if (cloned.label === '1:1') cloned.description = 'Ecommerce';
-        if (cloned.label === '9:16') cloned.description = 'TikTok / Reels';
-        if (cloned.label === '16:9') cloned.description = 'Website / banners';
+        if (cloned.label === '4:5') { cloned.description = 'Best for Instagram'; cloned.icon = 'Smartphone'; }
+        if (cloned.label === '1:1') { cloned.description = 'Ecommerce'; cloned.icon = 'Square'; }
+        if (cloned.label === '9:16') { cloned.description = 'TikTok / Reels'; cloned.icon = 'Crop'; }
+        if (cloned.label === '16:9') { cloned.description = 'Website / banners'; cloned.icon = 'Monitor'; }
         return cloned;
       });
     }
@@ -736,10 +738,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
     if (type === 'QUANTITY') {
       typeSnippets = typeSnippets.map(s => {
         let cloned = { ...s };
-        if (cloned.label === '1') cloned.description = 'Basic';
-        if (cloned.label === '3') cloned.description = '⭐ Most popular';
-        if (cloned.label === '5') cloned.description = '🔥 Better variety';
-        if (cloned.label === '10') cloned.description = '⚡ Pro pack';
+        if (cloned.label === '1') { cloned.description = 'Basic'; cloned.icon = 'Image'; }
+        if (cloned.label === '3') { cloned.description = '⭐ Most popular'; cloned.icon = 'Images'; }
+        if (cloned.label === '5') { cloned.description = '🔥 Better variety'; cloned.icon = 'Library'; }
+        if (cloned.label === '10') { cloned.description = '⚡ Pro pack'; cloned.icon = 'Layers'; }
         return cloned;
       });
     }
@@ -882,7 +884,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                              transition: 'all 0.2s ease-in-out',
                              position: 'relative'
                          };
-                         const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
+                         const bgImage = (type === 'FORMAT' || type === 'QUANTITY') ? null : (imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg');
 
                          if (bgImage) {
                             return {
@@ -947,7 +949,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       ) : (
                           <>
                             {(() => {
-                               const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
+                               const bgImage = (type === 'FORMAT' || type === 'QUANTITY') ? null : (imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg');
 
                                if (bgImage) {
                                   return (
@@ -2170,7 +2172,10 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                                   taxonomyReadableGlobal,
                                   imageUrls,
                                   note,
-                                  uploadedUrl || 'N/A'
+                                  uploadedUrl || 'N/A',
+                                  undefined,
+                                  selections['SPECIFIC_SHOT']?.shot_number || undefined,
+                                  selections['CLIENT_TYPE']?.id === 'gender-man' ? 'MAN' : (selections['CLIENT_TYPE']?.id === 'gender-woman' ? 'WOMAN' : undefined)
                                );
                             }
                             navigator.clipboard.writeText(textToCopy);

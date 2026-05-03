@@ -90,8 +90,8 @@ export function ValidationCheckCard({ check, index }: { check: any, index: numbe
                     </button>
                 </div>
                 
-                <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
-                    Verificato il: {new Date(check.last_checked_at).toLocaleString()} | Stato Corrente: <strong style={{ color: statusColor, textTransform: 'uppercase' }}>{check.comparison_status}</strong>
+                <div suppressHydrationWarning style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
+                    Verificato il: {new Date(check.last_checked_at).toLocaleString('it-IT')} | Stato Corrente: <strong style={{ color: statusColor, textTransform: 'uppercase' }}>{check.comparison_status}</strong>
                 </div>
 
             </div>

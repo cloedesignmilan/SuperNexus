@@ -53,9 +53,18 @@ export default function PromptConfigShotEditor({ shots }: { shots: any[] }) {
               </button>
             </form>
           ) : (
-            <div style={{ fontSize: '0.85rem', color: '#e2e8f0' }}>
-              <p><strong>Positive:</strong> {shot.positivePrompt}</p>
-              <p><strong>Hard Rules:</strong> <span style={{ color: '#ef4444' }}>{shot.hardRules}</span></p>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+              {shot.imageUrl && (
+                <div style={{ width: '120px', height: '160px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <img src={shot.imageUrl} alt={`Shot ${shot.shotNumber}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
+              <div style={{ fontSize: '0.85rem', color: '#e2e8f0', flex: 1 }}>
+                <p><strong>Positive:</strong> {shot.positivePrompt}</p>
+                <p><strong>Hard Rules:</strong> <span style={{ color: '#ef4444' }}>{shot.hardRules}</span></p>
+                {shot.outputGoal && <p><strong>Output Goal:</strong> {shot.outputGoal}</p>}
+                {!shot.imageUrl && <p style={{ color: 'var(--color-text-muted)', fontStyle: 'italic', marginTop: '0.5rem' }}>Nessuna immagine associata a questo scatto.</p>}
+              </div>
             </div>
           )}
         </div>

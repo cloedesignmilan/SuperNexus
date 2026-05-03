@@ -104,13 +104,19 @@ export async function getPromptsForSelection({
               output_goal: db.outputGoal || "",
               image_url: (db as any).imageUrl
           }));
+          // Deduplicate shots before expanding
+          const uniqueShotsMap = new Map();
+          for (const s of shots) {
+             uniqueShotsMap.set(s.shot_number, s);
+          }
+          const uniqueShots = Array.from(uniqueShotsMap.values());
           
           if (specificShotNumber) {
-              const target = shots.find(s => s.shot_number === specificShotNumber);
+              const target = uniqueShots.find(s => s.shot_number === specificShotNumber);
               if (target) return [target];
           }
           
-          return expandShots(shots, quantity);
+          return expandShots(uniqueShots, quantity);
       }
   } catch(e) {
       console.error("Database Prompt Lookup Failed", e);

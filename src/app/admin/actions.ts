@@ -77,12 +77,12 @@ export async function saveReferenceImage(subcategoryId: string, imageUrl: string
     revalidatePath('/admin/subcategories/[id]', 'page');
 }
 
-export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string, modelUsed?: string) {
+export async function saveValidationFeedback(subcategoryId: string, taxonomyPath: string, imageUrls: string[], notes: string, referenceImageUrl: string, modelUsed?: string, specificShotNumber?: number, clientGender?: string) {
     const record = await prisma.outputValidationCheck.create({
         data: {
             subcategory_id: subcategoryId,
             reference_image_url: referenceImageUrl, 
-            generated_sample_image: JSON.stringify({ path: taxonomyPath, urls: imageUrls, model: modelUsed || 'gemini-3.1-flash-image-preview' }),
+            generated_sample_image: JSON.stringify({ path: taxonomyPath, urls: imageUrls, model: modelUsed || 'gemini-3.1-flash-image-preview', specificShotNumber, clientGender }),
             review_notes: notes,
             comparison_status: "pending"
         }
@@ -105,4 +105,215 @@ export async function restartServer() {
     exec('touch next.config.ts', (err: any) => {
         if (err) console.error("Failed to restart server", err);
     });
+}
+
+export async function populateSubcategoryAssets(checkId: string, coverImageUrl: string) {
+    const check = await prisma.outputValidationCheck.findUnique({
+        where: { id: checkId },
+        include: {
+            subcategory: {
+                include: {
+                    business_mode: {
+                        include: { category: true }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!check || !check.subcategory) {
+        throw new Error("Validation check or subcategory not found.");
+    }
+
+    // Update Subcategory cover
+    await prisma.subcategory.update({
+        where: { id: check.subcategory_id },
+        data: { preview_image: coverImageUrl }
+    });
+
+    // Extract urls and specific shot from generated_sample_image
+    let urls: string[] = [];
+    let specificShotNumber: number | null = null;
+    let clientGender: string | null = null;
+    try {
+        const parsed = JSON.parse(check.generated_sample_image);
+        urls = parsed.urls || [];
+        specificShotNumber = parsed.specificShotNumber || null;
+        clientGender = parsed.clientGender || null;
+    } catch (e) {
+        urls = [check.generated_sample_image];
+    }
+
+    if (urls.length > 0) {
+        let presentationSlug = check.subcategory.name.toLowerCase().replace(/\s+/g, '-');
+        let modeSlug = check.subcategory.business_mode.name.toLowerCase().replace(/\s+/g, '-');
+        const categorySlug = check.subcategory.business_mode.category.slug.toLowerCase().replace(/\s+/g, '-');
+
+        let searchPresSlugs = [presentationSlug];
+        
+        if (presentationSlug === 'ugc-in-home' || presentationSlug === 'ugc-in-store' || presentationSlug === 'candid') {
+          modeSlug = presentationSlug === 'ugc-in-home' ? 'ugc-home' : presentationSlug === 'ugc-in-store' ? 'ugc-store' : modeSlug;
+          if (clientGender === 'WOMAN' || clientGender === 'Woman') {
+              searchPresSlugs = ['candid-woman'];
+          } else if (clientGender === 'MAN' || clientGender === 'Man') {
+              searchPresSlugs = ['candid-man'];
+          } else {
+              searchPresSlugs = ['candid-woman', 'candid-man', 'candid'];
+          }
+        } else if (presentationSlug === 'model-photo') {
+          if (clientGender === 'WOMAN' || clientGender === 'Woman') {
+              searchPresSlugs = ['model-photo-woman'];
+          } else if (clientGender === 'MAN' || clientGender === 'Man') {
+              searchPresSlugs = ['model-photo-man'];
+          } else {
+              searchPresSlugs = ['model-photo', 'model-photo-woman', 'model-photo-man'];
+          }
+        } else if (presentationSlug === 'woman') {
+          searchPresSlugs = ['candid-woman', 'model-photo-woman'];
+        } else if (presentationSlug === 'man') {
+          searchPresSlugs = ['candid-man', 'model-photo-man'];
+        }
+
+        // Find existing PromptConfigShots
+        const shots = await prisma.promptConfigShot.findMany({
+            where: {
+                category: categorySlug,
+                mode: modeSlug,
+                presentation: { in: searchPresSlugs }
+            },
+            orderBy: [
+                { presentation: 'asc' },
+                { shotNumber: 'asc' }
+            ]
+        });
+
+        if (specificShotNumber) {
+            const targetShots = shots.filter(s => s.shotNumber === specificShotNumber);
+            if (urls[0]) {
+                for (const targetShot of targetShots) {
+                    await prisma.promptConfigShot.update({
+                        where: { id: targetShot.id },
+                        data: { imageUrl: urls[0] }
+                    });
+                }
+            }
+        } else {
+            for (let i = 0; i < urls.length; i++) {
+                const shotNum = i + 1;
+                const targetShots = shots.filter(s => s.shotNumber === shotNum);
+                for (const targetShot of targetShots) {
+                    await prisma.promptConfigShot.update({
+                        where: { id: targetShot.id },
+                        data: { imageUrl: urls[i] }
+                    });
+                }
+            }
+        }
+    }
+
+    revalidatePath('/admin/analyses');
+    revalidatePath('/admin/subcategories/[id]', 'page');
+    revalidatePath('/dashboard');
+}
+
+export async function populateShotsOnly(checkId: string) {
+    const check = await prisma.outputValidationCheck.findUnique({
+        where: { id: checkId },
+        include: {
+            subcategory: {
+                include: {
+                    business_mode: {
+                        include: { category: true }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!check || !check.subcategory) {
+        throw new Error("Validation check or subcategory not found.");
+    }
+
+    // Extract urls and specific shot from generated_sample_image
+    let urls: string[] = [];
+    let specificShotNumber: number | null = null;
+    let clientGender: string | null = null;
+    try {
+        const parsed = JSON.parse(check.generated_sample_image);
+        urls = parsed.urls || [];
+        specificShotNumber = parsed.specificShotNumber || null;
+        clientGender = parsed.clientGender || null;
+    } catch (e) {
+        urls = [check.generated_sample_image];
+    }
+
+    if (urls.length > 0) {
+        let presentationSlug = check.subcategory.name.toLowerCase().replace(/\s+/g, '-');
+        let modeSlug = check.subcategory.business_mode.name.toLowerCase().replace(/\s+/g, '-');
+        const categorySlug = check.subcategory.business_mode.category.slug.toLowerCase().replace(/\s+/g, '-');
+
+        let searchPresSlugs = [presentationSlug];
+        
+        if (presentationSlug === 'ugc-in-home' || presentationSlug === 'ugc-in-store' || presentationSlug === 'candid') {
+          modeSlug = presentationSlug === 'ugc-in-home' ? 'ugc-home' : presentationSlug === 'ugc-in-store' ? 'ugc-store' : modeSlug;
+          if (clientGender === 'WOMAN' || clientGender === 'Woman') {
+              searchPresSlugs = ['candid-woman'];
+          } else if (clientGender === 'MAN' || clientGender === 'Man') {
+              searchPresSlugs = ['candid-man'];
+          } else {
+              searchPresSlugs = ['candid-woman', 'candid-man', 'candid'];
+          }
+        } else if (presentationSlug === 'model-photo') {
+          if (clientGender === 'WOMAN' || clientGender === 'Woman') {
+              searchPresSlugs = ['model-photo-woman'];
+          } else if (clientGender === 'MAN' || clientGender === 'Man') {
+              searchPresSlugs = ['model-photo-man'];
+          } else {
+              searchPresSlugs = ['model-photo', 'model-photo-woman', 'model-photo-man'];
+          }
+        } else if (presentationSlug === 'woman') {
+          searchPresSlugs = ['candid-woman', 'model-photo-woman'];
+        } else if (presentationSlug === 'man') {
+          searchPresSlugs = ['candid-man', 'model-photo-man'];
+        }
+
+        const shots = await prisma.promptConfigShot.findMany({
+            where: {
+                category: categorySlug,
+                mode: modeSlug,
+                presentation: { in: searchPresSlugs }
+            },
+            orderBy: [
+                { presentation: 'asc' },
+                { shotNumber: 'asc' }
+            ]
+        });
+
+        if (specificShotNumber) {
+            const targetShots = shots.filter(s => s.shotNumber === specificShotNumber);
+            if (urls[0]) {
+                for (const targetShot of targetShots) {
+                    await prisma.promptConfigShot.update({
+                        where: { id: targetShot.id },
+                        data: { imageUrl: urls[0] }
+                    });
+                }
+            }
+        } else {
+            for (let i = 0; i < urls.length; i++) {
+                const shotNum = i + 1;
+                const targetShots = shots.filter(s => s.shotNumber === shotNum);
+                for (const targetShot of targetShots) {
+                    await prisma.promptConfigShot.update({
+                        where: { id: targetShot.id },
+                        data: { imageUrl: urls[i] }
+                    });
+                }
+            }
+        }
+    }
+
+    revalidatePath('/admin/analyses');
+    revalidatePath('/admin/subcategories/[id]', 'page');
+    revalidatePath('/dashboard');
 }

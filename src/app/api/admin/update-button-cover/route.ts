@@ -51,24 +51,24 @@ export async function POST(req: Request) {
         }
         return NextResponse.json({ error: 'Subcategory not found' }, { status: 404 });
     }
-    else if (type === 'CLIENT_TYPE') {
-        // Find existing shot 1
+    else if (type === 'CLIENT_TYPE' || type === 'SPECIFIC_SHOT') {
+        // Find existing shot
         let normMode = modeName.toLowerCase();
         if (normMode.includes('ads') || normMode.includes('scroll stopper')) normMode = 'ads';
         else if (normMode.includes('detail') || normMode.includes('texture')) normMode = 'detail';
         else normMode = normMode.replace(/\s+/g, '-');
 
         let normPres = subName.toLowerCase().trim();
-        if (normPres.includes('ugc in home') && clientGender === 'WOMAN') { normMode = 'ugc-home'; normPres = 'candid-woman'; }
-        else if (normPres.includes('ugc in store') && clientGender === 'WOMAN') { normMode = 'ugc-store'; normPres = 'candid-woman'; }
-        else if (normPres.includes('ugc in home') && clientGender === 'MAN') { normMode = 'ugc-home'; normPres = 'candid-man'; }
-        else if (normPres.includes('ugc in store') && clientGender === 'MAN') { normMode = 'ugc-store'; normPres = 'candid-man'; }
+        if (normPres.includes('ugc in home') && clientGender === 'Woman') { normMode = 'ugc-home'; normPres = 'candid-woman'; }
+        else if (normPres.includes('ugc in store') && clientGender === 'Woman') { normMode = 'ugc-store'; normPres = 'candid-woman'; }
+        else if (normPres.includes('ugc in home') && clientGender === 'Man') { normMode = 'ugc-home'; normPres = 'candid-man'; }
+        else if (normPres.includes('ugc in store') && clientGender === 'Man') { normMode = 'ugc-store'; normPres = 'candid-man'; }
         else if (normPres === 'ugc in home') { normMode = 'ugc-home'; normPres = 'candid-woman'; }
         else if (normPres === 'ugc in store') { normMode = 'ugc-store'; normPres = 'candid-woman'; }
-        else if (normPres.includes('candid') && clientGender === 'WOMAN') normPres = 'candid-woman';
-        else if (normPres.includes('candid') && clientGender === 'MAN') normPres = 'candid-man';
-        else if (normPres === 'candid') normPres = clientGender === 'MAN' ? 'candid-man' : 'candid-woman';
-        else if (normPres === 'model photo') normPres = clientGender === 'MAN' ? 'model-photo-man' : 'model-photo-woman';
+        else if (normPres.includes('candid') && clientGender === 'Woman') normPres = 'candid-woman';
+        else if (normPres.includes('candid') && clientGender === 'Man') normPres = 'candid-man';
+        else if (normPres === 'candid') normPres = clientGender === 'Man' ? 'candid-man' : 'candid-woman';
+        else if (normPres === 'model photo') normPres = clientGender === 'Man' ? 'model-photo-man' : 'model-photo-woman';
         else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
         else if (normPres.includes('still life')) normPres = 'still-life-pack';
         else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
@@ -76,15 +76,17 @@ export async function POST(req: Request) {
         else normPres = normPres.replace(/\s+/g, '-');
 
         const targetShotNumber = specificShotNumber || 1;
-        const existingShot = await prisma.promptConfigShot.findFirst({
+        const existingShots = await prisma.promptConfigShot.findMany({
             where: { category: categorySlug, mode: normMode, presentation: normPres, shotNumber: targetShotNumber }
         });
 
-        if (existingShot) {
-            await prisma.promptConfigShot.update({
-                where: { id: existingShot.id },
-                data: { imageUrl }
-            });
+        if (existingShots.length > 0) {
+            for (const existingShot of existingShots) {
+                await prisma.promptConfigShot.update({
+                    where: { id: existingShot.id },
+                    data: { imageUrl }
+                });
+            }
         } else {
             // Create a dummy shot 1
             await prisma.promptConfigShot.create({

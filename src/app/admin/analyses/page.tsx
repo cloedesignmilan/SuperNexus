@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { updateValidationFeedback } from "@/app/admin/actions";
+import { updateValidationFeedback, populateSubcategoryAssets, populateShotsOnly } from "@/app/admin/actions";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -156,15 +156,27 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                                                 <div style={{ fontSize: '0.7rem', fontWeight: 800, padding: '4px 8px', borderRadius: '8px', background: modelUsed === 'PRO' ? '#ff5e00' : '#3b82f6', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                                                     {modelUsed}
                                                 </div>
-                                                <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '20px' }}>
+                                                <div suppressHydrationWarning style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '20px' }}>
                                                     {new Date(check.createdAt).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                                                 </div>
+                                                <form action={populateShotsOnly.bind(null, check.id)}>
+                                                    <button type="submit" className="admin-button-popola" style={{ marginLeft: '10px', padding: '6px 12px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#10b981', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}>
+                                                        Sincronizza Scatti
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px' }}>
                                             {urls.map((url, i) => (
-                                                <div key={i} style={{ width: '140px', height: '186px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', background: '#111' }}>
-                                                    <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Gen ${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <div style={{ width: '140px', height: '186px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', background: '#111' }}>
+                                                        <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Gen ${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                    </div>
+                                                    <form action={populateSubcategoryAssets.bind(null, check.id, url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`)}>
+                                                        <button type="submit" className="admin-button-popola" style={{ width: '100%', padding: '6px', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.3)', color: '#00d2ff', borderRadius: '8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', lineHeight: '1.2' }}>
+                                                            Copertina &<br/>Popola Scatti
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             ))}
                                             {urls.length === 0 && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontStyle: 'italic', padding: '1rem 0' }}>Nessuna immagine salvata nel payload.</div>}
