@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Upload, Play, CheckCircle, XCircle, Loader2, Image as ImageIcon } from 'lucide-react';
+import { saveValidationFeedback } from '@/app/admin/actions';
 
 type Cat = any;
 
@@ -130,6 +131,25 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                     images: imagesArray,
                     error: data.error || null
                 });
+
+                // Add to Analisi e Feedback
+                if (res.ok && imagesArray.length > 0) {
+                    try {
+                        const taxonomyReadableGlobal = `${category.name} > ${test.bmObj.name} > ${test.subcatObj.name}`;
+                        await saveValidationFeedback(
+                            test.subcatObj.id,
+                            taxonomyReadableGlobal,
+                            imagesArray,
+                            "Mass Test Generation", 
+                            test.url,
+                            data.modelUsed || "gemini-3.1-flash-image-preview",
+                            undefined,
+                            test.gender
+                        );
+                    } catch (e) {
+                        console.error("Auto-save feedback failed for Mass Test", e);
+                    }
+                }
 
             } catch (err: any) {
                 newResults.push({
