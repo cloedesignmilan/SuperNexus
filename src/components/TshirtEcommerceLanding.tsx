@@ -4,17 +4,25 @@ import { Shirt } from 'lucide-react';
 import TshirtInteractiveClient from './TshirtInteractiveClient';
 
 export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'en' }) {
-  // Fetch latest still-life/clean catalog t-shirt images
-  const latestTshirtJob = await prisma.generationJob.findFirst({
-    where: { 
-        subcategory: { name: 'STILL LIFE PACK' },
-        status: 'completed'
-    },
-    orderBy: { createdAt: 'desc' },
-    include: { images: { orderBy: { image_order: 'asc' } } }
-  });
+  async function fetchLatestImagesForMode(modeName: string) {
+    const job = await prisma.generationJob.findFirst({
+      where: {
+        category: { slug: 't-shirt' },
+        business_mode: { name: modeName },
+        status: 'completed',
+        results_count: { gt: 0 }
+      },
+      orderBy: { createdAt: 'desc' },
+      include: { images: { orderBy: { image_order: 'asc' } } }
+    });
+    return job?.images?.map((img: any) => img.image_url) || [];
+  }
 
-  const recentImages: string[] = latestTshirtJob?.images?.map((img: any) => img.image_url) || [];
+  const cleanCatalogImages = await fetchLatestImagesForMode('Clean Catalog');
+  const modelStudioImages = await fetchLatestImagesForMode('Model Studio');
+  const lifestyleImages = await fetchLatestImagesForMode('Lifestyle');
+  const ugcImages = await fetchLatestImagesForMode('UGC');
+  const adsImages = await fetchLatestImagesForMode('Ads / Scroll Stopper');
 
   const fallbackImages = [
     'https://placehold.co/400x500/111/fff?text=Shot+1',
@@ -24,12 +32,22 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
     'https://placehold.co/400x500/111/fff?text=Shot+5',
   ];
 
+  function padWithFallbacks(images: string[]) {
+      if (images.length === 0) return fallbackImages;
+      if (images.length >= 5) return images.slice(0, 5);
+      const padded = [...images];
+      while (padded.length < 5) {
+          padded.push(fallbackImages[padded.length]);
+      }
+      return padded;
+  }
+
   const imagesByMode = {
-      'Clean Catalog': recentImages.length > 0 ? recentImages : fallbackImages,
-      'Model Studio': fallbackImages,
-      'Lifestyle': fallbackImages,
-      'UGC': fallbackImages,
-      'Ads / Scroll Stopper': fallbackImages,
+      'Clean Catalog': padWithFallbacks(cleanCatalogImages),
+      'Model Studio': padWithFallbacks(modelStudioImages),
+      'Lifestyle': padWithFallbacks(lifestyleImages),
+      'UGC': padWithFallbacks(ugcImages),
+      'Ads / Scroll Stopper': padWithFallbacks(adsImages),
   };
 
   const t = {
