@@ -12,6 +12,7 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
     const [isUploadingMan, setIsUploadingMan] = useState(false);
     
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+    const [generationQty, setGenerationQty] = useState<number>(5);
     const [isTesting, setIsTesting] = useState(false);
     
     const [progress, setProgress] = useState<{current: number, total: number, status: string}>({ current: 0, total: 0, status: '' });
@@ -105,7 +106,7 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                     imageUrl: test.url,
                     finalPrompt: "Taxonomy Mass Tester Auto Prompt",
                     negativePrompt: "text, watermark, poorly rendered, ugly, deformed, blurry",
-                    qty: 5,
+                    qty: generationQty,
                     aspectRatio: "4:5",
                     taxonomyCat: category.slug,
                     taxonomyMode: taxonomyModeMapped,
@@ -199,6 +200,18 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                                 <option key={c.id} value={c.id}>{c.name} ({c.business_modes.reduce((acc: number, bm: any) => acc + bm.subcategories.length, 0)} subcats)</option>
                             ))}
                         </select>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <label style={{ fontSize: '0.9rem', color: '#aaa' }}>Quantità per sottocategoria (1-5):</label>
+                        <input 
+                            type="number" 
+                            min="1" 
+                            max="5" 
+                            value={generationQty} 
+                            onChange={(e) => setGenerationQty(Math.max(1, Math.min(5, parseInt(e.target.value) || 1)))}
+                            style={{ padding: '10px', background: '#000', border: '1px solid #333', color: '#fff', borderRadius: '4px', outline: 'none' }}
+                        />
                     </div>
 
                     <button 
