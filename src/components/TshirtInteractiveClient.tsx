@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { Camera, Smartphone, Box, Zap, User, ChevronLeft, ChevronRight } from 'lucide-react';
-import useEmblaCarousel from 'embla-carousel-react';
+import React, { useState } from 'react';
+import { Camera, Smartphone, Box, Zap, User } from 'lucide-react';
 
 interface Props {
   lang: 'it' | 'en';
@@ -11,19 +10,6 @@ interface Props {
 
 export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
   const [selectedMode, setSelectedMode] = useState('Clean Catalog');
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: true });
-
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
-
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
-
-  useEffect(() => {
-      if (emblaApi) emblaApi.scrollTo(0);
-  }, [selectedMode, emblaApi]);
 
   const modes = [
     { name: 'Clean Catalog', icon: Box, desc: lang === 'it' ? 'Still Life & Ghost Mannequin' : 'Still Life & Ghost Mannequin' },
@@ -43,29 +29,16 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
               Live Generations: {selectedMode}
           </h3>
           
-          <div className="embla" ref={emblaRef} style={{ overflow: 'hidden', paddingBottom: '1rem', cursor: 'grab', position: 'relative' }}>
-              <div className="embla__container" style={{ display: 'flex', touchAction: 'pan-y pinch-zoom', marginLeft: '-1.5rem' }}>
-                  {currentImages.map((img, idx) => (
-                      <div key={idx + selectedMode} className="embla__slide fade-in-image" style={{ flex: '0 0 auto', minWidth: 0, paddingLeft: '1.5rem' }}>
-                          <div style={{ width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                              <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                  Shot {idx + 1}
-                              </div>
-                          </div>
+          <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'thin', scrollbarColor: '#333 #111' }}>
+              {currentImages.map((img, idx) => (
+                  <div key={idx + selectedMode} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                          Shot {idx + 1}
                       </div>
-                  ))}
-              </div>
-          </div>
-          
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1rem', marginBottom: '1rem' }}>
-             <button onClick={scrollPrev} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }} onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'} onMouseLeave={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'}>
-                 <ChevronLeft size={20} />
-             </button>
-             <button onClick={scrollNext} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', cursor: 'pointer', transition: 'background 0.3s' }} onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.2)'} onMouseLeave={e => e.currentTarget.style.background='rgba(255,255,255,0.1)'}>
-                 <ChevronRight size={20} />
-             </button>
+                  </div>
+              ))}
           </div>
       </div>
 
