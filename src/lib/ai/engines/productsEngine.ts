@@ -170,10 +170,20 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
     }
 
+    const isNoModelRequest = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().includes('no-model') || taxonomyMode?.toLowerCase().includes('clean-catalog');
+
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
     let strictPoses = [...poseModifiers];
     
-    if (isShoeCatalog) {
+    if (isNoModelRequest) {
+        strictPoses = [
+            "[NO MODEL DIRECTIVE 1] Clean product-only shot, no human, perfect alignment",
+            "[NO MODEL DIRECTIVE 2] Clean product-only shot, alternative angle, no human",
+            "[NO MODEL DIRECTIVE 3] Clean product-only shot, focus on shape, no human",
+            "[NO MODEL DIRECTIVE 4] Clean product-only shot, detail focus, no human",
+            "[NO MODEL DIRECTIVE 5] Clean product-only shot, overhead or flat, no human"
+        ];
+    } else if (isShoeCatalog) {
         strictPoses = [
             "[SHOES ANGLE 1] 3/4 front view (hero)",
             "[SHOES ANGLE 2] full side view (perfect profile)",
