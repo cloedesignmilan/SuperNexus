@@ -123,9 +123,11 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                         {items.map((check) => {
                             let urls: string[] = [];
                             let modelUsed = 'FLASH';
+                            let specificShotNumber: number | null = null;
                             try {
                                 const parsed = JSON.parse(check.generated_sample_image);
                                 urls = parsed.urls || [];
+                                specificShotNumber = parsed.specificShotNumber || null;
                                 if (parsed.model === 'gemini-3-pro-image-preview') modelUsed = 'PRO';
                             } catch (e) {
                                 urls = [check.generated_sample_image]; // Legacy single image
@@ -167,18 +169,22 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px' }}>
-                                            {urls.map((url, i) => (
-                                                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                                    <div style={{ width: '140px', height: '186px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', background: '#111' }}>
-                                                        <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Gen ${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            {urls.map((url, i) => {
+                                                const shotBadge = specificShotNumber ? specificShotNumber : (i + 1);
+                                                return (
+                                                    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                        <div style={{ width: '140px', height: '186px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', background: '#111', position: 'relative' }}>
+                                                            <div style={{ position: 'absolute', top: 6, left: 6, background: 'rgba(0,0,0,0.8)', padding: '2px 8px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', border: '1px solid rgba(255,255,255,0.2)', zIndex: 10 }}>Scatto {shotBadge}</div>
+                                                            <img src={url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`} alt={`Gen ${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                        </div>
+                                                        <form action={populateSubcategoryAssets.bind(null, check.id, url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`)}>
+                                                            <button type="submit" className="admin-button-popola" style={{ width: '100%', padding: '6px', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.3)', color: '#00d2ff', borderRadius: '8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', lineHeight: '1.2' }}>
+                                                                Copertina &<br/>Popola Set
+                                                            </button>
+                                                        </form>
                                                     </div>
-                                                    <form action={populateSubcategoryAssets.bind(null, check.id, url.startsWith('http') || url.startsWith('data:') ? url : `data:image/jpeg;base64,${url}`)}>
-                                                        <button type="submit" className="admin-button-popola" style={{ width: '100%', padding: '6px', background: 'rgba(0, 210, 255, 0.1)', border: '1px solid rgba(0, 210, 255, 0.3)', color: '#00d2ff', borderRadius: '8px', fontSize: '0.65rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', lineHeight: '1.2' }}>
-                                                            Copertina &<br/>Popola Scatti
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                             {urls.length === 0 && <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontStyle: 'italic', padding: '1rem 0' }}>Nessuna immagine salvata nel payload.</div>}
                                         </div>
                                     </div>
