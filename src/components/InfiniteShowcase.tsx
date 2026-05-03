@@ -109,13 +109,13 @@ const SLIDESHOW_CONFIG = [
   },
   {
     displayCategory: 'CEREMONY ELEGANT',
-    displaySubcategory: 'WOMAN → MODEL STUDIO',
-    originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_04.webp',
+    displaySubcategory: 'WOMAN → MODEL STUDIO (CURVY)',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1777835781543.jpg',
     manualImages: [
-      "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144434.579.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144435.534.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144437.607.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Model Studio/WOMAN/supernexus_image - 2026-04-26T144438.459.webp"
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-MODEL%20STUDIO-CURVY%20%20PLUS%20SIZE-1_1777836235693.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-MODEL%20STUDIO-CURVY%20%20PLUS%20SIZE-2_1777836235693.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-MODEL%20STUDIO-CURVY%20%20PLUS%20SIZE-3_1777836235693.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-MODEL%20STUDIO-CURVY%20%20PLUS%20SIZE-4_1777836235693.jpg"
     ]
   },
   {
