@@ -46,10 +46,10 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'CLEAN CATALOG → NO MODEL',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.webp',
     manualImages: [
-      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (62).webp",
-      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (63).webp",
-      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (64).webp",
-      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/supernexus_image (65).webp"
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/new_image_1.jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/new_image_2.jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/new_image_3.jpg",
+      "/prove nuove/T-SHIRT/T-SHIRT → CLEAN CATALOG → NO MODEL/new_image_4.jpg"
     ]
   },
   {
@@ -134,10 +134,10 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'WOMAN → CLEAN CATALOG',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_57_55.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143925.322.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143926.199.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143927.851.webp",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/supernexus_image - 2026-04-26T143928.710.webp"
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_1.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_2.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_3.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_4.jpg"
     ]
   },
   {
