@@ -152,14 +152,14 @@ const SLIDESHOW_CONFIG = [
     ]
   },
   {
-    displayCategory: 'FOOTWEAR',
-    displaySubcategory: 'SHOES → CLEAN CATALOG',
+    displayCategory: 'SHOES',
+    displaySubcategory: 'CLEAN CATALOG → NO MODEL',
     originalImage: '/prove nuove/Immagini originali/A524FD31-E7B5-4BB7-BDA7-D287BBE82174_1_105_c.webp',
     manualImages: [
-      "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162327.009.webp",
-      "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162331.765.webp",
-      "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162334.407.webp",
-      "/prove nuove/SHOES/Clean Catalog/supernexus_image - 2026-04-26T162335.355.webp"
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-1_1777845516004.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-2_1777845516004.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-3_1777845516004.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-4_1777845516004.jpg"
     ]
   },
   {
