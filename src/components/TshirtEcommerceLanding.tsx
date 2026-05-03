@@ -5,7 +5,7 @@ import TshirtInteractiveClient from './TshirtInteractiveClient';
 
 export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'en' }) {
   async function fetchLatestImagesForMode(modeName: string) {
-    const job = await prisma.generationJob.findFirst({
+    const jobs = await prisma.generationJob.findMany({
       where: {
         category: { slug: 't-shirt' },
         business_mode: { name: modeName },
@@ -13,9 +13,17 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
         results_count: { gt: 0 }
       },
       orderBy: { createdAt: 'desc' },
+      take: 2,
       include: { images: { orderBy: { image_order: 'asc' } } }
     });
-    return job?.images?.map((img: any) => img.image_url) || [];
+    
+    let allImages: string[] = [];
+    for (const job of jobs) {
+        if (job.images) {
+            allImages = allImages.concat(job.images.map((img: any) => img.image_url));
+        }
+    }
+    return allImages;
   }
 
   const cleanCatalogImages = await fetchLatestImagesForMode('Clean Catalog');
@@ -33,12 +41,7 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
 
   function padWithFallbacks(images: string[]) {
       if (images.length === 0) return fallbackImages;
-      if (images.length >= 5) return images.slice(0, 5);
-      const padded = [...images];
-      while (padded.length < 5) {
-          padded.push(fallbackImages[padded.length]);
-      }
-      return padded;
+      return images;
   }
 
   const imagesByMode = {

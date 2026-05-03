@@ -30,7 +30,7 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
           </h3>
           
           <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'thin', scrollbarColor: '#333 #111' }}>
-              {currentImages.slice(0, 5).map((img, idx) => (
+              {currentImages.map((img, idx) => (
                   <div key={idx + selectedMode} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
