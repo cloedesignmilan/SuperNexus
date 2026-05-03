@@ -149,7 +149,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         "golden hour warm lighting, cinematic rim light"
     ];
 
-    const isShoeCatalog = userPrompt.includes('CLEAN CATALOG MODE – SHOES') || userPrompt.toLowerCase().includes('shoes');
+    const isBagCatalog = userPrompt.includes('CLEAN CATALOG MODE') || userPrompt.toLowerCase().includes('bag');
     const isTshirt = userPrompt.toLowerCase().includes('t-shirt') || userPrompt.toLowerCase().includes('tshirt') || userPrompt.toLowerCase().includes('hoodie');
 
     let isTshirtClean = false;
@@ -170,20 +170,32 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         isTshirtPremium = userPrompt.toLowerCase().includes('premium brand') || userPrompt.toLowerCase().includes('luxury');
     }
 
+    const isNoModelRequest = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().includes('no-model') || taxonomyMode?.toLowerCase().includes('clean-catalog');
+
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
     let strictPoses = [...poseModifiers];
     
-    if (isShoeCatalog) {
+    if (isBagCatalog && isNoModelRequest) {
         strictPoses = [
-            "[SHOES ANGLE 1] 3/4 front view (hero)",
-            "[SHOES ANGLE 2] full side view (perfect profile)",
-            "[SHOES ANGLE 3] top view (from above)",
-            "[SHOES ANGLE 4] pair front view (both shoes aligned)",
-            "[SHOES ANGLE 5] back view (heel focus)",
-            "[SHOES ANGLE 6] sole bottom view",
-            "[SHOES ANGLE 7] detail close-up (logo or texture)"
+            "[BAGS ANGLE 1] Front view (hero), product only, no human, clean alignment",
+            "[BAGS ANGLE 2] 3/4 side view, product only, no human, showing depth",
+            "[BAGS ANGLE 3] slightly angled from above, product only, no human",
+            "[BAGS ANGLE 4] detail close-up (hardware, logo, texture), product only",
+            "[BAGS ANGLE 5] alternative side or back view, product only, no human",
+            "[BAGS ANGLE 6] flat lay or perfectly upright, product only, no human",
+            "[BAGS ANGLE 7] extreme close-up on fabric or stitching, product only"
         ];
-    } else if (isTshirt) {
+    } else {
+        strictPoses = [
+            "[BAGS LIFESTYLE 1] model holding or wearing the bag, bag clearly visible and prominent",
+            "[BAGS LIFESTYLE 2] medium shot, fashion posture, bag is the central focus of the frame",
+            "[BAGS LIFESTYLE 3] model in motion or walking, holding bag naturally, dynamic lifestyle pose",
+            "[BAGS LIFESTYLE 4] close-up on torso/arm area, bag taking up 50% of the frame",
+            "[BAGS LIFESTYLE 5] candid moment, bag placed elegantly or worn, aspirational feeling"
+        ];
+    }
+    
+    if (isTshirt) {
         if (isTshirtBackPrint) {
             strictPoses = [
                 "[T-SHIRT BACK PRINT 1] Show full back clearly, model turned away, design fully visible, no cropping",
@@ -400,7 +412,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const identityPronoun = clientGender === 'MAN' ? 'His' : (clientGender === 'WOMAN' ? 'Her' : 'Their');
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
 
-            const shoeSpecificRules = isShoeCatalog ? `\n[ANGLE CONTROL SYSTEM (STRICT): Each image MUST represent a UNIQUE predefined angle. If an angle is duplicated → INVALID. If an angle is missing → INVALID.]\n[CONSISTENCY RULE: same distance from camera, same zoom level, same product size in frame, same framing margins. All images must look like part of the SAME catalog set.]\n[DIVERSITY ENFORCEMENT: Each image must be visually and technically different. Do NOT repeat similar angles or compositions.]` : "";
+            const bagSpecificRules = isBagCatalog ? `\n[BAGS CONTROL SYSTEM: The uploaded bag is the absolute reference. Preserve exact shape, handle length, strap style, hardware color, and material texture. Do NOT morph it into a different type of bag. If it's a handbag, keep it a handbag. If it's a backpack, keep it a backpack.]` : "";
 
             let tshirtSpecificRules = "";
             if (isTshirt) {
@@ -417,7 +429,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const stylingDirective = "\n[STYLING RULE: Whenever you generate complementary clothing items (like shoes, or a top for pants, or pants for a t-shirt), you MUST ensure the colors, fabrics, and footwear are highly fashionable, coherent, and match the aesthetic of the main product perfectly.]";
             const bottomsDirective = isBottom ? "\n[CRITICAL DIRECTIVE: The uploaded product is a BOTTOM garment (pants/skirt/shorts). You MUST render the model wearing it on their LOWER BODY (legs/waist). Do NOT wear it on the upper body. Generate a complementary top (shirt/sweater) that matches the style perfectly. Ensure shoes match the outfit.]" : "";
 
-            variantPrompt = userPrompt + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            variantPrompt = userPrompt + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}${bagSpecificRules}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
