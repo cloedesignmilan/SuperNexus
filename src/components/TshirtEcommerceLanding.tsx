@@ -13,6 +13,8 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
     include: { images: { orderBy: { image_order: 'asc' } } }
   });
 
+  const recentImages: string[] = latestTshirtJob?.images?.map((img: any) => img.image_url) || [];
+
   const fallbackImages = [
     'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
     'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
