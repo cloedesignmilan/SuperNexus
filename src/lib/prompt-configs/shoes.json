@@ -155,41 +155,41 @@
           {
             "shotNumber": 1,
             "shotName": "Urban Walking Close-up",
-            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
-            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
             "shotName": "Relaxed Urban Sitting",
-            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
-            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
             "shotName": "POV Top-Down Standing",
-            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
-            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
             "shotName": "Park Grass Chilling",
-            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
-            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
             "shotName": "Dynamic Nature Step",
-            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
-            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Dynamic Step Detail"
           }
         ]
@@ -203,41 +203,41 @@
           {
             "shotNumber": 1,
             "shotName": "Urban Walking Close-up",
-            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
-            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
             "shotName": "Relaxed Urban Sitting",
-            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
-            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
             "shotName": "POV Top-Down Standing",
-            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
-            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
             "shotName": "Park Grass Chilling",
-            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
-            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
             "shotName": "Dynamic Nature Step",
-            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
-            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Dynamic Step Detail"
           }
         ]
@@ -251,41 +251,41 @@
           {
             "shotNumber": 1,
             "shotName": "Urban Walking Close-up",
-            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
-            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
             "shotName": "Relaxed Urban Sitting",
-            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
-            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
             "shotName": "POV Top-Down Standing",
-            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
-            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
             "shotName": "Park Grass Chilling",
-            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
-            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
             "shotName": "Dynamic Nature Step",
-            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
-            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Dynamic Step Detail"
           }
         ]
