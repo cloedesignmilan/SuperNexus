@@ -154,43 +154,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "City Stroll Feet",
-            "positivePrompt": "Close up on the {product} worn by a model walking gracefully down a beautiful city street. Low angle shot cropped at the knees. Bokeh background, cinematic sunlight. The {product} is the absolute focus.",
-            "negativePrompt": "full body, torso, face, studio, solid background, flat lighting",
-            "hardRules": "LIFESTYLE ENVIRONMENT BOKEH. KNEE-DOWN CROP ONLY. MODEL WALKING.",
-            "outputGoal": "Dynamic urban footwear lifestyle"
+            "shotName": "Urban Walking Close-up",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
-            "shotName": "Standing on Terrace",
-            "positivePrompt": "Close up on feet wearing the {product} standing elegantly on a scenic terrace or cobblestone. Cropped below the knee. Natural golden hour lighting.",
-            "negativePrompt": "studio, harsh flash, indoors, upper body, full body",
-            "hardRules": "KNEE-DOWN CROP ONLY. LIFESTYLE BACKGROUND.",
-            "outputGoal": "Footwear stance lifestyle"
+            "shotName": "Relaxed Urban Sitting",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
-            "shotName": "Walking Away Step",
-            "positivePrompt": "Low angle shot from behind of feet wearing the {product} taking a step forward on an outdoor pavement. Focus on the heel and back of the shoes. Natural sunlight.",
-            "negativePrompt": "front view, full body, studio, indoors",
-            "hardRules": "BACK VIEW LOW ANGLE. KNEE-DOWN CROP ONLY.",
-            "outputGoal": "Footwear back fit"
+            "shotName": "POV Top-Down Standing",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
-            "shotName": "Relaxed Seated Feet",
-            "positivePrompt": "Close up of crossed ankles/feet wearing the {product} while the model sits relaxed outdoors (e.g. on a bench or cafe chair). Cinematic low-light or sunset photography.",
-            "negativePrompt": "full body, face, studio, standing",
-            "hardRules": "SEATED POSTURE. KNEE-DOWN CROP ONLY. OUTDOOR ENVIRONMENT.",
-            "outputGoal": "Relaxed footwear lifestyle"
+            "shotName": "Park Grass Chilling",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
-            "shotName": "Dynamic Step / Jump",
-            "positivePrompt": "Action shot of feet wearing the {product} mid-step or mid-air over a natural outdoor surface. Cropped at the shins. Soft focus elegant background.",
-            "negativePrompt": "posed, stiff, studio, full body, head visible",
-            "hardRules": "DYNAMIC FOOT MOVEMENT. SHIN-DOWN CROP ONLY.",
-            "outputGoal": "Active footwear connection"
+            "shotName": "Dynamic Nature Step",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "outputGoal": "Dynamic Step Detail"
           }
         ]
       },
@@ -202,43 +202,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Street Candid Woman",
-            "positivePrompt": "Real everyday woman carrying the {product} on the street. Candid photography, natural, unposed. Authentic feel, slight motion.",
-            "negativePrompt": "professional model, studio, posed, airbrushed",
-            "hardRules": "MUST LOOK LIKE A REAL WOMAN. CANDID CARRY.",
-            "outputGoal": "Authentic street lifestyle"
+            "shotName": "Urban Walking Close-up",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
-            "shotName": "Shopping Day",
-            "positivePrompt": "Real everyday woman holding the {product} while looking at a shop window. Medium shot. Natural ambient lighting.",
-            "negativePrompt": "high fashion, studio, looking intensely at camera",
-            "hardRules": "SHOPPING CONTEXT. REALISTIC FEMALE.",
-            "outputGoal": "Everyday context"
+            "shotName": "Relaxed Urban Sitting",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
-            "shotName": "Park Bench",
-            "positivePrompt": "Real woman sitting on a park bench, {product} resting next to her. Casual outdoor setting.",
-            "negativePrompt": "studio, posed, fashion model",
-            "hardRules": "BAG NEXT TO PERSON. REALISTIC OUTDOORS.",
-            "outputGoal": "Resting authentic"
+            "shotName": "POV Top-Down Standing",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
-            "shotName": "Grabbing Phone",
-            "positivePrompt": "Real woman grabbing her phone out of the {product}. Candid shot. Natural lighting.",
-            "negativePrompt": "studio, perfect skin, fashion editorial",
-            "hardRules": "INTERACTING WITH BAG. NATURAL LIGHTING.",
-            "outputGoal": "Candid usage"
+            "shotName": "Park Grass Chilling",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
-            "shotName": "Imperfect framing",
-            "positivePrompt": "Woman carrying the {product} in a realistic beautiful setting, framing feels like a friend took a photo of her with a phone. Slightly imperfect framing.",
-            "negativePrompt": "professional framing, studio light, DSLR",
-            "hardRules": "IMPERFECT CANDID FEEL.",
-            "outputGoal": "Relatable content"
+            "shotName": "Dynamic Nature Step",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "outputGoal": "Dynamic Step Detail"
           }
         ]
       },
@@ -250,43 +250,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Candid Walking Man",
-            "positivePrompt": "Real everyday man carrying the {product} walking down a city street. Fashion forward. Candid photography, authentic, unposed, natural sunlight.",
-            "negativePrompt": "professional model, studio, highly edited, airbrushed",
-            "hardRules": "MUST LOOK LIKE A REAL MAN. CANDID CARRY.",
-            "outputGoal": "Authentic man lifestyle"
+            "shotName": "Urban Walking Close-up",
+            "positivePrompt": "Cinematic lifestyle photography. Extreme close-up on the {gender} model's feet walking down a textured urban street wearing the {product}. Professional DSLR shot, shallow depth of field, stunning natural sunlight, high-end street fashion aesthetic. Vivid lifelike colors.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, wide angle, full body",
+            "hardRules": "OUTDOOR LIFESTYLE. WALKING ON STREET. CLOSE-UP ON FEET. NO STUDIO.",
+            "outputGoal": "Street Walking Detail"
           },
           {
             "shotNumber": 2,
-            "shotName": "Casual Stance Bag",
-            "positivePrompt": "Real everyday man standing casually outdoors holding the {product}. Medium shot. Natural urban background.",
-            "negativePrompt": "high fashion, posed, studio",
-            "hardRules": "CASUAL STANCE. REALISTIC MALE.",
-            "outputGoal": "Everyday stance"
+            "shotName": "Relaxed Urban Sitting",
+            "positivePrompt": "Professional outdoor lifestyle portrait. {gender} model sitting casually on city concrete stairs or a ledge, wearing the {product}. Beautiful soft daylight, candid vibe, highly detailed. Perfect focus on the shoes with a beautiful blurred urban background.",
+            "negativePrompt": "studio, white background, fake lighting, text, watermark, logo, stiff pose",
+            "hardRules": "OUTDOOR LIFESTYLE. SITTING ON STAIRS/LEDGE. NO STUDIO.",
+            "outputGoal": "Urban Sitting Portrait"
           },
           {
             "shotNumber": 3,
-            "shotName": "Work Commute",
-            "positivePrompt": "Real man carrying the {product} during a commute, walking through a subway station or crossing a street.",
-            "negativePrompt": "studio, posed, fashion model",
-            "hardRules": "COMMUTE CONTEXT. REALISTIC MALE.",
-            "outputGoal": "Commute man"
+            "shotName": "POV Top-Down Standing",
+            "positivePrompt": "First-person POV top-down perspective looking straight down at the {gender} model's feet wearing the {product}. Standing on a highly textured outdoor surface (like gravel, asphalt, or a metal grate). Immersive storytelling angle, sharp focus, beautiful natural lighting.",
+            "negativePrompt": "studio, white background, face, full body, text, watermark, logo, front view",
+            "hardRules": "TOP-DOWN POV ANGLE. TEXTURED OUTDOOR GROUND. NO STUDIO.",
+            "outputGoal": "Top-Down POV Detail"
           },
           {
             "shotNumber": 4,
-            "shotName": "Looking away holding {product}",
-            "positivePrompt": "Real man holding the {product} looking off-camera casually. Upper body shot, natural outdoor lighting.",
-            "negativePrompt": "looking at camera, studio, dramatic lighting",
-            "hardRules": "CANDID PROFILE. NATURAL LIGHTING.",
-            "outputGoal": "Candid profile"
+            "shotName": "Park Grass Chilling",
+            "positivePrompt": "Cinematic outdoor photography. {gender} model relaxing sitting on green grass in a sunlit park, legs extended towards the camera wearing the {product}. Golden hour sunlight flares, rich green tones, peaceful lifestyle vibe. Extreme focus on the footwear.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, urban, street",
+            "hardRules": "OUTDOOR NATURE/PARK. SITTING ON GRASS. SUNLIGHT. NO STUDIO.",
+            "outputGoal": "Nature Grass Relaxation"
           },
           {
             "shotNumber": 5,
-            "shotName": "{product} on table next to him",
-            "positivePrompt": "Real man sitting at a cafe, the {product} rests on the table or chair next to him. Authentic feel.",
-            "negativePrompt": "stiff posture, studio, fashion editorial",
-            "hardRules": "SEATED OUTDOORS. BAG IN FRAME.",
-            "outputGoal": "Seated lifestyle"
+            "shotName": "Dynamic Nature Step",
+            "positivePrompt": "High-impact outdoor lifestyle shot. Close-up of the {product} as the {gender} model dynamically steps onto a textured natural element (like a rock or wooden log). Cinematic lighting, bokeh effect in the background. Adventure and lifestyle aesthetic.",
+            "negativePrompt": "studio, indoor, white background, text, watermark, logo, full body, face",
+            "hardRules": "OUTDOOR NATURE/ADVENTURE. STEPPING ON OBJECT. CLOSE-UP. NO STUDIO.",
+            "outputGoal": "Dynamic Step Detail"
           }
         ]
       },
