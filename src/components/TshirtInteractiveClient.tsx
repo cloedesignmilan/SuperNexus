@@ -29,16 +29,32 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
               Live Generations: {selectedMode}
           </h3>
           
-          <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'thin', scrollbarColor: '#333 #111' }}>
-              {currentImages.map((img, idx) => (
-                  <div key={idx + selectedMode} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                          Shot {idx + 1}
+          <div className="marquee-container" style={{ display: 'flex', overflow: 'hidden', gap: '1.5rem', paddingBottom: '1rem', width: '100%', position: 'relative' }}>
+              
+              <div className="marquee-track" style={{ display: 'flex', gap: '1.5rem', flexShrink: 0 }}>
+                  {currentImages.map((img, idx) => (
+                      <div key={`track1-${idx}-${selectedMode}`} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                              Shot {idx + 1}
+                          </div>
                       </div>
-                  </div>
-              ))}
+                  ))}
+              </div>
+
+              <div className="marquee-track" style={{ display: 'flex', gap: '1.5rem', flexShrink: 0 }}>
+                  {currentImages.map((img, idx) => (
+                      <div key={`track2-${idx}-${selectedMode}`} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                              Shot {idx + 1}
+                          </div>
+                      </div>
+                  ))}
+              </div>
+
           </div>
       </div>
 
@@ -84,6 +100,16 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
         @keyframes fadeIn {
             from { opacity: 0.3; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1); }
+        }
+        .marquee-track {
+            animation: marquee-scroll 25s linear infinite;
+        }
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-100% - 1.5rem)); }
         }
       `}} />
     </>
