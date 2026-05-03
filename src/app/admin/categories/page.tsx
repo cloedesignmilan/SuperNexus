@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { createCategory, deleteCategory, toggleCategoryStatus, updateCategory } from "./actions";
+import { createCategory, deleteCategory, toggleCategoryStatus } from "./actions";
+import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
 
@@ -104,21 +105,13 @@ export default async function CategoriesPage() {
                     </p>
                   )}
 
-                  <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}>
-                    {/* Pulsante Modifica a tendina */}
-                    <details style={{ flex: 1, position: 'relative' }}>
-                      <summary style={{ display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', listStyle: 'none', background: 'rgba(0,210,255,0.1)', color: '#00d2ff', border: '1px solid rgba(0,210,255,0.2)', fontWeight: 600 }}>
-                        ✏️ Edit
-                      </summary>
-                      <div style={{ position: 'absolute', bottom: 'calc(100% + 10px)', left: 0, width: '250px', background: '#1c1c1e', padding: '1.25rem', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.5)', zIndex: 10, border: '1px solid rgba(0,210,255,0.2)' }}>
-                        <form action={updateCategory.bind(null, cat.id)} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                          <input type="text" name="name" defaultValue={cat.name} required className="input-glass" />
-                          <input type="text" name="cover_image" defaultValue={cat.cover_image || ''} placeholder="URL Immagine" className="input-glass" />
-                          <textarea name="description" defaultValue={cat.description || ''} className="input-glass" rows={3}></textarea>
-                          <button type="submit" style={{ padding: '0.75rem', fontSize: '0.75rem', background: '#00d2ff', color: '#1c1c1e', border: 'none', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', marginTop: '0.5rem' }}>Salva</button>
-                        </form>
-                      </div>
-                    </details>
+                  <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <Link href={`/admin/business-modes?category=${cat.id}`} style={{ width: '100%', display: 'block', textAlign: 'center', padding: '0.6rem', borderRadius: '8px', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'none', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600 }}>
+                      📂 Apri Modalità Business
+                    </Link>
+                    <Link href={`/admin/categories/${cat.id}`} style={{ flex: 1, display: 'block', textAlign: 'center', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', textDecoration: 'none', background: 'rgba(0,210,255,0.1)', color: '#00d2ff', border: '1px solid rgba(0,210,255,0.2)', fontWeight: 600 }}>
+                      ⚙️ Setup Rules
+                    </Link>
                     
                     <form action={deleteCategory.bind(null, cat.id)} style={{ flex: 1 }}>
                       <button type="submit" style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', fontSize: '0.75rem', cursor: 'pointer', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', fontWeight: 600 }}>

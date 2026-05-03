@@ -99,3 +99,10 @@ export async function updateValidationFeedback(id: string, formData: FormData) {
     });
     revalidatePath('/admin/analyses');
 }
+
+export async function restartServer() {
+    const { exec } = require("child_process");
+    exec('touch next.config.ts', (err: any) => {
+        if (err) console.error("Failed to restart server", err);
+    });
+}

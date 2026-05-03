@@ -61,12 +61,22 @@ export async function updateCategory(id: string, formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const cover_image = formData.get("cover_image") as string;
+  const global_positive_prompt = formData.get("global_positive_prompt") as string;
+  const global_negative_prompt = formData.get("global_negative_prompt") as string;
+  const global_hard_rules = formData.get("global_hard_rules") as string;
   
   if (!name) throw new Error("Il nome della categoria è obbligatorio");
 
   await prisma.category.update({
     where: { id },
-    data: { name, description, cover_image }
+    data: { 
+      name, 
+      description, 
+      cover_image,
+      global_positive_prompt,
+      global_negative_prompt,
+      global_hard_rules
+    }
   });
   revalidatePath("/admin/categories");
   revalidatePath("/admin/subcategories");

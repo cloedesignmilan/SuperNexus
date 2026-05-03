@@ -1,31 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import tshirtConfigData from "./tshirt.json";
-import dressConfigData from "./dress.json";
-import bagsConfigData from "./bags.json";
-import jewelryConfigData from "./jewelry.json";
-import swimwearConfigData from "./swimwear.json";
-import shoesConfigData from "./shoes.json";
 import { PromptConfigRow, PromptShot } from "./types";
 
-// Extract the 'configs' array from the new JSON structure
-const tshirtConfig = (tshirtConfigData[0] as any).configs as PromptConfigRow[];
-const dressConfig = (dressConfigData[0] as any).configs as PromptConfigRow[];
-const bagsConfig = (bagsConfigData[0] as any).configs as PromptConfigRow[];
-const jewelryConfig = (jewelryConfigData[0] as any).configs as PromptConfigRow[];
-const swimwearConfig = (swimwearConfigData[0] as any).configs as PromptConfigRow[];
-const shoesConfig = (shoesConfigData[0] as any).configs as PromptConfigRow[];
-
-const registry: Record<string, PromptConfigRow[]> = {
-  "t-shirt": tshirtConfig,
-  "tshirt": tshirtConfig, // Fallback
-  "dress": dressConfig,
-  "dress / elegant": dressConfig, // Fallback
-  "bags": bagsConfig,
-  "jewelry": jewelryConfig,
-  "swimwear": swimwearConfig,
-  "shoes": shoesConfig,
-  // ... future categories
-};
+console.log("Reloading Prompt Configs - " + Date.now());
 
 export interface SelectionParams {
   categorySlug: string;
@@ -37,10 +13,7 @@ export interface SelectionParams {
   gender?: string;
 }
 
-export function loadPromptConfig(category: string): PromptConfigRow[] | null {
-  const normCat = category.toLowerCase().trim();
-  return registry[normCat] || null;
-}
+
 
 export async function getPromptsForSelection({
   categorySlug,
@@ -143,36 +116,7 @@ export async function getPromptsForSelection({
       console.error("Database Prompt Lookup Failed", e);
   }
 
-  // Priority 2: Fallback to JSON Configs
-  const config = loadPromptConfig(categorySlug);
-  if (!config) return null;
-
-  // Find exact match
-  let row = config.find(c => 
-    c.mode === normMode && 
-    c.presentation === normPres
-  );
-
-  // If no exact match, fallback to finding just mode
-  if (!row) {
-    row = config.find(c => c.mode === normMode);
-  }
-
-  // If still no match, fallback to the first row of that category
-  if (!row) {
-      row = config[0];
-  }
-  
-  if (!row) return null;
-
-  let shots = [...row.shots];
-  
-  if (specificShotNumber) {
-      const target = shots.find(s => ((s as any).shotNumber || s.shot_number) === specificShotNumber);
-      if (target) return [target];
-  }
-
-  return expandShots(shots, quantity);
+  return null;
 }
 
 function expandShots(shots: PromptShot[], quantity?: number): PromptShot[] {

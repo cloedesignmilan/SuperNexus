@@ -128,7 +128,10 @@ export default async function BusinessModesPage({ searchParams }: { searchParams
                     </p>
                   )}
 
-                  <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <Link href={`/admin/subcategories?mode=${mode.id}`} style={{ width: '100%', display: 'block', textAlign: 'center', padding: '0.6rem', borderRadius: '8px', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'none', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', fontWeight: 600 }}>
+                      📂 Apri Sottocategorie ({mode._count.subcategories})
+                    </Link>
                     
                     {/* Pulsante Modifica tendina */}
                     <details style={{ flex: 1, position: 'relative' }}>

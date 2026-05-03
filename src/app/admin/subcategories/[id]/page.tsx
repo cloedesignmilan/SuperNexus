@@ -6,6 +6,7 @@ import { ValidationCheckCard } from "../ValidationCheckCard";
 import StrictReferenceToggle from "../StrictReferenceToggle";
 import SubcategoryModelToggle from "../SubcategoryModelToggle";
 import SubcategorySceneToggle from "../SubcategorySceneToggle";
+import PromptConfigShotEditor from "./PromptConfigShotEditor";
 
 export const dynamic = 'force-dynamic';
 
@@ -22,6 +23,41 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
   });
 
   if (!subcat) return <div>Sottocategoria non trovata.</div>;
+
+  let presentationSlug = subcat.name.toLowerCase().replace(/\s+/g, '-');
+  let modeSlug = subcat.business_mode.name.toLowerCase().replace(/\s+/g, '-');
+  const categorySlug = subcat.business_mode.category.slug.toLowerCase().replace(/\s+/g, '-');
+
+  // Mappatura per il CRM per far combaciare i nomi storici del DB
+  let searchPresSlugs = [presentationSlug];
+  
+  if (presentationSlug === 'ugc-in-home') {
+    modeSlug = 'ugc-home';
+    searchPresSlugs = ['candid-woman', 'candid-man', 'candid'];
+  } else if (presentationSlug === 'ugc-in-store') {
+    modeSlug = 'ugc-store';
+    searchPresSlugs = ['candid-woman', 'candid-man', 'candid'];
+  } else if (presentationSlug === 'candid') {
+    searchPresSlugs = ['candid', 'candid-woman', 'candid-man'];
+  } else if (presentationSlug === 'model-photo') {
+    searchPresSlugs = ['model-photo', 'model-photo-woman', 'model-photo-man'];
+  } else if (presentationSlug === 'woman') {
+    searchPresSlugs = ['candid-woman', 'model-photo-woman'];
+  } else if (presentationSlug === 'man') {
+    searchPresSlugs = ['candid-man', 'model-photo-man'];
+  }
+
+  const shots = await prisma.promptConfigShot.findMany({
+    where: {
+      category: categorySlug,
+      mode: modeSlug,
+      presentation: { in: searchPresSlugs }
+    },
+    orderBy: [
+      { presentation: 'asc' },
+      { shotNumber: 'asc' }
+    ]
+  });
 
   return (
     <div style={{ paddingBottom: '5rem' }}>
@@ -151,6 +187,17 @@ export default async function SubcategoryDetailPage({ params }: { params: Promis
              </div>
           </div>
         </div>
+      </div>
+
+      {/* Editor JSON (PromptConfigShot) */}
+      <div className="admin-card" style={{ marginTop: '2rem', border: '1px solid #00d2ff' }}>
+        <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#00d2ff' }}>
+          🧠 Configurazione Scatti (JSON Database)
+        </h2>
+        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', margin: '0 0 1.5rem 0' }}>
+          Questi sono gli scatti programmati per questa sottocategoria. La rete AI leggerà queste righe in modo sequenziale.
+        </p>
+        <PromptConfigShotEditor shots={shots} />
       </div>
     </div>
   );

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Copyright, Users, Box, Zap, Share2, LogOut, Database, FlaskConical, MessageSquare } from "lucide-react";
+import { Copyright, Users, Box, Zap, Share2, LogOut, Database, FlaskConical, MessageSquare, RotateCw } from "lucide-react";
 import { adminLogout } from "@/app/login/actions";
+import { restartServer } from "@/app/admin/actions";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -29,20 +30,40 @@ export default function AdminSidebar() {
             <span style={{ color: '#00d2ff' }}>Super</span>Nexus <span style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>CRM</span>
           </h1>
           
-          <Link href="/auth" style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-            padding: '10px 16px', borderRadius: '12px',
-            background: 'linear-gradient(90deg, #e62ebf, #00d2ff)', color: 'white',
-            textDecoration: 'none', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px',
-            border: 'none',
-            boxShadow: '0 4px 15px rgba(0, 210, 255, 0.3)',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 210, 255, 0.4)' }}
-          onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 210, 255, 0.3)' }}
-          >
-            ← Torna all'App
-          </Link>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Link href="/auth" style={{
+              flex: 1,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              padding: '10px 16px', borderRadius: '12px',
+              background: 'linear-gradient(90deg, #e62ebf, #00d2ff)', color: 'white',
+              textDecoration: 'none', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px',
+              border: 'none',
+              boxShadow: '0 4px 15px rgba(0, 210, 255, 0.3)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 210, 255, 0.4)' }}
+            onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 210, 255, 0.3)' }}
+            >
+              ← Torna all'App
+            </Link>
+            
+            <button 
+              onClick={async () => {
+                await restartServer();
+                alert("Riavvio in corso... attendi 5 secondi poi ricarica.");
+              }}
+              title="Riavvia Server"
+              style={{
+                width: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                borderRadius: '12px', background: 'rgba(255,255,255,0.1)', color: 'white', 
+                border: '1px solid rgba(255,255,255,0.2)', cursor: 'pointer', transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)' }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
+            >
+              <RotateCw size={18} />
+            </button>
+          </div>
         </div>
 
         <nav className="admin-nav" style={{ flex: 1, padding: '0 1rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>

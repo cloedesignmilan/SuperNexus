@@ -48,10 +48,16 @@ model Category {
   slug        String   @unique
   description String?  @db.Text
   cover_image String?
-  sort_order  Int      @default(0)
-  is_active   Boolean  @default(true)
-  is_locked   Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  sort_order             Int      @default(0)
+  is_active              Boolean  @default(true)
+  is_locked              Boolean  @default(false)
+  
+  // Regole Globali (App 2.0 Super Admin)
+  global_positive_prompt String?  @db.Text
+  global_negative_prompt String?  @db.Text
+  global_hard_rules      String?  @db.Text
+
+  createdAt              DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   user           User            @relation(fields: [user_id], references: [id], onDelete: Cascade)

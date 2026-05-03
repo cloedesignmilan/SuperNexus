@@ -581,51 +581,51 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const renderSnippetGridInternal = (type: string, stepIndex: number) => {
     const GLOBAL_FALLBACKS: Record<string, string> = {
       // PRODUCT TYPES
-      'Men Clothing': 'https://images.unsplash.com/photo-1594938298598-7188b1395b09?w=600&q=80&fit=crop',
-      'Women Clothing': 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80&fit=crop',
-      'Dress / Elegant': 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=600&q=80&fit=crop',
-      'T-Shirt / Streetwear': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fit=crop',
-      'T-Shirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80&fit=crop',
-      'Swimwear': 'https://images.unsplash.com/photo-1564859228273-274232fdb516?w=600&q=80&fit=crop',
-      'Shoes / Sneakers': 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80&fit=crop',
-      'Bags / Accessories': 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80&fit=crop',
-      'Jewelry': 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80&fit=crop',
+      'Men Clothing': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-CANDID-1_1777731346455.jpg',
+      'Women Clothing': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1777731069801.jpg',
+      'Dress / Elegant': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
+      'T-Shirt / Streetwear': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'T-Shirt': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'Swimwear': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SWIMWEAR-LIFESTYLE-MODEL%20PHOTO-3_1777754104809.jpg',
+      'Shoes / Sneakers': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-1_1777755760288.jpg',
+      'Bags / Accessories': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-1_1777790858986.jpg',
+      'Jewelry': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-3_1777786292987.jpg',
 
       // BUSINESS MODES
-      'Clean Catalog': 'https://images.unsplash.com/photo-1627384113972-f4c0392fe5aa?w=600&q=80&fit=crop',
-      'Model Studio': 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80&fit=crop',
-      'Lifestyle': 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop',
-      'UGC': 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&q=80&fit=crop',
-      'Ads / Scroll Stopper': 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&q=80&fit=crop',
-      'Detail / Texture': 'https://images.unsplash.com/photo-1606105961732-2615a13381a1?w=600&q=80&fit=crop',
+      'Clean Catalog': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-4_1777788309332.jpg',
+      'Model Studio': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-2_1777756275381.jpg',
+      'Lifestyle': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-CANDID-5_1777731346455.jpg',
+      'UGC': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-4_1777794363658.jpg',
+      'Ads / Scroll Stopper': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
+      'Detail / Texture': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
 
       // PRESENTATIONS
-      'Candid': 'https://images.unsplash.com/photo-1529139574466-a303027c028b?w=600&q=80&fit=crop',
-      'Model Photo': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80&fit=crop',
-      'Flat Lay': 'https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=600&q=80&fit=crop',
-      'Ghost Mannequin': 'https://images.unsplash.com/photo-1627384113972-f4c0392fe5aa?w=600&q=80&fit=crop',
-      'No Model': 'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?w=600&q=80&fit=crop',
-      'Editorial': 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80&fit=crop',
-      'Selfie': 'https://images.unsplash.com/photo-1503342394128-c104d54dba01?w=600&q=80&fit=crop',
-      'Streetwear Urban': 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=600&q=80&fit=crop',
-      'Curvy': 'https://images.unsplash.com/photo-1618244972963-cbba9f6cf33f?w=600&q=80&fit=crop',
-      'Macro Texture': 'https://images.unsplash.com/photo-1606105961732-2615a13381a1?w=600&q=80&fit=crop',
+      'Candid': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-CANDID-1_1777731346455.jpg',
+      'Model Photo': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-2_1777756275381.jpg',
+      'Flat Lay': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-4_1777788309332.jpg',
+      'Ghost Mannequin': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-3_1777786292987.jpg',
+      'No Model': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
+      'Editorial': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1777731069801.jpg',
+      'Selfie': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-UGC-UGC%20IN%20HOME-1_1777706557354.jpg',
+      'Streetwear Urban': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'Curvy': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1777731069801.jpg',
+      'Macro Texture': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
 
       // FORMATS
-      '1:1 Square': 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&q=80&fit=crop',
-      '4:5 Portrait': 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&q=80&fit=crop',
-      '9:16 Reel': 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80&fit=crop',
+      '1:1 Square': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-CLEAN%20CATALOG-NO%20MODEL-3_1777786292987.jpg',
+      '4:5 Portrait': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg',
+      '9:16 Reel': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-CLEAN%20CATALOG-NO%20MODEL-5_1777733203117.jpg',
       
       // CLIENT TYPES (Gender)
-      'Man': 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&q=80&fit=crop',
-      'Woman': 'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=600&q=80&fit=crop',
+      'Man': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'Woman': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1777731069801.jpg',
       
       // ENVIRONMENTS
-      'Studio': 'https://images.unsplash.com/photo-1598257006458-087169a1f08d?w=600&q=80&fit=crop',
-      'City Street': 'https://images.unsplash.com/photo-1449844908441-8829872d2607?w=600&q=80&fit=crop',
-      'Cafe / Restaurant': 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80&fit=crop',
-      'Home / Indoor': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80&fit=crop',
-      'Beach / Resort': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop'
+      'Studio': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-1_1777755760288.jpg',
+      'City Street': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-CANDID-5_1777731346455.jpg',
+      'Cafe / Restaurant': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'Home / Indoor': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+      'Beach / Resort': 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SWIMWEAR-LIFESTYLE-MODEL%20PHOTO-3_1777754104809.jpg'
     };
 
     if (type === 'IMAGE_TYPE') {
@@ -660,7 +660,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
             const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
             
             const dbImage = (snip as any).cover_image || (snip as any).fallback_image;
-            const bgImage = dbImage || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+            const bgImage = dbImage || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
 
             return (
               <button 
@@ -882,8 +882,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                              transition: 'all 0.2s ease-in-out',
                              position: 'relative'
                          };
-                         
-                         const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+                         const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
 
                          if (bgImage) {
                             return {
@@ -948,7 +947,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       ) : (
                           <>
                             {(() => {
-                               const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80&fit=crop';
+                               const bgImage = imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
 
                                if (bgImage) {
                                   return (

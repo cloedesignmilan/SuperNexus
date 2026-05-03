@@ -299,6 +299,12 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         specificShotNumber,
         gender: clientGender
     });
+    
+    console.log("DEBUG: configShots loaded for", { categorySlug, modeSlug, presentationSlug, gender: clientGender });
+    console.log("DEBUG: configShots length:", configShots ? configShots.length : "NULL");
+    if (configShots && configShots.length > 0) {
+        console.log("DEBUG: First shot name:", configShots[0].shot_name);
+    }
 
     for (let i = 0; i < qty; i++) {
         const currentPose = strictPoses[i % strictPoses.length];

@@ -9,6 +9,7 @@ export const dynamic = 'force-dynamic';
 export default async function SubcategoriesPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const resolvedParams = await searchParams;
   const filterCat = resolvedParams.category;
+  const filterMode = resolvedParams.mode;
 
   const categories = await prisma.category.findMany({ orderBy: { sort_order: 'asc' } });
 
@@ -17,7 +18,12 @@ export default async function SubcategoriesPage({ searchParams }: { searchParams
     include: { category: true }
   });
 
-  const filterWhere = filterCat ? { business_mode: { category_id: filterCat } } : {};
+  let filterWhere: any = {};
+  if (filterMode) {
+    filterWhere = { business_mode_id: filterMode };
+  } else if (filterCat) {
+    filterWhere = { business_mode: { category_id: filterCat } };
+  }
 
   const subcats = await prisma.subcategory.findMany({
     where: filterWhere,

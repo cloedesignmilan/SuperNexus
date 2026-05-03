@@ -4,6 +4,13 @@ import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { prisma } from '@/lib/prisma'
 import { generateImagesWithAI } from '@/lib/ai/generate'
+import { generateTshirtImages } from '@/lib/ai/engines/tshirtEngine'
+import { generateDressImages } from '@/lib/ai/engines/dressEngine'
+import { generateBagsImages } from '@/lib/ai/engines/bagsEngine'
+import { generateSwimwearImages } from '@/lib/ai/engines/swimwearEngine'
+import { generateJewelryImages } from '@/lib/ai/engines/jewelryEngine'
+import { generateShoesImages } from '@/lib/ai/engines/shoesEngine'
+import { generateProductsImages } from '@/lib/ai/engines/productsEngine'
 import { logApiCost } from '@/lib/gemini-cost'
 
 export const maxDuration = 300 // Max duration for Vercel
@@ -108,7 +115,7 @@ export async function POST(req: NextRequest) {
     })
 
     // GENERATE VIA AI ENGINE
-    const aiResult = await generateImagesWithAI({
+    const aiParams = {
       qty: requestedQty,
       subcat: dynamicSubcat as any, // Type cast per compatibilità
       publicUrls: [imageUrl],
@@ -126,7 +133,37 @@ export async function POST(req: NextRequest) {
       printLocation,
       imageBackUrl,
       productColors
-    })
+    };
+
+    let aiResult;
+    switch (taxonomyCat) {
+      case 't-shirt':
+        aiResult = await generateTshirtImages(aiParams);
+        break;
+      case 'dress':
+        aiResult = await generateDressImages(aiParams);
+        break;
+      case 'bags':
+        aiResult = await generateBagsImages(aiParams);
+        break;
+      case 'swimwear':
+        aiResult = await generateSwimwearImages(aiParams);
+        break;
+      case 'jewelry':
+        aiResult = await generateJewelryImages(aiParams);
+        break;
+      case 'shoes':
+        aiResult = await generateShoesImages(aiParams);
+        break;
+      case '{product}s':
+      case 'system':
+        aiResult = await generateProductsImages(aiParams);
+        break;
+      default:
+        // Fallback monolithic engine for unmapped categories
+        aiResult = await generateImagesWithAI(aiParams);
+        break;
+    }
 
     if (aiResult.generatedBase64s.length === 0) {
       await prisma.generationJob.update({ where: { id: newJob.id }, data: { status: 'failed', error_message: aiResult.errorMessages.join(', ') } })
