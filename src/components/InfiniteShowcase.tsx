@@ -189,10 +189,10 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'MAN → CLEAN CATALOG',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 16_11_55.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154011.096.webp",
-      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154012.500.webp",
-      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T154013.255.webp",
-      "/prove nuove/ceremony elegant/MAN/men clothing/Clean Catalog/supernexus_image - 2026-04-26T155201.087.webp"
+      "/prove nuove/ceremony elegant/MAN/Clean Catalog/No Model/brown_1.jpg",
+      "/prove nuove/ceremony elegant/MAN/Clean Catalog/No Model/brown_2.jpg",
+      "/prove nuove/ceremony elegant/MAN/Clean Catalog/No Model/brown_3.jpg",
+      "/prove nuove/ceremony elegant/MAN/Clean Catalog/No Model/brown_4.jpg"
     ]
   }
 ];
