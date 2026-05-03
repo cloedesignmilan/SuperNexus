@@ -24,6 +24,7 @@ import { getShowcaseData } from '@/lib/getShowcaseData';
 import PremiumCreazioniShowcase from '@/components/PremiumCreazioniShowcase';
 import { getCreazioniTree } from '@/lib/getCreazioniData';
 import TshirtEcommerceLanding from '@/components/TshirtEcommerceLanding';
+import SwimwearEcommerceLanding from '@/components/SwimwearEcommerceLanding';
 function getDynamicMetrics() {
   const launchDate = new Date('2026-04-20T00:00:00Z');
   const now = new Date();
@@ -419,6 +420,9 @@ export default async function LandingPage() {
 
       {/* T-SHIRT ECOMMERCE SPECIAL SECTION */}
       <TshirtEcommerceLanding lang={lang} />
+
+      {/* SWIMWEAR ECOMMERCE SPECIAL SECTION */}
+      <SwimwearEcommerceLanding lang={lang} />
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" style={{ paddingBottom: '8rem' }}>
