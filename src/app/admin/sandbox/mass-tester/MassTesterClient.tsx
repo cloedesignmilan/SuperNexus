@@ -93,18 +93,25 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
             setProgress({ current: i + 1, total: testsToRun.length, status: `Generazione in corso: ${test.name} (${test.gender})` });
 
             try {
-                // Costruisci il payload per /api/web/generate
+                let taxonomyModeMapped = test.bmObj.name;
+                if (taxonomyModeMapped.includes('UGC')) taxonomyModeMapped = 'UGC';
+                else if (taxonomyModeMapped.includes('Catalog') || taxonomyModeMapped.includes('Ecommerce') || taxonomyModeMapped.includes('Clean')) taxonomyModeMapped = 'Clean Catalog';
+                else if (taxonomyModeMapped.includes('Ad') || taxonomyModeMapped.includes('Scroll')) taxonomyModeMapped = 'Ads / Scroll Stopper';
+                else if (taxonomyModeMapped.includes('Detail') || taxonomyModeMapped.includes('Texture')) taxonomyModeMapped = 'Detail / Texture';
+                else if (taxonomyModeMapped.includes('Model') || taxonomyModeMapped.includes('Studio')) taxonomyModeMapped = 'Model Studio';
+                else taxonomyModeMapped = 'Lifestyle';
+
                 const payload = {
-                    publicUrls: [test.url],
-                    userClarification: "X",
-                    isOutfit: false,
-                    varianceEnabled: false, // Per test puristi
-                    generationModel: "gemini-3.1-flash-image-preview",
-                    category: category,
-                    businessMode: test.bmObj,
-                    subcategory: test.subcatObj,
+                    imageUrl: test.url,
+                    finalPrompt: "Taxonomy Mass Tester Auto Prompt",
+                    negativePrompt: "text, watermark, poorly rendered, ugly, deformed, blurry",
+                    qty: 5,
+                    aspectRatio: "4:5",
+                    taxonomyCat: category.slug,
+                    taxonomyMode: taxonomyModeMapped,
+                    taxonomySubcat: test.subcatObj.name,
                     clientGender: test.gender,
-                    qty: 5 // Vogliamo testare l'intera batch da 5
+                    detectedProductType: category.slug
                 };
 
                 const res = await fetch('/api/web/generate', {
@@ -114,11 +121,12 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                 });
 
                 const data = await res.json();
+                const imagesArray = data.results ? data.results.map((r: any) => r.url) : (data.images || []);
                 
                 newResults.push({
                     ...test,
                     success: res.ok,
-                    images: data.images || [],
+                    images: imagesArray,
                     error: data.error || null
                 });
 
