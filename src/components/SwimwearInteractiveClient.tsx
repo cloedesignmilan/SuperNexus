@@ -47,6 +47,20 @@ export default function SwimwearInteractiveClient({ lang, imagesByMode }: Props)
             { name: 'Candid', icon: Smartphone }
         ]
     },
+    {
+        name: 'Ads / Scroll Stopper', icon: Smartphone, desc: lang === 'it' ? 'Pubblicità d\'impatto' : 'High impact ads',
+        subs: [
+            { name: 'Model Photo', icon: User },
+            { name: 'No Model', icon: Ghost }
+        ]
+    },
+    {
+        name: 'Detail / Texture', icon: Camera, desc: lang === 'it' ? 'Dettagli e tessuti' : 'Details and fabrics',
+        subs: [
+            { name: 'Model Photo', icon: User },
+            { name: 'No Model', icon: Ghost }
+        ]
+    }
   ];
 
   const activeModes = modes.filter(mode => mode.subs.some(sub => (imagesByMode[mode.name]?.[sub.name]?.length || 0) > 0));
