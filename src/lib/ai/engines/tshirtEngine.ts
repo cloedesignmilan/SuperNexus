@@ -224,10 +224,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 }
             }
 
-            if (currentRefInline) {
-                aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting and pose. DO NOT copy the clothes from this image. DO NOT copy any messy or cluttered background elements; adapt the background to perfectly match the POSITIVE INSTRUCTIONS and HARD RULES):" });
-                aiParts.push({ inlineData: currentRefInline });
-            }
+
             aiParts.push({ text: variantPrompt });
 
         } else {
