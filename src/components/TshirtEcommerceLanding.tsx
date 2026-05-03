@@ -7,7 +7,8 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
   // Fetch latest still-life/clean catalog t-shirt images
   const latestTshirtJob = await prisma.generationJob.findFirst({
     where: { 
-        subcategory: { name: 'STILL LIFE PACK' }
+        subcategory: { name: 'STILL LIFE PACK' },
+        status: 'completed'
     },
     orderBy: { createdAt: 'desc' },
     include: { images: { orderBy: { image_order: 'asc' } } }
@@ -16,11 +17,11 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
   const recentImages: string[] = latestTshirtJob?.images?.map((img: any) => img.image_url) || [];
 
   const fallbackImages = [
-    'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
-    'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
-    'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
-    'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
-    'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/T-SHIRT-LIFESTYLE-MODEL%20PHOTO-5_1777749534495.jpg',
+    'https://placehold.co/400x500/111/fff?text=Shot+1',
+    'https://placehold.co/400x500/111/fff?text=Shot+2',
+    'https://placehold.co/400x500/111/fff?text=Shot+3',
+    'https://placehold.co/400x500/111/fff?text=Shot+4',
+    'https://placehold.co/400x500/111/fff?text=Shot+5',
   ];
 
   const imagesByMode = {
