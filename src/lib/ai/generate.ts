@@ -416,14 +416,19 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 backgroundOverride += `\n[DYNAMIC TONE-ON-TONE OVERRIDE]: The background MUST be a pure, seamless studio cyclorama backdrop painted EXACTLY in ${color} to perfectly match the garment. Create a premium, high-end monochromatic studio setting (solid ${color} background with a soft, elegant lighting gradient). ABSOLUTELY NO OUTDOOR SCENES. NO CLUTTER. Just a perfectly clean, luxurious ${color} tone-on-tone environment like a Vogue editorial.`;
             }
 
+            let povOverride = "";
+            if (shotInfo.hard_rules?.includes('POV') || shotInfo.positive_prompt?.includes('POV')) {
+                povOverride = `\n[STRICT POV OVERRIDE (HIGHEST PRIORITY)]: Ignore any global prompt asking for a "handsome man", "beautiful woman", "fashion model", "portrait", or "face". THIS IS A FIRST-PERSON POINT-OF-VIEW (POV) SHOT. DO NOT DRAW THE MODEL'S UPPER BODY OR FACE. YOU MUST DRAW ONLY THE LEGS/FEET AS SEEN FROM THE EYES OF THE PERSON LOOKING DOWN AT THEIR OWN FEET. THIS RULE OVERRIDES ALL OTHERS.`;
+            }
+
             variantPrompt = `--- ${categorySlug.toUpperCase()} ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${genderLockPositive}${ecommerceBlockPositive}${finalPositive}
 [HARD RULES]: ${shotInfo.hard_rules}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
-[STRICT NEGATIVE CONSTRAINTS - DO NOT GENERATE THESE ELEMENTS UNDER ANY CIRCUMSTANCE]: ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
-` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective + backgroundOverride;
+[STRICT NEGATIVE CONSTRAINTS - DO NOT GENERATE THESE ELEMENTS UNDER ANY CIRCUMSTANCE]: face, upper body, head, ${swimwearNegative}${clientNegativePrompt}${genderLockNegative}${ecommerceBlockNegative}${finalNegative}
+` + GLOBAL_INVIOLABLE_RULES + backShotOverride + productLockSystem + wearDirective + backgroundOverride + povOverride;
 
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
