@@ -59,41 +59,41 @@
           {
             "shotNumber": 1,
             "shotName": "Editorial Studio Sitting",
-            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
-            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
             "shotName": "Elegant Legs on Beige",
-            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
             "shotName": "Dynamic Suspended Legs",
-            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
             "shotName": "Standing Editorial Portrait",
-            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
-            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
             "shotName": "Artistic Floor Angle",
-            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Low Angle Editorial"
           }
         ]
@@ -107,41 +107,41 @@
           {
             "shotNumber": 1,
             "shotName": "Editorial Studio Sitting",
-            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
-            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
             "shotName": "Elegant Legs on Beige",
-            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
             "shotName": "Dynamic Suspended Legs",
-            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
             "shotName": "Standing Editorial Portrait",
-            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
-            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
             "shotName": "Artistic Floor Angle",
-            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Low Angle Editorial"
           }
         ]
@@ -587,41 +587,41 @@
           {
             "shotNumber": 1,
             "shotName": "Editorial Studio Sitting",
-            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
-            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
             "shotName": "Elegant Legs on Beige",
-            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
             "shotName": "Dynamic Suspended Legs",
-            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
             "shotName": "Standing Editorial Portrait",
-            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
-            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
             "shotName": "Artistic Floor Angle",
-            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Low Angle Editorial"
           }
         ]
@@ -635,41 +635,41 @@
           {
             "shotNumber": 1,
             "shotName": "Editorial Studio Sitting",
-            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
-            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
             "shotName": "Elegant Legs on Beige",
-            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
             "shotName": "Dynamic Suspended Legs",
-            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
             "shotName": "Standing Editorial Portrait",
-            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
-            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
             "shotName": "Artistic Floor Angle",
-            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.",
             "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
-            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.",
             "outputGoal": "Low Angle Editorial"
           }
         ]
