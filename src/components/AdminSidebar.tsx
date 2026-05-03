@@ -12,6 +12,7 @@ export default function AdminSidebar() {
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: <Copyright size={18} /> },
     { href: "/admin/sandbox", label: "Sandbox (Test & Lock)", icon: <FlaskConical size={18} color="#00d2ff" /> },
+    { href: "/admin/sandbox/mass-tester", label: "Test Massivo (Generatore)", icon: <Zap size={18} color="#e62ebf" /> },
     { href: "/admin/analyses", label: "Analisi e Feedback", icon: <MessageSquare size={18} color="#e62ebf" /> },
     { href: "/admin/categories", label: "Macrocategorie", icon: <Box size={18} /> },
     { href: "/admin/business-modes", label: "Categorie", icon: <Box size={18} /> },
