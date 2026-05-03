@@ -58,43 +58,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Hero Standing Posture",
-            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
-            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
-            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
-            "outputGoal": "Main Model Standing"
+            "shotName": "Editorial Studio Sitting",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
-            "shotName": "Close-up Legs and Shoes",
-            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "face, torso, busy background, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe Fit Detail"
+            "shotName": "Elegant Legs on Beige",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Seated Elegant Posture",
-            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
-            "negativePrompt": "standing, busy background, text, logo, watermark",
-            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
-            "outputGoal": "Seated Fit"
+            "shotName": "Dynamic Suspended Legs",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
-            "shotName": "Dynamic Step Forward",
-            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "static, boring, text, logo, watermark",
-            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe in Motion"
+            "shotName": "Standing Editorial Portrait",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
-            "shotName": "Crossed Ankles Close-up",
-            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
-            "negativePrompt": "full body, face, text, logo, watermark",
-            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Aesthetic Detail"
+            "shotName": "Artistic Floor Angle",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "outputGoal": "Low Angle Editorial"
           }
         ]
       },
@@ -106,43 +106,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Hero Standing Posture",
-            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
-            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
-            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
-            "outputGoal": "Main Model Standing"
+            "shotName": "Editorial Studio Sitting",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
-            "shotName": "Close-up Legs and Shoes",
-            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "face, torso, busy background, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe Fit Detail"
+            "shotName": "Elegant Legs on Beige",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Seated Elegant Posture",
-            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
-            "negativePrompt": "standing, busy background, text, logo, watermark",
-            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
-            "outputGoal": "Seated Fit"
+            "shotName": "Dynamic Suspended Legs",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
-            "shotName": "Dynamic Step Forward",
-            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "static, boring, text, logo, watermark",
-            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe in Motion"
+            "shotName": "Standing Editorial Portrait",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
-            "shotName": "Crossed Ankles Close-up",
-            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
-            "negativePrompt": "full body, face, text, logo, watermark",
-            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Aesthetic Detail"
+            "shotName": "Artistic Floor Angle",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "outputGoal": "Low Angle Editorial"
           }
         ]
       },
@@ -586,43 +586,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Hero Standing Posture",
-            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
-            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
-            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
-            "outputGoal": "Main Model Standing"
+            "shotName": "Editorial Studio Sitting",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
-            "shotName": "Close-up Legs and Shoes",
-            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "face, torso, busy background, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe Fit Detail"
+            "shotName": "Elegant Legs on Beige",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Seated Elegant Posture",
-            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
-            "negativePrompt": "standing, busy background, text, logo, watermark",
-            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
-            "outputGoal": "Seated Fit"
+            "shotName": "Dynamic Suspended Legs",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
-            "shotName": "Dynamic Step Forward",
-            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "static, boring, text, logo, watermark",
-            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe in Motion"
+            "shotName": "Standing Editorial Portrait",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
-            "shotName": "Crossed Ankles Close-up",
-            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
-            "negativePrompt": "full body, face, text, logo, watermark",
-            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Aesthetic Detail"
+            "shotName": "Artistic Floor Angle",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "outputGoal": "Low Angle Editorial"
           }
         ]
       },
@@ -634,43 +634,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Hero Standing Posture",
-            "positivePrompt": "High-end studio fashion photo of {product} worn by a model standing elegantly. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit, no distractions. Natural pose, elegant and realistic.",
-            "negativePrompt": "text, logo, watermark, busy background, holding bag, messy outfit",
-            "hardRules": "FOCUS ON SHOES. CLEAN NEUTRAL BACKGROUND.",
-            "outputGoal": "Main Model Standing"
+            "shotName": "Editorial Studio Sitting",
+            "positivePrompt": "High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting",
+            "hardRules": "EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND.",
+            "outputGoal": "Editorial Sitting Pose"
           },
           {
             "shotNumber": 2,
-            "shotName": "Close-up Legs and Shoes",
-            "positivePrompt": "Close-up of the model's legs and feet wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "face, torso, busy background, text, logo, watermark",
-            "hardRules": "LEGS AND FEET CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe Fit Detail"
+            "shotName": "Elegant Legs on Beige",
+            "positivePrompt": "Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND.",
+            "outputGoal": "Beige Studio Detail"
           },
           {
             "shotNumber": 3,
-            "shotName": "Seated Elegant Posture",
-            "positivePrompt": "Model seated gracefully on a minimal studio stool, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimal outfit.",
-            "negativePrompt": "standing, busy background, text, logo, watermark",
-            "hardRules": "SEATED POSE. NEUTRAL BACKGROUND.",
-            "outputGoal": "Seated Fit"
+            "shotName": "Dynamic Suspended Legs",
+            "positivePrompt": "Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO.",
+            "outputGoal": "Creative Block Pose"
           },
           {
             "shotNumber": 4,
-            "shotName": "Dynamic Step Forward",
-            "positivePrompt": "Action shot of the model taking an elegant step forward, wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp.",
-            "negativePrompt": "static, boring, text, logo, watermark",
-            "hardRules": "DYNAMIC STEP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Shoe in Motion"
+            "shotName": "Standing Editorial Portrait",
+            "positivePrompt": "Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional.",
+            "negativePrompt": "messy background, outdoor, street, text, logo, watermark, bad lighting",
+            "hardRules": "FULL BODY EDITORIAL. MINIMALIST STUDIO.",
+            "outputGoal": "Hero Standing Editorial"
           },
           {
             "shotNumber": 5,
-            "shotName": "Crossed Ankles Close-up",
-            "positivePrompt": "Close-up of the model's crossed ankles wearing the {product}. High-end studio fashion photo. Clean neutral background (light grey or beige). Soft professional studio lighting (softbox). Focus on the {product}, perfectly visible and sharp. Minimalist elegance.",
-            "negativePrompt": "full body, face, text, logo, watermark",
-            "hardRules": "CROSSED ANKLES CROP. NEUTRAL BACKGROUND.",
-            "outputGoal": "Aesthetic Detail"
+            "shotName": "Artistic Floor Angle",
+            "positivePrompt": "Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic.",
+            "negativePrompt": "full body, face, messy background, outdoor, text, logo, watermark",
+            "hardRules": "LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING.",
+            "outputGoal": "Low Angle Editorial"
           }
         ]
       }
