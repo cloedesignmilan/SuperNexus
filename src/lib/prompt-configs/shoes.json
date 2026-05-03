@@ -10,42 +10,42 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "3/4 Front View",
-            "positivePrompt": "Clean e-commerce product photo of {product}. 3/4 front view hero shot. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
-            "negativePrompt": "model, human, props, text, watermark, messy background",
-            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. 3/4 FRONT VIEW.",
+            "shotName": "3/4 Front View (Hero)",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Camera angle: 45° front diagonal. The shoe is slightly rotated to show BOTH front and side. Must clearly show toe, side and overall shape. Pure white background (#FFFFFF). Soft diffused studio lighting (softbox). Very light natural shadow under the shoe. Centered composition. Same scale and alignment. CRITICAL RULE: The shoes must remain IDENTICAL to the reference: same shape, same materials, same colors, same proportions, same details. No redesign, no variation.",
+            "negativePrompt": "model, human, props, text, logo, watermark, messy background, redesigned product, side view, back view, multiple shoes",
+            "hardRules": "PURE WHITE BACKGROUND. NO MODEL. STRICT 45° FRONT DIAGONAL VIEW.",
             "outputGoal": "Hero Front Angle"
           },
           {
             "shotNumber": 2,
-            "shotName": "Side View",
-            "positivePrompt": "Clean e-commerce product photo of {product}. Full side view profile. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
-            "negativePrompt": "model, human, props, text, watermark, messy background",
-            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. SIDE VIEW.",
+            "shotName": "Perfect Side View",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Camera angle: exactly 90° lateral. The shoe must be perfectly horizontal. Only ONE side visible (no perspective angle). Must NOT look similar to the 3/4 view. Pure white background (#FFFFFF). Soft diffused studio lighting (softbox). Very light natural shadow under the shoe. Centered composition. Same scale and alignment. CRITICAL RULE: The shoes must remain IDENTICAL to the reference: same shape, same materials, same colors, same proportions, same details. No redesign, no variation.",
+            "negativePrompt": "model, human, props, text, logo, watermark, messy background, redesigned product, 3/4 view, front view, multiple shoes",
+            "hardRules": "PURE WHITE BACKGROUND. NO MODEL. STRICT EXACTLY 90° LATERAL SIDE VIEW.",
             "outputGoal": "Side Profile Angle"
           },
           {
             "shotNumber": 3,
             "shotName": "Top View",
-            "positivePrompt": "Clean e-commerce product photo of {product}. Top down flat lay view. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
-            "negativePrompt": "model, human, props, text, watermark, messy background",
-            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. TOP VIEW.",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Camera angle: 90° from above (top-down). Full top of the shoe visible. Focus on laces, opening and internal shape. Symmetrical composition. Pure white background (#FFFFFF). Soft diffused studio lighting (softbox). Very light natural shadow under the shoe. Centered composition. Same scale and alignment. CRITICAL RULE: The shoes must remain IDENTICAL to the reference: same shape, same materials, same colors, same proportions, same details. No redesign, no variation.",
+            "negativePrompt": "model, human, props, text, logo, watermark, messy background, redesigned product, side view, front view, multiple shoes",
+            "hardRules": "PURE WHITE BACKGROUND. NO MODEL. STRICT EXACTLY 90° TOP-DOWN VIEW.",
             "outputGoal": "Top Down Angle"
           },
           {
             "shotNumber": 4,
-            "shotName": "Back View",
-            "positivePrompt": "Clean e-commerce product photo of {product}. Back view showing the heel. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
-            "negativePrompt": "model, human, props, text, watermark, messy background",
-            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. BACK VIEW.",
+            "shotName": "Back View (Heel)",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Camera angle: directly from the back (180° from front). Only the heel is visible. Shoe perfectly vertical and centered. Pure white background (#FFFFFF). Soft diffused studio lighting (softbox). Very light natural shadow under the shoe. Centered composition. Same scale and alignment. CRITICAL RULE: The shoes must remain IDENTICAL to the reference: same shape, same materials, same colors, same proportions, same details. No redesign, no variation.",
+            "negativePrompt": "model, human, props, text, logo, watermark, messy background, redesigned product, front view, side view, multiple shoes",
+            "hardRules": "PURE WHITE BACKGROUND. NO MODEL. STRICT BACK HEEL VIEW.",
             "outputGoal": "Back Heel Angle"
           },
           {
             "shotNumber": 5,
             "shotName": "Close-up Detail",
-            "positivePrompt": "Clean e-commerce product photo of {product}. Extreme close-up macro detail showing materials and stitching. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
-            "negativePrompt": "model, human, props, text, watermark, messy background, full shoe",
-            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. MACRO CLOSE-UP.",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Camera: macro close-up. Focus on ONE specific area (stitching, logo, texture or material). Ultra sharp detail. Must NOT show the full shoe. Pure white background (#FFFFFF). Soft diffused studio lighting (softbox). Very light natural shadow under the shoe. Centered composition. Same scale and alignment. CRITICAL RULE: The shoes must remain IDENTICAL to the reference: same shape, same materials, same colors, same proportions, same details. No redesign, no variation.",
+            "negativePrompt": "model, human, props, text, logo, watermark, messy background, redesigned product, full shoe, wide angle, multiple shoes",
+            "hardRules": "PURE WHITE BACKGROUND. NO MODEL. STRICT EXTREME MACRO CLOSE-UP.",
             "outputGoal": "Material Detail Angle"
           }
         ]
