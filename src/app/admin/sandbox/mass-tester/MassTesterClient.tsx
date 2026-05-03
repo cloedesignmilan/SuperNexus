@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, Play, CheckCircle, XCircle, Loader2, Image as ImageIcon } from 'lucide-react';
 import { saveValidationFeedback } from '@/app/admin/actions';
 
@@ -13,6 +13,7 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
     const [isUploadingMan, setIsUploadingMan] = useState(false);
     
     const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+    const [selectedSubcatIds, setSelectedSubcatIds] = useState<string[]>([]);
     const [generationQty, setGenerationQty] = useState<number>(5);
     const [isTesting, setIsTesting] = useState(false);
     
@@ -21,6 +22,23 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
 
     const womanFileRef = useRef<HTMLInputElement>(null);
     const manFileRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (selectedCategoryId) {
+            const cat = categories.find((c: any) => c.id === selectedCategoryId);
+            if (cat) {
+                const allIds: string[] = [];
+                for (const bm of cat.business_modes) {
+                    for (const sub of bm.subcategories) {
+                        allIds.push(sub.id);
+                    }
+                }
+                setSelectedSubcatIds(allIds);
+            }
+        } else {
+            setSelectedSubcatIds([]);
+        }
+    }, [selectedCategoryId, categories]);
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, gender: 'WOMAN' | 'MAN') => {
         const file = e.target.files?.[0];
@@ -62,16 +80,18 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
         const subcategoriesToTest: any[] = [];
         for (const bm of category.business_modes) {
             for (const sub of bm.subcategories) {
-                // Combina le info per passare all'API
-                subcategoriesToTest.push({
-                    categorySlug: category.slug,
-                    modeSlug: bm.slug,
-                    presentationSlug: sub.slug,
-                    subcatId: sub.id,
-                    name: `${bm.name} > ${sub.name}`,
-                    subcatObj: sub,
-                    bmObj: bm
-                });
+                if (selectedSubcatIds.includes(sub.id)) {
+                    // Combina le info per passare all'API
+                    subcategoriesToTest.push({
+                        categorySlug: category.slug,
+                        modeSlug: bm.slug,
+                        presentationSlug: sub.slug,
+                        subcatId: sub.id,
+                        name: `${bm.name} > ${sub.name}`,
+                        subcatObj: sub,
+                        bmObj: bm
+                    });
+                }
             }
         }
 
@@ -221,6 +241,59 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                             ))}
                         </select>
                     </div>
+
+                    {selectedCategoryId && (() => {
+                        const activeCategory = categories.find((c: any) => c.id === selectedCategoryId);
+                        if (!activeCategory) return null;
+                        return (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <label style={{ fontSize: '0.9rem', color: '#aaa' }}>Sottocategorie da lanciare:</label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button 
+                                            onClick={() => {
+                                                const allIds: string[] = [];
+                                                activeCategory.business_modes.forEach((bm: any) => {
+                                                    bm.subcategories.forEach((sub: any) => allIds.push(sub.id));
+                                                });
+                                                setSelectedSubcatIds(allIds);
+                                            }}
+                                            style={{ background: 'transparent', border: '1px solid #444', color: '#ccc', fontSize: '0.7rem', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
+                                            Seleziona Tutte
+                                        </button>
+                                        <button 
+                                            onClick={() => setSelectedSubcatIds([])}
+                                            style={{ background: 'transparent', border: '1px solid #444', color: '#ccc', fontSize: '0.7rem', padding: '4px 8px', borderRadius: '4px', cursor: 'pointer' }}>
+                                            Rimuovi Tutte
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style={{ maxHeight: '200px', overflowY: 'auto', background: '#000', border: '1px solid #333', borderRadius: '4px', padding: '10px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    {activeCategory.business_modes.map((bm: any) => (
+                                        <div key={bm.id} style={{ marginBottom: '5px' }}>
+                                            <strong style={{ color: '#03dac6', fontSize: '0.85rem' }}>{bm.name}</strong>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '6px', paddingLeft: '10px' }}>
+                                                {bm.subcategories.map((sub: any) => (
+                                                    <label key={sub.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                        <input 
+                                                            type="checkbox" 
+                                                            checked={selectedSubcatIds.includes(sub.id)}
+                                                            onChange={(e) => {
+                                                                if (e.target.checked) setSelectedSubcatIds([...selectedSubcatIds, sub.id]);
+                                                                else setSelectedSubcatIds(selectedSubcatIds.filter((id: string) => id !== sub.id));
+                                                            }}
+                                                            style={{ accentColor: '#03dac6', width: '16px', height: '16px' }}
+                                                        />
+                                                        <span style={{ color: '#ddd', fontSize: '0.85rem' }}>{sub.name}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })()}
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         <label style={{ fontSize: '0.9rem', color: '#aaa' }}>Quantità per sottocategoria (1-5):</label>
