@@ -1,4 +1,5 @@
 import React from 'react';
+export const dynamic = 'force-dynamic';
 import Link from 'next/link';
 import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2, Sparkles, Store, Shirt, Footprints, Heart, Briefcase, Baby, Star } from 'lucide-react';
 import AnimatedCounter from '@/components/AnimatedCounter';
