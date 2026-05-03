@@ -42,6 +42,17 @@ const SLIDESHOW_CONFIG = [
     ]
   },
   {
+    displayCategory: 'DRESS / ELEGANT',
+    displaySubcategory: 'UGC CANDID → MAN & WOMAN',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-CANDID-1_1777843278915.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-CANDID-2_1777843278915.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-CANDID-1_1777843150160.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-CANDID-2_1777843150160.jpg"
+    ]
+  },
+  {
     displayCategory: 'T-SHIRT',
     displaySubcategory: 'CLEAN CATALOG → NO MODEL',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_58_07.webp',
