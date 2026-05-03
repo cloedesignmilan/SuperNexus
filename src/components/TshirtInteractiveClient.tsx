@@ -16,7 +16,6 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
     { name: 'Model Studio', icon: User, desc: lang === 'it' ? 'Modelli in studio pulito' : 'Models in clean studio' },
     { name: 'Lifestyle', icon: Camera, desc: lang === 'it' ? 'Contesti urbani e reali' : 'Urban and real contexts' },
     { name: 'UGC', icon: Smartphone, desc: lang === 'it' ? 'Stile influencer e selfie' : 'Influencer & selfie style' },
-    { name: 'Ads / Scroll Stopper', icon: Zap, desc: lang === 'it' ? 'Creatività per campagne' : 'Creatives for ad campaigns' },
   ];
 
   const currentImages = imagesByMode[selectedMode] || imagesByMode['Clean Catalog'];

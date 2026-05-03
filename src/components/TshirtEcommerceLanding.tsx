@@ -22,7 +22,6 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
   const modelStudioImages = await fetchLatestImagesForMode('Model Studio');
   const lifestyleImages = await fetchLatestImagesForMode('Lifestyle');
   const ugcImages = await fetchLatestImagesForMode('UGC');
-  const adsImages = await fetchLatestImagesForMode('Ads / Scroll Stopper');
 
   const fallbackImages = [
     'https://placehold.co/400x500/111/fff?text=Shot+1',
@@ -47,7 +46,6 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
       'Model Studio': padWithFallbacks(modelStudioImages),
       'Lifestyle': padWithFallbacks(lifestyleImages),
       'UGC': padWithFallbacks(ugcImages),
-      'Ads / Scroll Stopper': padWithFallbacks(adsImages),
   };
 
   const t = {
