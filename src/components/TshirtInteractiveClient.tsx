@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Camera, Smartphone, Box, User, Ghost, PackageOpen, Heart, Sun, Home, ShoppingBag } from 'lucide-react';
+import { Camera, Smartphone, Box, User, Ghost, PackageOpen, Heart, Sun, Home, ShoppingBag, Zap, Search } from 'lucide-react';
 
 interface Props {
   lang: 'it' | 'en';
