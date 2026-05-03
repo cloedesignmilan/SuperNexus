@@ -214,7 +214,7 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   'T-SHIRT': Shirt,
   'CEREMONY ELEGANT': Sparkles,
   'SWIMWEAR': Waves,
-  'FOOTWEAR': Footprints,
+  'SHOES': Footprints,
   'HOODIES': Layers,
   'BAGS': ShoppingBag,
 };
