@@ -33,6 +33,8 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
   ];
 
   const currentImages = imagesByMode[selectedMode] || imagesByMode['Clean Catalog'];
+  // Duplicate images to ensure there are enough slides to loop infinitely on large desktop screens
+  const displayImages = [...currentImages, ...currentImages];
 
   return (
     <>
@@ -45,13 +47,13 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
           
           <div className="embla" ref={emblaRef} style={{ overflow: 'hidden', paddingBottom: '1rem', cursor: 'grab', position: 'relative' }}>
               <div className="embla__container" style={{ display: 'flex', touchAction: 'pan-y pinch-zoom', marginLeft: '-1.5rem' }}>
-                  {currentImages.map((img, idx) => (
-                      <div key={idx + selectedMode} className="embla__slide fade-in-image" style={{ flex: '0 0 auto', minWidth: 0, paddingLeft: '1.5rem' }}>
+                  {displayImages.map((img, idx) => (
+                      <div key={idx + '-' + selectedMode} className="embla__slide fade-in-image" style={{ flex: '0 0 auto', minWidth: 0, paddingLeft: '1.5rem' }}>
                           <div style={{ width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              <img src={img} alt={`Shot ${(idx % currentImages.length) + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                                  Shot {idx + 1}
+                                  Shot {(idx % currentImages.length) + 1}
                               </div>
                           </div>
                       </div>
