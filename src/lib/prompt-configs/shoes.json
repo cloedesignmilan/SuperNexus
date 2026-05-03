@@ -10,43 +10,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Front View Flat",
-            "positivePrompt": "Hand{product} front view, perfectly centered. Clean white studio background. Exact product replication, showing full shape, straps, and hardware.",
-            "negativePrompt": "people, models, hands, perspective, floating, messy background",
-            "hardRules": "STRICT FRONT VIEW. NO MODEL. PERFECT LIGHTING.",
-            "outputGoal": "Hero Image Ecommerce"
+            "shotName": "3/4 Front View",
+            "positivePrompt": "Clean e-commerce product photo of {product}. 3/4 front view hero shot. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
+            "negativePrompt": "model, human, props, text, watermark, messy background",
+            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. 3/4 FRONT VIEW.",
+            "outputGoal": "Hero Front Angle"
           },
           {
             "shotNumber": 2,
-            "shotName": "Side View Silhouette",
-            "positivePrompt": "Hand{product} side view, perfectly centered. Showing the depth and profile silhouette of the {product}. Clean studio white background.",
-            "negativePrompt": "front view, people, models",
-            "hardRules": "STRICT SIDE VIEW. NO FRONT VISIBLE.",
-            "outputGoal": "Side Profile Ecommerce"
+            "shotName": "Side View",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Full side view profile. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
+            "negativePrompt": "model, human, props, text, watermark, messy background",
+            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. SIDE VIEW.",
+            "outputGoal": "Side Profile Angle"
           },
           {
             "shotNumber": 3,
-            "shotName": "Three Quarter Angle",
-            "positivePrompt": "Hand{product} 3/4 angle. Showing the front and side simultaneously to demonstrate volume. Clean studio.",
-            "negativePrompt": "straight on, people, models, top down",
-            "hardRules": "3/4 ANGLE. VOLUME VISIBLE.",
-            "outputGoal": "3/4 Profile Ecommerce"
+            "shotName": "Top View",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Top down flat lay view. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
+            "negativePrompt": "model, human, props, text, watermark, messy background",
+            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. TOP VIEW.",
+            "outputGoal": "Top Down Angle"
           },
           {
             "shotNumber": 4,
-            "shotName": "Top Down Interior",
-            "positivePrompt": "Hand{product} top-down view, {product} open slightly showing the interior compartments or lining. Perfectly lit from above.",
-            "negativePrompt": "model, hanging, perspective angle, people",
-            "hardRules": "TOP-DOWN CAMERA. INTERIOR HINT.",
-            "outputGoal": "Top Down Ecommerce"
+            "shotName": "Back View",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Back view showing the heel. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
+            "negativePrompt": "model, human, props, text, watermark, messy background",
+            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. BACK VIEW.",
+            "outputGoal": "Back Heel Angle"
           },
           {
             "shotNumber": 5,
-            "shotName": "Hardware Close-Up",
-            "positivePrompt": "Macro close-up of the {product} hardware, zipper, or logo plate. High detail, sharp focus on the metal texture.",
-            "negativePrompt": "full {product}, zoomed out, people, models",
-            "hardRules": "MACRO SHOT, EXTREME DETAIL ON HARDWARE.",
-            "outputGoal": "Detail View Ecommerce"
+            "shotName": "Close-up Detail",
+            "positivePrompt": "Clean e-commerce product photo of {product}. Extreme close-up macro detail showing materials and stitching. Pure white background. Soft professional studio lighting. Centered composition. Focus on the {product}, perfectly visible and sharp, perfect product fidelity.",
+            "negativePrompt": "model, human, props, text, watermark, messy background, full shoe",
+            "hardRules": "NO MODEL. PURE WHITE BACKGROUND. MACRO CLOSE-UP.",
+            "outputGoal": "Material Detail Angle"
           }
         ]
       },
