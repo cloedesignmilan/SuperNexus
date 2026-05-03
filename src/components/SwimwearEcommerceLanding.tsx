@@ -4,52 +4,42 @@ import { Waves } from 'lucide-react';
 import SwimwearInteractiveClient from './SwimwearInteractiveClient';
 
 export default async function SwimwearEcommerceLanding({ lang }: { lang: 'it' | 'en' }) {
-  async function fetchLatestImagesForMode(modeName: string) {
+  async function fetchAllImagesGrouped() {
     const jobs = await prisma.generationJob.findMany({
       where: {
         category: { slug: 'swimwear' },
-        business_mode: { name: modeName },
         status: 'completed',
         results_count: { gt: 0 }
       },
       orderBy: { createdAt: 'desc' },
-      take: 2,
-      include: { images: { orderBy: { image_order: 'asc' } } }
+      take: 200,
+      include: { 
+          business_mode: true,
+          subcategory: true,
+          images: { orderBy: { image_order: 'asc' } } 
+      }
     });
-    
-    let allImages: string[] = [];
+
+    const grouped: Record<string, Record<string, string[]>> = {};
+
     for (const job of jobs) {
-        if (job.images) {
-            allImages = allImages.concat(job.images.map((img: any) => img.image_url));
+        if (!job.business_mode || !job.subcategory) continue;
+        const mode = job.business_mode.name;
+        const sub = job.subcategory.name;
+        
+        if (!grouped[mode]) grouped[mode] = {};
+        if (!grouped[mode][sub]) grouped[mode][sub] = [];
+        
+        if (grouped[mode][sub].length < 10) {
+            const urls = job.images.map((img: any) => img.image_url);
+            grouped[mode][sub] = grouped[mode][sub].concat(urls);
         }
     }
-    return allImages;
+
+    return grouped;
   }
 
-  const cleanCatalogImages = await fetchLatestImagesForMode('Clean Catalog');
-  const modelStudioImages = await fetchLatestImagesForMode('Model Studio');
-  const lifestyleImages = await fetchLatestImagesForMode('Lifestyle');
-  const ugcImages = await fetchLatestImagesForMode('UGC');
-
-  const fallbackImages = [
-    'https://placehold.co/400x500/111/fff?text=Shot+1',
-    'https://placehold.co/400x500/111/fff?text=Shot+2',
-    'https://placehold.co/400x500/111/fff?text=Shot+3',
-    'https://placehold.co/400x500/111/fff?text=Shot+4',
-    'https://placehold.co/400x500/111/fff?text=Shot+5',
-  ];
-
-  function padWithFallbacks(images: string[]) {
-      if (images.length === 0) return fallbackImages;
-      return images;
-  }
-
-  const imagesByMode = {
-      'Clean Catalog': padWithFallbacks(cleanCatalogImages),
-      'Model Studio': padWithFallbacks(modelStudioImages),
-      'Lifestyle': padWithFallbacks(lifestyleImages),
-      'UGC': padWithFallbacks(ugcImages),
-  };
+  const groupedImages = await fetchAllImagesGrouped();
 
   const t = {
     title: lang === 'it' ? 'Costruito per i Brand di Costumi' : 'Built for Swimwear Brands',
@@ -71,7 +61,7 @@ export default async function SwimwearEcommerceLanding({ lang }: { lang: 'it' | 
           </p>
         </div>
 
-        <SwimwearInteractiveClient lang={lang} imagesByMode={imagesByMode} />
+        <SwimwearInteractiveClient lang={lang} imagesByMode={groupedImages as any} />
 
       </div>
     </section>
