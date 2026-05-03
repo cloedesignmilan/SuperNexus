@@ -134,10 +134,10 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'WOMAN → CLEAN CATALOG',
     originalImage: '/prove nuove/Immagini originali/ChatGPT Image 26 apr 2026, 15_57_55.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_1.jpg",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_2.jpg",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_3.jpg",
-      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/new_image_4.jpg"
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/No Model/pink_1.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/No Model/pink_2.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/No Model/pink_3.jpg",
+      "/prove nuove/ceremony elegant/WOMAN/Clean Catalog/No Model/pink_4.jpg"
     ]
   },
   {

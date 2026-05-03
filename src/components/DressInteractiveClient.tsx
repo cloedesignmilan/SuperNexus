@@ -77,7 +77,7 @@ export default function DressInteractiveClient({ lang, imagesByMode }: Props) {
       ? selectedSub[validSelectedMode]
       : activeSubs[0].name;
 
-  const currentImages = imagesByMode[validSelectedMode]?.[currentActiveSub] || [];
+  const currentImages = imagesByMode[validSelectedMode]?.[currentActiveSub]?.slice(0, 5) || [];
 
   return (
     <>
