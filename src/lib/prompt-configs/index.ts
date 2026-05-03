@@ -66,7 +66,13 @@ export async function getPromptsForSelection({
   } else if (normPres === 'man') {
     normPres = 'candid-man';
   }
-  else if (normPres.includes('curvy') || normPres.includes('plus-size')) normPres = 'curvy';
+  else if (normPres.includes('curvy') || normPres.includes('plus-size')) {
+    if (gender && gender.toLowerCase() === 'man') {
+        normPres = 'curvy-man';
+    } else {
+        normPres = 'curvy-woman';
+    }
+  }
   else if (normPres.includes('still life')) normPres = 'still-life-pack';
   else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
   else if (normPres === 'no model') normPres = 'no-model';
