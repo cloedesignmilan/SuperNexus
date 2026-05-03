@@ -396,6 +396,9 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 if (isTshirt) {
                     productLockSystem += `\n[T-SHIRT FABRIC RULE: The t-shirt MUST look perfectly ironed, smooth, and high-quality. ABSOLUTELY NO heavy wrinkles, creases, or crumpled fabric. Ensure a clean, premium, and flawless drape on the model's body.]`;
                 }
+                if (categorySlug === 'shoes' && modeSlug === 'clean-catalog' && presentationSlug === 'no-model') {
+                    productLockSystem += `\n[MANDATORY INITIAL STEP - DOUBLE VISUAL ANALYSIS]: Before synthesizing the final image, you MUST perform a deep internal visual double-check of the reference image. Analyze and memorize exactly: 1. The exact silhouette and volume. 2. The microscopic texture of the materials (leather, suede, mesh, rubber). 3. All hardware, eyelets, and laces. 4. Texts, brand marks, and logos (read them perfectly and replicate them without spelling errors). 5. Exact color palettes and contrast. 6. Stitching patterns and sole details. You MUST replicate these exact details flawlessly in the final rendering without any hallucinations or redesigns.`;
+                }
             }
 
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
