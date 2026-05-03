@@ -35,10 +35,10 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'DETAIL / TEXTURE → MODEL & NO MODEL',
     originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
     manualImages: [
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot1.webp",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_MODEL/shot2.webp",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot1.webp",
-      "/prove nuove/ceremony elegant/DETAIL_TEXTURE_NO_MODEL/shot2.webp"
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-DETAIL%20%20TEXTURE-MODEL%20PHOTO-1_1777841390480.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-DETAIL%20%20TEXTURE-MODEL%20PHOTO-1_1777841214465.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-DETAIL%20%20TEXTURE-NO%20MODEL-1_1777841094462.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-DETAIL%20%20TEXTURE-NO%20MODEL-1_1777840985190.jpg"
     ]
   },
   {
