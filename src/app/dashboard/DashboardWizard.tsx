@@ -1662,8 +1662,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               
               <div className="glass-grid gender-grid" style={{ marginTop: '2rem' }}>
                  {[
-                   { label: 'MAN', display: 'MAN', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features', icon: 'User' },
-                   { label: 'WOMAN', display: 'WOMAN', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features', icon: 'User' }
+                   { label: 'MAN', display: 'MAN (Modelli)', id: 'gender-man', prompt: 'male fashion model, handsome man', negative: 'female, woman, girl, breasts, feminine features', icon: 'User' },
+                   { label: 'WOMAN', display: 'WOMAN (Modelle)', id: 'gender-woman', prompt: 'female fashion model, beautiful woman', negative: 'male, man, boy, facial hair, masculine features', icon: 'User' }
                  ].map(gender => {
                     const isSelected = selections['CLIENT_TYPE']?.id === gender.id;
                     const IconComp = (Icons as any)[gender.icon];
