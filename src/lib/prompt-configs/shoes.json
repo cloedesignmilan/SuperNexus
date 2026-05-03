@@ -298,43 +298,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Mirror Selfie Bag",
-            "positivePrompt": "UGC style mirror selfie of a real woman showing off her outfit and the {product}. Shot on iPhone, slightly grainy, authentic flash reflection.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality, posed model",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE. SHOW BAG CLEARLY.",
-            "outputGoal": "UGC Selfie"
+            "shotName": "UGC Full Body Mirror Selfie",
+            "positivePrompt": "UGC authentic smartphone photo. A real {gender} taking a full body mirror selfie in a casual home bedroom, showing off their daily outfit featuring the {product}. Shot on iPhone, authentic messy room background, natural indoor lighting, slightly grainy amateur aesthetic.",
+            "negativePrompt": "professional photography, studio, white background, DSLR, perfectly lit, high fashion model, watermark, logo",
+            "hardRules": "IPHONE MIRROR SELFIE AESTHETIC. HOME BEDROOM. AMATEUR LIGHTING.",
+            "outputGoal": "Outfit Mirror Selfie"
           },
           {
             "shotNumber": 2,
-            "shotName": "Unboxing / Bed placement",
-            "positivePrompt": "UGC style photo of the {product} resting on a messy unmade bed. Shot from above with a phone. Casual, raw.",
-            "negativePrompt": "professional, studio, perfectly centered, softbox",
-            "hardRules": "RESTING ON BED. IPHONE AESTHETIC.",
-            "outputGoal": "UGC Placement"
+            "shotName": "UGC POV Unboxing Floor",
+            "positivePrompt": "UGC authentic smartphone photo. First-person POV looking down at the {product} casually resting on the floor or a home rug, right next to a half-opened cardboard shoebox. Natural window lighting, everyday casual vibe, amateur photography style.",
+            "negativePrompt": "professional, studio, white background, softbox, perfectly centered, DSLR, high fashion model",
+            "hardRules": "FIRST PERSON POV. RESTING ON HOME FLOOR NEAR SHOEBOX. IPHONE AESTHETIC.",
+            "outputGoal": "Casual Floor Unboxing"
           },
           {
             "shotNumber": 3,
-            "shotName": "Holding {product} down walking",
-            "positivePrompt": "UGC style shot taken by the person holding the {product} looking down at their feet and the {product} swinging. Casual, raw phone photo.",
-            "negativePrompt": "studio, high fashion, perfect focus, full body",
-            "hardRules": "FIRST PERSON POV LOOKING DOWN.",
-            "outputGoal": "UGC POV"
+            "shotName": "UGC POV Seated Shoefie",
+            "positivePrompt": "UGC authentic smartphone photo. Point of view looking down at the {gender}'s own crossed feet wearing the {product} while sitting casually at a coffee shop or on public transport. Candid, raw, everyday lifestyle vibe. Shot with a phone camera.",
+            "negativePrompt": "studio, professional, high fashion model, perfect lighting, full body, white background",
+            "hardRules": "POV LOOKING DOWN AT CROSSED FEET. EVERYDAY PUBLIC LOCATION. PHONE CAMERA.",
+            "outputGoal": "Relaxed Point of View"
           },
           {
             "shotNumber": 4,
-            "shotName": "Car Seat Placement",
-            "positivePrompt": "UGC style close up of the {product} resting on the passenger seat of a car. Realistic lighting, taken casually with a phone.",
-            "negativePrompt": "macro lens, professional detail, studio",
-            "hardRules": "CAR SEAT ENVIRONMENT. PHONE CAMERA.",
-            "outputGoal": "UGC Car"
+            "shotName": "UGC Street Walking POV",
+            "positivePrompt": "UGC authentic smartphone photo. First-person POV looking down at their feet mid-stride while walking on a city sidewalk wearing the {product}. Slight motion blur, authentic social media story aesthetic (Instagram/TikTok vibe), raw street lighting.",
+            "negativePrompt": "studio, perfect focus, professional, high fashion, white background, DSLR",
+            "hardRules": "FIRST PERSON POV LOOKING DOWN WHILE WALKING. MOTION. SOCIAL MEDIA STORY AESTHETIC.",
+            "outputGoal": "Walking Story POV"
           },
           {
             "shotNumber": 5,
-            "shotName": "Bathroom selfie",
-            "positivePrompt": "UGC style photo of a woman taking a bathroom mirror selfie, {product} hanging on her shoulder or resting on the sink. Authentic everyday shot.",
-            "negativePrompt": "studio, perfect lighting, modeling",
-            "hardRules": "EVERYDAY BATHROOM. RELAXED AND REAL.",
-            "outputGoal": "UGC Bathroom"
+            "shotName": "UGC Entryway Floor",
+            "positivePrompt": "UGC authentic smartphone photo. The {product} casually taken off and resting untidily on the wooden floor in a home entryway. Natural soft light coming from a nearby window. Amateur composition, real life authentic feel, no humans visible.",
+            "negativePrompt": "professional lighting, studio, white background, modeling, human, DSLR, high quality",
+            "hardRules": "RESTING UNTIDILY ON HOME FLOOR. NO MODEL VISIBLE. EVERYDAY REAL LIFE.",
+            "outputGoal": "Authentic Home Placement"
           }
         ]
       },
@@ -346,43 +346,43 @@
         "shots": [
           {
             "shotNumber": 1,
-            "shotName": "Mirror Selfie Man Bag",
-            "positivePrompt": "UGC style mirror selfie of a real man showing his outfit with the {product}. Shot on iPhone, messy room background, authentic.",
-            "negativePrompt": "professional lighting, DSLR, studio, high quality",
-            "hardRules": "MUST LOOK LIKE AN IPHONE MIRROR SELFIE.",
-            "outputGoal": "UGC Selfie Man"
+            "shotName": "UGC Full Body Mirror Selfie",
+            "positivePrompt": "UGC authentic smartphone photo. A real {gender} taking a full body mirror selfie in a casual home bedroom, showing off their daily outfit featuring the {product}. Shot on iPhone, authentic messy room background, natural indoor lighting, slightly grainy amateur aesthetic.",
+            "negativePrompt": "professional photography, studio, white background, DSLR, perfectly lit, high fashion model, watermark, logo",
+            "hardRules": "IPHONE MIRROR SELFIE AESTHETIC. HOME BEDROOM. AMATEUR LIGHTING.",
+            "outputGoal": "Outfit Mirror Selfie"
           },
           {
             "shotNumber": 2,
-            "shotName": "Casual street UGC",
-            "positivePrompt": "UGC style photo of a real man carrying the {product}, walking on the street, taken quickly by a friend.",
-            "negativePrompt": "professional, studio, centered perfectly",
-            "hardRules": "IMPERFECT FRAMING. IPHONE AESTHETIC.",
-            "outputGoal": "POV Friend Man"
+            "shotName": "UGC POV Unboxing Floor",
+            "positivePrompt": "UGC authentic smartphone photo. First-person POV looking down at the {product} casually resting on the floor or a home rug, right next to a half-opened cardboard shoebox. Natural window lighting, everyday casual vibe, amateur photography style.",
+            "negativePrompt": "professional, studio, white background, softbox, perfectly centered, DSLR, high fashion model",
+            "hardRules": "FIRST PERSON POV. RESTING ON HOME FLOOR NEAR SHOEBOX. IPHONE AESTHETIC.",
+            "outputGoal": "Casual Floor Unboxing"
           },
           {
             "shotNumber": 3,
-            "shotName": "{product} on desk",
-            "positivePrompt": "UGC style shot of the {product} resting on a messy office desk next to a laptop. Casual phone photo.",
-            "negativePrompt": "studio, high fashion, perfect focus",
-            "hardRules": "OFFICE DESK UGC. RAW IPHONE QUALITY.",
-            "outputGoal": "UGC Desk"
+            "shotName": "UGC POV Seated Shoefie",
+            "positivePrompt": "UGC authentic smartphone photo. Point of view looking down at the {gender}'s own crossed feet wearing the {product} while sitting casually at a coffee shop or on public transport. Candid, raw, everyday lifestyle vibe. Shot with a phone camera.",
+            "negativePrompt": "studio, professional, high fashion model, perfect lighting, full body, white background",
+            "hardRules": "POV LOOKING DOWN AT CROSSED FEET. EVERYDAY PUBLIC LOCATION. PHONE CAMERA.",
+            "outputGoal": "Relaxed Point of View"
           },
           {
             "shotNumber": 4,
-            "shotName": "Gym locker room UGC",
-            "positivePrompt": "UGC style photo of a man holding the {product} in a locker room. Authentic phone flash lighting.",
-            "negativePrompt": "studio, perfect lighting",
-            "hardRules": "LOCKER ROOM ENVIRONMENT. RAW VIBE FLASH.",
-            "outputGoal": "Active UGC"
+            "shotName": "UGC Street Walking POV",
+            "positivePrompt": "UGC authentic smartphone photo. First-person POV looking down at their feet mid-stride while walking on a city sidewalk wearing the {product}. Slight motion blur, authentic social media story aesthetic (Instagram/TikTok vibe), raw street lighting.",
+            "negativePrompt": "studio, perfect focus, professional, high fashion, white background, DSLR",
+            "hardRules": "FIRST PERSON POV LOOKING DOWN WHILE WALKING. MOTION. SOCIAL MEDIA STORY AESTHETIC.",
+            "outputGoal": "Walking Story POV"
           },
           {
             "shotNumber": 5,
-            "shotName": "Carrying out of car",
-            "positivePrompt": "UGC style photo of a man grabbing the {product} out of a car trunk or door. Authentic everyday shot.",
-            "negativePrompt": "studio, modeling",
-            "hardRules": "CAR CONTEXT. IPHONE VIBE.",
-            "outputGoal": "UGC Car Man"
+            "shotName": "UGC Entryway Floor",
+            "positivePrompt": "UGC authentic smartphone photo. The {product} casually taken off and resting untidily on the wooden floor in a home entryway. Natural soft light coming from a nearby window. Amateur composition, real life authentic feel, no humans visible.",
+            "negativePrompt": "professional lighting, studio, white background, modeling, human, DSLR, high quality",
+            "hardRules": "RESTING UNTIDILY ON HOME FLOOR. NO MODEL VISIBLE. EVERYDAY REAL LIFE.",
+            "outputGoal": "Authentic Home Placement"
           }
         ]
       },
