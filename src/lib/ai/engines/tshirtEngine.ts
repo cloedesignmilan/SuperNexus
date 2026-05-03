@@ -171,7 +171,12 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
             }
 
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
-            const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, 't-shirt').replace(/\{gender\}/g, genderNoun) || "";
+            let finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, 't-shirt').replace(/\{gender\}/g, genderNoun) || "";
+            if (clientGender === 'MAN') {
+                finalPositive = finalPositive.replace(/\b([Mm])odel\b/g, '$1ale model');
+            } else if (clientGender === 'WOMAN') {
+                finalPositive = finalPositive.replace(/\b([Mm])odel\b/g, '$1emale model');
+            }
             
             const dbGlobalNegative = subcat?.business_mode?.category?.global_negative_prompt || "";
             let finalNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + dbGlobalNegative + ", " + (shotInfo.negative_prompt?.replace(/\{product\}/g, 't-shirt').replace(/\{gender\}/g, genderNoun) || "");

@@ -3,6 +3,7 @@ import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import { updateValidationFeedback, populateSubcategoryAssets, populateShotsOnly } from "@/app/admin/actions";
 import Link from "next/link";
+import DownloadZipButton from "./DownloadZipButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -161,6 +162,7 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
                                                 <div suppressHydrationWarning style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: '20px' }}>
                                                     {new Date(check.createdAt).toLocaleString('it-IT', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
                                                 </div>
+                                                <DownloadZipButton urls={urls} taxonomyPath={path} specificShotNumber={specificShotNumber} />
                                                 <form action={populateShotsOnly.bind(null, check.id)}>
                                                     <button type="submit" className="admin-button-popola" style={{ marginLeft: '10px', padding: '6px 12px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', color: '#10b981', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}>
                                                         Sincronizza Scatti
