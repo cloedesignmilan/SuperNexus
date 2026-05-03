@@ -27,6 +27,7 @@ import { getCreazioniTree } from '@/lib/getCreazioniData';
 import TshirtEcommerceLanding from '@/components/TshirtEcommerceLanding';
 import SwimwearEcommerceLanding from '@/components/SwimwearEcommerceLanding';
 import DressEcommerceLanding from '@/components/DressEcommerceLanding';
+import ShoesEcommerceLanding from '@/components/ShoesEcommerceLanding';
 function getDynamicMetrics() {
   const launchDate = new Date('2026-04-20T00:00:00Z');
   const now = new Date();
@@ -429,6 +430,9 @@ export default async function LandingPage() {
       {/* DRESS ECOMMERCE SPECIAL SECTION */}
       <DressEcommerceLanding lang={lang} />
 
+      {/* SHOES ECOMMERCE SPECIAL SECTION */}
+      <ShoesEcommerceLanding lang={lang} />
+
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" style={{ paddingBottom: '8rem' }}>
         <InfiniteShowcase showcaseData={showcaseData} lang={lang} />
@@ -656,3 +660,4 @@ export default async function LandingPage() {
     </div>
   );
 }
+ 
