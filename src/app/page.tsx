@@ -1,7 +1,7 @@
 import React from 'react';
 export const dynamic = 'force-dynamic';
 import Link from 'next/link';
-import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2, Sparkles, Store, Shirt, Footprints, Heart, Briefcase, Baby, Star } from 'lucide-react';
+import { Camera, Zap, Smartphone, TrendingUp, CheckCircle2, Sparkles, Store, Shirt, Footprints, Heart, Briefcase, Baby, Star, Waves, Layers, ShoppingBag } from 'lucide-react';
 import AnimatedCounter from '@/components/AnimatedCounter';
 import nextDynamic from 'next/dynamic';
 import PhoneMockup from '@/components/PhoneMockup';
@@ -106,11 +106,11 @@ export default async function LandingPage() {
             flexWrap: 'wrap',
             justifyContent: 'center'
           }} className="desktop-only-nav">
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.tshirts}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.swimwear}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.2s' } as React.CSSProperties}><Star size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.ceremony}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.everyday}</a>
-             <a href="#infinite-showcase-section" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.footwear}</a>
+             <a href="#section-tshirts" className="glow-link stagger-anim" style={{ '--glow-color': '#ccff00', animationDelay: '0.1s' } as React.CSSProperties}><Shirt size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.tshirts}</a>
+             <a href="#section-swimwear" className="glow-link stagger-anim" style={{ '--glow-color': '#00ffff', animationDelay: '0.15s' } as React.CSSProperties}><Sparkles size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.swimwear}</a>
+             <a href="#section-ceremony" className="glow-link stagger-anim" style={{ '--glow-color': '#ff5470', animationDelay: '0.2s' } as React.CSSProperties}><Star size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.ceremony}</a>
+             <a href="#section-everyday" className="glow-link stagger-anim" style={{ '--glow-color': '#bb86fc', animationDelay: '0.3s' } as React.CSSProperties}><Heart size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.everyday}</a>
+             <a href="#section-footwear" className="glow-link stagger-anim" style={{ '--glow-color': '#03dac6', animationDelay: '0.4s' } as React.CSSProperties}><Footprints size={14} color="#ffffff" className="glow-icon" /> {t.nav.categories.footwear}</a>
           </div>
 
           <div className="mobile-nav-group" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -480,16 +480,27 @@ export default async function LandingPage() {
       </div>
 
       {/* T-SHIRT ECOMMERCE SPECIAL SECTION */}
-      <TshirtEcommerceLanding lang={lang} />
+      <div id="section-tshirts">
+        <TshirtEcommerceLanding lang={lang} />
+      </div>
 
       {/* SWIMWEAR ECOMMERCE SPECIAL SECTION */}
-      <SwimwearEcommerceLanding lang={lang} />
+      <div id="section-swimwear">
+        <SwimwearEcommerceLanding lang={lang} />
+      </div>
 
       {/* DRESS ECOMMERCE SPECIAL SECTION */}
-      <DressEcommerceLanding lang={lang} />
+      <div id="section-ceremony">
+        <DressEcommerceLanding lang={lang} />
+      </div>
+
+      {/* EVERYDAY ECOMMERCE SPECIAL SECTION (Placeholder until implemented) */}
+      <div id="section-everyday"></div>
 
       {/* SHOES ECOMMERCE SPECIAL SECTION */}
-      <ShoesEcommerceLanding lang={lang} />
+      <div id="section-footwear">
+        <ShoesEcommerceLanding lang={lang} />
+      </div>
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" style={{ paddingBottom: '8rem' }}>
