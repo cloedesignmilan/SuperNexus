@@ -302,16 +302,17 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       marginTop: '2rem',
       boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
     }}>
-      <h3 
-        style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textAlign: 'center', cursor: 'default' }}
-        onDoubleClick={() => {
-          localStorage.removeItem('supernexus_guest_uses');
-          setTrialUsesCount(0);
-          setResultUrls([]);
-          alert('Admin Override: Free Trials Reset!');
-        }}
-      >
+      <h3 style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ffffff', marginBottom: '1rem', textAlign: 'center' }}>
         {t.title}
+        <span 
+          style={{ cursor: 'default' }}
+          onDoubleClick={() => {
+            localStorage.removeItem('supernexus_guest_uses');
+            setTrialUsesCount(0);
+            setResultUrls([]);
+            alert('Admin Override: Free Trials Reset!');
+          }}
+        >.</span>
       </h3>
       <p style={{ color: '#aaaaaa', textAlign: 'center', maxWidth: '600px', marginBottom: '3rem', fontSize: '1.1rem' }}>
         {t.subtitle}
