@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Camera, Smartphone, Box, User, Ghost, PackageOpen, Heart, Sun, Home, ShoppingBag, Zap, Search } from 'lucide-react';
-import BeforeAfterSlider from './BeforeAfterSlider';
+import FlipCardWow from './FlipCardWow';
 
 interface Props {
   lang: 'it' | 'en';
@@ -159,8 +159,8 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
               {currentImages.length >= 10 ? (
                   // Se abbiamo almeno 10 immagini, presumiamo che 1-5 siano gli originali e 6-10 siano i generati per l'effetto WOW
                   Array.from({ length: 5 }).map((_, idx) => (
-                      <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
-                          <BeforeAfterSlider beforeImage={currentImages[idx]} afterImage={currentImages[idx + 5]} />
+                      <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'visible', position: 'relative' }}>
+                          <FlipCardWow beforeImage={currentImages[idx]} afterImage={currentImages[idx + 5]} />
                       </div>
                   ))
               ) : (
