@@ -557,7 +557,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                         {isGenerating ? (
                           <><Loader2 className="animate-spin" /> Generating Magic...</>
                         ) : (
-                          <><Sparkles /> Generate 3 Images (Trial {trialUsesCount + 1}/2)</>
+                          <><Sparkles /> Generate 5 Images (Trial {trialUsesCount + 1}/2)</>
                         )}
                       </button>
                     </div>

@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
     }
 
-    // Per gli ospiti, forziamo qty a 3 (prima era 1)
-    const requestedQty = 3
+    // Per gli ospiti, forziamo qty a 5 come richiesto per mostrare la potenza
+    const requestedQty = 5
 
     // Trova la Subcategory reale selezionata per il routing
     let subcat = null;
