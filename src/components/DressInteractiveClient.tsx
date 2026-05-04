@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Camera, Smartphone, Box, User, Ghost, PackageOpen, Heart, Sun, Home, ShoppingBag, Sparkles } from 'lucide-react';
+import FlipCardWow from './FlipCardWow';
 
 interface Props {
   lang: 'it' | 'en';
@@ -155,15 +156,25 @@ export default function DressInteractiveClient({ lang, imagesByMode }: Props) {
           </h3>
           
           <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'thin', scrollbarColor: '#333 #111' }}>
-              {currentImages.map((img, idx) => (
-                  <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                          Shot {idx + 1}
+              {currentImages.length >= 10 ? (
+                  // Se abbiamo almeno 10 immagini, presumiamo che 1-5 siano gli originali e 6-10 siano i generati per l'effetto WOW
+                  Array.from({ length: 5 }).map((_, idx) => (
+                      <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'visible', position: 'relative' }}>
+                          <FlipCardWow beforeImage={currentImages[idx]} afterImage={currentImages[idx + 5]} />
                       </div>
-                  </div>
-              ))}
+                  ))
+              ) : (
+                  // Fallback normale se ci sono meno di 10 immagini
+                  currentImages.map((img, idx) => (
+                      <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #333', position: 'relative' }}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img} alt={`Shot ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          <div style={{ position: 'absolute', top: '10px', left: '10px', background: 'rgba(0,0,0,0.7)', color: '#fff', padding: '4px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                              Shot {idx + 1}
+                          </div>
+                      </div>
+                  ))
+              )}
           </div>
       </div>
 
