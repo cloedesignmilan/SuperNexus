@@ -205,7 +205,7 @@ export const dictionaries = {
     },
     guestTryOut: {
       title: "Experience the Magic.",
-      subtitle: "Upload a raw photo and choose any style from our full taxonomy. Generate up to 2 times for free (3 images each).",
+      subtitle: "Upload a raw photo and choose any style from our full taxonomy. Generate up to 2 times for free (5 images each).",
       uploadPrompt: "Upload a raw clothing photo...",
       uploadSub: "Supports JPG, PNG, WEBP (Max 10MB)",
       selectCat: "Select Category",
@@ -435,7 +435,7 @@ export const dictionaries = {
     },
     guestTryOut: {
       title: "Vivi la Magia.",
-      subtitle: "Carica una foto e scegli uno stile. Genera fino a 2 volte gratis (3 immagini ciascuna).",
+      subtitle: "Carica una foto e scegli uno stile. Genera fino a 2 volte gratis (5 immagini ciascuna).",
       uploadPrompt: "Carica una foto del capo...",
       uploadSub: "Supporta JPG, PNG, WEBP (Max 10MB)",
       selectCat: "Seleziona Categoria",
