@@ -438,16 +438,17 @@ export default async function LandingPage() {
           padding: '0 1rem'
         }}>
           {[
-            { name: 'T-SHIRT', icon: Shirt }, 
-            { name: 'CEREMONY ELEGANT', icon: Sparkles }, 
-            { name: 'SWIMWEAR', icon: Waves }, 
-            { name: 'SHOES', icon: Footprints }, 
-            { name: 'HOODIES', icon: Layers }, 
-            { name: 'BAGS', icon: ShoppingBag }
+            { name: 'T-SHIRT', icon: Shirt, href: '#section-tshirts' }, 
+            { name: 'CEREMONY ELEGANT', icon: Sparkles, href: '#section-ceremony' }, 
+            { name: 'SWIMWEAR', icon: Waves, href: '#section-swimwear' }, 
+            { name: 'SHOES', icon: Footprints, href: '#section-footwear' }, 
+            { name: 'HOODIES', icon: Layers, href: '#section-everyday' }, 
+            { name: 'BAGS', icon: ShoppingBag, href: '#section-everyday' }
           ].map(cat => {
             const Icon = cat.icon;
             return (
-              <div 
+              <a 
+                href={cat.href}
                 key={cat.name}
                 style={{
                   display: 'flex',
@@ -455,6 +456,17 @@ export default async function LandingPage() {
                   alignItems: 'center',
                   gap: '0.8rem',
                   color: '#ffffff',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s, color 0.2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform='scale(1.1)';
+                  e.currentTarget.style.color='#00d2ff';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform='scale(1)';
+                  e.currentTarget.style.color='#ffffff';
                 }}
               >
                 <div style={{
@@ -462,6 +474,7 @@ export default async function LandingPage() {
                   borderRadius: '50%',
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
+                  transition: 'border-color 0.2s'
                 }}>
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
@@ -473,7 +486,7 @@ export default async function LandingPage() {
                 }}>
                   {cat.name}
                 </span>
-              </div>
+              </a>
             );
           })}
         </div>
