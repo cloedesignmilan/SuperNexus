@@ -10,7 +10,8 @@ export const dictionaries = {
       subtitle2: "No photographers. No models. No skills required. Just your smartphone.",
       tryItFree: "Try it Free",
       trusted: "Trusted by growing fashion brands worldwide",
-      seeResults: "See the Results"
+      seeResults: "See the Results",
+      startConverting: "Start Converting Today"
     },
     nav: {
       categories: {
@@ -81,6 +82,12 @@ export const dictionaries = {
     pricing: {
       title: "Start converting today.",
       cancelAnytime: "Cancel anytime. Your plan will remain active until expiration or until all images are fully utilized.",
+      platformAccessTitle: "Get ",
+      platformAccessHighlight: "Full Access",
+      platformAccessDesc: "Create your account today and unlock the ultimate AI generation engine.",
+      instantSetup: "Instant Web App Setup",
+      fullFeatures: "Full Platform Features",
+      registerFullAccess: "Register for Full Access",
       starter: {
         tag: "Perfect for testing without subscription.",
         per: "/one-time",
@@ -233,7 +240,8 @@ export const dictionaries = {
       subtitle2: "Nessun fotografo. Nessun modello. Nessuna competenza richiesta. Solo il tuo smartphone.",
       tryItFree: "Provalo Gratis",
       trusted: "Scelto da brand di moda in rapida crescita",
-      seeResults: "Guarda i Risultati"
+      seeResults: "Guarda i Risultati",
+      startConverting: "Inizia a Convertire Oggi"
     },
     nav: {
       categories: {
@@ -304,6 +312,12 @@ export const dictionaries = {
     pricing: {
       title: "Inizia a convertire oggi.",
       cancelAnytime: "Disdici in qualsiasi momento. Il piano resterà attivo fino alla scadenza o fino all'esaurimento delle immagini.",
+      platformAccessTitle: "Ottieni ",
+      platformAccessHighlight: "Accesso Completo",
+      platformAccessDesc: "Crea il tuo account oggi e sblocca il motore generativo AI definitivo.",
+      instantSetup: "Setup Istantaneo Web App",
+      fullFeatures: "Tutte le Funzionalità della Piattaforma",
+      registerFullAccess: "Registrati per l'Accesso Completo",
       starter: {
         tag: "Perfetto per testare senza abbonamento.",
         per: "/una tantum",

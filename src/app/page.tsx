@@ -333,7 +333,7 @@ export default async function LandingPage() {
           
           <div className="hero-buttons fade-up-enter delay-4" style={{ alignItems: 'flex-start' }}>
             <div style={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
-              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Start Converting Today</a>
+              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>{t.hero.startConverting}</a>
               <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>{t.hero.trusted}</span>
             </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '100px', textDecoration: 'none', fontWeight: '800' }}>
@@ -573,18 +573,18 @@ export default async function LandingPage() {
             borderRadius: '16px'
           }}>
             <div style={{ flex: '1 1 300px' }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Get <span style={{ color: '#ccff00', textShadow: '0 0 10px rgba(204,255,0,0.2)' }}>Full Access</span></h3>
-                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Create your account today and unlock the ultimate AI generation engine.</p>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>{t.pricing.platformAccessTitle}<span style={{ color: '#ccff00', textShadow: '0 0 10px rgba(204,255,0,0.2)' }}>{t.pricing.platformAccessHighlight}</span></h3>
+                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>{t.pricing.platformAccessDesc}</p>
             </div>
             
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
-              <li><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>Instant Web App Setup</strong></li>
-              <li><CheckCircle2 size={24} color="#ccff00" /> <span>Full Platform Features</span></li>
+              <li><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>{t.pricing.instantSetup}</strong></li>
+              <li><CheckCircle2 size={24} color="#ccff00" /> <span>{t.pricing.fullFeatures}</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
                 <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>
-                  Register for Full Access
+                  {t.pricing.registerFullAccess}
                 </a>
             </div>
           </div>
