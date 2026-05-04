@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function toggleAiModel(modelName: string) {
-    if (!['gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview'].includes(modelName)) {
+    if (!['gemini-3.1-flash-image-preview', 'gemini-3-pro-image-preview', 'imagen-3.0-generate-001', 'imagen-4.0-generate-001'].includes(modelName)) {
         throw new Error("Invalid model name");
     }
 

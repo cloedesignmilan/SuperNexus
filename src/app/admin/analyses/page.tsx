@@ -7,7 +7,7 @@ import DownloadZipButton from "./DownloadZipButton";
 
 export const dynamic = 'force-dynamic';
 
-export default async function AnalysesPage({ searchParams }: { searchParams: { filter?: string } }) {
+export default async function AnalysesPage({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
     const checks = await prisma.outputValidationCheck.findMany({
         orderBy: { createdAt: 'desc' },
         include: {
@@ -21,7 +21,8 @@ export default async function AnalysesPage({ searchParams }: { searchParams: { f
         }
     });
 
-    const activeFilter = searchParams.filter;
+    const resolvedSearchParams = await searchParams;
+    const activeFilter = resolvedSearchParams.filter;
     const availableCategories = Array.from(new Set(checks.map(c => c.subcategory?.business_mode?.category?.name).filter(Boolean))) as string[];
 
     const displayChecks = activeFilter 

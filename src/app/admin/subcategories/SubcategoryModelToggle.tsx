@@ -26,7 +26,7 @@ export default function SubcategoryModelToggle({
 
     const isGlobal = model === null;
     const isFlash = model === 'gemini-3.1-flash-image-preview';
-    const isPro = model === 'gemini-3-pro-image-preview';
+    const isPro = model === 'gemini-3-pro-image-preview' || model === 'imagen-3.0-generate-001';
 
     return (
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', background: 'rgba(0,0,0,0.4)', padding: '8px 12px', borderRadius: '12px', flexWrap: 'wrap' }}>
@@ -63,7 +63,7 @@ export default function SubcategoryModelToggle({
                     fontWeight: isPro ? 600 : 400, transition: 'all 0.2s', fontSize: '0.85rem'
                 }}
             >
-                Forza Pro
+                Forza Gemini Pro 3
             </button>
         </div>
     );

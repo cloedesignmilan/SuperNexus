@@ -5,6 +5,8 @@ export const GEMINI_RATES = {
   "gemini-3.1-flash-image-preview": { input: 0.075, output: 0.30, per_image: 0.0653 },
   "gemini-2.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
   "gemini-3-pro-image-preview": { input: 1.25, output: 5.00, per_image: 0.0653 },
+  "imagen-3.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0300 },
+  "imagen-4.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0650 },
   "gemini-1.5-pro": { input: 1.25, output: 5.00, per_image: 0 },
   "gemini-1.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
   "gemini-2.0-flash": { input: 0.075, output: 0.30, per_image: 0 },

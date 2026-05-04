@@ -1,45 +1,10 @@
 import React from 'react';
-import { prisma } from '@/lib/prisma';
 import { Waves } from 'lucide-react';
 import SwimwearInteractiveClient from './SwimwearInteractiveClient';
+import { getCuratedLandingData } from '@/lib/getCuratedLandingData';
 
 export default async function SwimwearEcommerceLanding({ lang }: { lang: 'it' | 'en' }) {
-  async function fetchAllImagesGrouped() {
-    const jobs = await prisma.generationJob.findMany({
-      where: {
-        category: { slug: 'swimwear' },
-        status: 'completed',
-        results_count: { gt: 0 }
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 200,
-      include: { 
-          business_mode: true,
-          subcategory: true,
-          images: { orderBy: { image_order: 'asc' } } 
-      }
-    });
-
-    const grouped: Record<string, Record<string, string[]>> = {};
-
-    for (const job of jobs) {
-        if (!job.business_mode || !job.subcategory) continue;
-        const mode = job.business_mode.name;
-        const sub = job.subcategory.name;
-        
-        if (!grouped[mode]) grouped[mode] = {};
-        if (!grouped[mode][sub]) grouped[mode][sub] = [];
-        
-        if (grouped[mode][sub].length < 10) {
-            const urls = job.images.map((img: any) => img.image_url);
-            grouped[mode][sub] = grouped[mode][sub].concat(urls);
-        }
-    }
-
-    return grouped;
-  }
-
-  const groupedImages = await fetchAllImagesGrouped();
+  const groupedImages = await getCuratedLandingData('swimwear');
 
   const t = {
     title: lang === 'it' ? 'Costruito per i Brand di Costumi' : 'Built for Swimwear Brands',
