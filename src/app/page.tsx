@@ -521,7 +521,10 @@ export default async function LandingPage() {
         <ShoesEcommerceLanding lang={lang} />
       </div>
 
-      {/* SHOWCASE DA ZERO (REMOVED) */}
+      {/* SHOWCASE DA ZERO */}
+      <section id="showcase" style={{ paddingBottom: '8rem' }}>
+        <GuestTryOut lang={lang} />
+      </section>
 
       {/* DIMENSIONI E FORMATI */}
       <DimensionsGuide lang={lang} />
