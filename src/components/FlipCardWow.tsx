@@ -14,8 +14,12 @@ export default function FlipCardWow({ beforeImage, afterImage }: { beforeImage: 
         perspective: '1000px',
         cursor: 'pointer'
       }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      onPointerEnter={(e) => {
+        if (e.pointerType === 'mouse') setIsFlipped(true);
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === 'mouse') setIsFlipped(false);
+      }}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div style={{
