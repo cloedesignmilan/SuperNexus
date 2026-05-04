@@ -2,16 +2,16 @@
 import React, { useState } from 'react';
 import { Sparkles } from 'lucide-react';
 
-export default function FlipCardWow({ beforeImage, afterImage }: { beforeImage: string, afterImage: string }) {
+export default function FlipCardWow({ beforeImage, afterImage, lang = 'en' }: { beforeImage: string, afterImage: string, lang?: 'it' | 'en' }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const upperPath = afterImage.toUpperCase();
   const isWoman = upperPath.includes('/WOMAN/') || upperPath.includes('/DONNA/');
   const isMan = upperPath.includes('/MAN/') || upperPath.includes('/UOMO/');
   
-  let hoverText = 'HOVER TO GENERATE';
-  if (isWoman) hoverText = 'HOVER FOR WOMAN';
-  if (isMan) hoverText = 'HOVER FOR MAN';
+  let hoverText = lang === 'it' ? 'PASSA SOPRA PER GENERARE' : 'HOVER TO GENERATE';
+  if (isWoman) hoverText = lang === 'it' ? 'PASSA SOPRA PER DONNA' : 'HOVER FOR WOMAN';
+  if (isMan) hoverText = lang === 'it' ? 'PASSA SOPRA PER UOMO' : 'HOVER FOR MAN';
 
   return (
     <div 

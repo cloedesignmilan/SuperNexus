@@ -58,6 +58,22 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
 export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
   const t = dictionaries[lang].guestTryOut;
   const [file, setFile] = useState<File | null>(null);
+  
+  const tCat = (cat: string) => {
+    if (lang === 'en') return cat;
+    const itCats: Record<string, string> = { 'T-shirt': 'T-shirt', 'Dress': 'Abiti', 'Swimwear': 'Costumi', 'Shoes': 'Scarpe' };
+    return itCats[cat] || cat;
+  };
+  const tMode = (mode: string) => {
+    if (lang === 'en') return mode;
+    const itModes: Record<string, string> = { 'Clean Catalog': 'Catalogo Pulito', 'Model Studio': 'Modello Studio', 'Lifestyle': 'Lifestyle', 'UGC': 'UGC', 'Ads': 'Pubblicità / Ads', 'Detail': 'Dettagli' };
+    return itModes[mode] || mode;
+  };
+  const tSub = (sub: string) => {
+    if (lang === 'en') return sub;
+    const itSubs: Record<string, string> = { 'No Model': 'Senza Modello', 'Still Life Pack': 'Still Life Pack', 'Model Photo': 'Foto Modello', 'Candid Real Woman': 'Donna Reale (Candid)', 'Candid Real Man': 'Uomo Reale (Candid)', 'UGC Creator Pack': 'UGC Creator Pack' };
+    return itSubs[sub] || sub;
+  };
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -458,7 +474,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                   <div style={{ flex: '2 1 400px', display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'rgba(255,255,255,0.03)', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
                     {/* Category Selection */}
                     <div>
-                      <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>1. Select Category</h4>
+                      <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>1. {t.selectCat}</h4>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '0.8rem' }}>
                         {Object.keys(TAXONOMY_TREE).map(cat => {
                           const Icon = CAT_ICONS[cat] || Box;
@@ -481,7 +497,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                             }}
                           >
                             <Icon size={24} color={isSel ? '#ccff00' : '#888'} />
-                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{cat}</span>
+                            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{tCat(cat)}</span>
                           </button>
                         )})}
                       </div>
@@ -490,7 +506,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                     {/* Mode Selection */}
                     {selectedCat && (
                       <div>
-                        <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>2. Select Presentation Mode</h4>
+                        <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>2. {t.selectMode}</h4>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: '0.8rem' }}>
                           {Object.keys(TAXONOMY_TREE[selectedCat]).map(mode => {
                             const Icon = MODE_ICONS[mode] || Box;
@@ -513,7 +529,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                               }}
                             >
                               <Icon size={24} color={isSel ? '#ccff00' : '#888'} />
-                              <span style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center' }}>{mode}</span>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center' }}>{tMode(mode)}</span>
                             </button>
                           )})}
                         </div>
@@ -523,7 +539,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                     {/* Subcat Selection */}
                     {selectedCat && selectedMode && (
                       <div>
-                        <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>3. Select Shot Type</h4>
+                        <h4 style={{ color: '#fff', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>3. {t.selectSubcat}</h4>
                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                           {TAXONOMY_TREE[selectedCat][selectedMode].map(subcat => (
                             <button
@@ -541,7 +557,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                                 transition: 'all 0.2s'
                               }}
                             >
-                              {subcat}
+                              {tSub(subcat)}
                             </button>
                           ))}
                         </div>
@@ -573,7 +589,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                         {isGenerating ? (
                           <><Loader2 className="animate-spin" /> Generating Magic...</>
                         ) : (
-                          <><Sparkles /> Generate 5 Images (Trial {trialUsesCount + 1}/2)</>
+                          <><Sparkles /> {t.generateBtnImages || 'Generate 5 Images'} ({t.trialText || 'Trial'} {trialUsesCount + 1}/2)</>
                         )}
                       </button>
                     </div>

@@ -160,7 +160,7 @@ export default function SwimwearInteractiveClient({ lang, imagesByMode }: Props)
                   // Se abbiamo almeno 10 immagini, presumiamo che 1-5 siano gli originali e 6-10 siano i generati per l'effetto WOW
                   Array.from({ length: 5 }).map((_, idx) => (
                       <div key={idx + validSelectedMode + currentActiveSub} className="fade-in-image" style={{ flexShrink: 0, width: '280px', height: '373px', borderRadius: '12px', overflow: 'visible', position: 'relative' }}>
-                          <FlipCardWow beforeImage={currentImages[idx]} afterImage={currentImages[idx + 5]} />
+                          <FlipCardWow beforeImage={currentImages[idx]} afterImage={currentImages[idx + 5]} lang={lang} />
                       </div>
                   ))
               ) : (
