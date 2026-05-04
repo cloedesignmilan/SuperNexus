@@ -48,10 +48,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'System architecture not initialized.' }, { status: 500 })
     }
 
-    // Preleviamo l'utente di sistema (System Admin) o uno fittizio per addebitare il job
-    const systemUser = await prisma.user.findFirst({ where: { role: 'admin' } });
+    const forwardedFor = req.headers.get('x-forwarded-for')
+    const realIp = forwardedFor ? forwardedFor.split(',')[0].trim() : 'unknown-ip'
+    const guestEmail = `guest_${realIp.replace(/[^a-zA-Z0-9]/g, '_')}@supernexus.ai`
+
+    let systemUser = await prisma.user.findUnique({ where: { email: guestEmail } });
     if (!systemUser) {
-        return NextResponse.json({ error: 'No admin user found to bind the job.' }, { status: 500 })
+        systemUser = await prisma.user.create({
+            data: {
+                email: guestEmail,
+                role: 'client',
+                images_allowance: 2,
+                base_allowance: 0
+            }
+        });
+    }
+
+    const previousJobsCount = await prisma.generationJob.count({
+        where: { user_id: systemUser.id }
+    });
+
+    if (previousJobsCount >= 2) {
+        return NextResponse.json({ error: 'IP_LIMIT_REACHED' }, { status: 403 })
     }
 
     // Generiamo un prompt standard "Wow" per la subcat se non fornito

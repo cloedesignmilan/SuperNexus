@@ -207,7 +207,14 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       });
 
       const genData = await genRes.json();
-      if (!genRes.ok) throw new Error(genData.error || 'Generation failed');
+      if (!genRes.ok) {
+        if (genRes.status === 403 || genData.error === 'IP_LIMIT_REACHED') {
+          localStorage.setItem('supernexus_guest_uses', '2');
+          setTrialUsesCount(2);
+          throw new Error('IP Limit Reached. Free trials exhausted on this connection.');
+        }
+        throw new Error(genData.error || 'Generation failed');
+      }
 
       if (genData.results && genData.results.length > 0) {
         const urls = genData.results.map((r: any) => r.url);
