@@ -5,6 +5,14 @@ import { Sparkles } from 'lucide-react';
 export default function FlipCardWow({ beforeImage, afterImage }: { beforeImage: string, afterImage: string }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const upperPath = afterImage.toUpperCase();
+  const isWoman = upperPath.includes('/WOMAN/') || upperPath.includes('/DONNA/');
+  const isMan = upperPath.includes('/MAN/') || upperPath.includes('/UOMO/');
+  
+  let hoverText = 'HOVER TO GENERATE';
+  if (isWoman) hoverText = 'HOVER FOR WOMAN';
+  if (isMan) hoverText = 'HOVER FOR MAN';
+
   return (
     <div 
       style={{
@@ -60,9 +68,10 @@ export default function FlipCardWow({ beforeImage, afterImage }: { beforeImage: 
             border: '1px solid rgba(255,255,255,0.1)',
             display: 'flex',
             alignItems: 'center',
-            gap: '6px'
+            gap: '6px',
+            whiteSpace: 'nowrap'
           }}>
-            HOVER TO GENERATE
+            {hoverText}
           </div>
         </div>
 
