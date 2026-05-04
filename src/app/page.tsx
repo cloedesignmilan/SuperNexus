@@ -421,6 +421,64 @@ export default async function LandingPage() {
       {/* TARGET AUDIENCE MAP */}
       <TargetAudience lang={lang} />
 
+      <div style={{ padding: '6rem 0 0 0', background: '#0a0a0c', textAlign: 'center' }}>
+        <h2 className="section-title" style={{ color: '#ffffff', textAlign: 'center', marginBottom: '1rem' }}>
+          {t.showcase.title1}<br/>{t.showcase.title2}
+        </h2>
+        <p className="section-subtitle" style={{ color: '#aaaaaa', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+          {t.showcase.subtitle}
+        </p>
+
+        <div className="category-icons-container" style={{ 
+          display: 'flex', 
+          gap: 'clamp(1rem, 3vw, 2.5rem)', 
+          marginTop: '3rem', 
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          padding: '0 1rem'
+        }}>
+          {[
+            { name: 'T-SHIRT', icon: Shirt }, 
+            { name: 'CEREMONY ELEGANT', icon: Sparkles }, 
+            { name: 'SWIMWEAR', icon: Waves }, 
+            { name: 'SHOES', icon: Footprints }, 
+            { name: 'HOODIES', icon: Layers }, 
+            { name: 'BAGS', icon: ShoppingBag }
+          ].map(cat => {
+            const Icon = cat.icon;
+            return (
+              <div 
+                key={cat.name}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '0.8rem',
+                  color: '#ffffff',
+                }}
+              >
+                <div style={{
+                  padding: '1rem',
+                  borderRadius: '50%',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                }}>
+                  <Icon size={24} strokeWidth={1.5} />
+                </div>
+                <span style={{ 
+                  fontSize: '0.75rem', 
+                  fontWeight: 500, 
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                }}>
+                  {cat.name}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* T-SHIRT ECOMMERCE SPECIAL SECTION */}
       <TshirtEcommerceLanding lang={lang} />
 
@@ -435,7 +493,6 @@ export default async function LandingPage() {
 
       {/* SHOWCASE DA ZERO */}
       <section id="showcase" style={{ paddingBottom: '8rem' }}>
-        <InfiniteShowcase showcaseData={showcaseData} lang={lang} />
         <GuestTryOut lang={lang} />
       </section>
 
