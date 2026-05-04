@@ -32,7 +32,8 @@ export async function GET(request: Request) {
             data: {
               email: email,
               role: 'client',
-              images_allowance: 10, // Free trial package
+              images_allowance: 0, // No free trial package
+              base_allowance: 0
             }
           })
         }

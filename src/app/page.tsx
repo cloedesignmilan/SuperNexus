@@ -333,7 +333,7 @@ export default async function LandingPage() {
           
           <div className="hero-buttons fade-up-enter delay-4" style={{ alignItems: 'flex-start' }}>
             <div style={{ width: '100%', maxWidth: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.8rem' }}>
-              <a href="#guest-try-out" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>{t.hero.tryItFree}</a>
+              <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '100px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>Start Converting Today</a>
               <span style={{ color: '#888', fontSize: '0.85rem', fontWeight: '600' }}>{t.hero.trusted}</span>
             </div>
             <a href="#showcase" className="btn-secondary" style={{ padding: '1.4rem 3rem', background: '#FFFFFF', color: '#000', whiteSpace: 'nowrap', height: 'fit-content', borderRadius: '100px', textDecoration: 'none', fontWeight: '800' }}>
@@ -521,10 +521,7 @@ export default async function LandingPage() {
         <ShoesEcommerceLanding lang={lang} />
       </div>
 
-      {/* SHOWCASE DA ZERO */}
-      <section id="showcase" style={{ paddingBottom: '8rem' }}>
-        <GuestTryOut lang={lang} />
-      </section>
+      {/* SHOWCASE DA ZERO (REMOVED) */}
 
       {/* DIMENSIONI E FORMATI */}
       <DimensionsGuide lang={lang} />
@@ -559,13 +556,13 @@ export default async function LandingPage() {
         <h2 className="section-title">{t.pricing.title}</h2>
         <div className="pricing-grid">
           
-          {/* FREE TRIAL HORIZONTAL BANNERR */}
+          {/* PLATFORM ACCESS BANNER */}
           <div className="pricing-card" style={{ 
             gridColumn: '1 / -1', 
-            border: '2px solid #ff0ab3', 
-            background: 'linear-gradient(135deg, rgba(255,10,179,0.08) 0%, rgba(0,0,0,0) 100%)',
-            boxShadow: '0 0 20px rgba(255,10,179,0.15)',
-            display: 'none',
+            border: '2px solid #ccff00', 
+            background: 'linear-gradient(135deg, rgba(204,255,0,0.05) 0%, rgba(0,0,0,0) 100%)',
+            boxShadow: '0 0 20px rgba(204,255,0,0.1)',
+            display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -576,18 +573,18 @@ export default async function LandingPage() {
             borderRadius: '16px'
           }}>
             <div style={{ flex: '1 1 300px' }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Start for <span style={{ color: '#ff0ab3', textShadow: '0 0 10px rgba(255,10,179,0.2)' }}>Free</span></h3>
-                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Experience the magic risk-free for 14 days. Instant setup, no credit card required.</p>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>Get <span style={{ color: '#ccff00', textShadow: '0 0 10px rgba(204,255,0,0.2)' }}>Full Access</span></h3>
+                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>Create your account today and unlock the ultimate AI generation engine.</p>
             </div>
             
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
-              <li><CheckCircle2 size={24} color="#ff0ab3" /> <strong style={{ fontSize: '1.1rem' }}>10 Free AI Generations</strong></li>
-              <li><CheckCircle2 size={24} color="#ff0ab3" /> <span>Instant Web App Setup</span></li>
+              <li><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>Instant Web App Setup</strong></li>
+              <li><CheckCircle2 size={24} color="#ccff00" /> <span>Full Platform Features</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
                 <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>
-                  Generate Images That Sell
+                  Register for Full Access
                 </a>
             </div>
           </div>
