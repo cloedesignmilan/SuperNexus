@@ -243,6 +243,23 @@ export default async function LandingPage() {
                 text-align: center;
               }
             }
+            
+            /* Category Icons Hover Effects */
+            .category-icon-link {
+              text-decoration: none;
+              cursor: pointer;
+              transition: transform 0.2s, color 0.2s;
+            }
+            .category-icon-link:hover {
+              transform: scale(1.1);
+              color: #00d2ff !important;
+            }
+            .category-icon-link .icon-circle {
+              transition: border-color 0.2s;
+            }
+            .category-icon-link:hover .icon-circle {
+              border-color: #00d2ff !important;
+            }
           `}} />
         </nav>
       </header>
@@ -450,31 +467,20 @@ export default async function LandingPage() {
               <a 
                 href={cat.href}
                 key={cat.name}
+                className="category-icon-link"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: '0.8rem',
                   color: '#ffffff',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  transition: 'transform 0.2s, color 0.2s',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform='scale(1.1)';
-                  e.currentTarget.style.color='#00d2ff';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform='scale(1)';
-                  e.currentTarget.style.color='#ffffff';
                 }}
               >
-                <div style={{
+                <div className="icon-circle" style={{
                   padding: '1rem',
                   borderRadius: '50%',
                   background: 'rgba(255, 255, 255, 0.05)',
                   border: '1px solid rgba(255, 255, 255, 0.1)',
-                  transition: 'border-color 0.2s'
                 }}>
                   <Icon size={24} strokeWidth={1.5} />
                 </div>
