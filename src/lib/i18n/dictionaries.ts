@@ -217,7 +217,9 @@ export const dictionaries = {
       freeTrialExhausted: "Free Trial Exhausted",
       exhaustedDesc: "You have reached the maximum limit of 2 free generations on this device. Create an account to unlock unlimited access, higher resolution, and commercial rights.",
       registerBtn: "Register for Full Access",
-      resetBtn: "Try another photo"
+      resetBtn: "Try another photo",
+      generateBtnImages: "Generate 5 Images",
+      trialText: "Trial"
     },
     creazioniShowcase: {
       title: "Your ",
@@ -447,7 +449,9 @@ export const dictionaries = {
       freeTrialExhausted: "Prova Gratuita Esaurita",
       exhaustedDesc: "Hai raggiunto il limite massimo di 2 generazioni gratuite su questo dispositivo. Crea un account per sbloccare l'accesso illimitato, maggiore risoluzione e diritti commerciali.",
       registerBtn: "Registrati per l'Accesso Completo",
-      resetBtn: "Prova un'altra foto"
+      resetBtn: "Prova un'altra foto",
+      generateBtnImages: "Genera 5 Immagini",
+      trialText: "Prova"
     },
     creazioniShowcase: {
       title: "Il Tuo ",
