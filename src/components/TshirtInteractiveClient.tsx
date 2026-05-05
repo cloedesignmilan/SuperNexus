@@ -87,66 +87,71 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
       </h3>
       
       {/* MACROCATEGORY CHOICES */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className="hide-scrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '1rem', marginBottom: '2rem', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           {activeModes.map((mode, i) => (
-              <div 
+              <button 
                   key={i} 
                   onClick={() => setSelectedMode(mode.name)}
                   style={{ 
-                      background: validSelectedMode === mode.name ? 'rgba(255, 84, 112, 0.1)' : 'linear-gradient(180deg, #151515 0%, #0a0a0a 100%)', 
-                      border: validSelectedMode === mode.name ? '1px solid #ff5470' : '1px solid rgba(255,255,255,0.1)', 
+                      flexShrink: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '90px',
+                      height: '90px',
+                      background: validSelectedMode === mode.name ? 'linear-gradient(135deg, rgba(255,84,112,0.15) 0%, rgba(255,84,112,0.05) 100%)' : 'rgba(255,255,255,0.02)', 
+                      border: validSelectedMode === mode.name ? '1px solid rgba(255,84,112,0.4)' : '1px solid rgba(255,255,255,0.05)', 
                       borderRadius: '16px', 
-                      padding: '2rem 1.5rem', 
+                      padding: '0.5rem',
                       textAlign: 'center', 
-                      transition: 'all 0.3s ease', 
+                      transition: 'all 0.3s ease',
                       cursor: 'pointer',
-                      transform: validSelectedMode === mode.name ? 'translateY(-5px)' : 'none',
-                      boxShadow: validSelectedMode === mode.name ? '0 10px 20px rgba(255, 84, 112, 0.1)' : 'none'
+                      boxShadow: validSelectedMode === mode.name ? '0 5px 15px rgba(255, 84, 112, 0.15)' : 'none'
                   }} 
                   className={validSelectedMode !== mode.name ? "hover-scale" : ""}
               >
-                  <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: validSelectedMode === mode.name ? 'rgba(255, 84, 112, 0.2)' : 'rgba(255,255,255,0.05)', marginBottom: '1.5rem', transition: 'all 0.3s ease' }}>
-                      <mode.icon size={28} color={validSelectedMode === mode.name ? "#ff5470" : "#fff"} />
-                  </div>
-                  <h4 style={{ color: validSelectedMode === mode.name ? '#ff5470' : '#fff', fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem', transition: 'color 0.3s ease' }}>{mode.name}</h4>
-                  <p style={{ color: validSelectedMode === mode.name ? '#aaa' : '#888', fontSize: '0.9rem', lineHeight: 1.5 }}>{mode.desc}</p>
-              </div>
+                  <mode.icon size={24} style={{ marginBottom: '8px' }} color={validSelectedMode === mode.name ? "#ff5470" : "#888"} />
+                  <span style={{ color: validSelectedMode === mode.name ? '#ff5470' : '#888', fontSize: '0.75rem', fontWeight: validSelectedMode === mode.name ? '700' : '500', transition: 'color 0.3s ease', lineHeight: 1.1 }}>{mode.name}</span>
+              </button>
           ))}
-      </div>
 
-      {/* SUB-STYLE PREMIUM PILLS */}
-      {activeModeObj && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '2rem' }}>
-              {activeSubs.map((sub, i) => {
-                  const isActive = currentActiveSub === sub.name;
-                  return (
-                      <button
-                          key={i}
-                          onClick={() => setSelectedSub(prev => ({ ...prev, [validSelectedMode]: sub.name }))}
-                          style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '8px',
-                              padding: '0.8rem 1.5rem',
-                              borderRadius: '100px',
-                              background: isActive ? '#ff5470' : 'rgba(255,255,255,0.05)',
-                              color: isActive ? '#fff' : '#fff',
-                              border: isActive ? '1px solid #ff5470' : '1px solid rgba(255,255,255,0.1)',
-                              fontSize: '0.9rem',
-                              fontWeight: isActive ? '700' : '500',
-                              cursor: 'pointer',
-                              transition: 'all 0.3s ease',
-                              boxShadow: isActive ? '0 5px 15px rgba(255, 84, 112, 0.3)' : 'none'
-                          }}
-                          className={!isActive ? "hover-sub-pill" : ""}
-                      >
-                          <sub.icon size={16} color={isActive ? '#fff' : '#ff5470'} />
-                          {sub.name}
-                      </button>
-                  );
-              })}
-          </div>
-      )}
+          {/* DIVIDER */}
+          {activeModeObj && activeSubs.length > 0 && (
+              <div style={{ flexShrink: 0, width: '1px', height: '50px', background: 'rgba(255,255,255,0.1)', margin: '0 10px' }}></div>
+          )}
+
+          {/* SUB-STYLE CHOICES (Merged into same row) */}
+          {activeModeObj && activeSubs.map((sub, i) => {
+              const isActive = currentActiveSub === sub.name;
+              return (
+                  <button
+                      key={`sub-${i}`}
+                      onClick={() => setSelectedSub(prev => ({ ...prev, [validSelectedMode]: sub.name }))}
+                      style={{
+                          flexShrink: 0,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '90px',
+                          height: '90px',
+                          borderRadius: '14px',
+                          background: isActive ? 'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%)' : 'rgba(255,255,255,0.02)',
+                          color: isActive ? '#fff' : '#888',
+                          border: isActive ? '1px solid rgba(255,255,255,0.4)' : '1px solid rgba(255,255,255,0.05)',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          boxShadow: isActive ? '0 5px 15px rgba(255, 255, 255, 0.1)' : 'none'
+                      }}
+                      className={!isActive ? "hover-sub-icon" : ""}
+                  >
+                      <sub.icon size={22} style={{ marginBottom: '6px' }} color={isActive ? '#fff' : '#888'} />
+                      <span style={{ fontSize: '0.7rem', fontWeight: isActive ? '700' : '500', textAlign: 'center', lineHeight: 1.1 }}>{sub.name}</span>
+                  </button>
+              );
+          })}
+      </div>
 
       {/* RECENT GENERATIONS SHOWCASE */}
       <div style={{ background: '#111', borderRadius: '24px', padding: '2rem', border: '1px solid #222', marginBottom: '4rem', transition: 'all 0.3s ease' }}>
@@ -179,13 +184,20 @@ export default function TshirtInteractiveClient({ lang, imagesByMode }: Props) {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+        }
         .hover-scale:hover {
             transform: translateY(-5px);
             border-color: rgba(255,255,255,0.3) !important;
         }
-        .hover-sub-pill:hover {
-            background: rgba(255,255,255,0.1) !important;
-            border-color: rgba(255,255,255,0.3) !important;
+        .hover-sub-icon:hover {
+            background: rgba(255,255,255,0.06) !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            color: #ddd !important;
         }
         .fade-in-image {
             animation: fadeIn 0.5s ease forwards;
