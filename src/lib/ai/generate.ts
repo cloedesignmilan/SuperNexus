@@ -391,7 +391,8 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
             
             const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
-            let finalNegative = "plastic skin, " + dynNeg + ", , fake CGI, 3D render, smooth airbrushed skin, ugly, " + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
+            const noDoubleShoesNegative = "extra shoes, shoes on the floor, loose shoes, duplicate shoes, multiple pairs of shoes, ";
+            let finalNegative = "plastic skin, " + dynNeg + ", , fake CGI, 3D render, smooth airbrushed skin, ugly, " + noDoubleShoesNegative + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
             
             if (isTshirt) {
                 finalNegative += ", wrinkles, heavy creases, messy fabric, crumpled, unironed, messy folds, baggy wrinkles";
@@ -493,7 +494,8 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 everydayNegative = "back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back, ";
             }
             
-            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${everydayNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${everydayNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
+            const noDoubleShoesNegative = "extra shoes, shoes on the floor, loose shoes, duplicate shoes, multiple pairs of shoes, ";
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
