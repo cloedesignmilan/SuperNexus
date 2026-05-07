@@ -43,16 +43,16 @@ export default function OutfitMixMatch({ lang }: { lang: Locale }) {
               <div style={{ fontSize: '0.85rem', color: '#a1a1aa', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem', textAlign: 'center' }}>
                 {t.inputs}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'nowrap' }}>
-                <div style={{ width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(0.2rem, 1.5vw, 1rem)', flexWrap: 'nowrap', width: '100%' }}>
+                <div style={{ flex: 1, maxWidth: '120px', aspectRatio: '1/1', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem' }}>
                   <img src="/vetrina-landing/outfit/shirt.png" alt="Shirt" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
-                <Plus size={20} color="rgba(0,0,0,0.2)" style={{ flexShrink: 0 }} />
-                <div style={{ width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem', flexShrink: 0 }}>
+                <Plus size={16} color="rgba(0,0,0,0.2)" style={{ flexShrink: 0 }} />
+                <div style={{ flex: 1, maxWidth: '120px', aspectRatio: '1/1', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem' }}>
                   <img src="/vetrina-landing/outfit/pants.png" alt="Pants" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
-                <Plus size={20} color="rgba(0,0,0,0.2)" style={{ flexShrink: 0 }} />
-                <div style={{ width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem', flexShrink: 0 }}>
+                <Plus size={16} color="rgba(0,0,0,0.2)" style={{ flexShrink: 0 }} />
+                <div style={{ flex: 1, maxWidth: '120px', aspectRatio: '1/1', borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f4f4f5', padding: '0.5rem' }}>
                   <img src="/vetrina-landing/outfit/shoes.png" alt="Shoes" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                 </div>
               </div>
