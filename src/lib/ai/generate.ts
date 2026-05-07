@@ -382,7 +382,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             } else if (isBackShotNoPrint) {
                 backShotOverride = `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.`;
                 if (categorySlug === 'everyday') {
-                    dynNeg += ", back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back";
+                    backShotOverride += " [ADDITIONAL NEGATIVE INSTRUCTION]: back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back";
                 }
             }
 
