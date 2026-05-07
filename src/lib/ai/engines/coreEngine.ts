@@ -39,11 +39,34 @@ export const GLOBAL_INVIOLABLE_RULES = `\n\n[GLOBAL INVIOLABLE RULES]
 - Preserve the product identity perfectly. Do not invent details.
 - Do not add unwanted objects. Do not add text unless explicitly requested.
 - No watermark. No logo changes.
-- CRITICAL AESTHETIC LOCK: If generating a human model, they MUST be hyper-realistic and stunningly beautiful, resembling a high-end fashion magazine cover model. ABSOLUTELY NO plastic, airbrushed, or fake AI-generated skin. The skin texture, pores, and lighting must be 100% photorealistic and cinematic.
 - CRITICAL ANATOMY LOCK: The human model MUST have perfectly normal anatomy. ABSOLUTELY NO extra arms, no extra limbs, no missing limbs, no extra fingers, no deformed hands, and no distorted body proportions. Check the limb count before finalizing the image!
 - CRITICAL: If the reference image has store tags, cardboard labels, price tags, or hangtags attached, REMOVE THEM COMPLETELY. The garment must be cleanly worn without store tags.
 - CRITICAL NO HALLUCINATIONS: DO NOT add, generate, or hallucinate ANY internal wash tags, care labels, size labels, or extra fabric tags anywhere on the product. The garment must be completely free of any internal labels.
 - CRITICAL: If the product is an open jacket, blazer, or coat, YOU MUST generate an elegant shirt (e.g., dress shirt or t-shirt) underneath it. Do not leave the chest hollow or map the lining to the skin.`;
+
+export function getDynamicAestheticRules(taxonomyMode: string | undefined): { positive: string, negative: string } {
+    const mode = (taxonomyMode || '').toLowerCase();
+    let aestheticPrompt = "";
+    let specificNegative = "";
+
+    if (mode.includes('ugc')) {
+        aestheticPrompt = "[AESTHETIC DIRECTIVE: User Generated Content (UGC). The image must look casual, authentic, lifestyle, real-world environment, shot on a high-end smartphone, natural lighting, influencer style. DO NOT make it look like a studio shoot. It must feel extremely natural but super attractive.]";
+        specificNegative = "studio lighting, professional photography, studio backdrop, artificial, overproduced";
+    } else if (mode.includes('studio') || mode.includes('catalog') || mode.includes('ads') || mode.includes('scroll-stopper') || mode.includes('scroll stopper')) {
+        aestheticPrompt = "[AESTHETIC DIRECTIVE: High-End Studio Editorial. Produce an incredible, professional, ultra-realistic, and super attractive 'WOW' editorial photo with high-end commercial aesthetic and perfect studio/cinematic lighting, like a professional photographer for a specialized high-fashion magazine.]";
+        specificNegative = "amateur photography, blurry, bad lighting, casual, real-world clutter, low quality, selfie";
+    } else {
+        aestheticPrompt = "[AESTHETIC DIRECTIVE: Professional Fashion Photography. Create a highly professional, super attractive 'wow' image suited for a specialized fashion magazine, ensuring perfect coherence with the requested style and environment.]";
+        specificNegative = "amateur photography, low quality, bad lighting, blurry";
+    }
+
+    const identityLock = "[TRUE IDENTITY LOCK: The AI MUST perfectly and strictly preserve the original provided garment in exact COLOR and SHAPE. DO NOT hallucinate, add, remove, or modify any detail, fabric, pattern, or color. The original item must remain 100% identical.]";
+
+    return {
+        positive: `\n${identityLock}\n${aestheticPrompt}\n`,
+        negative: specificNegative
+    };
+}
 
 export async function executeGeminiBatch(
     generationModel: string,

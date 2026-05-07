@@ -1,16 +1,17 @@
 import { prisma } from './prisma';
 
 export const GEMINI_RATES = {
-  // Prezzi in Euro per 1 milione di token
-  "gemini-3.1-flash-image-preview": { input: 0.075, output: 0.30, per_image: 0.0653 },
-  "gemini-2.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
-  "gemini-3-pro-image-preview": { input: 1.25, output: 5.00, per_image: 0.0653 },
-  "imagen-3.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0300 },
-  "imagen-4.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0650 },
-  "gemini-1.5-pro": { input: 1.25, output: 5.00, per_image: 0 },
-  "gemini-1.5-flash": { input: 0.075, output: 0.30, per_image: 0 },
-  "gemini-2.0-flash": { input: 0.075, output: 0.30, per_image: 0 },
-  "default": { input: 0.075, output: 0.30, per_image: 0 }
+  // Prezzi in Euro estratti dal listino ufficiale Google Cloud CSV (per 1 milione di token testuali o singola immagine)
+  "gemini-3.1-flash-image-preview": { input: 0.4275, output: 2.5651, per_image: 0.0581 }, // Calibrato su ~1130 output img tokens
+  "gemini-3-pro-image-preview": { input: 1.7101, output: 10.2606, per_image: 0.1159 }, // Calibrato su ~1130 output img tokens
+  "gemini-2.5-flash": { input: 0.2565, output: 2.1376, per_image: 0 },
+  "gemini-2.5-pro": { input: 1.0688, output: 8.5505, per_image: 0 },
+  "gemini-2.0-flash": { input: 0.0855, output: 0.3420, per_image: 0 },
+  "imagen-4.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0342 }, // Costo esatto per 1 unit
+  "imagen-3.0-generate-001": { input: 0.00, output: 0.00, per_image: 0.0300 }, // Legacy
+  "gemini-1.5-pro": { input: 1.25, output: 5.00, per_image: 0 }, // Legacy
+  "gemini-1.5-flash": { input: 0.075, output: 0.30, per_image: 0 }, // Legacy
+  "default": { input: 0.0855, output: 0.3420, per_image: 0 } // Fallback a 2.0-flash
 };
 
 export async function logApiCost(

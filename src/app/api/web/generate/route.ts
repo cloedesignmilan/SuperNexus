@@ -98,6 +98,7 @@ export async function POST(req: NextRequest) {
     const globalModel = globalModelSetting?.value || 'gemini-3.1-flash-image-preview';
     
     const generationModel = subcat?.active_model || globalModel;
+    
     // Create Pending Job
     const newJob = await prisma.generationJob.create({
       data: {

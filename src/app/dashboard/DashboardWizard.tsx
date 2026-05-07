@@ -21,7 +21,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const backFileInputRef = useRef<HTMLInputElement>(null)
   
   // Selections
-  const [selections, setSelections] = useState<Record<string, Snippet | null>>({
+  const [selections, setSelections] = useState<Record<string, Snippet | any>>({
     CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null
   })
   const [modelAge, setModelAge] = useState<number>(25)

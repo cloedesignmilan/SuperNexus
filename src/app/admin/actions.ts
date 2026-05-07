@@ -317,3 +317,75 @@ export async function populateShotsOnly(checkId: string) {
     revalidatePath('/admin/subcategories/[id]', 'page');
     revalidatePath('/dashboard');
 }
+
+export async function publishToLandingPage(checkId: string, formData: FormData) {
+    const targetConfig = formData.get('showcaseTarget') as string;
+    if (!targetConfig) throw new Error("Target showcase non selezionato");
+
+    const [targetCategory, targetSubcategory] = targetConfig.split('|').map(s => s.trim());
+
+    const check = await prisma.outputValidationCheck.findUnique({
+        where: { id: checkId }
+    });
+
+    if (!check) throw new Error("Validation check non trovato");
+
+    let urls: string[] = [];
+    try {
+        const parsed = JSON.parse(check.generated_sample_image);
+        urls = parsed.urls || [];
+    } catch(e) {
+        urls = [check.generated_sample_image];
+    }
+    
+    if (urls.length === 0) throw new Error("Nessuna immagine da pubblicare");
+
+    const fs = require('fs');
+    const path = require('path');
+    const filePath = path.join(process.cwd(), 'src', 'components', 'InfiniteShowcase.tsx');
+    let content = fs.readFileSync(filePath, 'utf8');
+
+    const escapeRegex = (s: string) => s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const safeCat = escapeRegex(targetCategory);
+    const safeSub = escapeRegex(targetSubcategory);
+
+    const regex = new RegExp(`(displayCategory:\\s*['"]${safeCat}['"],\\s*displaySubcategory:\\s*['"]${safeSub}['"][\\s\\S]*?manualImages:\\s*\\[)([\\s\\S]*?)(\\])`, 'g');
+
+    if (!regex.test(content)) {
+        // Appende la nuova sezione se non esiste
+        const newObject = `  {
+    displayCategory: '${targetCategory}',
+    displaySubcategory: '${targetSubcategory}',
+    originalImage: '${check.reference_image_url && check.reference_image_url !== 'N/A' && !check.reference_image_url.includes('>') ? check.reference_image_url : '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp'}',
+    manualImages: [
+      ${urls.map(u => `"${u}"`).join(',\n      ')}
+    ]
+  }`;
+        content = content.replace(/(\n];\n\s*const UNIQUE_CATEGORIES)/, `,\n${newObject}$1`);
+        
+        // Aggiunge anche l'icona se non è già presente nelle CATEGORY_ICONS
+        if (!content.includes(`'${targetCategory}':`)) {
+            // Cerca un'icona adatta basata sul nome, o usa un default
+            let iconName = 'Sparkles';
+            if (targetCategory.includes('PANTS') || targetCategory.includes('JEANS') || targetCategory.includes('TROUSERS')) iconName = 'Layers'; // Fallback
+            else if (targetCategory.includes('SHIRT')) iconName = 'Shirt';
+            else if (targetCategory.includes('BAG')) iconName = 'ShoppingBag';
+            else if (targetCategory.includes('SHOE')) iconName = 'Footprints';
+            else if (targetCategory.includes('SWIM')) iconName = 'Waves';
+            
+            // Per evitare import complessi in runtime, lasciamo che il fallback di InfiniteShowcase (|| Sparkles) funzioni 
+            // ma se vogliamo esplicitarlo possiamo aggiungerlo a CATEGORY_ICONS:
+            content = content.replace(/(const CATEGORY_ICONS: Record<string, React.ElementType> = {)/, `$1\n  '${targetCategory}': ${iconName},`);
+        }
+    } else {
+        // Aggiorna sezione esistente
+        content = content.replace(regex, (match, p1, p2, p3) => {
+            return p1 + '\n      ' + urls.map(u => `"${u}"`).join(',\n      ') + '\n    ' + p3;
+        });
+    }
+
+    fs.writeFileSync(filePath, content, 'utf8');
+    
+    revalidatePath('/');
+    revalidatePath('/admin/analyses');
+}

@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { getRandomSceneForSubcategory } from "@/app/api/telegram/webhook/sceneDictionary";
 import { getPromptsForSelection } from "../../prompt-configs";
+import { getDynamicAestheticRules } from "./coreEngine";
 
 
 export interface GenerateImagesOptions {
@@ -328,7 +329,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         if (hasValidStrictReference) {
             currentShotName = "Strict Reference Clone";
             currentShotNumber = i + 1;
-            variantPrompt = userPrompt + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
+            variantPrompt = userPrompt + dynPos + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
@@ -392,7 +393,8 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             } else if (clientGender === 'WOMAN') {
                 finalPositive = finalPositive.replace(/\b([Mm])odel\b/g, '$1emale model');
             }
-            let finalNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
+            const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
+            let finalNegative = "plastic skin, " + dynNeg + ", , fake CGI, 3D render, smooth airbrushed skin, ugly, " + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
             
             if (isTshirt) {
                 finalNegative += ", wrinkles, heavy creases, messy fabric, crumpled, unironed, messy folds, baggy wrinkles";
@@ -429,7 +431,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const stylingDirective = "\n[STYLING RULE: Whenever you generate complementary clothing items (like shoes, or a top for pants, or pants for a t-shirt), you MUST ensure the colors, fabrics, and footwear are highly fashionable, coherent, and match the aesthetic of the main product perfectly.]";
             const bottomsDirective = isBottom ? "\n[CRITICAL DIRECTIVE: The uploaded product is a BOTTOM garment (pants/skirt/shorts). You MUST render the model wearing it on their LOWER BODY (legs/waist). Do NOT wear it on the upper body. Generate a complementary top (shirt/sweater) that matches the style perfectly. Ensure shoes match the outfit.]" : "";
 
-            variantPrompt = userPrompt + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}${shoeSpecificRules}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}${shoeSpecificRules}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });

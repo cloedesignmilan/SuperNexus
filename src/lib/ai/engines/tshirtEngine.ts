@@ -1,7 +1,7 @@
 import { getRandomSceneForSubcategory } from "@/app/api/telegram/webhook/sceneDictionary";
 import { getPromptsForSelection } from "../../prompt-configs";
 import { GenerateImagesOptions } from "../generate";
-import { executeGeminiBatch, downloadImageAsBase64, GLOBAL_INVIOLABLE_RULES, AIExecutionBatch } from "./coreEngine";
+import { executeGeminiBatch, downloadImageAsBase64, GLOBAL_INVIOLABLE_RULES, AIExecutionBatch, getDynamicAestheticRules } from "./coreEngine";
 
 export async function generateTshirtImages({
     qty,
@@ -179,7 +179,9 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
             }
             
             const dbGlobalNegative = subcat?.business_mode?.category?.global_negative_prompt || "";
-            let finalNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + dbGlobalNegative + ", " + (shotInfo.negative_prompt?.replace(/\{product\}/g, 't-shirt').replace(/\{gender\}/g, genderNoun) || "");
+            const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
+
+            let finalNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + dynNeg + ", " + dbGlobalNegative + ", " + (shotInfo.negative_prompt?.replace(/\{product\}/g, 't-shirt').replace(/\{gender\}/g, genderNoun) || "");
 
             const dbGlobalPositive = subcat?.business_mode?.category?.global_positive_prompt ? `\n[GLOBAL CATEGORY POSITIVE RULES]: ${subcat.business_mode.category.global_positive_prompt}` : `\n[CRITICAL PRODUCT LOCK SYSTEM: The uploaded product image is the ONLY source of truth. Replicate exact structure, patterns, and construction.]`;
             const dbGlobalHardRules = subcat?.business_mode?.category?.global_hard_rules ? `\n[GLOBAL CATEGORY HARD RULES]: ${subcat.business_mode.category.global_hard_rules}` : "";
@@ -208,7 +210,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [OUTPUT GOAL]: ${shotInfo.output_goal}
 
 [STRICT NEGATIVE CONSTRAINTS - DO NOT GENERATE THESE ELEMENTS UNDER ANY CIRCUMSTANCE]: ${finalNegative}
-` + GLOBAL_INVIOLABLE_RULES + dbGlobalPositive + dbGlobalHardRules + backShotOverride + wearDirective + backgroundOverride + povOverride;
+` + dynPos + GLOBAL_INVIOLABLE_RULES + dbGlobalPositive + dbGlobalHardRules + backShotOverride + wearDirective + backgroundOverride + povOverride;
 
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
@@ -244,7 +246,8 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
             
             const wearDirective = isTshirtNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
 
-            variantPrompt = userPrompt + `\n\n${dbGlobalPositive}${dbGlobalHardRules}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning. These must feel natural and human, not staged.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni la FORMA/COLORE del capo identici all'originale.]`;
+            const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
+            variantPrompt = userPrompt + dynPos + `\n\n${dbGlobalPositive}${dbGlobalHardRules}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning. These must feel natural and human, not staged.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni la FORMA/COLORE del capo identici all'originale. DO NOT GENERATE: ${dynNeg}]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });

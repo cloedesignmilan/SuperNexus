@@ -123,10 +123,27 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
                 else if (taxonomyModeMapped.includes('Model') || taxonomyModeMapped.includes('Studio')) taxonomyModeMapped = 'Model Studio';
                 else taxonomyModeMapped = 'Lifestyle';
 
+                let aestheticPrompt = "";
+                let specificNegative = "";
+
+                if (taxonomyModeMapped === 'UGC') {
+                    aestheticPrompt = "The aesthetic must be User Generated Content (UGC): casual, authentic, lifestyle, real-world environment, shot on a high-end smartphone, natural lighting, influencer style. DO NOT make it look like a studio shoot. It must feel extremely natural but super attractive.";
+                    specificNegative = "studio lighting, professional photography, studio backdrop, artificial, overproduced";
+                } else if (taxonomyModeMapped === 'Model Studio' || taxonomyModeMapped === 'Clean Catalog' || taxonomyModeMapped === 'Ads / Scroll Stopper') {
+                    aestheticPrompt = "Produce an incredible, professional, ultra-realistic, and super attractive 'WOW' editorial photo with high-end commercial aesthetic and perfect studio/cinematic lighting, like a professional photographer for a specialized high-fashion magazine.";
+                    specificNegative = "amateur photography, blurry, bad lighting, casual, real-world clutter, low quality";
+                } else {
+                    aestheticPrompt = "Create a highly professional, super attractive 'wow' image suited for a specialized fashion magazine, ensuring perfect coherence with the requested style and environment.";
+                    specificNegative = "amateur photography, low quality, bad lighting, blurry";
+                }
+
+                const finalPromptText = `TRUE IDENTITY LOCK: The AI MUST perfectly and strictly preserve the original provided garment in exact COLOR and SHAPE. DO NOT hallucinate, add, remove, or modify any detail, fabric, pattern, or color. The original item must remain 100% identical. ${aestheticPrompt}`;
+                const finalNegativeText = `altered clothing, different garment, changed color, added details, changed design, hallucinated patterns, text, watermark, poorly rendered, ugly, deformed, blurry, ${specificNegative}`;
+
                 const payload = {
                     imageUrl: test.url,
-                    finalPrompt: "Taxonomy Mass Tester Auto Prompt",
-                    negativePrompt: "text, watermark, poorly rendered, ugly, deformed, blurry",
+                    finalPrompt: finalPromptText,
+                    negativePrompt: finalNegativeText,
                     qty: generationQty,
                     aspectRatio: "4:5",
                     taxonomyCat: category.slug,

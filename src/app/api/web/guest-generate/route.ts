@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    const generationModel = 'gemini-3.1-flash-image-preview'
+    const generationModel = 'gemini-3.1-flash-image-preview';
 
     // GENERATE VIA AI ENGINE
     const aiResult = await generateImagesWithAI({

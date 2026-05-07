@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { Trash2 } from "lucide-react";
 import { revalidatePath } from "next/cache";
-import { updateValidationFeedback, populateSubcategoryAssets, populateShotsOnly } from "@/app/admin/actions";
+import { updateValidationFeedback, populateSubcategoryAssets, populateShotsOnly, publishToLandingPage } from "@/app/admin/actions";
+import fs from 'fs';
+import path from 'path';
 import Link from "next/link";
 import DownloadZipButton from "./DownloadZipButton";
 
@@ -24,6 +26,14 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
     const resolvedSearchParams = await searchParams;
     const activeFilter = resolvedSearchParams.filter;
     const availableCategories = Array.from(new Set(checks.map(c => c.subcategory?.business_mode?.category?.name).filter(Boolean))) as string[];
+
+    const showcasePath = path.join(process.cwd(), 'src', 'components', 'InfiniteShowcase.tsx');
+    const showcaseContent = fs.readFileSync(showcasePath, 'utf8');
+    const showcaseTargets: string[] = [];
+    const matches = showcaseContent.matchAll(/displayCategory:\s*['"]([^'"]+)['"],\s*displaySubcategory:\s*['"]([^'"]+)['"]/g);
+    for (const match of matches) {
+        showcaseTargets.push(`${match[1]} | ${match[2]}`);
+    }
 
     const displayChecks = activeFilter 
         ? checks.filter(c => c.subcategory?.business_mode?.category?.name === activeFilter) 
@@ -171,6 +181,41 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
                                                 </form>
                                             </div>
                                         </div>
+                                        
+                                        {/* Publish to Showcase Form */}
+                                        <div style={{ marginBottom: '15px', display: 'flex', gap: '10px', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <form action={publishToLandingPage.bind(null, check.id)} style={{ display: 'flex', gap: '10px', alignItems: 'center', width: '100%' }}>
+                                                <select name="showcaseTarget" required style={{ padding: '8px', borderRadius: '8px', background: '#000', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.8rem', flex: 1, outline: 'none' }}>
+                                                    <option value="">-- Seleziona sezione Showcase --</option>
+                                                    {(() => {
+                                                        const suggestedCat = check.subcategory?.business_mode?.category?.name?.toUpperCase() || 'CATEGORIA';
+                                                        const suggestedMode = check.subcategory?.business_mode?.name?.toUpperCase() || 'MODE';
+                                                        const suggestedSub = check.subcategory?.name?.toUpperCase() || 'SUBCAT';
+                                                        const suggestedTarget = `${suggestedCat} | ${suggestedMode} → ${suggestedSub}`;
+                                                        
+                                                        const isNew = !showcaseTargets.includes(suggestedTarget);
+                                                        const otherTargets = showcaseTargets.filter(t => t !== suggestedTarget);
+                                                        
+                                                        return (
+                                                            <>
+                                                                <option value={suggestedTarget}>
+                                                                    {suggestedTarget} {isNew ? '(Aggiungi Nuova)' : '(Consigliata)'}
+                                                                </option>
+                                                                <optgroup label="Sezioni Esistenti">
+                                                                    {otherTargets.map((target, idx) => (
+                                                                        <option key={idx} value={target}>{target}</option>
+                                                                    ))}
+                                                                </optgroup>
+                                                            </>
+                                                        );
+                                                    })()}
+                                                </select>
+                                                <button type="submit" style={{ padding: '8px 16px', background: 'rgba(255, 215, 0, 0.1)', border: '1px solid rgba(255, 215, 0, 0.4)', color: '#ffd700', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s', whiteSpace: 'nowrap' }}>
+                                                    Pubblica su Showcase
+                                                </button>
+                                            </form>
+                                        </div>
+
                                         <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '10px' }}>
                                             {urls.map((url, i) => {
                                                 const shotBadge = specificShotNumber ? specificShotNumber : (i + 1);

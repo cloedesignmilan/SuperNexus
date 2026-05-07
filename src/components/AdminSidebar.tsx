@@ -17,6 +17,7 @@ export default function AdminSidebar() {
     { href: "/admin/categories", label: "Macrocategorie", icon: <Box size={18} /> },
     { href: "/admin/business-modes", label: "Categorie", icon: <Box size={18} /> },
     { href: "/admin/subcategories", label: "Sottocategorie & Asset", icon: <Share2 size={18} /> },
+    { href: "/admin/button-assets", label: "Asset Pulsanti (UI)", icon: <Box size={18} color="#00d2ff" /> },
     { href: "/admin/clients", label: "CRM & Clienti", icon: <Users size={18} /> },
     { href: "/admin/snippets", label: "Mattoncini (Snippets)", icon: <Database size={18} /> },
     { href: "/admin/prompt-configs", label: "Prompt Configs (JSON)", icon: <Zap size={18} /> },
