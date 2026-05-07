@@ -6,11 +6,10 @@ export default function FlipCardWow({ beforeImage, afterImage, lang = 'en' }: { 
   const [isFlipped, setIsFlipped] = useState(false);
 
   const upperPath = afterImage.toUpperCase();
-  const isWoman = upperPath.includes('/WOMAN/') || upperPath.includes('/DONNA/');
   const isMan = upperPath.includes('/MAN/') || upperPath.includes('/UOMO/');
   
-  let hoverText = lang === 'it' ? 'PASSA SOPRA PER GENERARE' : 'HOVER TO GENERATE';
-  if (isWoman) hoverText = lang === 'it' ? 'PASSA SOPRA PER DONNA' : 'HOVER FOR WOMAN';
+  // Default to Woman since most catalog is female, unless it's explicitly marked as man
+  let hoverText = lang === 'it' ? 'PASSA SOPRA PER DONNA' : 'HOVER FOR WOMAN';
   if (isMan) hoverText = lang === 'it' ? 'PASSA SOPRA PER UOMO' : 'HOVER FOR MAN';
 
   return (

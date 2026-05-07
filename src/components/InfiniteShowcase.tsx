@@ -211,11 +211,11 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'LIFESTYLE → MODEL PHOTO',
     originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_admin_sandbox_1778144729343.jpg',
     manualImages: [
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-1_1778145484456.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-2_1778145484456.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-3_1778145484456.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-4_1778145484456.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-5_1778145484456.jpg"
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-1_1778148075865.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-2_1778148075865.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-3_1778148075865.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-4_1778148075865.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-LIFESTYLE-MODEL%20PHOTO-5_1778148075865.jpg"
     ]
   },
   {
@@ -223,11 +223,23 @@ const SLIDESHOW_CONFIG = [
     displaySubcategory: 'UGC → CANDID',
     originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_admin_sandbox_1778085816986.jpg',
     manualImages: [
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-1_1778145720581.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-2_1778145720581.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-3_1778145720581.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-4_1778145720581.jpg",
-      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-5_1778145720581.jpg"
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-1_1778145612955.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-2_1778145612955.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-3_1778145612955.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-4_1778145612955.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-UGC-CANDID-5_1778145612955.jpg"
+    ]
+  },
+  {
+    displayCategory: 'SHOES',
+    displaySubcategory: 'MODEL STUDIO → MODEL PHOTO',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_admin_sandbox_1778085816986.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-1_1778147882106.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-2_1778147882106.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-3_1778147882106.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-4_1778147882106.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-5_1778147882106.jpg"
     ]
   }
 ];

@@ -342,6 +342,37 @@ export async function publishToLandingPage(checkId: string, formData: FormData) 
 
     const fs = require('fs');
     const path = require('path');
+    
+    // --- 1. Aggiornamento su FileSystem (Vetrina Landing) ---
+    try {
+        let modeName = targetSubcategory;
+        let subcatName = targetSubcategory;
+
+        if (targetSubcategory.includes('→')) {
+            const parts = targetSubcategory.split('→').map(s => s.trim());
+            modeName = parts[0];
+            subcatName = parts[1];
+        }
+
+        const dirPath = path.join(process.cwd(), 'public', 'vetrina-landing', targetCategory.toLowerCase(), modeName, subcatName);
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath, { recursive: true });
+        }
+
+        for (let i = 0; i < urls.length; i++) {
+            const url = urls[i];
+            const res = await fetch(url);
+            if (res.ok) {
+                const buffer = await res.arrayBuffer();
+                const fileName = `published_${Date.now()}_${i}.jpg`;
+                fs.writeFileSync(path.join(dirPath, fileName), Buffer.from(buffer));
+            }
+        }
+    } catch(err) {
+        console.error("Errore durante il download in public/vetrina-landing:", err);
+    }
+
+    // --- 2. Aggiornamento InfiniteShowcase.tsx (Backup) ---
     const filePath = path.join(process.cwd(), 'src', 'components', 'InfiniteShowcase.tsx');
     let content = fs.readFileSync(filePath, 'utf8');
 
@@ -365,7 +396,6 @@ export async function publishToLandingPage(checkId: string, formData: FormData) 
         
         // Aggiunge anche l'icona se non è già presente nelle CATEGORY_ICONS
         if (!content.includes(`'${targetCategory}':`)) {
-            // Cerca un'icona adatta basata sul nome, o usa un default
             let iconName = 'Sparkles';
             if (targetCategory.includes('PANTS') || targetCategory.includes('JEANS') || targetCategory.includes('TROUSERS')) iconName = 'Layers'; // Fallback
             else if (targetCategory.includes('SHIRT')) iconName = 'Shirt';
@@ -373,8 +403,6 @@ export async function publishToLandingPage(checkId: string, formData: FormData) 
             else if (targetCategory.includes('SHOE')) iconName = 'Footprints';
             else if (targetCategory.includes('SWIM')) iconName = 'Waves';
             
-            // Per evitare import complessi in runtime, lasciamo che il fallback di InfiniteShowcase (|| Sparkles) funzioni 
-            // ma se vogliamo esplicitarlo possiamo aggiungerlo a CATEGORY_ICONS:
             content = content.replace(/(const CATEGORY_ICONS: Record<string, React.ElementType> = {)/, `$1\n  '${targetCategory}': ${iconName},`);
         }
     } else {

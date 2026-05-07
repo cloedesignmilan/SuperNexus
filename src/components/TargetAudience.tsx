@@ -42,7 +42,7 @@ export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
       icon: <Store size={28} />,
       color: "#a3cc00", // Neon yellow/green
       handwrittenTip: t.targetAudience.boutiques.tip,
-      image: '/immagini/IMG_2053.webp'
+      image: '/immagini/IMG_2061.webp'
     },
     {
       title: t.targetAudience.ecommerce.title,
@@ -50,7 +50,7 @@ export default function TargetAudience({ lang = 'en' }: TargetAudienceProps) {
       icon: <ShoppingBag size={28} />,
       color: "#00b3a6", // Neon cyan
       handwrittenTip: t.targetAudience.ecommerce.tip,
-      image: '/immagini/IMG_2061.webp'
+      image: '/vetrina-landing/t-shirt/Clean%20Catalog/No%20Model/Woman/shoot4.webp'
     },
     {
       title: t.targetAudience.creators.title,
