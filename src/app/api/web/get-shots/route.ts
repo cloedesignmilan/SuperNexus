@@ -20,7 +20,13 @@ export async function POST(req: Request) {
     });
 
     if (!shots || shots.length === 0) {
-       return NextResponse.json({ shots: [] });
+       // Fallback for dynamic engine: provide 5 selectable shots
+       const fallbackShots = Array.from({ length: 5 }).map((_, i) => ({
+           shot_number: i + 1,
+           shot_name: `Scatto / Angolazione ${i + 1}`,
+           image_url: null
+       }));
+       return NextResponse.json({ shots: fallbackShots });
     }
 
     // Restituiamo solo l'elenco degli shot name unici

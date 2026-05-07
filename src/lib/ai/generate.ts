@@ -320,7 +320,11 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
     }
 
     for (let i = 0; i < qty; i++) {
-        const currentPose = strictPoses[i % strictPoses.length];
+        let poseIndex = i;
+        if (specificShotNumber) {
+            poseIndex = specificShotNumber - 1;
+        }
+        const currentPose = strictPoses[poseIndex % strictPoses.length];
         let currentLighting = lockedLighting;
 
         const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
@@ -475,7 +479,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 
         } else {
             currentShotName = "Dynamic Scene";
-            currentShotNumber = i + 1;
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
             
             if (varianceEnabled && modeSlug !== 'clean-catalog') {
                 const magicalScene = getRandomSceneForSubcategory(subcat?.business_mode?.category?.slug + " " + subcat?.business_mode?.slug + " " + subcat?.slug);
@@ -546,7 +550,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                  }
             }
 
-            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}${dynamicBackOverride}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}${dynamicBackOverride}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${shoeSpecificRules}${tshirtSpecificRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
