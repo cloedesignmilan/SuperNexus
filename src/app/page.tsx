@@ -12,6 +12,7 @@ import AgeLockSystem from '@/components/AgeLockSystem';
 const AnimatedTelegramMockup = nextDynamic(() => import('@/components/AnimatedTelegramMockup'));
 const SocialPostMockup = nextDynamic(() => import('@/components/SocialPostMockup'));
 const TargetAudience = nextDynamic(() => import('@/components/TargetAudience'));
+const SwimwearMixMatch = nextDynamic(() => import('@/components/SwimwearMixMatch'));
 const GuestTryOut = nextDynamic(() => import('@/components/GuestTryOut'));
 const GalleryMockup = nextDynamic(() => import('@/components/GalleryMockup'));
 const Testimonials = nextDynamic(() => import('@/components/Testimonials'));
@@ -506,6 +507,8 @@ export default async function LandingPage() {
       {/* SWIMWEAR ECOMMERCE SPECIAL SECTION */}
       <div id="section-swimwear">
         <SwimwearEcommerceLanding lang={lang} />
+        {/* SWIMWEAR MIX & MATCH FEATURE */}
+        <SwimwearMixMatch lang={lang} />
       </div>
 
       {/* DRESS ECOMMERCE SPECIAL SECTION */}

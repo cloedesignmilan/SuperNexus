@@ -15,6 +15,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   
+  // Outfit State (Swimwear Mix&Match)
+  const [outfitUrls, setOutfitUrls] = useState<string[]>([])
+  const [isUploadingOutfitPart, setIsUploadingOutfitPart] = useState(false)
+  const outfitFileInputRef = useRef<HTMLInputElement>(null)
+  
   // Back Upload State
   const [uploadedBackUrl, setUploadedBackUrl] = useState<string | null>(null)
   const [isUploadingBack, setIsUploadingBack] = useState(false)
@@ -173,6 +178,28 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
         alert('Error updating cover');
     }
   };
+
+  const handleOutfitFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selected = e.target.files[0]
+      setIsUploadingOutfitPart(true)
+      try {
+        const formData = new FormData()
+        formData.append('file', selected)
+        const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
+        const data = await res.json()
+        if (data.url) {
+          setOutfitUrls(prev => [...prev, data.url])
+        } else {
+          setError(data.error || 'Upload failed')
+        }
+      } catch (err) {
+        setError('Network error during upload')
+      } finally {
+        setIsUploadingOutfitPart(false)
+      }
+    }
+  }
 
   const handleBackFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -491,7 +518,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
         detectedProductType: analysisData?.detectedProductType,
         productColors: analysisData?.detectedAttributes?.colors || [],
         printLocation: printLocation,
-        imageBackUrl: uploadedBackUrl
+        imageBackUrl: uploadedBackUrl,
+        outfitUrls: outfitUrls
       }
 
       const res = await fetch('/api/web/generate', {
@@ -1422,7 +1450,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       </div>
                     </div>
                   </div>
-                  <button className="desktop-change-btn" onClick={() => { setStep(0); setUploadedUrl(null); }}>
+                  <button className="desktop-change-btn" onClick={() => { setStep(0); setUploadedUrl(null); setOutfitUrls([]); }}>
                     Change Image
                   </button>
                 </>
@@ -1576,6 +1604,31 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                            <div style={{ fontWeight: 600, color: '#10b981' }}>Back View Uploaded</div>
                            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>The AI will now generate mixed 360° shots</div>
                         </div>
+                     </div>
+                  )}
+
+                  {analysisData.detectedProductType === 'swimwear' && (
+                     <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
+                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
+                           Costumi Spaiati o Accessori? (Opzionale)<br/>
+                           Se hai caricato un capo singolo e vuoi abbinare uno Slip diverso, un Pareo o una Borsa, aggiungili qui sotto. L'AI comporrà l'outfit completo.
+                        </div>
+                        
+                        {outfitUrls.length > 0 && (
+                           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                              {outfitUrls.map((url, i) => (
+                                 <div key={i} style={{ width: '60px', height: '60px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.2)' }}>
+                                    <img src={url} alt={`Accessory ${i}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                 </div>
+                              ))}
+                           </div>
+                        )}
+
+                        <input type="file" ref={outfitFileInputRef} onChange={handleOutfitFileChange} accept="image/*" style={{ display: 'none' }} />
+                        <button onClick={() => outfitFileInputRef.current?.click()} disabled={isUploadingOutfitPart} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
+                           {isUploadingOutfitPart ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
+                           {isUploadingOutfitPart ? 'Caricamento...' : 'Aggiungi Pezzo (Slip, Pareo, Borsa)'}
+                        </button>
                      </div>
                   )}
 

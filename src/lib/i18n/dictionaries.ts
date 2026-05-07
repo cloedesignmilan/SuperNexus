@@ -231,6 +231,14 @@ export const dictionaries = {
       resultsTitle: "AI Results",
       closeFullscreen: "ESC / CLICK TO CLOSE",
       allCategories: "All Categories"
+    },
+    mixMatch: {
+      tag: "Swimwear Mix & Match",
+      title1: "Create the Perfect",
+      title2: "Outfit.",
+      desc: "Mismatched bikini? Want to add a sarong or a beach bag? Upload the separate pieces and our AI will seamlessly style them together in one breathtaking editorial shot.",
+      inputs: "Separated Items",
+      output: "AI Composition"
     }
   },
   it: {
@@ -463,6 +471,14 @@ export const dictionaries = {
       resultsTitle: "Risultati AI",
       closeFullscreen: "ESC / CLICCA PER CHIUDERE",
       allCategories: "Tutte le Categorie"
+    },
+    mixMatch: {
+      tag: "Swimwear Mix & Match",
+      title1: "Componi l'Outfit",
+      title2: "Perfetto.",
+      desc: "Reggiseno e Slip spaiati? Vuoi aggiungere un pareo o una borsa? Carica i singoli pezzi e l'IA li indosserà insieme in un unico scatto editoriale mozzafiato.",
+      inputs: "Capi Singoli",
+      output: "Composizione AI"
     }
   }
 };

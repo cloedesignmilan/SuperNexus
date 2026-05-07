@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl, productColors } = body
+    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl, productColors, outfitUrls } = body
 
     if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
@@ -115,13 +115,15 @@ export async function POST(req: NextRequest) {
       }
     })
 
+    const allUrls = outfitUrls && outfitUrls.length > 0 ? [imageUrl, ...outfitUrls] : [imageUrl];
+
     // GENERATE VIA AI ENGINE
     const aiParams = {
       qty: requestedQty,
       subcat: dynamicSubcat as any, // Type cast per compatibilità
-      publicUrls: [imageUrl],
+      publicUrls: allUrls,
       userClarification: `Aspect Ratio: ${aspectRatio || '4:5'}`, // Usato come meta
-      isOutfit: false,
+      isOutfit: allUrls.length > 1,
       varianceEnabled: false,
       generationModel,
       taxonomyCat,

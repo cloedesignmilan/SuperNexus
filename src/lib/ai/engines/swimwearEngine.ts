@@ -427,6 +427,9 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             let swimwearSpecificRules = "";
             if (categorySlug === 'swimwear') {
                 swimwearSpecificRules = `\n[SWIMWEAR CORE SYSTEM] STRICT PRODUCT RULE: The swimsuit must be an EXACT 1:1 replica of the reference image. NO MODIFICATIONS. Do NOT invent or add any accessories, metallic rings, golden rings, chains, or details that are not visible in the original image. Pay extreme attention to the original garment's details and reproduce them perfectly without any changes.`;
+                if (isOutfit) {
+                    swimwearSpecificRules += `\n[SWIMWEAR OUTFIT COORDINATION: The user has uploaded MULTIPLE separate garments (e.g., bra, slip, pareo, skirt, bag). You MUST dress the model wearing ALL of these items together in the same image perfectly. The model MUST wear the top and the bottom correctly. If there is a pareo or skirt, she MUST wear it over the bikini bottom. If there is a bag, she MUST carry it. Ensure a precise, professional, high-fashion styling. Do NOT mix up the items.]`;
+                }
             }
 
             
