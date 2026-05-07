@@ -251,7 +251,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               setAnalysisData(analysisRes.analysis)
               
               const pLoc = analysisRes.analysis.detectedAttributes?.printLocation;
-              if (analysisRes.analysis.detectedProductType === 'tshirt_hoodie' && (pLoc === 'front' || pLoc === 'back')) {
+              if ((analysisRes.analysis.detectedProductType === 'tshirt_hoodie' || analysisRes.analysis.detectedProductType === 'women_clothing' || analysisRes.analysis.detectedProductType === 'men_clothing') && (pLoc === 'front' || pLoc === 'back')) {
                  setPrintLocation(pLoc);
                  setShowPrintConfirm(true);
               }
@@ -1585,7 +1585,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                      </div>
                   )}
 
-                  {analysisData.detectedProductType === 'tshirt_hoodie' && !uploadedBackUrl && (
+                  {(analysisData.detectedProductType === 'tshirt_hoodie' || analysisData.detectedProductType === 'women_clothing' || analysisData.detectedProductType === 'men_clothing') && !uploadedBackUrl && (
                      <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                         <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Do you also have an image of the back? Upload it to allow the AI to generate perfect front/back shots.</div>
                         <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
