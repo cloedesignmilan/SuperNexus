@@ -1,0 +1,26 @@
+All model-studio shots for T-Shirt:
+7b55ed5e-479d-4a77-966e-16efc61ca1b4 | model-photo-man | Shot 1 | URL: YES
+4da858a2-392e-4bea-8a80-d981bd539b75 | curvy-man | Shot 1 | URL: NO
+b22d9232-9c3b-4b76-9dcf-b8a9ad18e4f8 | curvy-woman | Shot 1 | URL: NO
+d3c11ba5-3c61-41b2-8b66-15f9c641bfe1 | model-photo | Shot 1 | URL: YES
+d1de805e-178a-4ec6-b0d5-518d2842a8b9 | model-photo-woman | Shot 1 | URL: YES
+bb27eceb-6c1b-4153-b8ca-852550243100 | model-photo | Shot 2 | URL: YES
+26734b8e-b1b6-45f5-97d6-c5a490e288a8 | model-photo-woman | Shot 2 | URL: YES
+ddd55718-73c8-4cd0-99ea-9531396cbd5a | model-photo-man | Shot 2 | URL: YES
+62438d12-1a0e-4a71-9c82-2d091d2f0c44 | curvy-man | Shot 2 | URL: NO
+5440a301-b30e-4fd6-9aaf-abee11cc3a14 | curvy-woman | Shot 2 | URL: NO
+b561a99e-3414-4fc6-ad4e-361ac2b03e68 | curvy-woman | Shot 3 | URL: NO
+10a6bbb1-1c64-45e7-ab0f-724c2a26a23d | model-photo-man | Shot 3 | URL: YES
+952a8e01-01a4-4818-b76f-ce86e6bc3d6a | model-photo-woman | Shot 3 | URL: YES
+abb36d90-fc2b-4943-912c-db2e5d93c206 | curvy-man | Shot 3 | URL: NO
+e259ae35-0d94-4c36-ba38-89fba34bd81a | model-photo | Shot 3 | URL: YES
+d5215f7d-bca8-4b5a-adfd-5e7840c7097c | curvy-man | Shot 4 | URL: NO
+9d269b6c-0d48-467a-bab6-bd048f2e0e53 | model-photo | Shot 4 | URL: YES
+07207e07-02e7-4636-bad4-92ec0e65edc1 | model-photo-man | Shot 4 | URL: YES
+ae33ebf6-e1c8-4836-80fb-0a772a01f651 | curvy-woman | Shot 4 | URL: NO
+dec09199-2c04-4f6c-97f5-c94f2691d577 | model-photo-woman | Shot 4 | URL: YES
+b5ff7556-c73f-462e-b22a-da3e07953fd2 | curvy-man | Shot 5 | URL: NO
+9acd16c0-1bd5-4f65-8981-f5bbdf4f0d9d | model-photo-woman | Shot 5 | URL: YES
+91ab4a8c-dd75-4457-9dfe-bfcd200be779 | model-photo | Shot 5 | URL: YES
+75e4f61e-04fd-4e7c-a87e-5df437c76395 | curvy-woman | Shot 5 | URL: NO
+ee5920e8-90ad-45c3-99d2-a950b94a515d | model-photo-man | Shot 5 | URL: YES

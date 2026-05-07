@@ -1,0 +1,50 @@
+
+--- model-photo-man SHOT 1 ---
+POS: High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-man SHOT 2 ---
+POS: Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-man SHOT 3 ---
+POS: Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-man SHOT 4 ---
+POS: Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: messy background, outdoor, street, text, logo, watermark, bad lighting, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-man SHOT 5 ---
+POS: Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-woman SHOT 1 ---
+POS: High-end fashion editorial lookbook photo. Beautiful {gender} model sitting casually on a clean white studio floor, wearing the {product}. Modern minimalist aesthetic. Soft, bright, diffused professional lighting. Natural relaxed pose, Vogue magazine style. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: messy background, outdoor, street, text, logo, watermark, stiff pose, bad lighting, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: EDITORIAL STYLE. SITTING ON WHITE FLOOR. NO MESSY BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-woman SHOT 2 ---
+POS: Editorial close-up shot of the {gender} model's legs and feet wearing the {product}. Warm soft beige/tan seamless paper studio background. Elegant posture. Professional studio lighting. High fashion footwear photography. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LEGS AND FEET CROP. BEIGE/TAN STUDIO BACKGROUND. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-woman SHOT 3 ---
+POS: Creative editorial footwear photography. {gender} model's legs suspended in the air or resting elegantly against a clean white geometric architectural block, wearing the {product}. Minimalist beige and white studio setting. Crisp focus on the shoes. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LEGS CROP. RESTING ON GEOMETRIC BLOCK. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-woman SHOT 4 ---
+POS: Full body high fashion editorial portrait of a {gender} model standing confidently in a bright minimalist studio. Wearing the {product} with stylish matching minimalist outfit. Soft box lighting, crisp and modern, highly professional. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: messy background, outdoor, street, text, logo, watermark, bad lighting, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: FULL BODY EDITORIAL. MINIMALIST STUDIO. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.
+
+--- model-photo-woman SHOT 5 ---
+POS: Low angle artistic editorial shot of the {gender} model's feet wearing the {product} resting on a pristine studio floor. Soft shadows, high-end commercial photography style. Perfect product focus, clean aesthetic. CRITICAL VARIETY RULE: This shot MUST be clearly different in angle, framing, lighting, and composition from any standard view. Ensure maximum visual distinction.
+NEG: full body, face, messy background, outdoor, text, logo, watermark, price tag, store tag, brand label, hang tag, barcode, logo, text, watermark
+RULES: LOW ANGLE. FEET ON STUDIO FLOOR. EDITORIAL LIGHTING. MAKE COMPLETELY UNIQUE IN ANGLE/FRAMING. NO SIMILAR SHOTS.

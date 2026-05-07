@@ -311,6 +311,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         const currentPose = strictPoses[i % strictPoses.length];
         let currentLighting = lockedLighting;
 
+        const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
         let variantPrompt = "";
         let aiParts = [];
         
@@ -387,7 +388,6 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
             
             const finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
-            const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
             let finalNegative = "plastic skin, " + dynNeg + ", , fake CGI, 3D render, smooth airbrushed skin, ugly, " + (shotInfo.negative_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "");
             
             if (isTshirt) {

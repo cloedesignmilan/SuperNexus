@@ -43,7 +43,7 @@ export default function AdminDashboardClient({ chartData }: { chartData: any[] }
 
         <Tooltip 
             contentStyle={{ backgroundColor: '#1c1c1e', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff' }}
-            formatter={(value: number, name: string) => {
+            formatter={(value: any, name: any) => {
               if (name === 'flashCost' || name === 'proCost' || name === 'totalCost') return [`€${value.toFixed(2)}`, name];
               return [value, name];
             }}

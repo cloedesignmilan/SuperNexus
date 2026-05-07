@@ -379,7 +379,7 @@ export async function publishToLandingPage(checkId: string, formData: FormData) 
         }
     } else {
         // Aggiorna sezione esistente
-        content = content.replace(regex, (match, p1, p2, p3) => {
+        content = content.replace(regex, (match: string, p1: string, p2: string, p3: string) => {
             return p1 + '\n      ' + urls.map(u => `"${u}"`).join(',\n      ') + '\n    ' + p3;
         });
     }
