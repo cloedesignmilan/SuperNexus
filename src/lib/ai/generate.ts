@@ -185,7 +185,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
     let strictPoses = [...poseModifiers];
     
-    const isGenericNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+    const isGenericNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
     
     if (isGenericNoModel) {
         strictPoses = [
@@ -344,8 +344,8 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
 
         if (hasValidStrictReference) {
             currentShotName = "Strict Reference Clone";
-            currentShotNumber = i + 1;
-            variantPrompt = userPrompt + dynPos + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${i+1}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
+            variantPrompt = userPrompt + dynPos + `\n\n[STRICT REFERENCE CLONE MODE ACTIVATED: Generazione nr. ${currentShotNumber}.\nATTENTION: Because Strict Mode is ON, you MUST absolutely CLONE the exact POSTURE, CAMERA ANGLE, LIGHTING, and SCENE from the INSPIRATION image provided. Do NOT invent random poses. Do NOT change the background structure from the reference. The output MUST visually map 1:1 to the Inspiration image, except for the Garment which is swapped.]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
@@ -372,7 +372,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             
             let ecommerceBlockPositive = "";
             let ecommerceBlockNegative = "";
-            if (modeSlug === "clean-catalog" && presentationSlug === "no-model") {
+            if (taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === "clean-catalog" && taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === "no-model") {
                 ecommerceBlockPositive = "single product, centered, clean background, ";
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
             }
@@ -424,12 +424,12 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 if (isTshirt) {
                     productLockSystem += `\n[T-SHIRT FABRIC RULE: The t-shirt MUST look perfectly ironed, smooth, and high-quality. ABSOLUTELY NO heavy wrinkles, creases, or crumpled fabric. Ensure a clean, premium, and flawless drape on the model's body.]`;
                 }
-                if (categorySlug === 'shoes' && modeSlug === 'clean-catalog' && presentationSlug === 'no-model') {
+                if (categorySlug === 'shoes' && taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog' && taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model') {
                     productLockSystem += `\n[MANDATORY INITIAL STEP - DOUBLE VISUAL ANALYSIS]: Before synthesizing the final image, you MUST perform a deep internal visual double-check of the reference image. Analyze and memorize exactly: 1. The exact silhouette and volume. 2. The microscopic texture of the materials (leather, suede, mesh, rubber). 3. All hardware, eyelets, and laces. 4. Texts, brand marks, and logos (read them perfectly and replicate them without spelling errors). 5. Exact color palettes and contrast. 6. Stitching patterns and sole details. You MUST replicate these exact details flawlessly in the final rendering without any hallucinations or redesigns.`;
                 }
             }
 
-            const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+            const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
             const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body, maintaining all proportions and straps.]";
 
             const clientNegativePrompt = subcat.negative_prompt ? `${subcat.negative_prompt}, ` : '';
@@ -513,7 +513,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
             const noDoubleShoesNegative = "extra shoes, shoes on the floor, loose shoes, duplicate shoes, multiple pairs of shoes, ";
             const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
-            const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+            const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
 
             const shoeSpecificRules = isShoeCatalog ? `\n[ANGLE CONTROL SYSTEM (STRICT): Each image MUST represent a UNIQUE predefined angle. If an angle is duplicated → INVALID. If an angle is missing → INVALID.]\n[CONSISTENCY RULE: same distance from camera, same zoom level, same product size in frame, same framing margins. All images must look like part of the SAME catalog set.]\n[DIVERSITY ENFORCEMENT: Each image must be visually and technically different. Do NOT repeat similar angles or compositions.]` : "";

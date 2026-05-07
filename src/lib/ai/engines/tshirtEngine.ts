@@ -232,8 +232,10 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
         } else {
             // DYNAMIC SCENE FALLBACK
             currentShotName = "Dynamic Scene";
-            currentShotNumber = i + 1;
-            const currentPose = strictPoses[i % strictPoses.length];
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
+            let poseIndex = i;
+            if (specificShotNumber) poseIndex = specificShotNumber - 1;
+            const currentPose = strictPoses[poseIndex % strictPoses.length];
             
             let currentLighting = "";
             if (varianceEnabled && modeSlug !== 'clean-catalog') {
@@ -247,7 +249,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
             const wearDirective = isTshirtNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
 
             const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
-            variantPrompt = userPrompt + dynPos + `\n\n${dbGlobalPositive}${dbGlobalHardRules}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning. These must feel natural and human, not staged.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${i+1}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni la FORMA/COLORE del capo identici all'originale. DO NOT GENERATE: ${dynNeg}]`;
+            variantPrompt = userPrompt + dynPos + `\n\n${dbGlobalPositive}${dbGlobalHardRules}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning. These must feel natural and human, not staged.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni la FORMA/COLORE del capo identici all'originale. DO NOT GENERATE: ${dynNeg}]`;
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
