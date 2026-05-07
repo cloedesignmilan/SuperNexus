@@ -449,14 +449,7 @@ export default async function LandingPage() {
           {t.showcase.subtitle}
         </p>
 
-        <div className="category-icons-container" style={{ 
-          display: 'flex', 
-          gap: 'clamp(1rem, 3vw, 2.5rem)', 
-          marginTop: '3rem', 
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          padding: '0 1rem'
-        }}>
+        <div className="category-icons-container">
           {[
             { name: 'T-SHIRT', icon: Shirt, href: '#section-tshirts' }, 
             { name: 'CEREMONY ELEGANT', icon: Sparkles, href: '#section-ceremony' }, 
