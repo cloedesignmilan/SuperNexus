@@ -488,7 +488,12 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 swimwearNegative = "straps on stomach, laces on front stomach, strings around waist, criss-cross torso strings, bikini strings on belly, ";
             }
             
-            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
+            let everydayNegative = "";
+            if (categorySlug === 'everyday' && !imageBackUrl && printLocation !== 'back') {
+                everydayNegative = "back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back, ";
+            }
+            
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${everydayNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${everydayNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
             const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
