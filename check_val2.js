@@ -1,10 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 async function main() {
-  const checks = await prisma.outputValidationCheck.findMany({
+  const check = await prisma.outputValidationCheck.findFirst({
     orderBy: { createdAt: 'desc' },
-    take: 5
+    include: { subcategory: { include: { business_mode: { include: { category: true } } } } }
   });
-  console.log(JSON.stringify(checks, null, 2));
+  console.log(JSON.stringify(check, null, 2));
 }
 main().catch(e => console.error(e)).finally(() => prisma.$disconnect());

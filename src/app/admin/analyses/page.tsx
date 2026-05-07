@@ -199,9 +199,21 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
                                                 <select name="showcaseTarget" required style={{ padding: '8px', borderRadius: '8px', background: '#000', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', fontSize: '0.8rem', flex: 1, outline: 'none' }}>
                                                     <option value="">-- Seleziona sezione Showcase --</option>
                                                     {(() => {
-                                                        const suggestedCat = check.subcategory?.business_mode?.category?.name?.toUpperCase() || 'CATEGORIA';
-                                                        const suggestedMode = check.subcategory?.business_mode?.name?.toUpperCase() || 'MODE';
-                                                        const suggestedSub = check.subcategory?.name?.toUpperCase() || 'SUBCAT';
+                                                        let suggestedCat = check.subcategory?.business_mode?.category?.name?.toUpperCase() || 'CATEGORIA';
+                                                        let suggestedMode = check.subcategory?.business_mode?.name?.toUpperCase() || 'MODE';
+                                                        let suggestedSub = check.subcategory?.name?.toUpperCase() || 'SUBCAT';
+                                                        try {
+                                                            const parsed = JSON.parse(check.generated_sample_image);
+                                                            if (parsed.path && parsed.path.includes(' > ')) {
+                                                                const parts = parsed.path.split(' > ');
+                                                                if (parts.length >= 3) {
+                                                                    suggestedCat = parts[0].trim().toUpperCase();
+                                                                    suggestedMode = parts[1].trim().toUpperCase();
+                                                                    suggestedSub = parts[2].trim().toUpperCase();
+                                                                }
+                                                            }
+                                                        } catch (e) {}
+                                                        
                                                         const suggestedTarget = `${suggestedCat} | ${suggestedMode} → ${suggestedSub}`;
                                                         
                                                         const isNew = !showcaseTargets.includes(suggestedTarget);
