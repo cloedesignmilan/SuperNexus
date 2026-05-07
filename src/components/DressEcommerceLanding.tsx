@@ -12,7 +12,7 @@ export default async function DressEcommerceLanding({ lang }: { lang: 'it' | 'en
   };
 
   return (
-    <section style={{ padding: '8rem 5%', background: '#0a0a0c', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+    <section style={{ padding: '8rem 5% 2rem 5%', background: '#0a0a0c', borderTop: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', background: 'rgba(204, 255, 0, 0.1)', border: '1px solid rgba(204, 255, 0, 0.3)', borderRadius: '100px', color: '#ccff00', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '1.5rem' }}>

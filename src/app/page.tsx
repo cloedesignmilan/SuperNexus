@@ -13,6 +13,7 @@ const AnimatedTelegramMockup = nextDynamic(() => import('@/components/AnimatedTe
 const SocialPostMockup = nextDynamic(() => import('@/components/SocialPostMockup'));
 const TargetAudience = nextDynamic(() => import('@/components/TargetAudience'));
 const SwimwearMixMatch = nextDynamic(() => import('@/components/SwimwearMixMatch'));
+const OutfitMixMatch = nextDynamic(() => import('@/components/OutfitMixMatch'));
 const GuestTryOut = nextDynamic(() => import('@/components/GuestTryOut'));
 const GalleryMockup = nextDynamic(() => import('@/components/GalleryMockup'));
 const Testimonials = nextDynamic(() => import('@/components/Testimonials'));
@@ -26,7 +27,8 @@ import { getShowcaseData } from '@/lib/getShowcaseData';
 import PremiumCreazioniShowcase from '@/components/PremiumCreazioniShowcase';
 import { getCreazioniTree } from '@/lib/getCreazioniData';
 import TshirtEcommerceLanding from '@/components/TshirtEcommerceLanding';
-import SwimwearEcommerceLanding from '@/components/SwimwearEcommerceLanding';
+import SwimwearEcommerceLanding from '@/components/SwimwearEcommerceLanding'
+import EverydayEcommerceLanding from '@/components/EverydayEcommerceLanding';
 import DressEcommerceLanding from '@/components/DressEcommerceLanding';
 import ShoesEcommerceLanding from '@/components/ShoesEcommerceLanding';
 function getDynamicMetrics() {
@@ -516,8 +518,10 @@ export default async function LandingPage() {
         <DressEcommerceLanding lang={lang} />
       </div>
 
-      {/* EVERYDAY ECOMMERCE SPECIAL SECTION (Placeholder until implemented) */}
-      <div id="section-everyday"></div>
+      {/* EVERYDAY ECOMMERCE SPECIAL SECTION */}
+      <div id="section-everyday">
+        <EverydayEcommerceLanding lang={lang} />
+      </div>
 
       {/* SHOES ECOMMERCE SPECIAL SECTION */}
       <div id="section-footwear">

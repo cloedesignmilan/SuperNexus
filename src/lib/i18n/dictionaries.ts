@@ -219,7 +219,25 @@ export const dictionaries = {
       registerBtn: "Register for Full Access",
       resetBtn: "Try another photo",
       generateBtnImages: "Generate 5 Images",
-      trialText: "Trial"
+      trialText: "Trial",
+      unlockTrialsTitle: "Unlock Your Free Trials",
+      unlockTrialsDesc: "Enter your best email to get 2 free AI generations.",
+      emailPlaceholder: "Your email address...",
+      unlockingBtn: "Unlocking...",
+      unlockBtn: "Generate Your First Images Free",
+      noCreditCard: "No credit card required.",
+      clickOrDrag: "Click or Drag to Upload",
+      jpegOrPng: "JPEG or PNG, max 5MB",
+      cancelBtn: "Cancel",
+      startConfigBtn: "Start Configuration",
+      uploadingAnalyzing: "Uploading & Analyzing...",
+      generatingMagic: "Generating Magic...",
+      imagesGenerated: "Images Generated Successfully!",
+      oneTrialRemaining: "You have 1 free trial remaining!",
+      tryAnotherStyle: "Try Another Style",
+      impressedTitle: "Impressed by the results?",
+      impressedDesc: "You have used both of your free trials. Sign up to generate without watermarks, unlock 4K resolution, and access our API.",
+      createAccountBtn: "Create Account"
     },
     creazioniShowcase: {
       title: "Your ",
@@ -237,6 +255,14 @@ export const dictionaries = {
       title1: "Create the Perfect",
       title2: "Outfit.",
       desc: "Mismatched bikini? Want to add a sarong or a beach bag? Upload the separate pieces and our AI will seamlessly style them together in one breathtaking editorial shot.",
+      inputs: "Separated Items",
+      output: "AI Composition"
+    },
+    outfitMixMatch: {
+      tag: "Everyday Mix & Match",
+      title1: "Style Your Perfect",
+      title2: "Outfit.",
+      desc: "Don't settle for a single garment. Upload your top, add pants and accessories. Our AI will effortlessly style them together in a professional editorial shot.",
       inputs: "Separated Items",
       output: "AI Composition"
     }
@@ -459,7 +485,25 @@ export const dictionaries = {
       registerBtn: "Registrati per l'Accesso Completo",
       resetBtn: "Prova un'altra foto",
       generateBtnImages: "Genera 5 Immagini",
-      trialText: "Prova"
+      trialText: "Prova",
+      unlockTrialsTitle: "Sblocca le tue Prove Gratuite",
+      unlockTrialsDesc: "Inserisci la tua migliore email per ottenere 2 generazioni IA gratuite.",
+      emailPlaceholder: "Il tuo indirizzo email...",
+      unlockingBtn: "Sblocco in corso...",
+      unlockBtn: "Genera Gratis le Tue Prime Immagini",
+      noCreditCard: "Nessuna carta di credito richiesta.",
+      clickOrDrag: "Clicca o Trascina per Caricare",
+      jpegOrPng: "JPEG o PNG, max 5MB",
+      cancelBtn: "Annulla",
+      startConfigBtn: "Inizia Configurazione",
+      uploadingAnalyzing: "Caricamento e Analisi...",
+      generatingMagic: "Creazione Magia...",
+      imagesGenerated: "Immagini Generate con Successo!",
+      oneTrialRemaining: "Hai ancora 1 prova gratuita!",
+      tryAnotherStyle: "Prova un Altro Stile",
+      impressedTitle: "Colpito dai risultati?",
+      impressedDesc: "Hai utilizzato entrambe le tue prove gratuite. Registrati per generare senza filigrane, sbloccare la risoluzione 4K e accedere alla nostra API.",
+      createAccountBtn: "Crea Account"
     },
     creazioniShowcase: {
       title: "Il Tuo ",
@@ -477,6 +521,14 @@ export const dictionaries = {
       title1: "Componi l'Outfit",
       title2: "Perfetto.",
       desc: "Reggiseno e Slip spaiati? Vuoi aggiungere un pareo o una borsa? Carica i singoli pezzi e l'IA li indosserà insieme in un unico scatto editoriale mozzafiato.",
+      inputs: "Capi Singoli",
+      output: "Composizione AI"
+    },
+    outfitMixMatch: {
+      tag: "Everyday Mix & Match",
+      title1: "Componi l'Outfit",
+      title2: "Perfetto.",
+      desc: "Non limitarti a un solo capo. Carica il tuo Top, aggiungi i Pantaloni e gli Accessori. L'Intelligenza Artificiale farà sfilare il look completo in uno scatto editoriale pazzesco.",
       inputs: "Capi Singoli",
       output: "Composizione AI"
     }

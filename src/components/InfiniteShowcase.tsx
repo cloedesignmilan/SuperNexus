@@ -241,12 +241,25 @@ const SLIDESHOW_CONFIG = [
       "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-4_1778147882106.jpg",
       "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/SHOES-MODEL%20STUDIO-MODEL%20PHOTO-5_1778147882106.jpg"
     ]
+  },
+  {
+    displayCategory: 'DRESS / ELEGANT',
+    displaySubcategory: 'LIFESTYLE → MODEL PHOTO',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_admin_sandbox_1778164484108.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-1_1778164623776.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-2_1778164623776.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-3_1778164623776.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-4_1778164623776.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1778164623776.jpg"
+    ]
   }
 ];
 
 const UNIQUE_CATEGORIES = Array.from(new Set(SLIDESHOW_CONFIG.map(c => c.displayCategory)));
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  'DRESS / ELEGANT': Sparkles,
   'T-SHIRT': Shirt,
   'CEREMONY ELEGANT': Sparkles,
   'SWIMWEAR': Waves,

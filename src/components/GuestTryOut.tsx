@@ -6,6 +6,7 @@ import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIco
 
 const CAT_ICONS: Record<string, React.ElementType> = {
   'T-shirt': Shirt,
+  'Everyday': Shirt,
   'Dress': Star,
   'Swimwear': Waves,
   'Shoes': Footprints
@@ -26,6 +27,14 @@ const TAXONOMY_TREE: Record<string, Record<string, string[]>> = {
     'Model Studio': ['Model Photo'],
     'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
     'UGC': ['Candid Real Woman', 'Candid Real Man', 'UGC Creator Pack'],
+    'Ads': ['Model Photo', 'No Model'],
+    'Detail': ['Model Photo', 'No Model']
+  },
+  'Everyday': {
+    'Clean Catalog': ['No Model'],
+    'Model Studio': ['Model Photo'],
+    'Lifestyle': ['Model Photo', 'Candid Real Woman', 'Candid Real Man'],
+    'UGC': ['Candid Real Woman', 'Candid Real Man'],
     'Ads': ['Model Photo', 'No Model'],
     'Detail': ['Model Photo', 'No Model']
   },
@@ -190,7 +199,8 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       if (analyzeData.success && analyzeData.analysis) {
         const type = analyzeData.analysis.detectedProductType;
         if (type === 'swimwear') setSelectedCat('Swimwear');
-        else if (type === 'ceremony_elegant' || type === 'women_clothing' || type === 'men_clothing') setSelectedCat('Dress');
+        else if (type === 'ceremony_elegant') setSelectedCat('Dress');
+        else if (type === 'women_clothing' || type === 'men_clothing') setSelectedCat('Everyday');
         else if (type === 'shoes') setSelectedCat('Shoes');
         else setSelectedCat('T-shirt');
       }
@@ -367,15 +377,15 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
               maxWidth: '500px',
               margin: '0 auto'
             }}>
-              <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 600 }}>Unlock Your Free Trials</h4>
+              <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 600 }}>{t.unlockTrialsTitle}</h4>
               <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1rem' }}>
-                Enter your best email to get 2 free AI generations.
+                {t.unlockTrialsDesc}
               </p>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address..."
+                placeholder={t.emailPlaceholder}
                 required
                 style={{
                   width: '100%',
@@ -410,11 +420,9 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                 }}
               >
                 {isSubmittingEmail ? <Loader2 className="animate-spin" /> : <Sparkles size={20} />}
-                {isSubmittingEmail ? 'Unlocking...' : 'Generate Your First Images Free'}
+                {isSubmittingEmail ? t.unlockingBtn : t.unlockBtn}
               </button>
-              <p style={{ color: '#666', fontSize: '0.8rem', marginTop: '1.5rem' }}>
-                No credit card required.
-              </p>
+                {t.noCreditCard}
             </form>
           ) : !previewUrl ? (
             <div 
@@ -432,8 +440,8 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
               onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
             >
               <Upload size={48} color="#ccff00" style={{ margin: '0 auto 1rem auto' }} />
-              <p style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 600 }}>Click or Drag to Upload</p>
-              <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>JPEG or PNG, max 5MB</p>
+              <p style={{ color: '#fff', fontSize: '1.4rem', fontWeight: 600 }}>{t.clickOrDrag}</p>
+              <p style={{ color: '#666', fontSize: '1rem', marginTop: '0.5rem' }}>{t.jpegOrPng}</p>
               <input 
                 type="file" 
                 ref={fileInputRef} 
@@ -457,14 +465,14 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                       alignItems: 'center', justifyContent: 'center', color: '#ccff00'
                     }}>
                       <Loader2 size={48} className="animate-spin" style={{ marginBottom: '1rem' }} />
-                      <p style={{ fontWeight: 600 }}>Uploading & Analyzing...</p>
+                      <p style={{ fontWeight: 600 }}>{t.uploadingAnalyzing}</p>
                     </div>
                   )}
 
                   {!uploadedImageUrl && !isAnalyzing && (
                     <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem', display: 'flex', gap: '0.5rem' }}>
-                      <button onClick={() => { setPreviewUrl(null); setFile(null); }} style={{ flex: 1, padding: '0.8rem', background: 'rgba(0,0,0,0.8)', color: '#fff', border: '1px solid #333', borderRadius: '12px', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
-                      <button onClick={handleUploadAndAnalyze} style={{ flex: 2, padding: '0.8rem', background: '#ccff00', color: '#000', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 700 }}>Start Configuration</button>
+                      <button onClick={() => { setPreviewUrl(null); setFile(null); }} style={{ flex: 1, padding: '0.8rem', background: 'rgba(0,0,0,0.8)', color: '#fff', border: '1px solid #333', borderRadius: '12px', cursor: 'pointer', fontWeight: 600 }}>{t.cancelBtn}</button>
+                      <button onClick={handleUploadAndAnalyze} style={{ flex: 2, padding: '0.8rem', background: '#ccff00', color: '#000', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 700 }}>{t.startConfigBtn}</button>
                     </div>
                   )}
                 </div>
@@ -587,7 +595,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                         }}
                       >
                         {isGenerating ? (
-                          <><Loader2 className="animate-spin" /> Generating Magic...</>
+                          <><Loader2 className="animate-spin" /> {t.generatingMagic}</>
                         ) : (
                           <><Sparkles /> {t.generateBtnImages || 'Generate 5 Images'} ({t.trialText || 'Trial'} {trialUsesCount + 1}/2)</>
                         )}
@@ -608,7 +616,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
             color: '#ccff00', fontWeight: 700, fontSize: '1.5rem', marginBottom: '2rem',
             display: 'flex', alignItems: 'center', gap: '0.5rem'
           }}>
-            <Sparkles /> {resultUrls.length} Images Generated Successfully!
+            <Sparkles /> {resultUrls.length} {t.imagesGenerated}
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', width: '100%', maxWidth: '1200px' }}>
@@ -657,17 +665,17 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
           <div style={{ marginTop: '4rem', textAlign: 'center', background: 'rgba(255,255,255,0.03)', padding: '3rem', borderRadius: '24px', width: '100%', maxWidth: '800px' }}>
             {trialUsesCount < 2 ? (
               <>
-                <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem' }}>You have 1 free trial remaining!</h4>
+                <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem' }}>{t.oneTrialRemaining}</h4>
                 <button onClick={resetForNextTrial} style={{ padding: '1rem 2rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
-                  <RefreshCw size={20} /> Try Another Style
+                  <RefreshCw size={20} /> {t.tryAnotherStyle}
                 </button>
               </>
             ) : (
               <>
-                <h4 style={{ color: '#ccff00', fontSize: '1.8rem', marginBottom: '1rem' }}>Impressed by the results?</h4>
-                <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>You have used both of your free trials. Sign up to generate without watermarks, unlock 4K resolution, and access our API.</p>
+                <h4 style={{ color: '#ccff00', fontSize: '1.8rem', marginBottom: '1rem' }}>{t.impressedTitle}</h4>
+                <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1.1rem' }}>{t.impressedDesc}</p>
                 <a href="/auth" style={{ display: 'inline-block', padding: '1.2rem 3rem', background: '#ccff00', color: '#000', fontWeight: 700, fontSize: '1.2rem', borderRadius: '12px', textDecoration: 'none' }}>
-                  Create Account
+                  {t.createAccountBtn}
                 </a>
               </>
             )}

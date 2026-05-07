@@ -259,8 +259,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               if (analysisRes.analysis.confidence >= 0.8 && analysisRes.analysis.detectedProductType) {
                 const matchMap: Record<string, string> = {
                   'swimwear': 'Swimwear',
-                  'women_clothing': 'Dress / Elegant',
-                  'men_clothing': 'Dress / Elegant',
+                  'women_clothing': 'Everyday / Apparel',
+                  'men_clothing': 'Everyday / Apparel',
                   'tshirt_hoodie': 'T-shirt',
                   'shoes': 'Shoes',
                   'bags': 'Bags',
@@ -314,7 +314,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       // Manual override of AI detection
       const typeMap: Record<string, string> = {
         'swimwear': 'Swimwear',
-        'women_clothing': 'Dress / Elegant',
+        'women_clothing': 'Everyday / Apparel',
         'tshirt_hoodie': 'T-shirt',
         'shoes': 'Shoes',
         'bags': 'Bags',
@@ -1607,11 +1607,20 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                      </div>
                   )}
 
-                  {analysisData.detectedProductType === 'swimwear' && (
+                  {analysisData.detectedProductType && (
                      <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                         <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>
-                           Costumi Spaiati o Accessori? (Opzionale)<br/>
-                           Se hai caricato un capo singolo e vuoi abbinare uno Slip diverso, un Pareo o una Borsa, aggiungili qui sotto. L'AI comporrà l'outfit completo.
+                           {analysisData.detectedProductType === 'swimwear' ? (
+                             <>
+                               Costumi Spaiati o Accessori? (Opzionale)<br/>
+                               Se hai caricato un capo singolo e vuoi abbinare uno Slip diverso, un Pareo o una Borsa, aggiungili qui sotto. L'AI comporrà l'outfit completo.
+                             </>
+                           ) : (
+                             <>
+                               Componi l'Outfit (Opzionale)<br/>
+                               Puoi abbinare pantaloni, gonne, giacche o accessori. L'AI comporrà il look completo sul modello.
+                             </>
+                           )}
                         </div>
                         
                         {outfitUrls.length > 0 && (
@@ -1627,7 +1636,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                         <input type="file" ref={outfitFileInputRef} onChange={handleOutfitFileChange} accept="image/*" style={{ display: 'none' }} />
                         <button onClick={() => outfitFileInputRef.current?.click()} disabled={isUploadingOutfitPart} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingOutfitPart ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-                           {isUploadingOutfitPart ? 'Caricamento...' : 'Aggiungi Pezzo (Slip, Pareo, Borsa)'}
+                           {isUploadingOutfitPart ? 'Caricamento...' : (analysisData.detectedProductType === 'swimwear' ? 'Aggiungi Pezzo (Slip, Pareo, Borsa)' : 'Aggiungi Capo o Accessorio')}
                         </button>
                      </div>
                   )}

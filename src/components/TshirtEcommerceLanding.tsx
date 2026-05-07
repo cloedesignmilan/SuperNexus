@@ -7,7 +7,7 @@ export default async function TshirtEcommerceLanding({ lang }: { lang: 'it' | 'e
   const groupedImages = await getCuratedLandingData('t-shirt');
 
   const t = {
-    title: lang === 'it' ? 'Costruito per i Brand di T-Shirt' : 'Built for T-Shirt Brands',
+    title: lang === 'it' ? 'Costruito per i Brand di T-Shirt e Felpe' : 'Built for T-Shirt & Hoodie Brands',
     subtitle: lang === 'it' ? 'Tutte le possibilità di scatto di cui il tuo e-commerce ha bisogno, partendo da una singola foto.' : 'Every shot possibility your e-commerce needs, starting from a single photo.'
   };
 
