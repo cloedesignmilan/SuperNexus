@@ -185,6 +185,18 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
     // For poses, we want strict sequence for the first 3 to guarantee the campaign variety
     let strictPoses = [...poseModifiers];
     
+    const isGenericNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+    
+    if (isGenericNoModel) {
+        strictPoses = [
+            "[CLEAN CATALOG 1] Flat lay, clean studio background, perfect symmetry, perfect alignment",
+            "[CLEAN CATALOG 2] Back view flat lay or ghost mannequin, clean studio background",
+            "[CLEAN CATALOG 3] 3/4 Side angle shot, ghost mannequin or dynamic flat lay, clean background",
+            "[CLEAN CATALOG 4] Hanger shot or clothes rack, clean background, focus on product shape and drape",
+            "[CLEAN CATALOG 5] Close-up detail on fabric/stitching/buttons, ultra sharp focus, clean background"
+        ];
+    }
+    
     if (isShoeCatalog) {
         strictPoses = [
             "[SHOES ANGLE 1] 3/4 front view (hero)",
