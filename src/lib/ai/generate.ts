@@ -381,6 +381,9 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 backShotOverride = `\n\n[CRITICAL PRINT OVERRIDE]: The reference image shows the BACK PRINT of the t-shirt. You MUST generate ALL images showing the BACK of the model/garment. If this is a flat-lay, folded stack, or hanger shot, you MUST arrange the garment FACE-DOWN so the BACK is fully visible to the camera. The front collar/tag MUST be hidden. You MUST replicate the uploaded design perfectly on the BACK of the shirt. Do NOT assume the back is blank.`;
             } else if (isBackShotNoPrint) {
                 backShotOverride = `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.`;
+                if (categorySlug === 'everyday') {
+                    dynNeg += ", back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back";
+                }
             }
 
             // Replace dynamic placeholders
