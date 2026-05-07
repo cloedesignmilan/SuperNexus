@@ -25,7 +25,18 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
 
     const resolvedSearchParams = await searchParams;
     const activeFilter = resolvedSearchParams.filter;
-    const availableCategories = Array.from(new Set(checks.map(c => c.subcategory?.business_mode?.category?.name).filter(Boolean))) as string[];
+    
+    const extractCategoryFromPath = (check: any) => {
+        try {
+            const parsed = JSON.parse(check.generated_sample_image);
+            if (parsed.path) {
+                return parsed.path.split(' > ')[0].trim();
+            }
+        } catch (e) {}
+        return check.subcategory?.business_mode?.category?.name || "Sconosciuto";
+    };
+
+    const availableCategories = Array.from(new Set(checks.map(extractCategoryFromPath).filter(Boolean))) as string[];
 
     const showcasePath = path.join(process.cwd(), 'src', 'components', 'InfiniteShowcase.tsx');
     const showcaseContent = fs.readFileSync(showcasePath, 'utf8');
@@ -36,7 +47,7 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
     }
 
     const displayChecks = activeFilter 
-        ? checks.filter(c => c.subcategory?.business_mode?.category?.name === activeFilter) 
+        ? checks.filter(c => extractCategoryFromPath(c) === activeFilter) 
         : checks;
 
     // Grouping by taxonomy path
