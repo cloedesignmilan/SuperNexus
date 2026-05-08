@@ -830,12 +830,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
 
     const groups: Record<string, Snippet[]> = {};
     typeSnippets.forEach(s => {
-       const g = s.sort_group || 'Other styles';
+       const g = type === 'PRODUCT_TYPE' ? 'All Categories' : (s.sort_group || 'Other styles');
        if (!groups[g]) groups[g] = [];
        groups[g].push(s);
     });
 
-    const order = ['✨ AI Suggested', 'Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
+    const order = type === 'PRODUCT_TYPE' ? ['All Categories'] : ['✨ AI Suggested', 'Recommended', 'Ecommerce', 'Social', 'Premium', 'Other styles'];
     
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
@@ -843,7 +843,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           if (!groups[groupName] || groups[groupName].length === 0) return null;
           return (
             <div key={groupName} className="fade-up-enter">
-              <h4 className="group-title">{groupName}</h4>
+              {groupName !== 'All Categories' && <h4 className="group-title">{groupName}</h4>}
               <div className="glass-grid">
                 {groups[groupName].map(snip => {
                   const isSelected = selections[type]?.id === snip.id;
