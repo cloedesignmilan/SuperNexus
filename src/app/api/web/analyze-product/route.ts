@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Manca GOOGLE_AI_STUDIO_API_KEY' }, { status: 500 });
     }
 
-    const prompt = \`Analizza questa immagine di prodotto. Devi restituire ESCLUSIVAMENTE un JSON valido seguendo questa struttura esatta, senza markdown o testo extra:
+    const prompt = `Analizza questa immagine di prodotto. Devi restituire ESCLUSIVAMENTE un JSON valido seguendo questa struttura esatta, senza markdown o testo extra:
     {
       "detectedProductType": "enum(swimwear | everyday_apparel | women_clothing | men_clothing | tshirt_hoodie | shoes | bags | jewelry | accessories | ceremony_elegant | unknown)",
       "confidence": "number between 0 and 1",

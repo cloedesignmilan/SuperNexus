@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
     console.log("Seeding missing Everyday Apparel prompt configs...");
 
-    const shotsToCreate = [];
+    const shotsToCreate: any[] = [];
 
     // ==========================================
     // 1. CLEAN CATALOG -> NO MODEL
