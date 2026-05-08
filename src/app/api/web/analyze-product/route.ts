@@ -18,9 +18,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Manca GOOGLE_AI_STUDIO_API_KEY' }, { status: 500 });
     }
 
-    const prompt = `Analizza questa immagine di prodotto. Devi restituire ESCLUSIVAMENTE un JSON valido seguendo questa struttura esatta, senza markdown o testo extra:
+    const prompt = \`Analizza questa immagine di prodotto. Devi restituire ESCLUSIVAMENTE un JSON valido seguendo questa struttura esatta, senza markdown o testo extra:
     {
-      "detectedProductType": "enum(swimwear | women_clothing | men_clothing | tshirt_hoodie | shoes | bags | jewelry | accessories | ceremony_elegant | unknown)",
+      "detectedProductType": "enum(swimwear | everyday_apparel | women_clothing | men_clothing | tshirt_hoodie | shoes | bags | jewelry | accessories | ceremony_elegant | unknown)",
       "confidence": "number between 0 and 1",
       "detectedAttributes": {
         "genderTarget": "enum(woman | man | unisex | child | unknown)",
@@ -37,8 +37,9 @@ export async function POST(req: Request) {
     }
     
     Regole fondamentali:
+    - Se è un indumento di uso quotidiano, casual o streetwear (pantaloni, jeans, gonne, maglioni, giacche casual, abbigliamento di tutti i giorni), detectedProductType deve essere "everyday_apparel".
     - Se è un costume (bikini, intero), detectedProductType deve essere "swimwear", style "beach", recommendedScenes ["Tropical Beach", "Pool", "Summer Lifestyle"].
-    - Se è un abito da donna, detectedProductType "women_clothing" o "ceremony_elegant" (se elegante).
+    - Se è un abito da donna elegante da cerimonia o un completo formale, detectedProductType "ceremony_elegant".
     - Se sono scarpe, detectedProductType "shoes", recommendedScenes ["Street Lifestyle", "On-Foot", "Studio Softbox"].
     - Se il prodotto è una T-shirt o felpa con grafica, analizza se l'immagine ritrae la parte ANTERIORE (scollo scavato) o POSTERIORE (collo alto, schiena) e imposta "printLocation" su "front" o "back". Se non ha stampe, "none".
     - Sii molto preciso. Non omettere campi. Restituisci SOLO IL JSON.`;

@@ -452,6 +452,48 @@ ${(taxonomyCat?.toLowerCase().includes('everyday') && taxonomyMode?.toLowerCase(
 
 
             aiParts.push({ text: variantPrompt });
+        } else {
+            // DYNAMIC SCENE FALLBACK
+            currentShotName = "Dynamic Scene";
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
+            let poseIndex = i;
+            if (specificShotNumber) poseIndex = specificShotNumber - 1;
+            const currentPose = strictPoses[poseIndex % strictPoses.length];
+            
+            let currentLighting = lockedLighting;
+            if (varianceEnabled && modeSlug !== 'clean-catalog') {
+                const magicalScene = getRandomSceneForSubcategory("everyday " + modeSlug + " " + presentationSlug);
+                currentLighting += " " + magicalScene;
+            }
+
+            const dbGlobalPositive = subcat?.business_mode?.category?.global_positive_prompt || "";
+            const dbGlobalHardRules = subcat?.business_mode?.category?.global_hard_rules || "";
+            
+            const isBottom = detectedProductType && /pant|trouser|jean|short|skirt|bottom|legging/i.test(detectedProductType);
+            const bottomsDirective = isBottom ? "\n[CRITICAL DIRECTIVE: The uploaded product is a BOTTOM garment (pants/skirt/shorts). You MUST render the model wearing it on their LOWER BODY (legs/waist). Do NOT wear it on the upper body. Generate a complementary top (shirt/sweater) that matches the style perfectly. Ensure shoes match the outfit.]" : "";
+            const wearDirective = isNoModelRequest ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
+
+            const { positive: dynPos, negative: dynNeg } = getDynamicAestheticRules(taxonomyMode);
+            variantPrompt = userPrompt + dynPos + `\n\n${dbGlobalPositive}\n${dbGlobalHardRules}${wearDirective}${bottomsDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning. These must feel natural and human, not staged.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni la FORMA/COLORE del capo identici all'originale. DO NOT GENERATE: ${dynNeg}]`;
+            
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
+                aiParts.push(...base64OutfitParts);
+            }
+
+            if (currentRefInline) {
+                aiParts.push({ text: "INSPIRATION / MOODBOARD PHOTOGRAPHY (Use ONLY for lighting and pose. DO NOT copy the clothes from this image. DO NOT copy any messy or cluttered background elements; adapt the background to perfectly match the POSITIVE INSTRUCTIONS and HARD RULES):" });
+                aiParts.push({ inlineData: currentRefInline });
+            }
+            aiParts.push({ text: variantPrompt });
         }
 
         // TRUE IDENTITY LOCK INJECTION (TEMPORARILY DISABLED)
