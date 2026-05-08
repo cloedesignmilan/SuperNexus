@@ -41,8 +41,30 @@ export default function PlatformShowcase({ lang = 'en' }: { lang?: Locale }) {
   ];
 
   return (
-    <section className="platform-section" style={{ padding: '8rem 5%', background: '#ffffff', position: 'relative' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <section className="platform-section" style={{ 
+      position: 'relative', 
+      padding: '8rem 5%', 
+      backgroundColor: '#ffffff', 
+      overflow: 'hidden' 
+    }}>
+      <img 
+        src="/vetrina-landing/work_anywhere_bg.webp" 
+        alt="Work Anywhere Texture"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          opacity: 0.25,
+          pointerEvents: 'none',
+          zIndex: 0,
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)',
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)'
+        }}
+      />
+      <div style={{ position: 'relative', maxWidth: '1200px', margin: '0 auto', zIndex: 1 }}>
         
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '0.5rem 1rem', background: 'rgba(0,0,0,0.05)', borderRadius: '100px', marginBottom: '1.5rem', border: '1px solid rgba(0,0,0,0.1)' }}>

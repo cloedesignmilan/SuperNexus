@@ -200,19 +200,23 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
                                                     <option value="">-- Seleziona sezione Showcase --</option>
                                                     {(() => {
                                                         let suggestedCat = check.subcategory?.business_mode?.category?.name?.toUpperCase() || 'CATEGORIA';
-                                                        let suggestedMode = check.subcategory?.business_mode?.name?.toUpperCase() || 'MODE';
-                                                        let suggestedSub = check.subcategory?.name?.toUpperCase() || 'SUBCAT';
+                                                        let suggestedMode = check.subcategory?.business_mode?.name || 'MODE';
+                                                        let suggestedSub = check.subcategory?.name || 'SUBCAT';
                                                         try {
                                                             const parsed = JSON.parse(check.generated_sample_image);
                                                             if (parsed.path && parsed.path.includes(' > ')) {
                                                                 const parts = parsed.path.split(' > ');
                                                                 if (parts.length >= 3) {
                                                                     suggestedCat = parts[0].trim().toUpperCase();
-                                                                    suggestedMode = parts[1].trim().toUpperCase();
-                                                                    suggestedSub = parts[2].trim().toUpperCase();
+                                                                    suggestedMode = parts[1].trim();
+                                                                    suggestedSub = parts[2].trim();
                                                                 }
                                                             }
                                                         } catch (e) {}
+                                                        
+                                                        if (suggestedCat === 'EVERYDAY / APPAREL' || suggestedCat === 'EVERYDAY / APPAREL ') {
+                                                            suggestedCat = 'EVERYDAY';
+                                                        }
                                                         
                                                         const suggestedTarget = `${suggestedCat} | ${suggestedMode} → ${suggestedSub}`;
                                                         

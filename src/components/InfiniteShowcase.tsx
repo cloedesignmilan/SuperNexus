@@ -264,12 +264,134 @@ const SLIDESHOW_CONFIG = [
       "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-4_1778164623776.jpg",
       "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-LIFESTYLE-MODEL%20PHOTO-5_1778164623776.jpg"
     ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Clean Catalog → No Model',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-CLEAN%20CATALOG-NO%20MODEL-1_1778270161469.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-CLEAN%20CATALOG-NO%20MODEL-2_1778270161469.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-CLEAN%20CATALOG-NO%20MODEL-3_1778270161469.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-CLEAN%20CATALOG-NO%20MODEL-4_1778270161469.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-CLEAN%20CATALOG-NO%20MODEL-5_1778270161469.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Model Studio → Model Photo',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-MODEL%20STUDIO-MODEL%20PHOTO-1_1778270914496.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-MODEL%20STUDIO-MODEL%20PHOTO-2_1778270914496.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-MODEL%20STUDIO-MODEL%20PHOTO-3_1778270914496.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-MODEL%20STUDIO-MODEL%20PHOTO-4_1778270914496.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-MODEL%20STUDIO-MODEL%20PHOTO-5_1778270914496.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Lifestyle → Model Photo',
+    originalImage: '/prove nuove/ceremony elegant/DETAIL_TEXTURE_ORIGINAL.webp',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-MODEL%20PHOTO-1_1778271370270.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-MODEL%20PHOTO-2_1778271370270.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-MODEL%20PHOTO-3_1778271370270.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-MODEL%20PHOTO-4_1778271370270.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-MODEL%20PHOTO-5_1778271370270.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Lifestyle → Candid',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778269977500.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-CANDID-1_1778271887181.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-CANDID-2_1778271887181.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-CANDID-3_1778271887181.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-CANDID-4_1778271887181.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-LIFESTYLE-CANDID-5_1778271887181.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'UGC → UGC in Home',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778269977500.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20HOME-1_1778273674817.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20HOME-2_1778273674817.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20HOME-3_1778273674817.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20HOME-4_1778273674817.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20HOME-5_1778273674817.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'UGC → UGC in Store',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778269977500.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20STORE-1_1778273904878.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20STORE-2_1778273904878.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20STORE-3_1778273904878.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20STORE-4_1778273904878.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-UGC-UGC%20IN%20STORE-5_1778273904878.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Ads / Scroll Stopper → Model Photo',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778269977500.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-MODEL%20PHOTO-1_1778274348672.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-MODEL%20PHOTO-2_1778274348672.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-MODEL%20PHOTO-3_1778274348672.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-MODEL%20PHOTO-4_1778274348672.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-MODEL%20PHOTO-5_1778274348672.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Ads / Scroll Stopper → No Model',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778269977500.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-NO%20MODEL-1_1778275075545.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-NO%20MODEL-2_1778275075545.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-NO%20MODEL-3_1778275075545.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-NO%20MODEL-4_1778275075545.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-ADS%20%20SCROLL%20STOPPER-NO%20MODEL-5_1778275075545.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Detail / Texture → Model Photo',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778276240348.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-MODEL%20PHOTO-1_1778276365204.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-MODEL%20PHOTO-2_1778276365204.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-MODEL%20PHOTO-3_1778276365204.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-MODEL%20PHOTO-4_1778276365204.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-MODEL%20PHOTO-5_1778276365204.jpg"
+    ]
+  },
+  {
+    displayCategory: 'EVERYDAY',
+    displaySubcategory: 'Detail / Texture → No Model',
+    originalImage: 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-uploads/web_d2f327b0-a7ea-40a3-975a-2aa7340210a8_1778276897124.jpg',
+    manualImages: [
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-NO%20MODEL-1_1778277033136.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-NO%20MODEL-2_1778277033136.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-NO%20MODEL-3_1778277033136.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-NO%20MODEL-4_1778277033136.jpg",
+      "https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/EVERYDAY-DETAIL%20%20TEXTURE-NO%20MODEL-5_1778277033136.jpg"
+    ]
   }
 ];
 
 const UNIQUE_CATEGORIES = Array.from(new Set(SLIDESHOW_CONFIG.map(c => c.displayCategory)));
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  'EVERYDAY': Sparkles,
+  'EVERYDAY / APPAREL': Sparkles,
   'DRESS / ELEGANT': Sparkles,
   'T-SHIRT': Shirt,
   'CEREMONY ELEGANT': Sparkles,

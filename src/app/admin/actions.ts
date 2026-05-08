@@ -354,7 +354,11 @@ export async function publishToLandingPage(checkId: string, formData: FormData) 
             subcatName = parts[1];
         }
 
-        const dirPath = path.join(process.cwd(), 'public', 'vetrina-landing', targetCategory.toLowerCase(), modeName, subcatName);
+        // Sanitize for file system (e.g., 'Ads / Scroll Stopper' -> 'Ads - Scroll Stopper')
+        const fsModeName = modeName.replace(/\s*\/\s*/g, ' - ');
+        const fsSubcatName = subcatName.replace(/\s*\/\s*/g, ' - ');
+
+        const dirPath = path.join(process.cwd(), 'public', 'vetrina-landing', targetCategory.toLowerCase(), fsModeName, fsSubcatName);
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
         }
