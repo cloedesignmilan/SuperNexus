@@ -298,6 +298,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const getMappedCategorySlug = (aiType?: string) => {
     if (!aiType) return 't-shirt';
     const type = aiType.toLowerCase();
+    if (type.includes('everyday') || type.includes('apparel')) return 'everyday';
     if (type.includes('tshirt') || type.includes('hoodie') || type.includes('top') || type.includes('sweat') || type.includes('shirt')) return 't-shirt';
     if (type.includes('women') || type.includes('ceremony') || type.includes('dress') || type.includes('gown') || type.includes('suit') || type.includes('blazer') || type.includes('tuxedo') || type.includes('formal') || type.includes('jacket') || type.includes('men')) return 'dress';
     if (type.includes('bag')) return 'bags';
@@ -314,11 +315,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       // Manual override of AI detection
       const typeMap: Record<string, string> = {
         'swimwear': 'Swimwear',
-        'women_clothing': 'Everyday / Apparel',
+        'everyday_apparel': 'Everyday / Apparel',
         'tshirt_hoodie': 'T-shirt',
         'shoes': 'Shoes',
         'bags': 'Bags',
-        'jewelry': 'Jewelry'
+        'jewelry': 'Jewelry',
+        'dress_elegant': 'Dress / Elegant'
       };
       
       setAnalysisData((prev: any) => ({
