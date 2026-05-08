@@ -362,9 +362,14 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
             }
 
+            const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
+            
             let genderLockPositive = ageLockDirective;
             let genderLockNegative = ageNegativeDirective;
-            if (clientGender === 'MAN') {
+            if (isNoModel) {
+                genderLockPositive = "";
+                genderLockNegative += "human, model, person, hands, face, ";
+            } else if (clientGender === 'MAN') {
                 genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
                 genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
             } else if (clientGender === 'WOMAN') {
