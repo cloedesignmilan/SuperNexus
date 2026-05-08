@@ -10,6 +10,7 @@ import { generateBagsImages } from '@/lib/ai/engines/bagsEngine'
 import { generateSwimwearImages } from '@/lib/ai/engines/swimwearEngine'
 import { generateJewelryImages } from '@/lib/ai/engines/jewelryEngine'
 import { generateShoesImages } from '@/lib/ai/engines/shoesEngine'
+import { generateEverydayImages } from '@/lib/ai/engines/everydayEngine'
 import { generateProductsImages } from '@/lib/ai/engines/productsEngine'
 import { logApiCost } from '@/lib/gemini-cost'
 
@@ -145,6 +146,9 @@ export async function POST(req: NextRequest) {
         break;
       case 'dress':
         aiResult = await generateDressImages(aiParams);
+        break;
+      case 'everyday':
+        aiResult = await generateEverydayImages(aiParams);
         break;
       case 'bags':
         aiResult = await generateBagsImages(aiParams);
