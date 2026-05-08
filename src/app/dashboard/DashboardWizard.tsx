@@ -328,7 +328,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
         detectedProductType: Object.keys(typeMap).find(k => typeMap[k] === snip.label) || 'unknown'
       }));
       setSelections(newSelections);
-      setTimeout(() => setStep(1), 350);
+      setTimeout(() => setStep(1), 100);
       return;
     }
 
@@ -350,16 +350,16 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               setSelections(newSelections);
               
               if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('ugc creator pack')) {
-                 setTimeout(() => setStep(2.5), 350);
+                 setTimeout(() => setStep(2.5), 100);
               } else {
-                 setTimeout(() => setStep(3), 350); // Vai a FORMAT_QUANTITY
+                 setTimeout(() => setStep(3), 100); // Vai a FORMAT_QUANTITY
               }
               return;
            }
         }
         
         // Go to MODEL_OPTION
-        setTimeout(() => setStep(2), 350);
+        setTimeout(() => setStep(2), 100);
         return;
       }
 
@@ -367,21 +367,21 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       
       if (type === 'MODEL_OPTION') {
          if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('ugc creator pack')) {
-            setTimeout(() => setStep(2.5), 350);
+            setTimeout(() => setStep(2.5), 50);
             return;
          }
-         setTimeout(() => setStep(3), 350);
+         setTimeout(() => setStep(3), 50);
          return;
       }
 
       if (type === 'CLIENT_TYPE') {
-         setTimeout(() => setStep(3), 350);
+         setTimeout(() => setStep(3), 50);
          return;
       }
 
       setTimeout(() => {
         setStep(stepIndex + 1);
-      }, 350);
+      }, 100);
     } else {
       setSelections(newSelections);
     }
@@ -692,7 +692,29 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
             const IconComp = (Icons as any)[snip.icon || 'Box'] || Icons.Box;
             
             const dbImage = (snip as any).cover_image || (snip as any).fallback_image;
-            const bgImage = dbImage || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg';
+            const bgImage = null; // Forced icons by user request
+
+            const isItalian = typeof window !== 'undefined' ? navigator.language.toLowerCase().startsWith('it') : false;
+            const getTranslatedDescription = (label: string) => {
+               const map: Record<string, {en: string, it: string}> = {
+                  'Clean Catalog': { en: 'Clean background for eCommerce.', it: 'Sfondo pulito per eCommerce.' },
+                  'Model Studio': { en: 'Professional photoshoot on model.', it: 'Shooting fotografico su modella/o.' },
+                  'Lifestyle': { en: 'Product in realistic environments.', it: 'Prodotto in ambienti realistici.' },
+                  'UGC': { en: 'Social media style content.', it: 'Contenuti stile social media.' },
+                  'Ads / Scroll Stopper': { en: 'Creative setups for advertising.', it: 'Set creativi ad alto impatto per adv.' },
+                  'Detail / Texture': { en: 'Close-up on materials and details.', it: 'Dettagli e materiali in primo piano.' },
+                  'Dress / Elegant': { en: 'Elegant dresses and suits.', it: 'Abiti eleganti e completi.' },
+                  'T-Shirt': { en: 'Casual tops and hoodies.', it: 'Magliette e felpe.' },
+                  'Everyday / Apparel': { en: 'Casual and everyday clothing.', it: 'Abbigliamento casual e quotidiano.' },
+                  'Swimwear': { en: 'Bikinis and beachwear.', it: 'Costumi da bagno e beachwear.' },
+                  'Shoes': { en: 'Footwear and sneakers.', it: 'Scarpe e sneakers.' },
+                  'Bags': { en: 'Handbags and accessories.', it: 'Borse e accessori.' },
+                  'Jewelry': { en: 'Necklaces, rings, and earrings.', it: 'Collane, anelli e orecchini.' },
+               };
+               const res = map[label];
+               if (!res) return snip.description || '';
+               return isItalian ? res.it : res.en;
+            };
 
             return (
               <button 
@@ -724,6 +746,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                 <div className="card-title" style={bgImage ? { fontSize: '1.3rem', textShadow: '0 2px 4px rgba(0,0,0,0.8)', textAlign: 'left', fontWeight: 'bold', margin: 0, letterSpacing: '0.5px' } : {}}>
                   {snip.label}
                 </div>
+                {!bgImage && getTranslatedDescription(snip.label) && (
+                  <div className="snippet-desc" style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '0.25rem', padding: '0 8px' }}>
+                    {getTranslatedDescription(snip.label)}
+                  </div>
+                )}
               </button>
             )
           })}
@@ -882,9 +909,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                          }
                      }
                   } else if (type === 'CLIENT_TYPE') {
-                     const searchToken = snip.label.toLowerCase();
-                     if (searchToken === 'man') imageUrl = genderCovers.manImage;
-                     if (searchToken === 'woman') imageUrl = genderCovers.womanImage;
+                     // Removed full imagery to use Premium Icons
+                     imageUrl = null;
                   } else if (type === 'MODEL_OPTION') {
                      const detectedCat = getMappedCategorySlug(analysisData?.detectedProductType);
                      const mode = selections['IMAGE_TYPE']?.label;
@@ -914,7 +940,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                              transition: 'all 0.2s ease-in-out',
                              position: 'relative'
                          };
-                         const bgImage = (type === 'FORMAT' || type === 'QUANTITY') ? null : (imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg');
+                         const bgImage = null; // Forced icons by user request
+                         
+                         const isItalian = typeof window !== 'undefined' ? navigator.language.toLowerCase().startsWith('it') : false;
 
                          if (bgImage) {
                             return {
@@ -979,7 +1007,33 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       ) : (
                           <>
                             {(() => {
-                               const bgImage = (type === 'FORMAT' || type === 'QUANTITY') ? null : (imageUrl || GLOBAL_FALLBACKS[snip.label] || 'https://dywxfndkqpzkmwqntiyq.supabase.co/storage/v1/object/public/telegram-outputs/DRESS-UGC-UGC%20IN%20STORE-5_1777717367836.jpg');
+                               const bgImage = null; // Forced icons by user request
+
+                               const getTranslatedDescription = (label: string) => {
+                                  const map: Record<string, {en: string, it: string}> = {
+                                     'Model Photo': { en: 'Classic fashion posing.', it: 'Posa fashion classica.' },
+                                     'Candid': { en: 'Natural and spontaneous look.', it: 'Look naturale e spontaneo.' },
+                                     'Flat Lay': { en: 'Arranged beautifully from above.', it: 'Composizione vista dall\'alto.' },
+                                     'Ghost Mannequin': { en: 'Product only, 3D effect.', it: 'Solo prodotto, effetto 3D.' },
+                                     'No Model': { en: 'Standalone product display.', it: 'Prodotto esposto senza modello.' },
+                                     'Editorial': { en: 'High fashion magazine style.', it: 'Stile alta moda editoriale.' },
+                                     'Selfie': { en: 'Casual mirror or front camera shot.', it: 'Scatto casual allo specchio o selfie.' },
+                                     'Streetwear Urban': { en: 'Urban street aesthetic.', it: 'Estetica urbana e street.' },
+                                     'Curvy': { en: 'Plus size modeling.', it: 'Modella curvy.' },
+                                     'Macro Texture': { en: 'Extreme close up of fabric.', it: 'Dettaglio estremo del tessuto.' },
+                                     'Clean Catalog': { en: 'Clean background for eCommerce.', it: 'Sfondo pulito per eCommerce.' },
+                                     'Dress / Elegant': { en: 'Elegant dresses and suits.', it: 'Abiti eleganti e completi.' },
+                                     'T-Shirt': { en: 'Casual tops and hoodies.', it: 'Magliette e felpe.' },
+                                     'Everyday / Apparel': { en: 'Casual and everyday clothing.', it: 'Abbigliamento casual e quotidiano.' },
+                                     'Swimwear': { en: 'Bikinis and beachwear.', it: 'Costumi da bagno e beachwear.' },
+                                     'Shoes': { en: 'Footwear and sneakers.', it: 'Scarpe e sneakers.' },
+                                     'Bags': { en: 'Handbags and accessories.', it: 'Borse e accessori.' },
+                                     'Jewelry': { en: 'Necklaces, rings, and earrings.', it: 'Collane, anelli e orecchini.' },
+                                  };
+                                  const res = map[label];
+                                  if (!res) return snip.description || '';
+                                  return (typeof window !== 'undefined' ? navigator.language.toLowerCase().startsWith('it') : false) ? res.it : res.en;
+                               };
 
                                if (bgImage) {
                                   return (
@@ -999,6 +1053,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                                      {snip.is_recommended && <Sparkles className="sparkle-icon" size={14} />}
                                      <IconComp size={38} className="card-icon" />
                                      <div className="card-title">{snip.label}</div>
+                                     {getTranslatedDescription(snip.label) && (
+                                       <div className="snippet-desc" style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '0.25rem', padding: '0 8px' }}>
+                                         {getTranslatedDescription(snip.label)}
+                                       </div>
+                                     )}
                                   </>
                                );
                             })()}
@@ -1181,42 +1240,69 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
         }
 
         .glass-card {
-          background: #2c2c2e;
-          border: 2px solid transparent;
-          border-radius: 16px;
-          padding: 1rem 0.5rem;
+          background: rgba(44, 44, 46, 0.6);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 20px;
+          padding: 1.2rem 0.5rem;
           text-align: center;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
           color: #fff;
           aspect-ratio: 1 / 1;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+          position: relative;
+          overflow: hidden;
         }
 
-        .glass-card:hover { background: #3a3a3c; }
-        .glass-card:active { transform: scale(0.95); }
+        .glass-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .glass-card:hover {
+          transform: translateY(-4px);
+          border-color: rgba(255, 255, 255, 0.2);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+          background: rgba(58, 58, 60, 0.8);
+        }
+
+        .glass-card:hover::before {
+          opacity: 1;
+        }
+
+        .glass-card:active {
+          transform: translateY(0) scale(0.96);
+          transition: all 0.1s;
+        }
 
         .glass-card.selected {
-          background: #00d2ff;
+          background: linear-gradient(135deg, rgba(0, 210, 255, 0.15) 0%, rgba(3, 218, 198, 0.15) 100%);
           border-color: #00d2ff;
-          transform: scale(1.02);
-          box-shadow: 0 4px 12px rgba(0, 210, 255, 0.4);
-          color: #000;
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 8px 24px rgba(0, 210, 255, 0.3), inset 0 0 20px rgba(0, 210, 255, 0.1);
         }
 
         .glass-card.warning { opacity: 0.5; }
 
-        .sparkle-icon { position: absolute; top: 0.5rem; right: 0.5rem; color: #00d2ff; }
-        .glass-card.selected .sparkle-icon { color: rgba(255,255,255,0.8); }
+        .sparkle-icon { position: absolute; top: 0.8rem; right: 0.8rem; color: #00d2ff; }
+        .glass-card.selected .sparkle-icon { color: #fff; filter: drop-shadow(0 0 4px #00d2ff); }
         
-        .card-icon { margin-bottom: 0.5rem; color: #8e8e93; transition: all 0.2s ease; }
-        .glass-card:hover .card-icon { color: #fff; }
-        .glass-card.selected .card-icon { color: #fff; transform: scale(1.05); }
+        .card-icon { margin-bottom: 0.75rem; color: #8e8e93; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); }
+        .glass-card:hover .card-icon { color: #fff; transform: translateY(-2px); }
+        .glass-card.selected .card-icon { color: #00d2ff; transform: scale(1.1) translateY(-2px); filter: drop-shadow(0 0 8px rgba(0,210,255,0.6)); }
 
-        .card-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 0; line-height: 1.2; padding: 0 4px; }
+        .card-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 0; line-height: 1.2; padding: 0 4px; letter-spacing: 0.3px; }
         .card-desc { display: none; }
 
         .conflict-warning { display: none; }
@@ -1733,9 +1819,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                     const IconComp = (Icons as any)[gender.icon];
                     
                     const searchToken = gender.label.toLowerCase();
-                    let imageUrl = null;
-                    if (searchToken === 'man') imageUrl = genderCovers.manImage;
-                    if (searchToken === 'woman') imageUrl = genderCovers.womanImage;
+                    let imageUrl = null; // Removed full imagery to use Premium Icons
 
                     return (
                       <button 
@@ -1812,7 +1896,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                             style={{ boxSizing: 'border-box', margin: 0, width: '100%', height: '100%', padding: shot.image_url ? '0.25rem' : '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                             onClick={() => {
                                 setSelections({ ...selections, SPECIFIC_SHOT: shot });
-                                setTimeout(() => setStep(4), 350);
+                                setTimeout(() => setStep(4), 50);
                             }}
                           >
                             {shot.image_url ? (
@@ -1898,7 +1982,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                         style={{ boxSizing: 'border-box', margin: 0, width: '100%', height: '100%', padding: '1.5rem 1rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
                         onClick={() => {
                             setSelections({ ...selections, SPECIFIC_SHOT: null });
-                            setTimeout(() => setStep(4), 350);
+                            setTimeout(() => setStep(4), 50);
                         }}
                       >
                         <Icons.Wand2 size={38} className="card-icon" />

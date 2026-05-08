@@ -413,8 +413,6 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const fallbackNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + dbGlobalNegative + (subcat.negative_prompt || "");
             const negativeDirective = "\nCRITICAL NEGATIVE PROMPT: " + fallbackNegative;
     
-            
-            const isNoModel = userPrompt.toLowerCase().includes('no model') || presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
             const identityNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'person');
             const identityPronoun = clientGender === 'MAN' ? 'His' : (clientGender === 'WOMAN' ? 'Her' : 'Their');
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
