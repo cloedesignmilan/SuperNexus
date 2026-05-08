@@ -76,9 +76,7 @@ export async function getPromptsForSelection({
   else if (normPres.includes('still life')) normPres = 'still-life-pack';
   else if (normPres.includes('ugc creator pack')) normPres = 'ugc-creator-pack';
   else if (normPres === 'no model') {
-      if (gender && gender.toLowerCase() === 'man') normPres = 'no-model-man';
-      else if (gender && gender.toLowerCase() === 'woman') normPres = 'no-model-woman';
-      else normPres = 'no-model';
+      normPres = 'no-model';
   }
   else if (normPres === 'model photo') normPres = 'model-photo';
   else normPres = normPres.replace(/\s+/g, '-');
