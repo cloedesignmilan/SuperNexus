@@ -385,7 +385,7 @@ ${(taxonomyCat?.toLowerCase().includes('everyday') && taxonomyMode?.toLowerCase(
             }
 
             // Replace dynamic placeholders
-            const productNoun = categorySlug === 'swimwear' ? 'swimsuit' : categorySlug.replace('-', ' ');
+            const productNoun = 'garment';
             const genderNoun = clientGender === 'MAN' ? 'man' : (clientGender === 'WOMAN' ? 'woman' : 'model');
             
             let finalPositive = shotInfo.positive_prompt?.replace(/\{product\}/g, productNoun).replace(/\{gender\}/g, genderNoun) || "";
