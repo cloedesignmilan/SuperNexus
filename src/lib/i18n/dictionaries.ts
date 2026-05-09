@@ -87,6 +87,7 @@ export const dictionaries = {
       platformAccessDesc: "Create your account today and unlock the ultimate AI generation engine.",
       instantSetup: "Instant Web App Setup",
       fullFeatures: "Full Platform Features",
+      freeTrialIncluded: "Includes 5 Free Trial Images",
       registerFullAccess: "Register for Full Access",
       starter: {
         tag: "Perfect for testing without subscription.",
@@ -353,6 +354,7 @@ export const dictionaries = {
       platformAccessDesc: "Crea il tuo account oggi e sblocca il motore generativo AI definitivo.",
       instantSetup: "Setup Istantaneo Web App",
       fullFeatures: "Tutte le Funzionalità della Piattaforma",
+      freeTrialIncluded: "Include 5 Immagini Gratuite",
       registerFullAccess: "Registrati per l'Accesso Completo",
       starter: {
         tag: "Perfetto per testare senza abbonamento.",

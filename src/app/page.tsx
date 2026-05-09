@@ -583,6 +583,7 @@ export default async function LandingPage() {
             <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0, color: '#ffffff' }}>
               <li style={{ color: '#ffffff' }}><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>{t.pricing.instantSetup}</strong></li>
               <li style={{ color: '#ffffff' }}><CheckCircle2 size={24} color="#ccff00" /> <span>{t.pricing.fullFeatures}</span></li>
+              <li style={{ color: '#ffffff' }}><CheckCircle2 size={24} color="#ccff00" /> <span>{t.pricing.freeTrialIncluded || 'Includes 5 Free Trial Images'}</span></li>
             </ul>
 
             <div style={{ flex: '0 0 auto', width: '100%', maxWidth: '300px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
