@@ -262,7 +262,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               setAnalysisData(analysisRes.analysis)
               
               const pLoc = analysisRes.analysis.detectedAttributes?.printLocation;
-              if ((analysisRes.analysis.detectedProductType === 'tshirt_hoodie' || analysisRes.analysis.detectedProductType === 'women_clothing' || analysisRes.analysis.detectedProductType === 'men_clothing') && (pLoc === 'front' || pLoc === 'back')) {
+              if (pLoc === 'front' || pLoc === 'back') {
                  setPrintLocation(pLoc);
                  setShowPrintConfirm(true);
               }
@@ -1682,25 +1682,25 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                   </div>
 
                   {showPrintConfirm && (
-                     <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
-                        <div style={{ fontWeight: 600, marginBottom: '1rem' }}>{t.printDetected.replace('{location}', printLocation.toUpperCase())}</div>
-                        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', background: '#2c2c2e', padding: '4px', borderRadius: '12px' }}>
-                          <button onClick={() => setPrintLocation('front')} style={{ flex: 1, padding: '0.6rem', borderRadius: '8px', border: 'none', background: printLocation === 'front' ? '#3a3a3c' : 'transparent', color: printLocation === 'front' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'front' ? 600 : 500, cursor: 'pointer', transition: 'all 0.2s', boxShadow: printLocation === 'front' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none' }}>
-                            Front Print
+                     <div style={{ background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.4)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', backdropFilter: 'blur(10px)', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
+                        <div style={{ fontWeight: 600, marginBottom: '1.2rem', textAlign: 'center', fontSize: '1.05rem', color: '#fff' }}>{t.printDetected.replace('{location}', printLocation.toUpperCase())}</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                          <button onClick={() => setPrintLocation('front')} style={{ padding: '0.8rem', borderRadius: '14px', border: '1px solid', borderColor: printLocation === 'front' ? 'rgba(59, 130, 246, 0.6)' : 'rgba(255,255,255,0.1)', background: printLocation === 'front' ? 'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05))' : 'rgba(255,255,255,0.02)', color: printLocation === 'front' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'front' ? 700 : 500, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: printLocation === 'front' ? '0 0 15px rgba(59,130,246,0.3)' : 'none' }}>
+                            {t.frontPrint}
                           </button>
-                          <button onClick={() => setPrintLocation('back')} style={{ flex: 1, padding: '0.6rem', borderRadius: '8px', border: 'none', background: printLocation === 'back' ? '#3a3a3c' : 'transparent', color: printLocation === 'back' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'back' ? 600 : 500, cursor: 'pointer', transition: 'all 0.2s', boxShadow: printLocation === 'back' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none' }}>
-                            Back Print
+                          <button onClick={() => setPrintLocation('back')} style={{ padding: '0.8rem', borderRadius: '14px', border: '1px solid', borderColor: printLocation === 'back' ? 'rgba(59, 130, 246, 0.6)' : 'rgba(255,255,255,0.1)', background: printLocation === 'back' ? 'linear-gradient(135deg, rgba(59,130,246,0.2), rgba(59,130,246,0.05))' : 'rgba(255,255,255,0.02)', color: printLocation === 'back' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'back' ? 700 : 500, cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: printLocation === 'back' ? '0 0 15px rgba(59,130,246,0.3)' : 'none' }}>
+                            {t.backPrint}
                           </button>
                         </div>
                      </div>
                   )}
 
-                  {(analysisData.detectedProductType === 'tshirt_hoodie' || analysisData.detectedProductType === 'women_clothing' || analysisData.detectedProductType === 'men_clothing') && !uploadedBackUrl && (
-                     <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>{t.backViewPrompt}</div>
+                  {!uploadedBackUrl && (
+                     <div style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)', border: '1px dashed rgba(255, 255, 255, 0.15)', borderRadius: '24px', padding: '1.8rem 1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.2rem', transition: 'all 0.3s ease' }} onMouseOver={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; e.currentTarget.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)'; }} onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)'; }}>
+                        <div style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.8)', textAlign: 'center', lineHeight: 1.5 }}>{t.backViewPrompt}</div>
                         <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
-                        <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
-                           {isUploadingBack ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                        <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', padding: '0.9rem 1.5rem', borderRadius: '16px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }} onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.transform = 'translateY(-1px)'; }} onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                           {isUploadingBack ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
                            {isUploadingBack ? t.uploading : t.addBackView}
                         </button>
                      </div>

@@ -397,7 +397,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 backShotOverride = `\n\n[CRITICAL PRINT OVERRIDE]: The reference image shows the BACK PRINT of the t-shirt. You MUST generate ALL images showing the BACK of the model/garment. If this is a flat-lay, folded stack, or hanger shot, you MUST arrange the garment FACE-DOWN so the BACK is fully visible to the camera. The front collar/tag MUST be hidden. You MUST replicate the uploaded design perfectly on the BACK of the shirt. Do NOT assume the back is blank.`;
             } else if (isBackShotNoPrint) {
                 backShotOverride = `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment with a print/graphic. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK. DO NOT REPLICATE THE FRONT PRINT ON THE BACK. DO NOT ADD ANY LOGOS, GRAPHICS, OR DESIGNS ON THE BACK OF THE SHIRT. IT MUST BE A SOLID COLOR.`;
-                if (categorySlug === 'everyday') {
+                if (!imageBackUrl && printLocation !== 'back') {
                     backShotOverride += " [ADDITIONAL NEGATIVE INSTRUCTION]: back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back";
                 }
             }
@@ -505,13 +505,13 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                 swimwearNegative = "straps on stomach, laces on front stomach, strings around waist, criss-cross torso strings, bikini strings on belly, ";
             }
             
-            let everydayNegative = "";
-            if (categorySlug === 'everyday' && !imageBackUrl && printLocation !== 'back') {
-                everydayNegative = "back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back, ";
+            let backCleanNegative = "";
+            if (!imageBackUrl && printLocation !== 'back') {
+                backCleanNegative = "back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back, ";
             }
             
             const noDoubleShoesNegative = "extra shoes, shoes on the floor, loose shoes, duplicate shoes, multiple pairs of shoes, ";
-            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${everydayNegative}${noDoubleShoesNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
+            const negativeDirective = subcat.negative_prompt ? `\nCRITICAL NEGATIVE PROMPT (AVOID THESE AT ALL COSTS): plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, ${swimwearNegative}${backCleanNegative}${noDoubleShoesNegative}${genderLockNegative}${subcat.negative_prompt}` : `\nCRITICAL NEGATIVE PROMPT: plastic skin, fake CGI, 3D render, smooth airbrushed skin, ${swimwearNegative}${backCleanNegative}${noDoubleShoesNegative}${genderLockNegative}poorly rendered, ugly, deformed, blurry.`;
             
             const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
             const modelIdentityLock = isNoModel ? "" : `\n[MODEL IDENTITY LOCK SYSTEM: The same exact ${identityNoun} must appear in every image. ${identityPronoun} facial features, bone structure, eye shape, nose, lips, skin tone, hair color, hairstyle, and body proportions must remain identical. Do NOT generate different people. Do NOT reinterpret the model identity. This is the SAME person photographed multiple times during the same photoshoot. If the face changes, the result is invalid. Maintain absolute identity consistency across all images.]`;
@@ -544,7 +544,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
                      dynamicBackOverride = `\n\n[CRITICAL PRINT OVERRIDE]: The reference image shows the BACK PRINT. You MUST arrange the garment FACE-DOWN so the BACK is fully visible to the camera. The front features MUST be hidden. You MUST replicate the uploaded design perfectly on the BACK. Do NOT assume the back is blank.`;
                  } else {
                      dynamicBackOverride = `\n\n[CRITICAL OVERRIDE FOR BACK VIEW]: The reference image shows the FRONT of the garment. HOWEVER, THIS IS A BACK SHOT. YOU MUST ASSUME THE BACK OF THE GARMENT IS COMPLETELY BLANK OR HAS STANDARD BACK FEATURES (like back pockets for jeans). DO NOT REPLICATE FRONT POCKETS, FRONT BUTTONS, OR FRONT GRAPHICS ON THE BACK. IT MUST BE A CLEAN BACK VIEW.`;
-                     if (categorySlug === 'everyday') {
+                     if (!imageBackUrl && printLocation !== 'back') {
                          dynamicBackOverride += " [ADDITIONAL NEGATIVE INSTRUCTION]: back print, graphic on back, pattern bleeding, printed back, logo on back, design on back, letters on back, text on back";
                      }
                  }
