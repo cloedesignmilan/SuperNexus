@@ -190,7 +190,10 @@ export async function POST(req: NextRequest) {
 
     // Save outputs to Supabase Cloud
     const adminSupabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
-    const timestamp = Date.now()
+    const timestamp = Date.now();
+    const safeName = (str: string) => (str || 'UNKNOWN').toUpperCase().replace(/[^A-Z0-9 -]/g, '').trim();
+    const taxonomyPrefix = `${safeName(taxonomyCat)}-${safeName(taxonomyMode)}-${safeName(taxonomySubcat)}`;
+    
     const uploadPromises = aiResult.generatedBase64s.map(async (base64String, i) => {
         const buffer = Buffer.from(base64String, 'base64')
         const oFileName = `${taxonomyPrefix}-${i + 1}_${timestamp}.jpg`
