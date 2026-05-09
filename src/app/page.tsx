@@ -563,8 +563,7 @@ export default async function LandingPage() {
           <div className="pricing-card" style={{ 
             gridColumn: '1 / -1', 
             border: '2px solid #ccff00', 
-            backgroundColor: '#0a0a0a',
-            background: 'linear-gradient(135deg, rgba(204,255,0,0.05) 0%, #0a0a0a 100%)',
+            background: 'linear-gradient(135deg, #151800 0%, #0a0a0a 100%)',
             boxShadow: '0 0 20px rgba(204,255,0,0.1)',
             display: 'flex',
             flexDirection: 'row',
