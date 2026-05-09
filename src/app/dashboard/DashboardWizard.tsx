@@ -1888,12 +1888,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                                   <img src={imageUrl} alt={gender.label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                               ) : (
                                   gender.id === 'gender-man' ? (
-                                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#00d2ff" : "currentColor"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: isSelected ? 'drop-shadow(0 0 10px rgba(0,210,255,0.8))' : 'none', transition: 'all 0.3s ease' }}>
+                                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#00d2ff" : "rgba(255,255,255,0.7)"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: isSelected ? 'drop-shadow(0 0 10px rgba(0,210,255,0.8))' : 'none', transition: 'all 0.3s ease' }}>
                                       <path d="M12 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
                                       <path d="M6 14c0-3 2.5-4 6-4s6 1 6 4v5h-2v4H8v-4H6v-5Z" />
                                     </svg>
                                   ) : (
-                                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#ff00d2" : "currentColor"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: isSelected ? 'drop-shadow(0 0 10px rgba(255,0,210,0.8))' : 'none', transition: 'all 0.3s ease' }}>
+                                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke={isSelected ? "#ff00d2" : "rgba(255,255,255,0.7)"} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" style={{ filter: isSelected ? 'drop-shadow(0 0 10px rgba(255,0,210,0.8))' : 'none', transition: 'all 0.3s ease' }}>
                                       <path d="M12 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
                                       <path d="M12 10c-3 0-5 2-4 5l2 8h4l2-8c1-3-1-5-4-5Z" />
                                     </svg>
