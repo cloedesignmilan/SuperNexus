@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
 import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw, Waves, Footprints, MonitorPlay, Smartphone, Search, Users } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 const CAT_ICONS: Record<string, React.ElementType> = {
   'T-shirt': Shirt,
@@ -108,10 +109,19 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
     const uses = parseInt(localStorage.getItem('supernexus_guest_uses') || '0', 10);
     setTrialUsesCount(uses);
     
-    // Check if email was already provided
-    if (localStorage.getItem('supernexus_guest_email_submitted') === 'true') {
-      setIsEmailSubmitted(true);
-    }
+    // Check if email was already provided via Supabase Session or localStorage
+    const checkSession = async () => {
+      if (localStorage.getItem('supernexus_guest_email_submitted') === 'true') {
+        setIsEmailSubmitted(true);
+        return;
+      }
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setIsEmailSubmitted(true);
+      }
+    };
+    checkSession();
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,40 +136,25 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
     }
   };
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setError('Please enter a valid email address.');
-      return;
-    }
-
+  const handleGoogleLogin = async () => {
     setIsSubmittingEmail(true);
     setError(null);
 
-    const WEBHOOK_URL = process.env.NEXT_PUBLIC_WAITLIST_WEBHOOK_URL || '';
-    
-    if (!WEBHOOK_URL) {
-      setError("Configuration Error: Missing Webhook URL.");
-      setIsSubmittingEmail(false);
-      return;
-    }
-
     try {
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=/?login=success`,
         },
-        body: JSON.stringify({ email, timestamp: new Date().toISOString(), source: 'GuestTryOut' })
       });
 
-      // Siccome usiamo no-cors, la fetch non ritornerà i dati json ma andrà a buon fine se non lancia eccezioni di rete
-      setIsEmailSubmitted(true);
-      localStorage.setItem('supernexus_guest_email_submitted', 'true');
+      if (error) {
+        setError(error.message);
+        setIsSubmittingEmail(false);
+      }
     } catch (err: any) {
       setError("Connection error. Please try again.");
-    } finally {
       setIsSubmittingEmail(false);
     }
   };
@@ -368,7 +363,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       {resultUrls.length === 0 && trialUsesCount < 2 && (
         <div style={{ width: '100%', maxWidth: '900px' }}>
           {!isEmailSubmitted ? (
-            <form onSubmit={handleEmailSubmit} style={{
+            <div style={{
               border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '16px',
               padding: '4rem 2rem',
@@ -381,49 +376,36 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
               <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1rem' }}>
                 {t.unlockTrialsDesc}
               </p>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t.emailPlaceholder}
-                required
-                style={{
-                  width: '100%',
-                  padding: '1rem',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: 'rgba(0,0,0,0.5)',
-                  color: '#fff',
-                  fontSize: '1.1rem',
-                  marginBottom: '1rem',
-                  outline: 'none'
-                }}
-              />
+              
               <button
-                type="submit"
+                onClick={handleGoogleLogin}
                 disabled={isSubmittingEmail}
                 style={{
                   width: '100%',
-                  padding: '1rem',
-                  background: '#ccff00',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '1.1rem',
-                  fontWeight: 700,
-                  cursor: isSubmittingEmail ? 'not-allowed' : 'pointer',
-                  opacity: isSubmittingEmail ? 0.7 : 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '0.5rem'
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
+                  backgroundColor: '#ffffff', color: '#000000', padding: '1rem 1.5rem',
+                  borderRadius: '12px', border: 'none', fontWeight: 600, fontSize: '1.1rem',
+                  cursor: isSubmittingEmail ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
+                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                  marginBottom: '1rem'
                 }}
               >
-                {isSubmittingEmail ? <Loader2 className="animate-spin" /> : <Sparkles size={20} />}
-                {isSubmittingEmail ? t.unlockingBtn : t.unlockBtn}
+                {isSubmittingEmail ? <Loader2 className="animate-spin" color="#000" /> : (
+                  <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                    <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                      <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+                      <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+                      <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
+                      <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
+                    </g>
+                  </svg>
+                )}
+                {t.unlockBtn}
               </button>
+              <div style={{ color: '#888', fontSize: '0.9rem' }}>
                 {t.noCreditCard}
-            </form>
+              </div>
+            </div>
           ) : !previewUrl ? (
             <div 
               onClick={() => fileInputRef.current?.click()}
