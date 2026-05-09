@@ -161,7 +161,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
 
   const handleUploadAndAnalyze = async () => {
     if (!file) return;
-    if (trialUsesCount >= 2) {
+    if (trialUsesCount >= 1) {
       setError("Free Trial Exhausted");
       return;
     }
@@ -230,8 +230,8 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       const genData = await genRes.json();
       if (!genRes.ok) {
         if (genRes.status === 403 || genData.error === 'IP_LIMIT_REACHED') {
-          localStorage.setItem('supernexus_guest_uses', '2');
-          setTrialUsesCount(2);
+          localStorage.setItem('supernexus_guest_uses', '1');
+          setTrialUsesCount(1);
           throw new Error('IP Limit Reached. Free trials exhausted on this connection.');
         }
         throw new Error(genData.error || 'Generation failed');
@@ -346,7 +346,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
         </div>
       )}
 
-      {trialUsesCount >= 2 && resultUrls.length === 0 && !isGenerating && (
+      {trialUsesCount >= 1 && resultUrls.length === 0 && !isGenerating && (
         <div className="wow-border-card" style={{ maxWidth: '600px', width: '100%' }}>
           <div className="wow-border-inner">
             <Lock size={48} color="#ccff00" style={{ margin: '0 auto 1.5rem auto' }} />
@@ -360,7 +360,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       )}
 
       {/* Email Capture / Upload Zone */}
-      {resultUrls.length === 0 && trialUsesCount < 2 && (
+      {resultUrls.length === 0 && trialUsesCount < 1 && (
         <div style={{ width: '100%', maxWidth: '900px' }}>
           {!isEmailSubmitted ? (
             <div className="wow-border-card" style={{ maxWidth: '500px', width: '100%', margin: '0 auto' }}>
@@ -573,7 +573,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
                         {isGenerating ? (
                           <><Loader2 className="animate-spin" /> {t.generatingMagic}</>
                         ) : (
-                          <><Sparkles /> {t.generateBtnImages || 'Generate 5 Images'} ({t.trialText || 'Trial'} {trialUsesCount + 1}/2)</>
+                          <><Sparkles /> {t.generateBtnImages || 'Generate 5 Images'}</>
                         )}
                       </button>
                     </div>
@@ -639,7 +639,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
           </div>
 
           <div style={{ marginTop: '4rem', textAlign: 'center', background: 'rgba(255,255,255,0.03)', padding: '3rem', borderRadius: '24px', width: '100%', maxWidth: '800px' }}>
-            {trialUsesCount < 2 ? (
+            {trialUsesCount < 1 ? (
               <>
                 <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem' }}>{t.oneTrialRemaining}</h4>
                 <button onClick={resetForNextTrial} style={{ padding: '1rem 2rem', background: 'rgba(255,255,255,0.1)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', cursor: 'pointer', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
