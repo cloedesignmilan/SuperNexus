@@ -116,10 +116,8 @@ export async function POST(req: NextRequest) {
     // Save outputs to Supabase Cloud
     const adminSupabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
     const timestamp = Date.now()
-    const outputResults = []
-
-    for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
-        const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
+    const uploadPromises = aiResult.generatedBase64s.map(async (base64String, i) => {
+        const buffer = Buffer.from(base64String, 'base64')
         const oFileName = `guest_output_${timestamp}_${i}.jpg`
         const { error: upErr } = await adminSupabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
             contentType: 'image/jpeg',
@@ -127,10 +125,6 @@ export async function POST(req: NextRequest) {
         })
         if (!upErr) {
             const { data: { publicUrl } } = adminSupabase.storage.from('telegram-outputs').getPublicUrl(oFileName)
-            
-            outputResults.push({
-                url: publicUrl
-            })
             
             await prisma.jobImage.create({
               data: {
@@ -140,8 +134,14 @@ export async function POST(req: NextRequest) {
                 image_order: i
               }
             })
+            
+            return { url: publicUrl }
         }
-    }
+        return null;
+    });
+
+    const uploadResults = await Promise.all(uploadPromises);
+    const outputResults = uploadResults.filter(r => r !== null);
 
     // Log Costs
     let jobCost = 0;

@@ -191,13 +191,8 @@ export async function POST(req: NextRequest) {
     // Save outputs to Supabase Cloud
     const adminSupabase = createSupabaseAdmin(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
     const timestamp = Date.now()
-    const outputResults = []
-
-    const safeName = (str: string) => (str || 'UNKNOWN').toUpperCase().replace(/[^A-Z0-9 -]/g, '').trim();
-    const taxonomyPrefix = `${safeName(taxonomyCat)}-${safeName(taxonomyMode)}-${safeName(taxonomySubcat)}`;
-
-    for (let i = 0; i < aiResult.generatedBase64s.length; i++) {
-        const buffer = Buffer.from(aiResult.generatedBase64s[i], 'base64')
+    const uploadPromises = aiResult.generatedBase64s.map(async (base64String, i) => {
+        const buffer = Buffer.from(base64String, 'base64')
         const oFileName = `${taxonomyPrefix}-${i + 1}_${timestamp}.jpg`
         const { error: upErr } = await adminSupabase.storage.from('telegram-outputs').upload(oFileName, buffer, {
             contentType: 'image/jpeg',
@@ -207,11 +202,6 @@ export async function POST(req: NextRequest) {
             const { data: { publicUrl } } = adminSupabase.storage.from('telegram-outputs').getPublicUrl(oFileName)
             
             const metadata = aiResult.generatedMetadata[i] || { shotNumber: null, shotName: null };
-            outputResults.push({
-                url: publicUrl,
-                shotNumber: metadata.shotNumber,
-                shotName: metadata.shotName
-            })
             
             await prisma.jobImage.create({
               data: {
@@ -323,8 +313,18 @@ export async function POST(req: NextRequest) {
                 console.error("Errore salvataggio thumbnail PromptConfigShot:", err);
               }
             }
+            
+            return {
+                url: publicUrl,
+                shotNumber: metadata.shotNumber,
+                shotName: metadata.shotName
+            };
         }
-    }
+        return null;
+    });
+
+    const uploadResults = await Promise.all(uploadPromises);
+    const outputResults = uploadResults.filter(r => r !== null);
 
     // Deduct Credits & Finalize Job
     await prisma.user.update({

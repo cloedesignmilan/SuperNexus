@@ -216,13 +216,13 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
                 "[T-SHIRT BACK PRINT 4] Over-the-shoulder look, back print fully visible",
                 "[T-SHIRT BACK PRINT 5] Lifestyle back shot, model walking away, design clearly visible"
             ];
-        } else if (isTshirtNoModel) {
+        } else if (isTshirtNoModel || userPrompt.toLowerCase().includes('still life') || taxonomySubcat?.toLowerCase().includes('still life')) {
             strictPoses = [
-                "[T-SHIRT NO MODEL 1] Flat lay, clean studio background, perfect symmetry, perfect alignment, no wrinkles",
-                "[T-SHIRT NO MODEL 2] Ghost mannequin shot, clean studio background, perfect symmetry",
-                "[T-SHIRT NO MODEL 3] Hanger shot, clean background, focus on product shape and fit",
-                "[T-SHIRT NO MODEL 4] Flat lay close-up on fabric/stitching, ultra sharp, no wrinkles",
-                "[T-SHIRT NO MODEL 5] Ghost mannequin side angle, clean studio background"
+                "[T-SHIRT STILL LIFE 1] Front view flat lay, clean studio background, perfect symmetry, perfect alignment, no wrinkles",
+                "[T-SHIRT STILL LIFE 2] Back view flat lay, clean studio background, perfect symmetry. If no back image provided, the back MUST BE entirely blank solid color.",
+                "[T-SHIRT STILL LIFE 3] 3/4 Side angle shot, ghost mannequin or dynamic flat lay, clean background",
+                "[T-SHIRT STILL LIFE 4] Hanger shot on a clothes rack, clean background, focus on product shape and drape",
+                "[T-SHIRT STILL LIFE 5] Close-up detail on fabric/stitching or front graphic, ultra sharp focus, clean background"
             ];
         } else if (isTshirtColorVariants) {
             strictPoses = [
