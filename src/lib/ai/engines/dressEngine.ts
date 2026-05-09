@@ -325,6 +325,20 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
         let currentShotNumber: number | null = null;
 
         // Strict vs Dynamic Branching
+        const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
+        let genderLockPositive = ageLockDirective;
+        let genderLockNegative = ageNegativeDirective;
+        if (isNoModel) {
+            genderLockPositive = "";
+            genderLockNegative += "human, model, person, hands, face, ";
+        } else if (clientGender === 'MAN') {
+            genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
+            genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
+        } else if (clientGender === 'WOMAN') {
+            genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
+            genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
+        }
+
         const hasValidStrictReference = subcat.strict_reference_mode && currentRefInline;
 
         if (hasValidStrictReference) {
@@ -350,8 +364,8 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             
             aiParts.push({ text: variantPrompt });
             
-        } else if (configShots && i < configShots.length) {
-            const shotInfo = configShots[i];
+        } else if (configShots && configShots.length > 0) {
+            const shotInfo = configShots[i % configShots.length];
             currentShotName = (shotInfo as any).shotName || shotInfo.shot_name;
             currentShotNumber = (shotInfo as any).shotNumber || shotInfo.shot_number;
             
@@ -360,21 +374,6 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             if (modeSlug === "clean-catalog" && presentationSlug === "no-model") {
                 ecommerceBlockPositive = "single product, centered, clean background, ";
                 ecommerceBlockNegative = "human, model, hands, props, lifestyle, storytelling, devices, tablet, phone, ";
-            }
-
-            const isNoModel = userPrompt.toLowerCase().includes('no model') || taxonomySubcat?.toLowerCase().replace(/\s+/g, '-') === 'no-model' || taxonomyMode?.toLowerCase().replace(/\s+/g, '-') === 'clean-catalog';
-            
-            let genderLockPositive = ageLockDirective;
-            let genderLockNegative = ageNegativeDirective;
-            if (isNoModel) {
-                genderLockPositive = "";
-                genderLockNegative += "human, model, person, hands, face, ";
-            } else if (clientGender === 'MAN') {
-                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
-                genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
-            } else if (clientGender === 'WOMAN') {
-                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
-                genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
             }
 
             const isBackShotPrompt = shotInfo.positive_prompt?.toLowerCase().includes("from behind") || shotInfo.positive_prompt?.toLowerCase().includes("back view") || shotInfo.positive_prompt?.toLowerCase().includes("walking away");
@@ -434,7 +433,14 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             const stylingDirective = "\n[STYLING RULE: Whenever you generate complementary clothing items (like shoes, or a top for pants, or pants for a t-shirt), you MUST ensure the colors, fabrics, and footwear are highly fashionable, coherent, and match the aesthetic of the main product perfectly.]";
             const bottomsDirective = isBottom ? "\n[CRITICAL DIRECTIVE: The uploaded product is a BOTTOM garment (pants/skirt/shorts). You MUST render the model wearing it on their LOWER BODY (legs/waist). Do NOT wear it on the upper body. Generate a complementary top (shirt/sweater) that matches the style perfectly. Ensure shoes match the outfit.]" : "";
 
-            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            const isPureJsonMode = shotInfo.hard_rules?.includes("[PURE_JSON_MODE]") || shotInfo.positive_prompt?.includes("[PURE_JSON_MODE]");
+
+            if (isPureJsonMode) {
+                // PURE JSON ARCHITECTURE: No hidden code injections. The JSON is the Absolute Source of Truth.
+                variantPrompt = `${userPrompt}\n\n[SHOT ${currentShotNumber} - PURE JSON OVERRIDE]\nPOSITIVE PROMPT:\n${shotInfo.positive_prompt}\n\nMANDATORY RULES:\n${shotInfo.hard_rules}\n\nCRITICAL NEGATIVE PROMPT:\n${shotInfo.negative_prompt}`;
+            } else {
+                variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}${bottomsDirective}${stylingDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations. This is a single photoshoot. Do NOT change location, lighting direction/intensity, outfit, or model identity. Allowed variations ONLY in: camera angle, framing, and pose.]${modelIdentityLock}${categoryHardRules}\n[MICRO VARIATION SYSTEM: Introduce subtle natural variations between shots: slight differences in facial expression, micro changes in body posture, minimal variation in hand positioning, and subtle shifts in gaze direction. These must feel natural and human, not staged.]\n[SHOOTING REALISM RULE: This must feel like a real photoshoot sequence. Avoid perfect symmetry. Avoid identical posture repetition. Avoid robotic consistency. Each image should feel like a different moment captured during the same shooting session.]\n[CAMERA VARIATION RULE: Each image MUST have a clearly different framing. For example, Image 1: full body (head to toe), strong presence; Image 2: mid shot (waist-up), natural and relatable; Image 3: close-up (torso or detail), emotional and aesthetic. Do NOT repeat the same framing. Each image must feel intentionally different in composition.]\n\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\n[SPECIFIC SCENE COMPOSITION DIRECTIVE]: ${finalPositive}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.${negativeDirective}]`;
+            }
             
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
@@ -450,6 +456,38 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
             }
 
 
+            aiParts.push({ text: variantPrompt });
+        } else {
+            // DYNAMIC SCENE FALLBACK
+            currentShotName = "Dynamic Scene";
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
+            let poseIndex = i;
+            if (specificShotNumber) poseIndex = specificShotNumber - 1;
+            const currentPose = strictPoses[poseIndex % strictPoses.length] || "Dynamic high end fashion pose";
+
+            const productLockSystem = "\n" + (subcat.business_mode?.category?.global_positive_prompt || "");
+            const categoryHardRules = "\n" + (subcat.business_mode?.category?.global_hard_rules || "");
+            const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product.]";
+            const fallbackNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + (subcat.business_mode?.category?.global_negative_prompt || "") + (subcat.negative_prompt || "");
+
+            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations.]${categoryHardRules}\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${genderLockPositive}${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.\nCRITICAL NEGATIVE PROMPT: ${fallbackNegative}]`;
+
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
+                aiParts.push(...base64OutfitParts);
+            }
+            if (currentRefInline) {
+                aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
+                aiParts.push({ inlineData: currentRefInline });
+            }
             aiParts.push({ text: variantPrompt });
         }
 

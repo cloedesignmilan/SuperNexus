@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Save, Trash2, Copy, Download, Upload, Check, Loader2, Sparkles } from 'lucide-react';
+import { Plus, Save, Trash2, Copy, Download, Upload, Check, Loader2, Sparkles, MessageSquareWarning, X } from 'lucide-react';
 
 interface PromptConfigShot {
   id: string;
@@ -28,6 +28,9 @@ export default function PromptConfigsAdmin() {
   const [generatingPromptId, setGeneratingPromptId] = useState<string | null>(null);
   const [showRawImport, setShowRawImport] = useState(false);
   const [rawJsonText, setRawJsonText] = useState('');
+  const [reportingShot, setReportingShot] = useState<PromptConfigShot | null>(null);
+  const [reportText, setReportText] = useState('');
+  const [reportImageUrl, setReportImageUrl] = useState('');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   const [filterCat, setFilterCat] = useState('t-shirt');
@@ -249,6 +252,20 @@ export default function PromptConfigsAdmin() {
     (filterScene === 'all' ? true : (c.scene && c.scene.toLowerCase().includes(filterScene.toLowerCase())))
   ).sort((a,b) => b.priority - a.priority || a.shotNumber - b.shotNumber);
 
+  const handleCopyReport = () => {
+    if (!reportingShot) return;
+    let msg = `🔧 **FIX REQUIRED FOR SINGLE SHOT**\nID: \`${reportingShot.id}\`\nCategory: \`${reportingShot.category}\` | Mode: \`${reportingShot.mode}\` | Scene: \`${reportingShot.scene}\` | Shot: \`${reportingShot.shotNumber} - ${reportingShot.shotName}\`\n\n**Feedback from Testing:**\n"${reportText}"`;
+    if (reportImageUrl.trim()) {
+      msg += `\n\n**Reference Image for Desired Result:**\n${reportImageUrl.trim()}`;
+    }
+    msg += `\n\n_Please adjust the PromptConfigShot for this ID only to fix the issue._`;
+    navigator.clipboard.writeText(msg);
+    alert('Copied to clipboard! Paste this message in your chat with Antigravity to get it fixed instantly and safely.');
+    setReportingShot(null);
+    setReportText('');
+    setReportImageUrl('');
+  };
+
   return (
     <div>
       <div style={{ marginBottom: '3rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -304,6 +321,45 @@ export default function PromptConfigsAdmin() {
             <button onClick={() => setShowRawImport(false)} style={{ padding: '0.6rem 1.2rem', background: 'transparent', color: 'var(--color-text-muted)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>Cancel</button>
             <button onClick={handleRawImport} disabled={saving} style={{ padding: '0.6rem 1.2rem', background: '#00d2ff', color: '#1c1c1e', border: 'none', borderRadius: '12px', cursor: saving ? 'not-allowed' : 'pointer', fontWeight: 700, opacity: saving ? 0.7 : 1 }}>
               {saving ? 'Importing...' : 'Import Now'}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {reportingShot && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="glass-card" style={{ width: '500px', background: '#1c1c1e', border: '1px solid rgba(255,209,102,0.3)', borderRadius: '24px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3 style={{ color: '#ffd166', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><MessageSquareWarning size={20} /> Report Issue to AI</h3>
+              <button onClick={() => setReportingShot(null)} style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}><X size={20} /></button>
+            </div>
+            <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', margin: 0 }}>
+              Describe what went wrong with <strong>Shot {reportingShot.shotNumber} ({reportingShot.mode})</strong>. 
+              This will generate a strict command for the AI to fix ONLY this specific shot ID.
+            </p>
+            <textarea
+              value={reportText}
+              onChange={(e) => setReportText(e.target.value)}
+              placeholder="e.g. The model's head is cut off. Add a rule to keep the full body in frame."
+              style={{ width: '100%', height: '120px', background: 'rgba(0,0,0,0.5)', color: 'white', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', outline: 'none', resize: 'none' }}
+            />
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.3rem' }}>Reference Image URL (Optional)</label>
+              <input
+                type="text"
+                value={reportImageUrl}
+                onChange={(e) => setReportImageUrl(e.target.value)}
+                placeholder="https://..."
+                style={{ width: '100%', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', fontSize: '0.9rem', padding: '0.6rem 1rem', color: 'white', outline: 'none' }}
+              />
+            </div>
+            <button 
+              onClick={handleCopyReport} 
+              disabled={!reportText.trim()}
+              style={{ padding: '0.8rem', background: '#ffd166', color: '#1c1c1e', border: 'none', borderRadius: '12px', cursor: !reportText.trim() ? 'not-allowed' : 'pointer', fontWeight: 700, marginTop: '1rem', opacity: !reportText.trim() ? 0.5 : 1 }}
+            >
+              Copy AI Command to Clipboard
             </button>
           </div>
         </div>
@@ -401,6 +457,9 @@ export default function PromptConfigsAdmin() {
                       />
                       Active
                     </label>
+                    <button onClick={() => setReportingShot(shot)} style={{ padding: '0.5rem', color: '#ffd166', background: 'rgba(255,209,102,0.1)', border: '1px solid rgba(255,209,102,0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Report Issue to AI">
+                      <MessageSquareWarning size={16} />
+                    </button>
                     <button onClick={() => handleUpdate(shot)} style={{ padding: '0.5rem', color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Save Changes">
                       <Save size={16} />
                     </button>

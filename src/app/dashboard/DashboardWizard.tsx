@@ -361,6 +361,17 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
               setSelections(newSelections);
               
               if (modelSnip.label !== 'No Model' && modelSnip.label !== 'STILL LIFE PACK' && !modelSnip.label.toLowerCase().includes('ugc creator pack')) {
+                 // INTELLIGENT GENDER AUTO-SKIP
+                 const genderTarget = analysisData?.detectedAttributes?.genderTarget?.toLowerCase();
+                 if (genderTarget === 'woman' || genderTarget === 'man') {
+                     const autoGender = snippets.find(s => s.snippet_type === 'CLIENT_TYPE' && s.label.toLowerCase() === genderTarget);
+                     if (autoGender) {
+                         newSelections['CLIENT_TYPE'] = autoGender;
+                         setSelections(newSelections);
+                         setTimeout(() => setStep(3), 100);
+                         return;
+                     }
+                 }
                  setTimeout(() => setStep(2.5), 100);
               } else {
                  setTimeout(() => setStep(3), 100); // Vai a FORMAT_QUANTITY
@@ -378,6 +389,17 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       
       if (type === 'MODEL_OPTION') {
          if (snip.label !== 'No Model' && snip.label !== 'STILL LIFE PACK' && !snip.label.toLowerCase().includes('ugc creator pack')) {
+            // INTELLIGENT GENDER AUTO-SKIP
+            const genderTarget = analysisData?.detectedAttributes?.genderTarget?.toLowerCase();
+            if (genderTarget === 'woman' || genderTarget === 'man') {
+                const autoGender = snippets.find(s => s.snippet_type === 'CLIENT_TYPE' && s.label.toLowerCase() === genderTarget);
+                if (autoGender) {
+                    newSelections['CLIENT_TYPE'] = autoGender;
+                    setSelections(newSelections);
+                    setTimeout(() => setStep(3), 50);
+                    return;
+                }
+            }
             setTimeout(() => setStep(2.5), 50);
             return;
          }

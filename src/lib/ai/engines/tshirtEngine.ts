@@ -203,7 +203,21 @@ ${taxonomySubcat?.toLowerCase().includes('model photo') ? `11. MODEL REALISM (NO
                 povOverride = `\n[STRICT POV OVERRIDE (HIGHEST PRIORITY)]: Ignore any global prompt asking for a "handsome man", "beautiful woman", "fashion model", "portrait", or "face". THIS IS A FIRST-PERSON POINT-OF-VIEW (POV) SHOT. DO NOT DRAW THE MODEL'S UPPER BODY OR FACE. YOU MUST DRAW ONLY THE LEGS/FEET/TORSO AS SEEN FROM THE EYES OF THE PERSON LOOKING DOWN. THIS RULE OVERRIDES ALL OTHERS.`;
             }
 
-            variantPrompt = `--- T-SHIRT ECOMMERCE STRUCTURED SYSTEM ---
+            const isPureJsonMode = shotInfo.hard_rules?.includes("[PURE_JSON_MODE]") || shotInfo.positive_prompt?.includes("[PURE_JSON_MODE]");
+
+            if (isPureJsonMode) {
+                variantPrompt = `--- T-SHIRT PURE JSON OVERRIDE ---
+CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
+[POSITIVE INSTRUCTIONS]:
+${shotInfo.positive_prompt}
+
+[HARD RULES]:
+${shotInfo.hard_rules}
+
+[STRICT NEGATIVE CONSTRAINTS]:
+${shotInfo.negative_prompt}`;
+            } else {
+                variantPrompt = `--- T-SHIRT ECOMMERCE STRUCTURED SYSTEM ---
 CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 [POSITIVE INSTRUCTIONS]: ${finalPositive}
 [HARD RULES]: ${shotInfo.hard_rules}
@@ -211,6 +225,7 @@ CURRENT SHOT: ${shotInfo.shot_number} - ${shotInfo.shot_name}
 
 [STRICT NEGATIVE CONSTRAINTS - DO NOT GENERATE THESE ELEMENTS UNDER ANY CIRCUMSTANCE]: ${finalNegative}
 ` + dynPos + GLOBAL_INVIOLABLE_RULES + dbGlobalPositive + dbGlobalHardRules + backShotOverride + wearDirective + backgroundOverride + povOverride;
+            }
 
             if (base64BackPart) {
                 aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
