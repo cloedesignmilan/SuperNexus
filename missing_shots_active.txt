@@ -1,0 +1,6 @@
+- [bags] > [model-studio] > [model-photo-woman] (mancano 5 scatti)
+- [bags] > [model-studio] > [model-photo-man] (mancano 5 scatti)
+- [bags] > [model-studio] > [curvy-woman] (mancano 5 scatti)
+- [bags] > [model-studio] > [curvy-man] (mancano 5 scatti)
+- [bags] > [lifestyle] > [model-photo-woman] (mancano 5 scatti)
+- [bags] > [lifestyle] > [model-photo-man] (mancano 5 scatti)
