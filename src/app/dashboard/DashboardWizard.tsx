@@ -1600,7 +1600,25 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* Error Banner */}
           {error && (
             <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#f87171', padding: '1.5rem', borderRadius: '16px', marginBottom: '2rem', textAlign: 'center', fontWeight: 600 }}>
-              {error}
+              {error === 'Insufficient credits' ? (
+                 <div>
+                    <h3 style={{ color: '#fff', marginBottom: '1rem', fontSize: '1.3rem' }}>Generazioni Omaggio Terminate! 🚀</h3>
+                    <p style={{ color: '#ccc', marginBottom: '1.5rem', fontWeight: 400 }}>Sblocca tutto il potenziale del nostro motore AI definitivo acquistando un pacchetto:</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', maxWidth: '350px', margin: '0 auto' }}>
+                       <a href="/checkout?plan=starter_pack" className="btn-secondary" style={{ background: 'linear-gradient(135deg, #ff0ab3 0%, #aa0077 100%)', color: '#fff', border: 'none', padding: '1rem', borderRadius: '12px', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span>STARTER PACK</span><span>🚀</span>
+                       </a>
+                       <a href="/checkout?plan=retail_pack" className="btn-secondary" style={{ background: 'linear-gradient(135deg, #00ffff 0%, #008888 100%)', color: '#fff', border: 'none', padding: '1rem', borderRadius: '12px', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span>RETAIL PACK</span><span>💎</span>
+                       </a>
+                       <a href="/checkout?plan=retail_monthly" className="btn-secondary" style={{ background: 'linear-gradient(135deg, #ccff00 0%, #88aa00 100%)', color: '#000', border: 'none', padding: '1rem', borderRadius: '12px', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span>RETAIL MONTHLY</span><span>🔥</span>
+                       </a>
+                    </div>
+                 </div>
+              ) : (
+                 error
+              )}
             </div>
           )}
 
