@@ -363,15 +363,8 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
       {resultUrls.length === 0 && trialUsesCount < 2 && (
         <div style={{ width: '100%', maxWidth: '900px' }}>
           {!isEmailSubmitted ? (
-            <div style={{
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '16px',
-              padding: '4rem 2rem',
-              textAlign: 'center',
-              background: 'rgba(255,255,255,0.03)',
-              maxWidth: '500px',
-              margin: '0 auto'
-            }}>
+            <div className="wow-border-card" style={{ maxWidth: '500px', width: '100%', margin: '0 auto' }}>
+              <div className="wow-border-inner" style={{ padding: '4rem 2rem' }}>
               <h4 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 600 }}>{t.unlockTrialsTitle}</h4>
               <p style={{ color: '#aaa', marginBottom: '2rem', fontSize: '1rem' }}>
                 {t.unlockTrialsDesc}
@@ -404,6 +397,7 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
               </button>
               <div style={{ color: '#888', fontSize: '0.9rem' }}>
                 {t.noCreditCard}
+              </div>
               </div>
             </div>
           ) : !previewUrl ? (
