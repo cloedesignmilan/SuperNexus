@@ -48,10 +48,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Cost verification
-    const requestedQty = qty || 1
+    let requestedQty = qty || 1
     const remaining = dbUser.images_allowance - dbUser.images_generated
-    if (requestedQty > remaining && dbUser.role !== 'admin') {
+
+    if (remaining <= 0 && dbUser.role !== 'admin') {
       return NextResponse.json({ error: 'Insufficient credits', remaining }, { status: 402 })
+    }
+
+    if (requestedQty > remaining && dbUser.role !== 'admin') {
+      requestedQty = remaining
     }
 
     // Trova la Subcategory reale selezionata dall'utente
