@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
+import { dashboardWizardDictionary, DashboardWizardLocale } from '@/lib/i18n/dashboardWizardDictionary'
 import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info, CheckCircle2, Lock, ArrowRight, Zap, Image as ImageIcon } from 'lucide-react'
 import * as Icons from 'lucide-react'
 
@@ -9,6 +10,16 @@ type Snippet = any;
 
 export default function DashboardWizard({ snippets, isAdmin, activeCategories = [], activeBusinessModes = [], activeSubcategories = [] }: { snippets: Snippet[], isAdmin?: boolean, activeCategories?: any[], activeBusinessModes?: any[], activeSubcategories?: any[] }) {
   const [step, setStep] = useState<number>(0)
+  
+  // Localization State
+  const [uiLang, setUiLang] = useState<DashboardWizardLocale>('en');
+  useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      const lang = navigator.language.toLowerCase();
+      setUiLang(lang.startsWith('it') ? 'it' : 'en');
+    }
+  }, []);
+  const t = dashboardWizardDictionary[uiLang];
   
   // Upload State
   const [file, setFile] = useState<File | null>(null)
@@ -1449,11 +1460,13 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           }
 
           .mobile-header-content {
-            display: flex;
+            display: grid;
+            grid-template-columns: 40px 1fr 40px;
             align-items: center;
-            justify-content: center;
             padding: 1rem;
-            background: #000;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: sticky;
             top: 0;
             z-index: 50;
@@ -1461,15 +1474,23 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           }
 
           .mobile-back-button {
-            position: absolute;
-            left: 1rem;
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
             display: flex;
             align-items: center;
+            justify-content: center;
             cursor: pointer;
-            padding: 0.5rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          }
+          
+          .mobile-back-button:active {
+            transform: scale(0.92);
+            background: rgba(255, 255, 255, 0.12);
           }
 
           .desktop-back-button { display: none; }
@@ -1552,14 +1573,15 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
         {/* Mobile Compact Header Content */}
         {step > 0 && step < 9 && uploadedUrl && (
           <div className="mobile-header-content">
-            {!isGenerating && (
+            {!isGenerating ? (
               <button className="mobile-back-button" onClick={handleBack}>
-                <ChevronLeft size={24} />
+                <ChevronLeft size={20} />
               </button>
-            )}
-            <div style={{ fontSize: '1rem', fontWeight: 600 }}>
-              {step === 0.25 ? 'AI Detection' : step === 0.75 ? 'Select Product Type' : step === 3.5 ? 'Select Specific Shot' : step === 4 ? 'Configuration Review' : step === 5 ? 'Generation Complete' : stepsData[Math.floor(step)-1]?.title || 'Options'}
+            ) : <div />}
+            <div style={{ fontSize: '1rem', fontWeight: 600, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {step === 0.25 ? t.aiDetection : step === 0.75 ? t.selectProductType : step === 3.5 ? t.selectSpecificShot : step === 4 ? t.configReviewTitle : step === 5 ? t.generationComplete : stepsData[Math.floor(step)-1]?.title || t.options}
             </div>
+            <div />
           </div>
         )}
       </div>
@@ -1571,7 +1593,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
 
           {step > 0 && step < 9 && !isGenerating && (
               <button className="back-button desktop-back-button" onClick={handleBack}>
-                <ChevronLeft size={20} /> <span>Back</span>
+                <ChevronLeft size={20} /> <span>{t.back}</span>
               </button>
           )}
 
@@ -1585,7 +1607,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* STEP 0: UPLOAD */}
           {step === 0 && (
             <div className="fade-up-enter">
-              <h1 className="step-header">Upload Product</h1>
+              <h1 className="step-header">{t.uploadProduct}</h1>
               
               <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
               
@@ -1605,23 +1627,23 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                 onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
               >
                 {isUploading ? (
-                  <><Loader2 className="animate-spin" size={48} color="#00d2ff" style={{ margin: '0 auto 1rem auto' }} /> <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Uploading...</div></>
+                  <><Loader2 className="animate-spin" size={48} color="#00d2ff" style={{ margin: '0 auto 1rem auto' }} /> <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>{t.uploading}</div></>
                 ) : (
                   <>
                     <Upload size={48} color="rgba(255,255,255,0.3)" style={{ margin: '0 auto 1rem auto' }} />
-                    <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>Drag & drop your image here<br/>or tap to browse</div>
-                    <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>JPG, PNG, WebP up to 50MB</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '0.5rem' }}>{t.dragAndDrop.split('\n').map((line, i) => <React.Fragment key={i}>{line}{i === 0 && <br/>}</React.Fragment>)}</div>
+                    <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)' }}>{t.uploadFormats}</div>
                   </>
                 )}
               </div>
 
               <div style={{ background: '#1c1c1e', borderRadius: '24px', padding: '1.5rem', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <div style={{ fontWeight: 600, marginBottom: '1rem', fontSize: '0.95rem' }}>Tips for best results</div>
+                <div style={{ fontWeight: 600, marginBottom: '1rem', fontSize: '0.95rem' }}>{t.tipsTitle}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Use a clear, well-lit photo</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Plain background works best</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> Show the entire product</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> High resolution recommended</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> {t.tip1}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> {t.tip2}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> {t.tip3}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}><CheckCircle2 size={16} color="#00d2ff" /> {t.tip4}</div>
                 </div>
               </div>
             </div>
@@ -1635,33 +1657,33 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                   <div style={{ width: '80px', height: '80px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem auto' }}>
                     <Wand2 size={32} color="#3b82f6" className="animate-pulse" />
                   </div>
-                  <h2 className="step-header">Analyzing Product...</h2>
-                  <p className="step-desc">AI is detecting materials, style, and structure.</p>
+                  <h2 className="step-header">{t.analyzingProduct}</h2>
+                  <p className="step-desc">{t.analyzingDesc}</p>
                 </>
               ) : analysisData ? (
                 <>
                   <div style={{ background: '#2c2c2e', border: 'none', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: '#34c759', marginBottom: '0.5rem', fontWeight: 600, fontSize: '0.9rem' }}>
-                      <CheckCircle2 size={18} /> AI Detection Complete
+                      <CheckCircle2 size={18} /> {t.aiDetectionComplete}
                     </div>
                     <div style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'capitalize' }}>
-                      {analysisData.detectedProductType?.replace('_', ' ') || 'Unknown'}
+                      {analysisData.detectedProductType?.replace('_', ' ') || t.unknownProduct}
                     </div>
                     {analysisData.detectedAttributes?.recommendedScenes && (
                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)' }}>
-                         Recommended: {analysisData.detectedAttributes.recommendedScenes.slice(0, 3).join(', ')}
+                         {t.recommended} {analysisData.detectedAttributes.recommendedScenes.slice(0, 3).join(', ')}
                        </div>
                     )}
                     {analysisData.confidence < 0.8 && (
                       <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#fbbf24', background: 'rgba(251, 191, 36, 0.1)', padding: '0.75rem', borderRadius: '8px' }}>
-                        We detected this product, but you can change it if incorrect.
+                        {t.detectedWarning}
                       </div>
                     )}
                   </div>
 
                   {showPrintConfirm && (
                      <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto' }}>
-                        <div style={{ fontWeight: 600, marginBottom: '1rem' }}>AI detected a print on the: {printLocation.toUpperCase()}. Please confirm.</div>
+                        <div style={{ fontWeight: 600, marginBottom: '1rem' }}>{t.printDetected.replace('{location}', printLocation.toUpperCase())}</div>
                         <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', background: '#2c2c2e', padding: '4px', borderRadius: '12px' }}>
                           <button onClick={() => setPrintLocation('front')} style={{ flex: 1, padding: '0.6rem', borderRadius: '8px', border: 'none', background: printLocation === 'front' ? '#3a3a3c' : 'transparent', color: printLocation === 'front' ? '#fff' : '#8e8e93', fontWeight: printLocation === 'front' ? 600 : 500, cursor: 'pointer', transition: 'all 0.2s', boxShadow: printLocation === 'front' ? '0 2px 8px rgba(0,0,0,0.2)' : 'none' }}>
                             Front Print
@@ -1675,11 +1697,11 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
 
                   {(analysisData.detectedProductType === 'tshirt_hoodie' || analysisData.detectedProductType === 'women_clothing' || analysisData.detectedProductType === 'men_clothing') && !uploadedBackUrl && (
                      <div style={{ background: 'rgba(255, 255, 255, 0.05)', border: '1px dashed rgba(255, 255, 255, 0.2)', borderRadius: '24px', padding: '1.5rem', maxWidth: '500px', margin: '0 auto 2rem auto', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>Do you also have an image of the back? Upload it to allow the AI to generate perfect front/back shots.</div>
+                        <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)', textAlign: 'center' }}>{t.backViewPrompt}</div>
                         <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
                         <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingBack ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                           {isUploadingBack ? 'Uploading...' : 'Add Back View (Optional)'}
+                           {isUploadingBack ? 'Uploading...' : t.addBackView}
                         </button>
                      </div>
                   )}
@@ -1689,8 +1711,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                            <img src={uploadedBackUrl} alt="Back" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
                         <div style={{ textAlign: 'left' }}>
-                           <div style={{ fontWeight: 600, color: '#10b981' }}>Back View Uploaded</div>
-                           <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>The AI will now generate mixed 360° shots</div>
+                           <div style={{ fontWeight: 600, color: '#10b981' }}>{t.backViewUploaded}</div>
+                           <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>{t.backViewDesc}</div>
                         </div>
                      </div>
                   )}
@@ -1701,12 +1723,12 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                            {analysisData.detectedProductType === 'swimwear' ? (
                              <>
                                Costumi Spaiati o Accessori? (Opzionale)<br/>
-                               Se hai caricato un capo singolo e vuoi abbinare uno Slip diverso, un Pareo o una Borsa, aggiungili qui sotto. L'AI comporrà l'outfit completo.
+                               {t.swimwearOutfitOptional.split('\n')[1]}
                              </>
                            ) : (
                              <>
                                Componi l'Outfit (Opzionale)<br/>
-                               Puoi abbinare pantaloni, gonne, giacche o accessori. L'AI comporrà il look completo sul modello.
+                               {t.outfitOptional.split('\n')[1]}
                              </>
                            )}
                         </div>
@@ -1724,14 +1746,14 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                         <input type="file" ref={outfitFileInputRef} onChange={handleOutfitFileChange} accept="image/*" style={{ display: 'none' }} />
                         <button onClick={() => outfitFileInputRef.current?.click()} disabled={isUploadingOutfitPart} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingOutfitPart ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-                           {isUploadingOutfitPart ? 'Caricamento...' : (analysisData.detectedProductType === 'swimwear' ? 'Aggiungi Pezzo (Slip, Pareo, Borsa)' : 'Aggiungi Capo o Accessorio')}
+                           {isUploadingOutfitPart ? 'Caricamento...' : (analysisData.detectedProductType === 'swimwear' ? t.addSwimwearPiece : t.addOutfitPiece)}
                         </button>
                      </div>
                   )}
 
                   <div className="sticky-bottom-action">
                     <button onClick={() => setStep(1)} className="btn-magic">
-                      Looks Good <ArrowRight size={18} />
+                      {t.looksGood} <ArrowRight size={18} />
                     </button>
                     <button onClick={() => { setStep(0.75); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '16px', color: '#ffffff', fontSize: '1rem', padding: '1.1rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 600, width: '100%' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
                       Change Type
@@ -1740,8 +1762,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                 </>
               ) : (
                 <>
-                  <h2 className="step-header">Analysis Skipped</h2>
-                  <button onClick={() => setStep(0.75)} className="btn-giant">Continue <ArrowRight size={18} /></button>
+                  <h2 className="step-header">{t.analysisSkipped}</h2>
+                  <button onClick={() => setStep(0.75)} className="btn-giant">{t.continueBtn} <ArrowRight size={18} /></button>
                 </>
               )}
             </div>
@@ -1750,8 +1772,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* STEP 0.75: MANUAL PRODUCT TYPE SELECTION */}
           {step === 0.75 && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Product Type</h2>
-              <p className="step-desc">What exactly are we photographing?</p>
+              <h2 className="step-header">{t.productTypeTitle}</h2>
+              <p className="step-desc">{t.productTypeDesc}</p>
               {renderSnippetGridInternal('PRODUCT_TYPE', 0.75)}
             </div>
           )}
@@ -1797,7 +1819,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                      }
                      setStep(4);
                   }} disabled={!selections['FORMAT'] || !selections['QUANTITY']} className="btn-magic">
-                    Review Configuration <ArrowRight size={20} />
+                    {t.reviewConfigBtn} <ArrowRight size={20} />
                   </button>
                 </div>
               )}
@@ -1807,8 +1829,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* STEP 2.5: MANUAL GENDER SELECTION (AI DOUBT OR TSHIRT SAFETY) */}
           {step === 2.5 && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Who is wearing it?</h2>
-              <p className="step-desc">Please confirm the target audience to ensure perfect modeling.</p>
+              <h2 className="step-header">{t.whoIsWearingTitle}</h2>
+              <p className="step-desc">{t.whoIsWearingDesc}</p>
               
               <div className="glass-grid gender-grid" style={{ marginTop: '2rem' }}>
                  {[
@@ -1882,8 +1904,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* STEP 3.5: SPECIFIC SHOT SELECTION (ONLY IF QUANTITY = 1) */}
           {step === 3.5 && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Select Specific Shot</h2>
-              <p className="step-desc">Since you selected 1 image, which specific shot do you want?</p>
+              <h2 className="step-header">{t.selectSpecificShotTitle}</h2>
+              <p className="step-desc">{t.selectSpecificShotDesc}</p>
               
               <div className="glass-grid gender-grid" style={{ marginTop: '2rem' }}>
                  {availableShots.map(shot => {
@@ -2000,8 +2022,8 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
           {/* FINAL STEP 4: SUMMARY & GENERATE */}
           {step === 4 && !isGenerating && (
             <div className="fade-up-enter">
-              <h2 className="step-header">Configuration Review</h2>
-              <p className="step-desc">Review your settings before we generate your premium imagery.</p>
+              <h2 className="step-header">{t.configReviewTitle}</h2>
+              <p className="step-desc">{t.configReviewDesc}</p>
               
               <div style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '24px', padding: '2rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -2100,7 +2122,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                 <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(0, 210, 255, 0.1)', color: '#00d2ff', marginBottom: '1.5rem', border: '1px solid rgba(0, 210, 255, 0.3)' }}>
                   <CheckCircle2 size={32} />
                 </div>
-                <h2 className="step-header" style={{ marginBottom: '0.5rem' }}>Your images are ready!</h2>
+                <h2 className="step-header" style={{ marginBottom: '0.5rem' }}>{t.imagesReadyTitle}</h2>
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>We've created {results.length} stunning images for your product.</p>
                 
                 <button 

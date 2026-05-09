@@ -29,7 +29,20 @@ export async function GET(request: Request) {
             },
             select: { imageUrl: true }
         });
-        const protectedUrls = promptConfigs.map(c => c.imageUrl).filter(Boolean) as string[];
+        
+        // Recupera le altre immagini di sistema che non devono essere cancellate
+        const categories = await prisma.category.findMany({ where: { NOT: [{ cover_image: null }, { cover_image: '' }] }, select: { cover_image: true } });
+        const businessModes = await prisma.businessMode.findMany({ where: { NOT: [{ cover_image: null }, { cover_image: '' }] }, select: { cover_image: true } });
+        const subcategories = await prisma.subcategory.findMany({ where: { NOT: [{ preview_image: null }, { preview_image: '' }] }, select: { preview_image: true } });
+        const referenceImages = await prisma.subcategoryReferenceImage.findMany({ where: { NOT: [{ image_url: '' }] }, select: { image_url: true } });
+
+        const protectedUrls = [
+            ...promptConfigs.map(c => c.imageUrl),
+            ...categories.map(c => c.cover_image),
+            ...businessModes.map(c => c.cover_image),
+            ...subcategories.map(c => c.preview_image),
+            ...referenceImages.map(c => c.image_url)
+        ].filter(Boolean) as string[];
 
         let totalDeleted = 0;
         let totalScanned = 0;
@@ -72,8 +85,14 @@ export async function GET(request: Request) {
 
                  const fileDate = new Date(file.created_at).getTime();
                  if (fileDate < cutoffDate.getTime()) {
-                     // Check se il file è protetto da un thumbnail
-                     const isProtected = protectedUrls.some(url => url.includes(file.name));
+                     // Check se il file è protetto da un thumbnail (decodificando l'URL per spazi o caratteri speciali)
+                     const isProtected = protectedUrls.some(url => {
+                         try {
+                             return decodeURIComponent(url).includes(file.name);
+                         } catch (e) {
+                             return url.includes(file.name);
+                         }
+                     });
                      if (isProtected) {
                          console.log(`[STORAGE-CLEANUP] Salvato dalla pulizia (è un thumbnail dei pulsanti): ${file.name}`);
                          continue;
