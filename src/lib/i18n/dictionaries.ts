@@ -88,6 +88,7 @@ export const dictionaries = {
       instantSetup: "Instant Web App Setup",
       fullFeatures: "Full Platform Features",
       freeTrialIncluded: "Includes 5 Free Trial Images",
+      noCreditCard: "No credit card required.",
       registerFullAccess: "Register for Full Access",
       starter: {
         tag: "Perfect for testing without subscription.",
@@ -355,6 +356,7 @@ export const dictionaries = {
       instantSetup: "Setup Istantaneo Web App",
       fullFeatures: "Tutte le Funzionalità della Piattaforma",
       freeTrialIncluded: "Include 5 Immagini Gratuite",
+      noCreditCard: "Nessuna carta di credito richiesta.",
       registerFullAccess: "Registrati per l'Accesso Completo",
       starter: {
         tag: "Perfetto per testare senza abbonamento.",
