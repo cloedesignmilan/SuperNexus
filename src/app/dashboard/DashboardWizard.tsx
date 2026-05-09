@@ -1553,7 +1553,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       <img src={uploadedUrl} alt="Thumb" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>Product Uploaded</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>{uiLang === 'it' ? 'Prodotto Caricato' : 'Product Uploaded'}</div>
                       <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', textTransform: 'capitalize', marginTop: '2px', fontWeight: 500 }}>
                         {analysisData ? analysisData.detectedProductType?.replace('_', ' ') : 'Ready'}
                       </div>
@@ -1701,7 +1701,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                         <input type="file" ref={backFileInputRef} onChange={handleBackFileChange} accept="image/*" style={{ display: 'none' }} />
                         <button onClick={() => backFileInputRef.current?.click()} disabled={isUploadingBack} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingBack ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                           {isUploadingBack ? 'Uploading...' : t.addBackView}
+                           {isUploadingBack ? t.uploading : t.addBackView}
                         </button>
                      </div>
                   )}
@@ -1746,7 +1746,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                         <input type="file" ref={outfitFileInputRef} onChange={handleOutfitFileChange} accept="image/*" style={{ display: 'none' }} />
                         <button onClick={() => outfitFileInputRef.current?.click()} disabled={isUploadingOutfitPart} style={{ background: '#2c2c2e', color: '#fff', padding: '0.8rem 1.5rem', borderRadius: '14px', fontWeight: 600, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#3a3a3c'} onMouseOut={(e) => e.currentTarget.style.background = '#2c2c2e'}>
                            {isUploadingOutfitPart ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
-                           {isUploadingOutfitPart ? 'Caricamento...' : (analysisData.detectedProductType === 'swimwear' ? t.addSwimwearPiece : t.addOutfitPiece)}
+                           {isUploadingOutfitPart ? t.uploading : (analysisData.detectedProductType === 'swimwear' ? t.addSwimwearPiece : t.addOutfitPiece)}
                         </button>
                      </div>
                   )}
@@ -1756,7 +1756,7 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
                       {t.looksGood} <ArrowRight size={18} />
                     </button>
                     <button onClick={() => { setStep(0.75); }} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '16px', color: '#ffffff', fontSize: '1rem', padding: '1.1rem 1.5rem', cursor: 'pointer', transition: 'all 0.2s ease', fontWeight: 600, width: '100%' }} onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'} onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}>
-                      Change Type
+                      {t.changeType}
                     </button>
                   </div>
                 </>
