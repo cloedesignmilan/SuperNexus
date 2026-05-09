@@ -450,6 +450,38 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
 
 
             aiParts.push({ text: variantPrompt });
+        } else {
+            // DYNAMIC SCENE FALLBACK
+            currentShotName = "Dynamic Scene";
+            currentShotNumber = specificShotNumber ? specificShotNumber : (i + 1);
+            let poseIndex = i;
+            if (specificShotNumber) poseIndex = specificShotNumber - 1;
+            const currentPose = strictPoses[poseIndex % strictPoses.length] || "Dynamic product shot";
+
+            const productLockSystem = "\n" + (subcat.business_mode?.category?.global_positive_prompt || "");
+            const categoryHardRules = "\n" + (subcat.business_mode?.category?.global_hard_rules || "");
+            const wearDirective = isNoModelRequest ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product.]";
+            const fallbackNegative = "plastic skin, fake CGI, 3D render, smooth airbrushed skin, ugly, " + (subcat.business_mode?.category?.global_negative_prompt || "") + (subcat.negative_prompt || "");
+
+            variantPrompt = userPrompt + dynPos + `\n\n${productLockSystem}${wearDirective}\n[CONTROLLED VARIATION SYSTEM: The environment, lighting, and model MUST remain identical across all generations.]${categoryHardRules}\n[SEED/VARIANTE: Generazione nr. ${currentShotNumber}.\nSTRICT CAMERA/POSE DIRECTIVE (YOU MUST FOLLOW THIS): ${currentPose}\nLOCKED LIGHTING/AESTHETIC: ${currentLighting}\nMantieni il VISO PERFETTAMENTE A FUOCO e la FORMA/COLORE del capo identici all'originale.\nCRITICAL NEGATIVE PROMPT: ${fallbackNegative}]`;
+
+            if (base64BackPart) {
+                aiParts.push({ text: "SUBJECT GARMENT - FRONT VIEW (To be mapped on front-facing parts of the pose):" });
+                aiParts.push(...base64OutfitParts);
+                aiParts.push({ text: "SUBJECT GARMENT - BACK VIEW (To be mapped on back-facing parts of the pose):" });
+                aiParts.push(base64BackPart);
+            } else if (isOutfit) {
+                aiParts.push({ text: "SUBJECT GARMENTS TO OUTFIT COORDINATE (Use ALL items together in the same image):" });
+                aiParts.push(...base64OutfitParts);
+            } else {
+                aiParts.push({ text: "SUBJECT GARMENT TO STRICTLY CLONE (Do NOT change details on this specific item. CRITICAL: DO NOT CLONE ITS BACKGROUND!):" });
+                aiParts.push(...base64OutfitParts);
+            }
+            if (currentRefInline) {
+                aiParts.push({ text: "[MANDATORY CLONE DIRECTIVE]: CRITICAL INSPIRATION. YOU MUST EMULATE THE SHOT ANGLE, LIGHTING, AND BODY POSITION OF THIS EXACT IMAGE:" });
+                aiParts.push({ inlineData: currentRefInline });
+            }
+            aiParts.push({ text: variantPrompt });
         }
 
         // TRUE IDENTITY LOCK INJECTION (TEMPORARILY DISABLED)

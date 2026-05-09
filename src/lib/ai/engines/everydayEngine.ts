@@ -184,6 +184,14 @@ ${(taxonomyCat?.toLowerCase().includes('everyday') && taxonomyMode?.toLowerCase(
             "[NO MODEL DIRECTIVE 4] Clean product-only shot, detail focus, no human",
             "[NO MODEL DIRECTIVE 5] Clean product-only shot, overhead or flat, no human"
         ];
+    } else if (taxonomyMode?.toLowerCase().includes('model-studio')) {
+        strictPoses = [
+            "[STUDIO DIRECTIVE 1] Full body shot, clean solid color studio background, perfect editorial lighting, no props, fashion posture",
+            "[STUDIO DIRECTIVE 2] Medium shot waist up, clean solid color studio background, sharp focus on product, no props",
+            "[STUDIO DIRECTIVE 3] Close up crop on torso, clean solid color studio background, highlight texture, no props",
+            "[STUDIO DIRECTIVE 4] 3/4 angle full body, clean solid color studio background, pure studio aesthetic, no props",
+            "[STUDIO DIRECTIVE 5] Dynamic fashion pose, clean solid color studio background, editorial lighting, no props"
+        ];
     } else if (isShoeCatalog) {
         strictPoses = [
             "[SHOES ANGLE 1] 3/4 front view (hero)",
@@ -461,7 +469,7 @@ ${(taxonomyCat?.toLowerCase().includes('everyday') && taxonomyMode?.toLowerCase(
             const currentPose = strictPoses[poseIndex % strictPoses.length];
             
             let currentLighting = lockedLighting;
-            if (varianceEnabled && modeSlug !== 'clean-catalog') {
+            if (varianceEnabled && modeSlug !== 'clean-catalog' && modeSlug !== 'model-studio') {
                 const magicalScene = getRandomSceneForSubcategory("everyday " + modeSlug + " " + presentationSlug);
                 currentLighting += " " + magicalScene;
             }
