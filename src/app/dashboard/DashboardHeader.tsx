@@ -4,10 +4,20 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { LogOut, Home, Image as ImageIcon, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect } from 'react'
 
 export default function DashboardHeader({ email, remaining, isAdmin = false }: { email: string, remaining: number, isAdmin?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [uiLang, setUiLang] = useState('en');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && navigator.language) {
+      if (navigator.language.toLowerCase().startsWith('it')) {
+        setUiLang('it');
+      }
+    }
+  }, []);
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -94,7 +104,7 @@ export default function DashboardHeader({ email, remaining, isAdmin = false }: {
               borderBottom: pathname === '/dashboard/gallery' ? '2px solid #00d2ff' : '2px solid transparent',
               paddingBottom: '0.25rem', transition: 'all 0.2s'
             }}>
-              <ImageIcon size={18} /> <span className="nav-text">My Gallery</span>
+              <ImageIcon size={18} /> <span className="nav-text">{uiLang === 'it' ? 'Galleria' : 'My Gallery'}</span>
             </Link>
           </nav>
         </div>

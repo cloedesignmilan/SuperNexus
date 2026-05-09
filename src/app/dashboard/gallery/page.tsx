@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js'
 import { prisma } from '@/lib/prisma'
 import GalleryCard from './GalleryCard'
+import { GalleryHeader, GalleryEmptyState } from './GalleryTextsClient'
 import "../../admin.css"
 
 export const dynamic = 'force-dynamic'
@@ -59,19 +60,10 @@ export default async function GalleryPage() {
 
   return (
     <div>
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>My Gallery</h2>
-        <p style={{ color: 'var(--color-text-muted)' }}>
-          Your generated AI outputs from the last 24 hours.
-        </p>
-      </div>
+      <GalleryHeader />
 
       {userGalleryItems.length === 0 ? (
-        <div className="glass-panel" style={{ padding: '4rem', textAlign: 'center', borderStyle: 'dashed', borderWidth: '2px', borderColor: 'rgba(255,255,255,0.1)' }}>
-          <p style={{ color: 'var(--color-text-muted)' }}>
-            No images generated in the last 24 hours. Head to the Studio to create some!
-          </p>
-        </div>
+        <GalleryEmptyState />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
           {userGalleryItems.map((item, i) => (
