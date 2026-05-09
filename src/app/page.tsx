@@ -563,7 +563,8 @@ export default async function LandingPage() {
           <div className="pricing-card" style={{ 
             gridColumn: '1 / -1', 
             border: '2px solid #ccff00', 
-            background: 'linear-gradient(135deg, rgba(204,255,0,0.05) 0%, rgba(0,0,0,0) 100%)',
+            backgroundColor: '#0a0a0a',
+            background: 'linear-gradient(135deg, rgba(204,255,0,0.05) 0%, #0a0a0a 100%)',
             boxShadow: '0 0 20px rgba(204,255,0,0.1)',
             display: 'flex',
             flexDirection: 'row',
@@ -576,16 +577,16 @@ export default async function LandingPage() {
             borderRadius: '16px'
           }}>
             <div style={{ flex: '1 1 300px' }}>
-                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0' }}>{t.pricing.platformAccessTitle}<span style={{ color: '#ccff00', textShadow: '0 0 10px rgba(204,255,0,0.2)' }}>{t.pricing.platformAccessHighlight}</span></h3>
-                <p style={{ color: '#888', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>{t.pricing.platformAccessDesc}</p>
+                <h3 className="bento-title" style={{ fontSize: '2.2rem', margin: '0', color: '#ffffff' }}>{t.pricing.platformAccessTitle}<span style={{ color: '#ccff00', textShadow: '0 0 10px rgba(204,255,0,0.2)' }}>{t.pricing.platformAccessHighlight}</span></h3>
+                <p style={{ color: '#aaaaaa', fontSize: '1.1rem', marginTop: '0.5rem', lineHeight: '1.5' }}>{t.pricing.platformAccessDesc}</p>
             </div>
             
-            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0 }}>
-              <li><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>{t.pricing.instantSetup}</strong></li>
-              <li><CheckCircle2 size={24} color="#ccff00" /> <span>{t.pricing.fullFeatures}</span></li>
+            <ul className="bento-list" style={{ flex: '1 1 200px', margin: 0, padding: 0, color: '#ffffff' }}>
+              <li style={{ color: '#ffffff' }}><CheckCircle2 size={24} color="#ccff00" /> <strong style={{ fontSize: '1.1rem' }}>{t.pricing.instantSetup}</strong></li>
+              <li style={{ color: '#ffffff' }}><CheckCircle2 size={24} color="#ccff00" /> <span>{t.pricing.fullFeatures}</span></li>
             </ul>
 
-            <div style={{ flex: '0 0 auto', minWidth: '250px' }}>
+            <div style={{ flex: '0 0 auto', width: '100%', maxWidth: '300px', margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
                 <a href="/auth" className="btn-secondary" style={{ width: '100%', padding: '1.4rem', fontWeight: '900', background: '#ccff00', color: '#000', border: 'none', textAlign: 'center', display: 'block', fontSize: '1.1rem', borderRadius: '12px', cursor: 'pointer', boxShadow: '0 0 20px rgba(204,255,0,0.4)', textDecoration: 'none' }}>
                   {t.pricing.registerFullAccess}
                 </a>
