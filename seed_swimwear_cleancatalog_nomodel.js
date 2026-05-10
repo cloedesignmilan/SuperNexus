@@ -9,11 +9,11 @@ async function seedSwimwearCleanCatalogNoModel() {
       presentation: 'no-model',
       scene: 'all',
       shotNumber: 1,
-      shotName: 'Structured Flat Lay on White Sand',
+      shotName: 'Flat Lay on White Sand',
       priority: 100,
-      positivePrompt: 'A single {color} {product} perfectly flat laid, entirely open, highly structured and symmetrically aligned on pristine, fine white sand. The garment must look high-end, perfectly shaped, ironed and crisp. Clean top-down view, bright sunny outdoor lighting casting distinct natural shadows.',
-      negativePrompt: 'human, model, mannequin, hanger, water, messy, wrinkled, dark lighting, feet, hands, folded, crumpled',
-      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE A PERFECT SYMMETRICAL OPEN FLAT LAY ON WHITE SAND. NO BODY PARTS.',
+      positivePrompt: 'A single {color} {product} perfectly flat laid, entirely open, highly structured and symmetrically aligned on pristine, fine light beige sand. The garment must look high-end, perfectly shaped, and crisp. Clean top-down view, soft natural lighting. No other props.',
+      negativePrompt: 'human, model, mannequin, hanger, water, messy, wrinkled, dark lighting, feet, hands, folded, crumpled, props, accessories',
+      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE A PERFECT SYMMETRICAL OPEN FLAT LAY ON SAND. NO BODY PARTS. NO PROPS.',
       outputGoal: 'Open sand flat lay'
     },
     {
@@ -22,12 +22,12 @@ async function seedSwimwearCleanCatalogNoModel() {
       presentation: 'no-model',
       scene: 'all',
       shotNumber: 2,
-      shotName: 'Perfectly Folded by Poolside',
+      shotName: 'Structured on Stone Pedestal',
       priority: 99,
-      positivePrompt: 'A single {color} {product} perfectly and strictly folded into a neat, crisp square, resting on the wet, luxurious tiles of a poolside edge. Soft natural lighting with bright blue water and light reflections in the blurred background. High-end luxury fashion boutique presentation.',
-      negativePrompt: 'human, model, mannequin, hanger, sand, messy folds, draped, casual, crumpled, feet, hands, flat lay open',
-      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE STRICTLY AND PERFECTLY FOLDED INTO A SQUARE. NO DRAPING. NO BODY PARTS.',
-      outputGoal: 'Perfectly folded poolside'
+      positivePrompt: 'A single {color} {product} meticulously and symmetrically arranged flat on top of a clean, square beige stone or marble pedestal block. The background is a smooth, minimal beige wall. Soft studio lighting casting delicate shadows, creating a premium luxury e-commerce aesthetic.',
+      negativePrompt: 'human, model, mannequin, hanger, sand, water, messy folds, draped, casual, crumpled, feet, hands, wood, messy background',
+      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE STRICTLY AND PERFECTLY ARRANGED ON A SQUARE STONE PEDESTAL BLOCK. NO BODY PARTS.',
+      outputGoal: 'Arranged on stone block'
     },
     {
       category: 'swimwear',
@@ -35,12 +35,12 @@ async function seedSwimwearCleanCatalogNoModel() {
       presentation: 'no-model',
       scene: 'all',
       shotNumber: 3,
-      shotName: 'Ghost Mannequin Studio',
+      shotName: 'Hanging on Bamboo Ladder',
       priority: 98,
-      positivePrompt: 'A single {color} {product} presented as a perfect ghost mannequin shot (invisible model). The garment must be completely open, structured, and retaining its 3D worn shape, floating perfectly symmetrical against a pure optical white studio background. High-end e-commerce standard.',
-      negativePrompt: 'human, real person, model, hanger, sand, flat lay, messy, unironed, feet, hands, real mannequin head, background props',
-      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE A GHOST MANNEQUIN SHOT ON PURE WHITE BACKGROUND. THE GARMENT MUST LOOK WORN BY AN INVISIBLE PERSON.',
-      outputGoal: 'Ghost mannequin'
+      positivePrompt: 'A single {color} {product} hanging perfectly straight and symmetrical from a rustic, light-wood bamboo ladder. The ladder is standing outdoors with a softly blurred, luxurious poolside and tropical garden in the background. Warm natural daylight, premium aesthetic.',
+      negativePrompt: 'human, real person, model, flat lay, sand, dark background, messy composition, feet, hands, casually draped, folded, crumpled, indoor studio',
+      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE HANGING STRAIGHT ON A WOODEN BAMBOO LADDER. BACKGROUND MUST BE POOLSIDE. NO BODY PARTS.',
+      outputGoal: 'Hanging on bamboo ladder'
     },
     {
       category: 'swimwear',
@@ -48,12 +48,12 @@ async function seedSwimwearCleanCatalogNoModel() {
       presentation: 'no-model',
       scene: 'all',
       shotNumber: 4,
-      shotName: 'Hanging on Bamboo Ladder',
+      shotName: 'Laid on Wooden Sunbed',
       priority: 97,
-      positivePrompt: 'A single {color} {product} hanging perfectly straight and symmetrical vertically from a minimal, light-wood bamboo decorative ladder. The background is a clean, warm white plaster wall. Soft, sophisticated indoor natural lighting. E-commerce boutique style.',
-      negativePrompt: 'human, model, mannequin, flat lay, sand, dark background, messy composition, feet, hands, casually draped, folded, crumpled',
-      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE HANGING STRAIGHT ON A LADDER/RACK. NO BODY PARTS.',
-      outputGoal: 'Hanging on bamboo'
+      positivePrompt: 'A single {color} {product} symmetrically laid out flat and fully open on a wooden slatted sunbed lounger. In the blurred background, there is a luxurious blue swimming pool and tropical resort setting. Bright, natural sunshine, high-end lifestyle e-commerce photography.',
+      negativePrompt: 'human, model, mannequin, hanger, sand, dark background, messy composition, feet, hands, casually draped, folded, crumpled, indoor studio, stone pedestal',
+      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE LAID FLAT ON A WOODEN SLATTED SUNBED. BACKGROUND MUST BE BLURRED POOL. NO BODY PARTS.',
+      outputGoal: 'Laid on wooden sunbed'
     },
     {
       category: 'swimwear',
@@ -61,12 +61,12 @@ async function seedSwimwearCleanCatalogNoModel() {
       presentation: 'no-model',
       scene: 'all',
       shotNumber: 5,
-      shotName: 'Flat Lay on White Towel',
+      shotName: 'Diagonal Flat Lay on Sand',
       priority: 96,
-      positivePrompt: 'A single {color} {product} perfectly flat laid, entirely open, straight and symmetrically structured on a premium, fluffy white terry cloth beach towel. Crisp top-down view. Bright studio lighting highlighting the contrast between the garment and the towel texture.',
-      negativePrompt: 'human, model, mannequin, hanger, sand, dark lighting, flat lay from an angle, feet, hands, messy, folded',
-      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE PERFECTLY FLAT LAID AND OPEN ON A WHITE TOWEL. NO BODY PARTS.',
-      outputGoal: 'Open flat lay on towel'
+      positivePrompt: 'A single {color} {product} perfectly flat laid and fully open on soft, pristine light beige sand, photographed from a dynamic top-down diagonal angle. The arrangement is clean, sharp, and luxurious. Soft sunlight, extreme focus on the fabric and structure. No other objects.',
+      negativePrompt: 'human, model, mannequin, hanger, water, dark lighting, feet, hands, messy, folded, crumpled, indoor studio, props, wood, stone',
+      hardRules: 'STRICTLY NO HUMAN MODEL. MUST BE PERFECTLY FLAT LAID ON SAND. NO BODY PARTS. NO PROPS.',
+      outputGoal: 'Diagonal sand flat lay'
     }
   ];
 
