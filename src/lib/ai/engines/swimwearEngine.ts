@@ -365,12 +365,18 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
 
             let genderLockPositive = ageLockDirective;
             let genderLockNegative = ageNegativeDirective;
-            if (clientGender === 'MAN') {
-                genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
-                genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
-            } else if (clientGender === 'WOMAN') {
-                genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
-                genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
+            const isNoModelMode = presentationSlug === 'no-model' || modeSlug === 'clean-catalog';
+            if (!isNoModelMode) {
+                if (clientGender === 'MAN') {
+                    genderLockPositive = `[GENDER LOCK: MALE] MUST BE A REALISTIC MALE PERSON. ABSOLUTELY NO FEMALES. ${ageLockDirective}`;
+                    genderLockNegative = `female, woman, girl, breasts, feminine features, ${ageNegativeDirective}`;
+                } else if (clientGender === 'WOMAN') {
+                    genderLockPositive = `[GENDER LOCK: FEMALE] MUST BE A REALISTIC FEMALE PERSON. ABSOLUTELY NO MALES. ${ageLockDirective}`;
+                    genderLockNegative = `male, man, boy, facial hair, masculine features, ${ageNegativeDirective}`;
+                }
+            } else {
+                genderLockPositive = "";
+                genderLockNegative = "human, model, person, hands, feet, face, body, ";
             }
 
             const isBackShotPrompt = shotInfo.positive_prompt?.toLowerCase().includes("from behind") || shotInfo.positive_prompt?.toLowerCase().includes("back view") || shotInfo.positive_prompt?.toLowerCase().includes("walking away");
