@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key, CheckCircle, Image as ImageIcon } from "lucide-react";
-import { toggleSubscription, updateAllowance, deleteClient } from "./actions";
+import { PlusCircle, Power, PowerOff, BatteryCharging, Trash2, Key, CheckCircle, Image as ImageIcon, RefreshCw } from "lucide-react";
+import { toggleSubscription, updateAllowance, deleteClient, syncClientPinAuth } from "./actions";
 import Link from "next/link";
 
 export default function ClientList({ clients }: { clients: any[] }) {
   const [topupAmount, setTopupAmount] = useState<{ [key: string]: string }>({});
+  const [syncingId, setSyncingId] = useState<string | null>(null);
 
   const handleToggle = async (id: string, state: boolean) => {
     if(confirm(`Sei sicuro di voler ${state ? 'disattivare' : 'attivare'} questo cliente?`)) {
@@ -26,6 +27,18 @@ export default function ClientList({ clients }: { clients: any[] }) {
   const handleDelete = async (id: string) => {
     if(confirm("Eliminare DEFINITIVAMENTE questo cliente e tutta la sua cronologia?")) {
       await deleteClient(id);
+    }
+  };
+
+  const handleSyncAuth = async (id: string) => {
+    try {
+      setSyncingId(id);
+      await syncClientPinAuth(id);
+      alert("Credenziali sincronizzate! Ora il cliente può accedere col suo PIN.");
+    } catch (e: any) {
+      alert("Errore durante la sincronizzazione: " + e.message);
+    } finally {
+      setSyncingId(null);
     }
   };
 
@@ -149,7 +162,19 @@ export default function ClientList({ clients }: { clients: any[] }) {
                      <Key size={18} />
                    </div>
                    <div>
-                       <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#e0e7ff', letterSpacing: '1.5px' }}>{client.bot_pin || '---'}</div>
+                       <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#e0e7ff', letterSpacing: '1.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                         {client.bot_pin || '---'}
+                         {client.bot_pin && (
+                           <button 
+                             onClick={() => handleSyncAuth(client.id)}
+                             disabled={syncingId === client.id}
+                             title="Sincronizza Password PIN su Supabase"
+                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#818cf8', padding: '0', display: 'flex' }}
+                           >
+                             <RefreshCw size={14} className={syncingId === client.id ? "spin" : ""} />
+                           </button>
+                         )}
+                       </div>
                        <div style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Codice PIN</div>
                    </div>
                 </div>

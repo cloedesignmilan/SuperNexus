@@ -3,9 +3,13 @@
 import { createClient } from '@/lib/supabase/client'
 import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import { getLoginDataByPin } from '@/app/admin/clients/actions'
 
 export default function AuthButtons() {
   const [loading, setLoading] = useState(false)
+  const [pin, setPin] = useState('')
+  const [pinError, setPinError] = useState('')
+  
   const supabase = createClient()
   const searchParams = useSearchParams()
   const plan = searchParams.get('plan')
@@ -26,11 +30,114 @@ export default function AuthButtons() {
     }
   }
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+  const handlePinLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pin) return;
+    
+    setLoading(true);
+    setPinError('');
+    
+    // Recupera l'email associata a questo PIN dal database
+    const res = await getLoginDataByPin(pin);
+    if (!res.success || !res.email) {
+      setPinError(res.error || 'Codice non valido. Riprova.');
+      setLoading(false);
+      return;
+    }
+    
+    // Effettua il login in background con Supabase
+    const { error } = await supabase.auth.signInWithPassword({
+      email: res.email,
+      password: pin.toUpperCase(),
+    });
+    
+    if (error) {
+      console.error('Error logging in with PIN:', error.message);
+      setPinError('Accesso negato. Riprova o contatta il supporto.');
+      setLoading(false);
+    } else {
+      // Login effettuato! Reindirizzamento alla dashboard.
+      // Se c'è un piano da acquistare (flusso guest) passiamo dal callback per il redirect.
+      if (plan) {
+        window.location.href = `/auth/callback?plan=${plan}`;
+      } else {
+        window.location.href = `/dashboard`;
+      }
+    }
+  };
 
-      
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
+
+      {errorParam && (
+        <div style={{ color: '#ff4444', fontSize: '0.875rem', textAlign: 'center', marginBottom: '1rem' }}>
+          Authentication failed. Please try again.
+        </div>
+      )}
+
+      <form onSubmit={handlePinLogin} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        <input
+          type="text"
+          placeholder="Inserisci il Codice Accesso (PIN)"
+          value={pin}
+          onChange={(e) => setPin(e.target.value.toUpperCase())}
+          disabled={loading}
+          required
+          maxLength={6}
+          style={{
+            padding: '0.875rem 1rem',
+            borderRadius: '12px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            color: '#ffffff',
+            fontSize: '1.2rem',
+            letterSpacing: '2px',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            outline: 'none',
+            transition: 'border-color 0.2s',
+            textTransform: 'uppercase'
+          }}
+          onFocus={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)'}
+          onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+        />
+        {pinError && (
+          <div style={{ color: '#ff4444', fontSize: '0.75rem', marginTop: '-0.5rem', marginBottom: '0.25rem', textAlign: 'center' }}>
+            {pinError}
+          </div>
+        )}
+        <button 
+          type="submit"
+          disabled={loading || !pin}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)', color: '#ffffff', padding: '0.875rem 1.5rem',
+            borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.2)', fontWeight: 600, fontSize: '1rem',
+            cursor: (loading || !pin) ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
+          }}
+          onMouseOver={(e) => {
+            if (!loading && pin) {
+              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            }
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+          }}
+        >
+          {loading ? 'Verifica in corso...' : 'Entra'}
+        </button>
+      </form>
+
+      <div style={{ 
+        display: 'flex', alignItems: 'center', margin: '0.5rem 0', color: 'var(--color-text-muted)', fontSize: '0.875rem' 
+      }}>
+        <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }}></div>
+        <span style={{ padding: '0 1rem' }}>oppure</span>
+        <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(255,255,255,0.1)' }}></div>
+      </div>
+
       <button 
+        type="button"
         onClick={() => handleOAuthLogin('google')}
         disabled={loading}
         style={{
@@ -53,24 +160,6 @@ export default function AuthButtons() {
       </button>
 
       {/* Placeholder for Apple - Requires Apple Developer Account ($99/yr) to configure */}
-      {/* 
-      <button 
-        onClick={() => handleOAuthLogin('apple')}
-        disabled={loading}
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem',
-          backgroundColor: '#000000', color: '#ffffff', padding: '0.875rem 1.5rem',
-          borderRadius: '12px', border: '1px solid #333', fontWeight: 600, fontSize: '1rem',
-          cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.2s',
-          boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
-        }}
-      >
-        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#ffffff" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.62-1.48 3.608-2.925 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.502 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.68.727-1.303 2.155-1.108 3.53 1.344.104 2.553-.506 3.395-1.518z"/>
-        </svg>
-        Sign in with Apple
-      </button>
-      */}
     </div>
   )
 }
