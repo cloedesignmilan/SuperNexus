@@ -436,7 +436,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
 
             
             const productLockSystem = "\n" + dbGlobalPositive;
-            const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
+            const wearDirective = isNoModelRequest ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product. If the input is a flat-lay, you must perfectly map it onto the model's 3D body.]";
             const categoryHardRules = "\n" + dbGlobalHardRules;
     
 
@@ -471,7 +471,7 @@ ${(taxonomyCat?.toLowerCase().includes('dress') && taxonomyMode?.toLowerCase().i
 
             const productLockSystem = "\n" + (subcat.business_mode?.category?.global_positive_prompt || "");
             const categoryHardRules = "\n" + (subcat.business_mode?.category?.global_hard_rules || "");
-            const wearDirective = isNoModel ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product.]";
+            const wearDirective = isNoModelRequest ? "\n[DIRECTIVE: The product must be displayed ALONE, flat lay or ghost mannequin. NO HUMAN MODEL.]" : "\n[DIRECTIVE: You MUST generate a REALISTIC HUMAN MODEL wearing the product.]";
             
             let swimwearNegative = "";
             if (categorySlug === 'swimwear') {
