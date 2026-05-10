@@ -103,15 +103,30 @@ export async function getPromptsForSelection({
 
       if (dbShots.length > 0) {
           console.log("DB SHOTS FROM GET_PROMPTS:", dbShots.map(s => ({ name: s.shotName, url: (s as any).imageUrl })));
-          let shots = dbShots.map(db => ({
-              shot_number: db.shotNumber,
-              shot_name: db.shotName,
-              positive_prompt: db.positivePrompt,
-              negative_prompt: db.negativePrompt,
-              hard_rules: db.hardRules,
-              output_goal: db.outputGoal || "",
-              image_url: (db as any).imageUrl
-          }));
+          let shots = dbShots.map(db => {
+              let pos = db.positivePrompt || "";
+              let rules = db.hardRules || "";
+              
+              if (gender === 'MAN') {
+                  pos = pos.replace(/female fashion model|beautiful woman|beautiful girls/gi, 'handsome man')
+                           .replace(/\bfemale\b|\bwoman\b|\bgirl\b|\bgirls\b|\bwomen\b/gi, 'man');
+                  rules = rules.replace(/\bfemale\b|\bwoman\b|\bgirl\b|\bgirls\b|\bwomen\b/gi, 'man');
+              } else if (gender === 'WOMAN') {
+                  pos = pos.replace(/male fashion model|handsome man|handsome boy/gi, 'beautiful woman')
+                           .replace(/\bmale\b|\bman\b|\bboy\b|\bboys\b|\bmen\b/gi, 'woman');
+                  rules = rules.replace(/\bmale\b|\bman\b|\bboy\b|\bboys\b|\bmen\b/gi, 'woman');
+              }
+
+              return {
+                  shot_number: db.shotNumber,
+                  shot_name: db.shotName,
+                  positive_prompt: pos,
+                  negative_prompt: db.negativePrompt,
+                  hard_rules: rules,
+                  output_goal: db.outputGoal || "",
+                  image_url: (db as any).imageUrl
+              };
+          });
           // Deduplicate shots before expanding
           const uniqueShotsMap = new Map();
           for (const s of shots) {

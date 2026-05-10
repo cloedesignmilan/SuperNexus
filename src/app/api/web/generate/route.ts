@@ -41,10 +41,19 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl, productColors, outfitUrls } = body
+    let { imageUrl, finalPrompt, negativePrompt, qty, aspectRatio, selectedSnippetIds, taxonomyCat, taxonomyMode, taxonomySubcat, specificShotNumber, clientGender, detectedProductType, printLocation, imageBackUrl, productColors, outfitUrls } = body
 
     if (!imageUrl || !finalPrompt) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 })
+    }
+
+    // --- STRICT GENDER SANITIZATION ---
+    if (clientGender === 'MAN') {
+        finalPrompt = finalPrompt.replace(/female fashion model|beautiful woman|beautiful girls/gi, 'handsome man')
+                                 .replace(/\bfemale\b|\bwoman\b|\bgirl\b|\bgirls\b|\bwomen\b/gi, 'man');
+    } else if (clientGender === 'WOMAN') {
+        finalPrompt = finalPrompt.replace(/male fashion model|handsome man|handsome boy/gi, 'beautiful woman')
+                                 .replace(/\bmale\b|\bman\b|\bboy\b|\bboys\b|\bmen\b/gi, 'woman');
     }
 
     // Cost verification
