@@ -1,4 +1,4 @@
-export async function compressImageClientSide(file: File, maxWidthOrHeight: number = 1500, quality: number = 0.8): Promise<File> {
+export async function compressImageClientSide(file: File, maxWidthOrHeight: number = 1200, quality: number = 0.8): Promise<File> {
   return new Promise((resolve, reject) => {
     // Only compress images
     if (!file.type.startsWith('image/')) {
@@ -38,6 +38,9 @@ export async function compressImageClientSide(file: File, maxWidthOrHeight: numb
           return;
         }
 
+        // Fill white background to remove transparency (JPEG does not support alpha)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
 
         canvas.toBlob(
@@ -48,14 +51,14 @@ export async function compressImageClientSide(file: File, maxWidthOrHeight: numb
             }
             
             // Create a new File from the blob
-            const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+            const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
             const compressedFile = new File([blob], newFileName, {
-              type: 'image/webp',
+              type: 'image/jpeg',
               lastModified: Date.now(),
             });
             resolve(compressedFile);
           },
-          'image/webp',
+          'image/jpeg',
           quality
         );
       };
