@@ -240,6 +240,21 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selected = e.target.files[0]
+      
+      // --- RESET PREVIOUS STATE ---
+      setSelections({ CLIENT_TYPE: null, IMAGE_GOAL: null, IMAGE_TYPE: null, PRODUCT_TYPE: null, MODEL_OPTION: null, SCENE: null, FORMAT: null, QUANTITY: null })
+      setOutfitUrls([])
+      setUploadedBackUrl(null)
+      setAnalysisData(null)
+      setResults([])
+      setFinalPrompt('')
+      setNegativePrompt('')
+      setSelectedShotNumber(null)
+      setPrintLocation('front')
+      setShowPrintConfirm(false)
+      setError(null)
+      // ----------------------------
+
       setFile(selected)
       setIsUploading(true)
       try {
