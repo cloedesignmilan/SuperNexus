@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Upload, Play, CheckCircle, XCircle, Loader2, Image as ImageIcon } from 'lucide-react';
 import { saveValidationFeedback } from '@/app/admin/actions';
+import { compressImageClientSide } from '@/lib/imageCompression';
 
 type Cat = any;
 
@@ -47,10 +48,10 @@ export default function MassTesterClient({ categories }: { categories: Cat[] }) 
         if (gender === 'WOMAN') setIsUploadingWoman(true);
         else setIsUploadingMan(true);
 
-        const formData = new FormData();
-        formData.append('file', file);
-
         try {
+            const compressedFile = await compressImageClientSide(file);
+            const formData = new FormData();
+            formData.append('file', compressedFile);
             const res = await fetch('/api/web/upload', {
                 method: 'POST',
                 body: formData

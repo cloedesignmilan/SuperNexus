@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { dashboardWizardDictionary, DashboardWizardLocale } from '@/lib/i18n/dashboardWizardDictionary'
 import { Upload, Loader2, Wand2, Plus, Sparkles, ChevronLeft, ChevronRight, Settings, Info, CheckCircle2, Lock, ArrowRight, Zap, Image as ImageIcon } from 'lucide-react'
 import * as Icons from 'lucide-react'
+import { compressImageClientSide } from '@/lib/imageCompression'
 
 type Snippet = any;
 
@@ -195,8 +196,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       const selected = e.target.files[0]
       setIsUploadingOutfitPart(true)
       try {
+        const compressedFile = await compressImageClientSide(selected);
         const formData = new FormData()
-        formData.append('file', selected)
+        formData.append('file', compressedFile)
         const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
         const data = await res.json()
         if (data.url) {
@@ -217,8 +219,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       const selected = e.target.files[0]
       setIsUploadingBack(true)
       try {
+        const compressedFile = await compressImageClientSide(selected);
         const formData = new FormData()
-        formData.append('file', selected)
+        formData.append('file', compressedFile)
         const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
         const data = await res.json()
         if (data.url) {
@@ -240,8 +243,9 @@ export default function DashboardWizard({ snippets, isAdmin, activeCategories = 
       setFile(selected)
       setIsUploading(true)
       try {
+        const compressedFile = await compressImageClientSide(selected);
         const formData = new FormData()
-        formData.append('file', selected)
+        formData.append('file', compressedFile)
         const res = await fetch('/api/web/upload', { method: 'POST', body: formData })
         const data = await res.json()
         if (data.url) {

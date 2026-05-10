@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { dictionaries, Locale } from '@/lib/i18n/dictionaries';
 import { Upload, Loader2, Sparkles, AlertCircle, Lock, Camera, Image as ImageIcon, Box, Shirt, User, Star, X, Check, RefreshCw, Waves, Footprints, MonitorPlay, Smartphone, Search, Users } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { compressImageClientSide } from '@/lib/imageCompression';
 
 const CAT_ICONS: Record<string, React.ElementType> = {
   'T-shirt': Shirt,
@@ -170,8 +171,9 @@ export default function GuestTryOut({ lang = 'en' }: { lang?: Locale }) {
     setError(null);
 
     try {
+      const compressedFile = await compressImageClientSide(file);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', compressedFile);
       
       const uploadRes = await fetch('/api/web/guest-upload', {
         method: 'POST',

@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import Link from "next/link";
 import DownloadZipButton from "./DownloadZipButton";
+import ReportIssueButton from "./ReportIssueButton";
 
 export const dynamic = 'force-dynamic';
 
@@ -257,6 +258,7 @@ export default async function AnalysesPage({ searchParams }: { searchParams: Pro
                                                                 Copertina &<br/>Popola Set
                                                             </button>
                                                         </form>
+                                                        <ReportIssueButton path={path} shotBadge={shotBadge} />
                                                     </div>
                                                 );
                                             })}
